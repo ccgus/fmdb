@@ -1,0 +1,25 @@
+Thanks to the following folks for patches and other contributions:
+
+D. Richard Hipp (The author of SQLite)
+Dominic Yu
+Zach Wily
+Kris Markel
+Blackhole Media
+Daniel Pasco
+Bil Moorehead
+Sam Steele
+Brian Stern
+Robert Tolar Haining
+Will Cosgrove
+Matt Comi
+Tracy Harton
+Robbie Hanson
+Wouter F. Wessels
+Phong Long
+Nathan Stitt
+Dan Wright
+OZLB
+Matt Stevens
+Jens Alfke
+
+Aaaaannnd, Gus Mueller (that's me!)

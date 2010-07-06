@@ -1,0 +1,165 @@
+TODO:
+Zip, nada, zilch.  Got any ideas?
+
+If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
+
+2010.06.21:
+    
+    Changed up FMDatabase's close method to return a boolean, and fixed a compiler warning when compiling in 64bit land.  Thanks to Jens Alfke for the patches!
+
+
+2010.04.04:
+    Added:
+        dateForQuery which works like the other fooForQuery methods.  Thanks to Matt Stevens for the patch!
+
+2009.10.18:
+    
+    Added:
+        FMDB now checks for longLongValue in NSNumbers passed for selects or updates, and binds that value to an sqlite int64
+        
+    Thanks for the patch from Brian Stern!
+
+    Changed:
+        renamed getDataBaseSchema: to getSchema.  It didn't actually use the param.  whooops.
+
+
+
+
+2009.10.14:
+    
+    Reworked:
+        - (id)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
+        - (BOOL) executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
+        
+        These two methods now point to:
+        - (id) executeQuery:(NSString*)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args;
+        - (BOOL) executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args;
+        
+        because the vargs were causing headaches in 64bit land, and on the iphone, and it's fragile n' stuff.
+
+    
+    Added:
+        - (FMResultSet*) getTableSchema:(NSString*)tableName;
+        - (BOOL) columnExists:(NSString*)tableName columnName:(NSString*)columnName;
+    
+    to FMDatabaseAdditions.  Patch from OZLB
+    
+2009.09.22
+    Disabled the following FMDatabaseAdditions when compiled as 64 bit:
+        - (id)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
+        and
+        - (BOOL) executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
+    
+    Since they crash, I just print out a warning now.  Got a patch to fix it?  Send it to gus@flyingmeat.com
+    
+    
+    Added:
+        - (BOOL) tableExists:(NSString*)tableName;
+        - (FMResultSet*) getDataBaseSchema:(NSString*)tableName;
+    
+    to FMDatabaseAdditions.  Patch from OZLB
+    
+    
+2009.09.1
+    Added:
+    - (BOOL) openWithFlags:(int)flags;
+    To FMDatabase, which allows you to open up the database with certain flags for sqlite 3.5+
+    
+    Thanks to Dan Wright for the addition.
+    
+2009.07.17
+    Added:
+    - (const unsigned char *) UTF8StringForColumnIndex:(int)columnIdx;
+    - (const unsigned char *) UTF8StringForColumnName:(NSString*)columnName;
+    to FMResultSet, patch from Nathan Stitt.
+
+2009.05.23
+    Added:
+    - (id)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
+    - (BOOL) executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;    
+    thanks to code from Phong Long.
+    
+    
+    Fix to FMResultSet's - (BOOL) hadError, as it was returning true for SQLITE_ROW & SQLITE_DONE, which aren't actually errors.
+    Added:
+    - (BOOL) hasAnotherRow; which lets you know if there is another row waiting in the result set.
+    
+    Thanks to code from Dave DeLong.
+    
+
+2009.05.10
+    replaced sqlite3_prepare calls with sqlite3_prepare_v2, since it's shiny and new.
+    Now making sure not to call any assembly if on the iphone (asm{ trap }).
+    Tested on 10.6.  It works.  Not that I didn't expect it not to- but you never know…
+
+2009.05.05
+    stringForColumnIndex, stringForColumn, dataForColumnIndex, dataForColumn, dataNoCopyForColumnIndex, and dataNoCopyForColumn now return nil if a null value was inserted into its table row.  dateForColumnIndex already did this.
+    
+    Also added the following methods to test if a column is null or not:
+        - (BOOL) columnIndexIsNull:(int)columnIdx
+        - (BOOL) columnIsNull:(NSString*)columnName
+    
+    And finally, just general code cleanup + refactoring.  Happy Cinco de Mayo!
+    
+2009.04.27
+    added columnNameForIndex: to FMResultSet which returns the column name for the given index.
+
+2009.04.12
+    dateForColumnIndex: now returns null, if a null value was inserted into its table row.  Patch by Robbie Hanson.
+
+2009.03.11
+Now importing unistd.h, which the absence of was causing some problems on the iPhone.  Reported by multiple people, but Hal Mueller actually got me to make the change.
+
+2009.03.03
+Added (int)changes; to FMDatabase.  From the sqlite docs: "This function returns the number of database rows that were changed (or inserted or deleted) by the most recent SQL statement."
+Patch contributed by Tracy Harton
+
+2009.01.02
+HAPPY NEW YEAR WOOOO!
+Added dataNoCopyForColumn: and dataNoCopyForColumnIndex: to FMResultSet.
+If you are going to use this data after you iterate over the next row, or after you close the
+result set, make sure to make a copy of the data first (or just use dataForColumn/dataForColumnIndex)
+If you don't, you're going to be in a world of hurt when you try and use the data.
+
+2008.12.29
+Some changes to make Clang's static analysis happy (http://clang.llvm.org/StaticAnalysis.html). (patch provided by Matt Comi)
+
+2008.12.14
+Added longLongIntForColumn: and longLongIntForColumnIndex: to FMResultSet. (patch provided by Will Cosgrove)
+
+2008.11.20
+Added a check for NSNull in bindObject, which works just like passing nil does (patch provided by Robert Tolar Haining)
+
+2008.11.02
+Removed the block keeping you from performing updates or selects while going through a result set.
+
+2008.10.30
+Some bug fixes + warning fixes from Brian Stern (thanks again Brian!)
+
+2008.10.03
+Fixed a crasher in FMResultSet's close where if the parent DB was already released, the result set would be talking to a bad address and fmdb went boom. (thanks to Brian Stern for the patch)
+
+2008.06.06
+Thanks to Zach Wily for the return of FMDatabaseAdditions!
+
+2008.06.03:
+Removed all exceptions, now you should use [db hadError] to check for an error.  I hate (ns)exceptions, I'm not sure why I put them in.
+Moved to google code.
+Various little cleanup thingies.
+
+2008.07.03
+Thanks to Kris Markel for some extra trace outputs, and a fix where the database would be locked if it was too busy.
+
+2008.07.10
+Thanks to Daniel Pasco and Bil Moorehead for catching a problem where the column names lookup table was created on every row iteration.  Doh! 
+
+2008.07.18
+FMDatabase will now cache statements if you turn it on using shouldCacheStatements:YES.  In theory, this should speed things up.  Test it out, let me know if it makes things good for ya.
+Note: This is pretty new code, so it hasn't gone through a lot of testing... you've been warned. (seems to work though!)
+
+2008.00.01
+Fixed a problemo that kept it from compiling for the iPhone (Thanks to Sam Steele for the patch)
+
+
+
+questions? comments? patches?  Send them to gus@flyingmeat.com
