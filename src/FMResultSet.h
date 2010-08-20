@@ -67,6 +67,11 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 - (NSData*) dataNoCopyForColumn:(NSString*)columnName;
 - (NSData*) dataNoCopyForColumnIndex:(int)columnIdx;
 
+// $#!@#!@ static analyzer doesn't like "copy" in the method name.  even if it's NOCOPY.  So these
+// do the exact same thing as the above methods, but without a clang warning.
+- (NSData*) dataNoCpyForColumn:(NSString*)columnName;
+- (NSData*) dataNoCpyForColumnIndex:(int)columnIdx;
+
 - (BOOL) columnIndexIsNull:(int)columnIdx;
 - (BOOL) columnIsNull:(NSString*)columnName;
 
