@@ -263,14 +263,6 @@
     return data;
 }
 
-// $#!@#!@ static analyzer doesn't like "copy" in the method name.  even if it's NOCOPY
-- (NSData*) dataNoCpyForColumn:(NSString*)columnName {
-    return [self dataNoCopyForColumn:columnName];
-}
-
-- (NSData*) dataNoCpyForColumnIndex:(int)columnIdx {
-    return [self dataNoCopyForColumnIndex:columnIdx];
-}
 
 - (BOOL) columnIndexIsNull:(int)columnIdx {
     return sqlite3_column_type(statement.statement, columnIdx) == SQLITE_NULL;

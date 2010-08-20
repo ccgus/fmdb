@@ -1,6 +1,18 @@
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"
 
+#ifndef __has_feature      // Optional.
+#define __has_feature(x) 0 // Compatibility with non-clang compilers.
+#endif
+
+#ifndef NS_RETURNS_NOT_RETAINED
+#if __has_feature(attribute_ns_returns_not_retained)
+#define NS_RETURNS_NOT_RETAINED __attribute__((ns_returns_not_retained))
+#else
+#define NS_RETURNS_NOT_RETAINED
+#endif
+#endif
+
 @class FMDatabase;
 @class FMStatement;
 
@@ -64,13 +76,9 @@ If you are going to use this data after you iterate over the next row, or after 
 result set, make sure to make a copy of the data first (or just use dataForColumn:/dataForColumnIndex:)
 If you don't, you're going to be in a world of hurt when you try and use the data.
 */
-- (NSData*) dataNoCopyForColumn:(NSString*)columnName;
-- (NSData*) dataNoCopyForColumnIndex:(int)columnIdx;
+- (NSData*) dataNoCopyForColumn:(NSString*)columnName NS_RETURNS_NOT_RETAINED;
+- (NSData*) dataNoCopyForColumnIndex:(int)columnIdx NS_RETURNS_NOT_RETAINED;
 
-// $#!@#!@ static analyzer doesn't like "copy" in the method name.  even if it's NOCOPY.  So these
-// do the exact same thing as the above methods, but without a clang warning.
-- (NSData*) dataNoCpyForColumn:(NSString*)columnName;
-- (NSData*) dataNoCpyForColumnIndex:(int)columnIdx;
 
 - (BOOL) columnIndexIsNull:(int)columnIdx;
 - (BOOL) columnIsNull:(NSString*)columnName;
