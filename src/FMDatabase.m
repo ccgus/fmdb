@@ -30,19 +30,19 @@
     [super dealloc];
 }
 
-+ (NSString*) sqliteLibVersion {
++ (NSString*)sqliteLibVersion {
     return [NSString stringWithFormat:@"%s", sqlite3_libversion()];
 }
 
-- (NSString *) databasePath {
+- (NSString *)databasePath {
     return databasePath;
 }
 
-- (sqlite3*) sqliteHandle {
+- (sqlite3*)sqliteHandle {
     return db;
 }
 
-- (BOOL) open {
+- (BOOL)open {
 	int err = sqlite3_open([databasePath fileSystemRepresentation], &db );
 	if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
@@ -53,7 +53,7 @@
 }
 
 #if SQLITE_VERSION_NUMBER >= 3005000
-- (BOOL) openWithFlags:(int)flags {
+- (BOOL)openWithFlags:(int)flags {
     int err = sqlite3_open_v2([databasePath fileSystemRepresentation], &db, flags, NULL /* Name of VFS module to use */);
 	if(err != SQLITE_OK) {
 		NSLog(@"error opening!: %d", err);
@@ -64,7 +64,7 @@
 #endif
 
 
-- (BOOL) close {
+- (BOOL)close {
     
     [self clearCachedStatements];
     
@@ -97,7 +97,7 @@
     return YES;
 }
 
-- (void) clearCachedStatements {
+- (void)clearCachedStatements {
     
     NSEnumerator *e = [cachedStatements objectEnumerator];
     FMStatement *cachedStmt;
@@ -109,11 +109,11 @@
     [cachedStatements removeAllObjects];
 }
 
-- (FMStatement*) cachedStatementForQuery:(NSString*)query {
+- (FMStatement*)cachedStatementForQuery:(NSString*)query {
     return [cachedStatements objectForKey:query];
 }
 
-- (void) setCachedStatement:(FMStatement*)statement forQuery:(NSString*)query {
+- (void)setCachedStatement:(FMStatement*)statement forQuery:(NSString*)query {
     //NSLog(@"setting query: %@", query);
     query = [query copy]; // in case we got handed in a mutable string...
     [statement setQuery:query];
@@ -122,7 +122,7 @@
 }
 
 
-- (BOOL) rekey:(NSString*)key {
+- (BOOL)rekey:(NSString*)key {
 #ifdef SQLITE_HAS_CODEC
     if (!key) {
         return NO;
@@ -141,7 +141,7 @@
 #endif
 }
 
-- (BOOL) setKey:(NSString*)key {
+- (BOOL)setKey:(NSString*)key {
 #ifdef SQLITE_HAS_CODEC
     if (!key) {
         return NO;
@@ -155,7 +155,7 @@
 #endif
 }
 
-- (BOOL) goodConnection {
+- (BOOL)goodConnection {
     
     if (!db) {
         return NO;
@@ -171,7 +171,7 @@
     return NO;
 }
 
-- (void) compainAboutInUse {
+- (void)compainAboutInUse {
     NSLog(@"The FMDatabase %@ is currently in use.", self);
     
     if (crashOnErrors) {
@@ -179,21 +179,21 @@
     }
 }
 
-- (NSString*) lastErrorMessage {
+- (NSString*)lastErrorMessage {
     return [NSString stringWithUTF8String:sqlite3_errmsg(db)];
 }
 
-- (BOOL) hadError {
+- (BOOL)hadError {
     int lastErrCode = [self lastErrorCode];
     
     return (lastErrCode > SQLITE_OK && lastErrCode < SQLITE_ROW);
 }
 
-- (int) lastErrorCode {
+- (int)lastErrorCode {
     return sqlite3_errcode(db);
 }
 
-- (sqlite_int64) lastInsertRowId {
+- (sqlite_int64)lastInsertRowId {
     
     if (inUse) {
         [self compainAboutInUse];
@@ -208,7 +208,7 @@
     return ret;
 }
 
-- (void) bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt*)pStmt; {
+- (void)bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt*)pStmt; {
     
     if ((!obj) || ((NSNull *)obj == [NSNull null])) {
         sqlite3_bind_null(pStmt, idx);
@@ -250,7 +250,7 @@
     }
 }
 
-- (id) executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
+- (id)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
     
     if (inUse) {
         [self compainAboutInUse];
@@ -370,7 +370,7 @@
     return rs;
 }
 
-- (id) executeQuery:(NSString*)sql, ... {
+- (id)executeQuery:(NSString*)sql, ... {
     va_list args;
     va_start(args, sql);
     
@@ -380,11 +380,11 @@
     return result;
 }
 
-- (id) executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
+- (id)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
     return [self executeQuery:sql withArgumentsInArray:arguments orVAList:nil];
 }
 
-- (BOOL) executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
+- (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
     
     if (inUse) {
         [self compainAboutInUse];
@@ -550,7 +550,7 @@
 }
 
 
-- (BOOL) executeUpdate:(NSString*)sql, ... {
+- (BOOL)executeUpdate:(NSString*)sql, ... {
     va_list args;
     va_start(args, sql);
     
@@ -562,7 +562,7 @@
 
 
 
-- (BOOL) executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments {
+- (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments {
     return [self executeUpdate:sql withArgumentsInArray:arguments orVAList:nil];
 }
 
@@ -572,7 +572,7 @@
 }
 */
 
-- (BOOL) rollback {
+- (BOOL)rollback {
     BOOL b = [self executeUpdate:@"ROLLBACK TRANSACTION;"];
     if (b) {
         inTransaction = NO;
@@ -580,7 +580,7 @@
     return b;
 }
 
-- (BOOL) commit {
+- (BOOL)commit {
     BOOL b =  [self executeUpdate:@"COMMIT TRANSACTION;"];
     if (b) {
         inTransaction = NO;
@@ -588,7 +588,7 @@
     return b;
 }
 
-- (BOOL) beginDeferredTransaction {
+- (BOOL)beginDeferredTransaction {
     BOOL b =  [self executeUpdate:@"BEGIN DEFERRED TRANSACTION;"];
     if (b) {
         inTransaction = YES;
@@ -596,7 +596,7 @@
     return b;
 }
 
-- (BOOL) beginTransaction {
+- (BOOL)beginTransaction {
     BOOL b =  [self executeUpdate:@"BEGIN EXCLUSIVE TRANSACTION;"];
     if (b) {
         inTransaction = YES;
@@ -622,7 +622,7 @@
     return inUse || inTransaction;
 }
 
-- (void) setInUse:(BOOL)b {
+- (void)setInUse:(BOOL)b {
     inUse = b;
 }
 
@@ -702,20 +702,20 @@
 }
 
 
-- (void) close {
+- (void)close {
     if (statement) {
         sqlite3_finalize(statement);
         statement = 0x00;
     }
 }
 
-- (void) reset {
+- (void)reset {
     if (statement) {
         sqlite3_reset(statement);
     }
 }
 
-- (sqlite3_stmt *) statement {
+- (sqlite3_stmt *)statement {
     return statement;
 }
 
@@ -723,7 +723,7 @@
     statement = value;
 }
 
-- (NSString *) query {
+- (NSString *)query {
     return query;
 }
 
@@ -744,7 +744,7 @@
     }
 }
 
-- (NSString*) description {
+- (NSString*)description {
     return [NSString stringWithFormat:@"%@ %d hit(s) for query %@", [super description], useCount, query];
 }
 
