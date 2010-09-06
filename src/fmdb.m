@@ -9,7 +9,7 @@ int main (int argc, const char * argv[]) {
     
     // delete the old db.
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeFileAtPath:@"/tmp/tmp.db" handler:nil];
+    [fileManager removeItemAtPath:@"/tmp/tmp.db" error:nil];
     
     FMDatabase* db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
     if (![db open]) {
