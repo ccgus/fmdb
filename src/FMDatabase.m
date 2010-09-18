@@ -250,7 +250,7 @@
     }
 }
 
-- (id)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
     
     if (inUse) {
         [self compainAboutInUse];
@@ -370,7 +370,7 @@
     return rs;
 }
 
-- (id)executeQuery:(NSString*)sql, ... {
+- (FMResultSet *)executeQuery:(NSString*)sql, ... {
     va_list args;
     va_start(args, sql);
     
@@ -380,7 +380,7 @@
     return result;
 }
 
-- (id)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
     return [self executeQuery:sql withArgumentsInArray:arguments orVAList:nil];
 }
 
