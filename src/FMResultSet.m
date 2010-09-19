@@ -83,7 +83,7 @@
     if (num_cols > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
         
-        NSInteger i;
+        unsigned i;
         for (i = 0; i < num_cols; i++) {
             
             const char *col_name = sqlite3_column_name(statement.statement, i);
