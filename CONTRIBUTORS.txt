@@ -23,5 +23,6 @@ Matt Stevens
 Jens Alfke
 Pascal Pfiffner
 Augie Fackler
+David E. Wheeler
 
 Aaaaannnd, Gus Mueller (that's me!)

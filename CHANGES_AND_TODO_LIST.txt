@@ -5,6 +5,7 @@ If you would like to contribute some code- awesome!  I just ask that you make it
 
 2010.11.30
     Added and updated some new methods to take NSError** params.
+    Only execute the assertion macros if NS_BLOCK_ASSERTIONS is not set.  Patch from David E. Wheeler!
 
 2010.09.19
     The signature for FMDatabase's executeQuery* methods now return FMResultSet instead if id.  Patch from Augie Fackler!

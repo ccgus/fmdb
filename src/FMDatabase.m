@@ -174,7 +174,7 @@
 - (void)compainAboutInUse {
     NSLog(@"The FMDatabase %@ is currently in use.", self);
     
-# if !NS_BLOCK_ASSERTIONS
+#if !NS_BLOCK_ASSERTIONS
     if (crashOnErrors) {
         NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
     }
@@ -302,11 +302,8 @@
                 if (logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
-# if !NS_BLOCK_ASSERTIONS
+#if !NS_BLOCK_ASSERTIONS
                     if (crashOnErrors) {
-//#if defined(__BIG_ENDIAN__) && !TARGET_IPHONE_SIMULATOR
-//                        asm{ trap };
-//#endif
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
 #endif
@@ -436,11 +433,8 @@
                 if (logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
-# if !NS_BLOCK_ASSERTIONS
+#if !NS_BLOCK_ASSERTIONS
                     if (crashOnErrors) {
-//#if defined(__BIG_ENDIAN__) && !TARGET_IPHONE_SIMULATOR
-//                        asm{ trap };
-//#endif
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
 #endif
