@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2010.11.30
+    Added and updated some new methods to take NSError** params.
+
 2010.09.19
     The signature for FMDatabase's executeQuery* methods now return FMResultSet instead if id.  Patch from Augie Fackler!
 

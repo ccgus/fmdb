@@ -384,8 +384,8 @@
     return [self executeQuery:sql withArgumentsInArray:arguments orVAList:nil];
 }
 
-- (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
-    
+- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
+
     if (inUse) {
         [self compainAboutInUse];
         return NO;
@@ -442,6 +442,10 @@
                 
                 sqlite3_finalize(pStmt);
                 [self setInUse:NO];
+                
+                if (outErr) {
+                    *outErr = [NSError errorWithDomain:[NSString stringWithUTF8String:sqlite3_errmsg(db)] code:rc userInfo:nil];
+                }
                 
                 return NO;
             }
@@ -554,7 +558,7 @@
     va_list args;
     va_start(args, sql);
     
-    BOOL result = [self executeUpdate:sql withArgumentsInArray:nil orVAList:args];
+    BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orVAList:args];
     
     va_end(args);
     return result;
@@ -563,14 +567,18 @@
 
 
 - (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments {
-    return [self executeUpdate:sql withArgumentsInArray:arguments orVAList:nil];
+    return [self executeUpdate:sql error:nil withArgumentsInArray:arguments orVAList:nil];
 }
 
-/*
-- (id) executeUpdate:(NSString *)sql arguments:(va_list)args {
+- (BOOL)update:(NSString*)sql error:(NSError**)outErr bind:(id)bindArgs, ... {
+    va_list args;
+    va_start(args, bindArgs);
     
+    BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orVAList:args];
+    
+    va_end(args);
+    return result;
 }
-*/
 
 - (BOOL)rollback {
     BOOL b = [self executeUpdate:@"ROLLBACK TRANSACTION;"];

@@ -30,6 +30,12 @@ int main (int argc, const char * argv[]) {
         NSLog(@"Err %d: %@", [db lastErrorCode], [db lastErrorMessage]);
     }
     
+    NSError *err = 0x00;
+    FMDBQuickCheck(![db update:@"blah blah blah" error:&err bind:nil]);
+    FMDBQuickCheck(err != nil);
+    FMDBQuickCheck([err code] == SQLITE_ERROR);
+    NSLog(@"err: '%@'", err);
+    
     // but of course, I don't bother checking the error codes below.
     // Bad programmer, no cookie.
     
