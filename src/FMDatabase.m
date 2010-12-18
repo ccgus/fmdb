@@ -43,6 +43,10 @@
 }
 
 - (BOOL)open {
+	if (NULL != db) {
+		return YES;
+	}
+	
 	int err = sqlite3_open([databasePath fileSystemRepresentation], &db );
 	if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
@@ -205,6 +209,19 @@
     
     sqlite_int64 ret = sqlite3_last_insert_rowid(db);
     
+    [self setInUse:NO];
+    
+    return ret;
+}
+
+- (int)numChanges {
+	if (inUse) {
+        [self compainAboutInUse];
+        return 0;
+    }
+	
+    [self setInUse:YES];
+    int ret = sqlite3_changes(db);
     [self setInUse:NO];
     
     return ret;

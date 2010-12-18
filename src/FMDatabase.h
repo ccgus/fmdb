@@ -41,6 +41,7 @@
 - (int)lastErrorCode;
 - (BOOL)hadError;
 - (sqlite_int64)lastInsertRowId;
+- (int)numChanges;
 
 - (sqlite3*)sqliteHandle;
 
