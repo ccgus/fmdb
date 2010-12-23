@@ -174,7 +174,7 @@
 - (void)compainAboutInUse {
     NSLog(@"The FMDatabase %@ is currently in use.", self);
     
-#if !NS_BLOCK_ASSERTIONS
+#ifndef NS_BLOCK_ASSERTIONS
     if (crashOnErrors) {
         NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
     }
@@ -302,7 +302,7 @@
                 if (logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
-#if !NS_BLOCK_ASSERTIONS
+#ifndef NS_BLOCK_ASSERTIONS
                     if (crashOnErrors) {
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
@@ -433,7 +433,7 @@
                 if (logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
-#if !NS_BLOCK_ASSERTIONS
+#ifndef NS_BLOCK_ASSERTIONS
                     if (crashOnErrors) {
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
