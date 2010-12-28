@@ -78,12 +78,12 @@
 
 - (NSDictionary *)resultDict {
     
-    NSInteger num_cols = sqlite3_data_count(statement.statement);
+    int num_cols = sqlite3_data_count(statement.statement);
     
     if (num_cols > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
         
-        NSUInteger i;
+        int i;
         for (i = 0; i < num_cols; i++) {
             
             const char *col_name = sqlite3_column_name(statement.statement, i);

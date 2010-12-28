@@ -24,5 +24,6 @@ Jens Alfke
 Pascal Pfiffner
 Augie Fackler
 David E. Wheeler
+Casey Fleser
 
 Aaaaannnd, Gus Mueller (that's me!)
