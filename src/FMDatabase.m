@@ -82,7 +82,7 @@
     do {
         retry   = NO;
         rc      = sqlite3_close(db);
-        if (SQLITE_BUSY == rc) {
+        if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
             retry = YES;
             usleep(20);
             if (busyRetryTimeout && (numberOfRetries++ > busyRetryTimeout)) {
@@ -178,7 +178,7 @@
 - (void)compainAboutInUse {
     NSLog(@"The FMDatabase %@ is currently in use.", self);
     
-#if !NS_BLOCK_ASSERTIONS
+#ifndef NS_BLOCK_ASSERTIONS
     if (crashOnErrors) {
         NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
     }
@@ -301,7 +301,7 @@
             retry   = NO;
             rc      = sqlite3_prepare_v2(db, [sql UTF8String], -1, &pStmt, 0);
             
-            if (SQLITE_BUSY == rc) {
+            if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
                 retry = YES;
                 usleep(20);
                 
@@ -319,7 +319,7 @@
                 if (logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
-#if !NS_BLOCK_ASSERTIONS
+#ifndef NS_BLOCK_ASSERTIONS
                     if (crashOnErrors) {
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
@@ -432,7 +432,7 @@
         do {
             retry   = NO;
             rc      = sqlite3_prepare_v2(db, [sql UTF8String], -1, &pStmt, 0);
-            if (SQLITE_BUSY == rc) {
+            if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
                 retry = YES;
                 usleep(20);
                 
@@ -450,7 +450,7 @@
                 if (logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
-#if !NS_BLOCK_ASSERTIONS
+#ifndef NS_BLOCK_ASSERTIONS
                     if (crashOnErrors) {
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
@@ -509,10 +509,16 @@
         rc      = sqlite3_step(pStmt);
         retry   = NO;
         
-        if (SQLITE_BUSY == rc) {
+        if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
             // this will happen if the db is locked, like if we are doing an update or insert.
             // in that case, retry the step... and maybe wait just 10 milliseconds.
             retry = YES;
+			if (SQLITE_LOCKED == rc) {
+				rc = sqlite3_reset(pStmt);
+				if (rc != SQLITE_LOCKED) {
+					NSLog(@"Unexpected result from sqlite3_reset (%d) eu", rc);
+				}
+			}
             usleep(20);
             
             if (busyRetryTimeout && (numberOfRetries++ > busyRetryTimeout)) {
