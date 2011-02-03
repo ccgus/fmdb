@@ -47,7 +47,7 @@
 		return YES;
 	}
 	
-	int err = sqlite3_open([databasePath fileSystemRepresentation], &db );
+	int err = sqlite3_open((databasePath ? [databasePath fileSystemRepresentation] : ":memory:"), &db );
 	if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
 		return NO;
@@ -58,7 +58,7 @@
 
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags {
-    int err = sqlite3_open_v2([databasePath fileSystemRepresentation], &db, flags, NULL /* Name of VFS module to use */);
+    int err = sqlite3_open_v2((databasePath ? [databasePath fileSystemRepresentation] : ":memory:"), &db, flags, NULL /* Name of VFS module to use */);
 	if(err != SQLITE_OK) {
 		NSLog(@"error opening!: %d", err);
 		return NO;
@@ -375,7 +375,7 @@
         }
     }
     
-    // the statement gets close in rs's dealloc or [rs close];
+    // the statement gets closed in rs's dealloc or [rs close];
     rs = [FMResultSet resultSetWithStatement:statement usingParentDatabase:self];
     [rs setQuery:sql];
     
@@ -403,7 +403,7 @@
 }
 
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
-
+	
     if (inUse) {
         [self compainAboutInUse];
         return NO;
