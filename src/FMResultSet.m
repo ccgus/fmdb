@@ -19,6 +19,10 @@
     return [rs autorelease];
 }
 
+- (void)finalize {
+	[self close];
+}
+
 - (void)dealloc {
     [self close];
     

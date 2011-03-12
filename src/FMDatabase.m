@@ -21,6 +21,10 @@
 	return self;
 }
 
+- (void)finalize {
+	[self close];
+}
+
 - (void)dealloc {
 	[self close];
     
@@ -721,6 +725,10 @@
 
 
 @implementation FMStatement
+
+- (void)finalize {
+	[self close];
+}
 
 - (void)dealloc {
 	[self close];
