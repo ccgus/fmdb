@@ -3,6 +3,14 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2011.03.12
+	Added compatibility with garbage collection.
+	When an FMDatabase is closed, all open FMResultSets pertaining to that database are also closed.
+    Added:
+    - (id) objectForColumnIndex:(int)columnIdx;
+    - (id) objectForColumnName:(NSString*)columnName;
+	Changes by Dave DeLong.
+
 2011.02.05
     The -(int)changes; method on FMDatabase is a bit more robust now, and there's a new static library target.  And if a database path is nil, we now open up a :memory: database. Patch from Pascal Pfiffner!
 

@@ -27,5 +27,6 @@ David E. Wheeler
 Casey Fleser
 Jeff Meininger
 Pascal Pfiffner
+Dave DeLong
 
 Aaaaannnd, Gus Mueller (that's me!)
