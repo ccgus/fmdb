@@ -93,41 +93,16 @@
     if (num_cols > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
         
-        int i;
-        for (i = 0; i < num_cols; i++) {
-            
-            const char *col_name = sqlite3_column_name(statement.statement, i);
-            
-            if (col_name) {
-                NSString *colName = [NSString stringWithUTF8String:col_name];
-                id value = nil;
-                
-                // fetch according to type
-                switch (sqlite3_column_type(statement.statement, i)) {
-                    case SQLITE_INTEGER: {
-                        value = [NSNumber numberWithInt:[self intForColumnIndex:i]];
-                        break;
-                    }
-                    case SQLITE_FLOAT: {
-                        value = [NSNumber numberWithDouble:[self doubleForColumnIndex:i]];
-                        break;
-                    }
-                    case SQLITE_TEXT: {
-                        value = [self stringForColumnIndex:i];
-                        break;
-                    }
-                    case SQLITE_BLOB: {
-                        value = [self dataForColumnIndex:i];
-                        break;
-                    }
-                }
-                
-                // save to dict
-                if (value) {
-                    [dict setObject:value forKey:colName];
-                }
-            }
-        }
+		if (!columnNamesSetup) {
+			[self setupColumnNames];
+		}
+		
+		NSEnumerator *columnNames = [columnNameToIndexMap keyEnumerator];
+		NSString *columnName = nil;
+		while ((columnName = [columnNames nextObject])) {
+			id objectValue = [self objectForColumnName:columnName];
+			[dict setObject:objectValue forKey:columnName];
+		}
         
         return [[dict copy] autorelease];
     }
