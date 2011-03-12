@@ -353,6 +353,30 @@
     return [self UTF8StringForColumnIndex:[self columnIndexForName:columnName]];
 }
 
+- (id)objectForColumnIndex:(int)columnIdx {
+	int columnType = sqlite3_column_type(statement.statement, columnIdx);
+	id returnValue = nil;
+	if (columnType == SQLITE_INTEGER) {
+		returnValue = [NSNumber numberWithLongLong:[self longLongIntForColumnIndex:columnIdx]];
+	} else if (columnType == SQLITE_FLOAT) {
+		returnValue = [NSNumber numberWithDouble:[self doubleForColumnIndex:columnIdx]];
+	} else if (columnType == SQLITE_BLOB) {
+		returnValue = [self dataForColumnIndex:columnIdx];
+	} else {
+		//default to a string for everything else
+		returnValue = [self stringForColumnIndex:columnIdx];
+	}
+	
+	if (returnValue == nil) {
+		returnValue = [NSNull null];
+	}
+	return returnValue;
+}
+
+- (id)objectForColumnName:(NSString*)columnName {
+	return [self objectForColumnIndex:[self columnIndexForName:columnName]];
+}
+
 
 // returns autoreleased NSString containing the name of the column in the result set
 - (NSString*)columnNameForIndex:(int)columnIdx {
