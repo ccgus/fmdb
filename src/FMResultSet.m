@@ -2,6 +2,11 @@
 #import "FMDatabase.h"
 #import "unistd.h"
 
+@interface FMDatabase ()
+- (void)resultSetDidClose:(FMResultSet *)resultSet;
+@end
+
+
 @interface FMResultSet (Private)
 - (NSMutableDictionary *)columnNameToIndexMap;
 - (void)setColumnNameToIndexMap:(NSMutableDictionary *)value;
@@ -37,13 +42,13 @@
 }
 
 - (void)close {
-    
     [statement reset];
     [statement release];
     statement = nil;
     
     // we don't need this anymore... (i think)
     //[parentDB setInUse:NO];
+	[parentDB resultSetDidClose:self];
     parentDB = nil;
 }
 

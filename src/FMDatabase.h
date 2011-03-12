@@ -15,6 +15,7 @@
     int         busyRetryTimeout;
     BOOL        shouldCacheStatements;
     NSMutableDictionary *cachedStatements;
+	NSMutableSet *openResultSets;
 }
 
 
@@ -28,6 +29,7 @@
 - (BOOL)close;
 - (BOOL)goodConnection;
 - (void)clearCachedStatements;
+- (void)closeOpenResultSets;
 
 // encryption methods.  You need to have purchased the sqlite encryption extensions for these to work.
 - (BOOL)setKey:(NSString*)key;

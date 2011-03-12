@@ -12,6 +12,7 @@
 	
     if (self) {
         databasePath        = [aPath copy];
+		openResultSets      = [[NSMutableSet alloc] init];
         db                  = 0x00;
         logsErrors          = 0x00;
         crashOnErrors       = 0x00;
@@ -29,6 +30,7 @@
 - (void)dealloc {
 	[self close];
     
+	[openResultSets release];
     [cachedStatements release];
     [databasePath release];
 	
@@ -76,6 +78,7 @@
 - (BOOL)close {
     
     [self clearCachedStatements];
+	[self closeOpenResultSets];
     
 	if (!db) {
         return YES;
@@ -116,6 +119,26 @@
     }
     
     [cachedStatements removeAllObjects];
+}
+
+- (void)closeOpenResultSets {
+	//Copy the set so we don't get mutation errors
+	NSSet *resultSets = [[openResultSets copy] autorelease];
+	
+	NSEnumerator *e = [resultSets objectEnumerator];
+	NSValue *returnedResultSet = nil;
+	
+	while((returnedResultSet = [e nextObject])) {
+		FMResultSet *rs = (FMResultSet *)[returnedResultSet pointerValue];
+		if ([rs respondsToSelector:@selector(close)]) {
+			[rs close];
+		}
+	}
+}
+
+- (void)resultSetDidClose:(FMResultSet *)resultSet {
+	NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
+	[openResultSets removeObject:setValue];
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
@@ -383,6 +406,8 @@
     // the statement gets closed in rs's dealloc or [rs close];
     rs = [FMResultSet resultSetWithStatement:statement usingParentDatabase:self];
     [rs setQuery:sql];
+	NSValue *openResultSet = [NSValue valueWithNonretainedObject:rs];
+	[openResultSets addObject:openResultSet];
     
     statement.useCount = statement.useCount + 1;
     
