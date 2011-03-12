@@ -21,6 +21,7 @@
 
 - (void)finalize {
 	[self close];
+	[super finalize];
 }
 
 - (void)dealloc {
