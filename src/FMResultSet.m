@@ -25,8 +25,8 @@
 }
 
 - (void)finalize {
-	[self close];
-	[super finalize];
+    [self close];
+    [super finalize];
 }
 
 - (void)dealloc {
@@ -48,7 +48,7 @@
     
     // we don't need this anymore... (i think)
     //[parentDB setInUse:NO];
-	[parentDB resultSetDidClose:self];
+    [parentDB resultSetDidClose:self];
     parentDB = nil;
 }
 
@@ -93,16 +93,16 @@
     if (num_cols > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
         
-		if (!columnNamesSetup) {
-			[self setupColumnNames];
-		}
-		
-		NSEnumerator *columnNames = [columnNameToIndexMap keyEnumerator];
-		NSString *columnName = nil;
-		while ((columnName = [columnNames nextObject])) {
-			id objectValue = [self objectForColumnName:columnName];
-			[dict setObject:objectValue forKey:columnName];
-		}
+        if (!columnNamesSetup) {
+            [self setupColumnNames];
+        }
+        
+        NSEnumerator *columnNames = [columnNameToIndexMap keyEnumerator];
+        NSString *columnName = nil;
+        while ((columnName = [columnNames nextObject])) {
+            id objectValue = [self objectForColumnName:columnName];
+            [dict setObject:objectValue forKey:columnName];
+        }
         
         return [[dict copy] autorelease];
     }
@@ -127,12 +127,12 @@
             // this will happen if the db is locked, like if we are doing an update or insert.
             // in that case, retry the step... and maybe wait just 10 milliseconds.
             retry = YES;
-			if (SQLITE_LOCKED == rc) {
-				rc = sqlite3_reset(statement.statement);
-				if (rc != SQLITE_LOCKED) {
-					NSLog(@"Unexpected result from sqlite3_reset (%d) rs", rc);
-				}
-			}
+            if (SQLITE_LOCKED == rc) {
+                rc = sqlite3_reset(statement.statement);
+                if (rc != SQLITE_LOCKED) {
+                    NSLog(@"Unexpected result from sqlite3_reset (%d) rs", rc);
+                }
+            }
             usleep(20);
             
             if ([parentDB busyRetryTimeout] && (numberOfRetries++ > [parentDB busyRetryTimeout])) {
@@ -329,27 +329,33 @@
 }
 
 - (id)objectForColumnIndex:(int)columnIdx {
-	int columnType = sqlite3_column_type(statement.statement, columnIdx);
-	id returnValue = nil;
-	if (columnType == SQLITE_INTEGER) {
-		returnValue = [NSNumber numberWithLongLong:[self longLongIntForColumnIndex:columnIdx]];
-	} else if (columnType == SQLITE_FLOAT) {
-		returnValue = [NSNumber numberWithDouble:[self doubleForColumnIndex:columnIdx]];
-	} else if (columnType == SQLITE_BLOB) {
-		returnValue = [self dataForColumnIndex:columnIdx];
-	} else {
-		//default to a string for everything else
-		returnValue = [self stringForColumnIndex:columnIdx];
-	}
-	
-	if (returnValue == nil) {
-		returnValue = [NSNull null];
-	}
-	return returnValue;
+    int columnType = sqlite3_column_type(statement.statement, columnIdx);
+    
+    id returnValue = nil;
+    
+    if (columnType == SQLITE_INTEGER) {
+        returnValue = [NSNumber numberWithLongLong:[self longLongIntForColumnIndex:columnIdx]];
+    }
+    else if (columnType == SQLITE_FLOAT) {
+        returnValue = [NSNumber numberWithDouble:[self doubleForColumnIndex:columnIdx]];
+    }
+    else if (columnType == SQLITE_BLOB) {
+        returnValue = [self dataForColumnIndex:columnIdx];
+    }
+    else {
+        //default to a string for everything else
+        returnValue = [self stringForColumnIndex:columnIdx];
+    }
+    
+    if (returnValue == nil) {
+        returnValue = [NSNull null];
+    }
+    
+    return returnValue;
 }
 
 - (id)objectForColumnName:(NSString*)columnName {
-	return [self objectForColumnIndex:[self columnIndexForName:columnName]];
+    return [self objectForColumnIndex:[self columnIndexForName:columnName]];
 }
 
 
