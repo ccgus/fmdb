@@ -28,4 +28,6 @@
 - (FMResultSet*)getTableSchema:(NSString*)tableName;
 - (BOOL)columnExists:(NSString*)tableName columnName:(NSString*)columnName;
 
+- (BOOL)validateSQL:(NSString*)sql error:(NSError**)error;
+
 @end
