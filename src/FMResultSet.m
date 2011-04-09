@@ -52,6 +52,10 @@
     parentDB = nil;
 }
 
+- (int)numberOfColumns {
+	return sqlite3_column_count(statement.statement);
+}
+
 - (void)setupColumnNames {
     
     if (!columnNameToIndexMap) {
