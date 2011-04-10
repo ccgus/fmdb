@@ -358,7 +358,7 @@
     return returnValue;
 }
 
-- (id)objectForColumnName:(NSString*)columnName {
+- (id)objectForColumn:(NSString*)columnName {
     return [self objectForColumnIndex:[self columnIndexForName:columnName]];
 }
 
