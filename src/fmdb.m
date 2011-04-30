@@ -467,6 +467,21 @@ int main (int argc, const char * argv[]) {
     }
     
     
+    {
+        FMDBQuickCheck([db executeUpdate:@"create table t5 (a text, b int, c blob, d text, e text)"]);
+        FMDBQuickCheck(([db executeUpdateWithFormat:@"insert into t5 values (%s, %d, %@, %c, %lld)", "text", 42, @"BLOB", 'd', 12345678901234]));
+        
+        rs = [db executeQueryWithFormat:@"select * from t5 where a = %s", "text"];
+        FMDBQuickCheck((rs != nil));
+        
+        [rs next];
+        
+        FMDBQuickCheck([[rs stringForColumn:@"a"] isEqualToString:@"text"]);
+        FMDBQuickCheck(([rs intForColumn:@"b"] == 42));
+        FMDBQuickCheck([[rs stringForColumn:@"c"] isEqualToString:@"BLOB"]);
+        FMDBQuickCheck([[rs stringForColumn:@"d"] isEqualToString:@"d"]);
+        FMDBQuickCheck(([rs longLongIntForColumn:@"e"] == 12345678901234));
+    }
     
     
     

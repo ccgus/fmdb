@@ -309,7 +309,7 @@
 				case '@':
 					arg = va_arg(args, id); break;
 				case 'c':
-					arg = [NSNumber numberWithChar:va_arg(args, char)]; break;
+                    arg = [NSString stringWithFormat:@"%c", va_arg(args, char)]; break;
 				case 's':
 					arg = [NSString stringWithUTF8String:va_arg(args, char*)]; break;
 				case 'd':
