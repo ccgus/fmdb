@@ -298,6 +298,7 @@
 }
 
 - (void)_extractSQL:(NSString *)sql argumentsList:(va_list)args intoString:(NSMutableString *)cleanedSQL arguments:(NSMutableArray *)arguments {
+    
     NSUInteger length = [sql length];
     unichar last = '\0';
     for (NSUInteger i = 0; i < length; ++i) {
@@ -309,7 +310,7 @@
                 case '@':
                     arg = va_arg(args, id); break;
                 case 'c':
-                    arg = [NSNumber numberWithChar:va_arg(args, char)]; break;
+                    arg = [NSString stringWithFormat:@"%c", va_arg(args, char)]; break;
                 case 's':
                     arg = [NSString stringWithUTF8String:va_arg(args, char*)]; break;
                 case 'd':
