@@ -4,10 +4,10 @@ Zip, nada, zilch.  Got any ideas?
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
 2011.04.09
-	Added a method to validate a SQL statement
-	Added a method to retrieve the number of columns in a result set
-	Renamed "objectForColumnName:" to "objectForColumn:"
-	Added two methods to execute queries and updates with NSString-style format specifiers
+	Added a method to validate a SQL statement.
+	Added a method to retrieve the number of columns in a result set.
+	Added two methods to execute queries and updates with NSString-style format specifiers.
+    Thanks to Dave DeLong for the patches!
 
 2011.03.12
 	Added compatibility with garbage collection.

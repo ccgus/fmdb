@@ -41,7 +41,7 @@
 - (BOOL)next;
 - (BOOL)hasAnotherRow;
 
-- (int)numberOfColumns;
+- (int)columnCount;
 
 - (int)columnIndexForName:(NSString*)columnName;
 - (NSString*)columnNameForIndex:(int)columnIdx;
@@ -74,7 +74,7 @@
 - (const unsigned char *)UTF8StringForColumnName:(NSString*)columnName;
 
 // returns one of NSNumber, NSString, NSData, or NSNull
-- (id)objectForColumn:(NSString*)columnName;
+- (id)objectForColumnName:(NSString*)columnName;
 - (id)objectForColumnIndex:(int)columnIdx;
 
 /*

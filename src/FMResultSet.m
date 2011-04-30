@@ -52,7 +52,7 @@
     parentDB = nil;
 }
 
-- (int)numberOfColumns {
+- (int)columnCount {
 	return sqlite3_column_count(statement.statement);
 }
 
@@ -358,10 +358,9 @@
     return returnValue;
 }
 
-- (id)objectForColumn:(NSString*)columnName {
+- (id)objectForColumnName:(NSString*)columnName {
     return [self objectForColumnIndex:[self columnIndexForName:columnName]];
 }
-
 
 // returns autoreleased NSString containing the name of the column in the result set
 - (NSString*)columnNameForIndex:(int)columnIdx {

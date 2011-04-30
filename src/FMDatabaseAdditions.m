@@ -112,37 +112,39 @@ return ret;
 }
 
 - (BOOL)validateSQL:(NSString*)sql error:(NSError**)error {
-	sqlite3_stmt *pStmt = NULL;
-	BOOL validationSucceeded = YES;
-	BOOL keepTrying = YES;
+    sqlite3_stmt *pStmt = NULL;
+    BOOL validationSucceeded = YES;
+    BOOL keepTrying = YES;
     int numberOfRetries = 0;
-	
+    
     [self setInUse:YES];
-	while (keepTrying == YES) {
-		keepTrying = NO;
-		int rc = sqlite3_prepare_v2(db, [sql UTF8String], -1, &pStmt, 0);
-		if (rc == SQLITE_BUSY || rc == SQLITE_LOCKED) {
-			keepTrying = YES;
-			usleep(20);
-			
-			if (busyRetryTimeout && (numberOfRetries++ > busyRetryTimeout)) {
-				NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
-				NSLog(@"Database busy");
-			}			
-		} else if (rc != SQLITE_OK) {
-			validationSucceeded = NO;
-			if (error) {
-				*error = [NSError errorWithDomain:NSCocoaErrorDomain 
-											 code:[self lastErrorCode]
-										 userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage] 
-																			  forKey:NSLocalizedDescriptionKey]];
-			}
-		}
-	}
-	[self setInUse:NO];
-	sqlite3_finalize(pStmt);
-	
-	return validationSucceeded;
+    while (keepTrying == YES) {
+        keepTrying = NO;
+        int rc = sqlite3_prepare_v2(db, [sql UTF8String], -1, &pStmt, 0);
+        if (rc == SQLITE_BUSY || rc == SQLITE_LOCKED) {
+            keepTrying = YES;
+            usleep(20);
+            
+            if (busyRetryTimeout && (numberOfRetries++ > busyRetryTimeout)) {
+                NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
+                NSLog(@"Database busy");
+            }          
+        } 
+        else if (rc != SQLITE_OK) {
+            validationSucceeded = NO;
+            if (error) {
+                *error = [NSError errorWithDomain:NSCocoaErrorDomain 
+                                             code:[self lastErrorCode]
+                                         userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage] 
+                                                                              forKey:NSLocalizedDescriptionKey]];
+            }
+        }
+    }
+    
+    [self setInUse:NO];
+    sqlite3_finalize(pStmt);
+    
+    return validationSucceeded;
 }
 
 @end

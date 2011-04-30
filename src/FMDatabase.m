@@ -9,31 +9,31 @@
 
 - (id)initWithPath:(NSString*)aPath {
     self = [super init];
-	
+    
     if (self) {
         databasePath        = [aPath copy];
-		openResultSets      = [[NSMutableSet alloc] init];
+        openResultSets      = [[NSMutableSet alloc] init];
         db                  = 0x00;
         logsErrors          = 0x00;
         crashOnErrors       = 0x00;
         busyRetryTimeout    = 0x00;
     }
-	
-	return self;
+    
+    return self;
 }
 
 - (void)finalize {
-	[self close];
-	[super finalize];
+    [self close];
+    [super finalize];
 }
 
 - (void)dealloc {
-	[self close];
+    [self close];
     
-	[openResultSets release];
+    [openResultSets release];
     [cachedStatements release];
     [databasePath release];
-	
+    
     [super dealloc];
 }
 
@@ -50,27 +50,27 @@
 }
 
 - (BOOL)open {
-	if (db) {
-		return YES;
-	}
-	
-	int err = sqlite3_open((databasePath ? [databasePath fileSystemRepresentation] : ":memory:"), &db );
-	if(err != SQLITE_OK) {
+    if (db) {
+        return YES;
+    }
+    
+    int err = sqlite3_open((databasePath ? [databasePath fileSystemRepresentation] : ":memory:"), &db );
+    if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
-		return NO;
-	}
-	
-	return YES;
+        return NO;
+    }
+    
+    return YES;
 }
 
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags {
     int err = sqlite3_open_v2((databasePath ? [databasePath fileSystemRepresentation] : ":memory:"), &db, flags, NULL /* Name of VFS module to use */);
-	if(err != SQLITE_OK) {
-		NSLog(@"error opening!: %d", err);
-		return NO;
-	}
-	return YES;
+    if(err != SQLITE_OK) {
+        NSLog(@"error opening!: %d", err);
+        return NO;
+    }
+    return YES;
 }
 #endif
 
@@ -78,9 +78,9 @@
 - (BOOL)close {
     
     [self clearCachedStatements];
-	[self closeOpenResultSets];
+    [self closeOpenResultSets];
     
-	if (!db) {
+    if (!db) {
         return YES;
     }
     
@@ -105,7 +105,7 @@
     }
     while (retry);
     
-	db = nil;
+    db = nil;
     return YES;
 }
 
@@ -115,30 +115,30 @@
     FMStatement *cachedStmt;
 
     while ((cachedStmt = [e nextObject])) {
-    	[cachedStmt close];
+        [cachedStmt close];
     }
     
     [cachedStatements removeAllObjects];
 }
 
 - (void)closeOpenResultSets {
-	//Copy the set so we don't get mutation errors
-	NSSet *resultSets = [[openResultSets copy] autorelease];
-	
-	NSEnumerator *e = [resultSets objectEnumerator];
-	NSValue *returnedResultSet = nil;
-	
-	while((returnedResultSet = [e nextObject])) {
-		FMResultSet *rs = (FMResultSet *)[returnedResultSet pointerValue];
-		if ([rs respondsToSelector:@selector(close)]) {
-			[rs close];
-		}
-	}
+    //Copy the set so we don't get mutation errors
+    NSSet *resultSets = [[openResultSets copy] autorelease];
+    
+    NSEnumerator *e = [resultSets objectEnumerator];
+    NSValue *returnedResultSet = nil;
+    
+    while((returnedResultSet = [e nextObject])) {
+        FMResultSet *rs = (FMResultSet *)[returnedResultSet pointerValue];
+        if ([rs respondsToSelector:@selector(close)]) {
+            [rs close];
+        }
+    }
 }
 
 - (void)resultSetDidClose:(FMResultSet *)resultSet {
-	NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
-	[openResultSets removeObject:setValue];
+    NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
+    [openResultSets removeObject:setValue];
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
@@ -243,11 +243,11 @@
 }
 
 - (int)changes {
-	if (inUse) {
+    if (inUse) {
         [self compainAboutInUse];
         return 0;
     }
-	
+    
     [self setInUse:YES];
     int ret = sqlite3_changes(db);
     [self setInUse:NO];
@@ -298,97 +298,109 @@
 }
 
 - (void)_extractSQL:(NSString *)sql argumentsList:(va_list)args intoString:(NSMutableString *)cleanedSQL arguments:(NSMutableArray *)arguments {
-	NSUInteger length = [sql length];
-	unichar last = '\0';
-	for (NSUInteger i = 0; i < length; ++i) {
-		id arg = nil;
-		unichar current = [sql characterAtIndex:i];
-		unichar add = current;
-		if (last == '%') {
-			switch (current) {
-				case '@':
-					arg = va_arg(args, id); break;
-				case 'c':
-					arg = [NSNumber numberWithChar:va_arg(args, char)]; break;
-				case 's':
-					arg = [NSString stringWithUTF8String:va_arg(args, char*)]; break;
-				case 'd':
-				case 'D':
-				case 'i':
-					arg = [NSNumber numberWithInt:va_arg(args, int)]; break;
-				case 'u':
-				case 'U':
-					arg = [NSNumber numberWithUnsignedInt:va_arg(args, unsigned int)]; break;
-				case 'h':
-					i++;
-					if (i < length && [sql characterAtIndex:i] == 'i') {
-						arg = [NSNumber numberWithShort:va_arg(args, short)];
-					} else if (i < length && [sql characterAtIndex:i] == 'u') {
-						arg = [NSNumber numberWithUnsignedShort:va_arg(args, unsigned short)];
-					} else {
-						i--;
-					}
-					break;
-				case 'q':
-					i++;
-					if (i < length && [sql characterAtIndex:i] == 'i') {
-						arg = [NSNumber numberWithLongLong:va_arg(args, long long)];
-					} else if (i < length && [sql characterAtIndex:i] == 'u') {
-						arg = [NSNumber numberWithUnsignedLongLong:va_arg(args, unsigned long long)];
-					} else {
-						i--;
-					}
-					break;
-				case 'f':
-					arg = [NSNumber numberWithDouble:va_arg(args, double)]; break;
-				case 'g':
-					arg = [NSNumber numberWithFloat:va_arg(args, float)]; break;
-				case 'l':
-					i++;
-					if (i < length) {
-						unichar next = [sql characterAtIndex:i];
-						if (next == 'l') {
-							i++;
-							if (i < length && [sql characterAtIndex:i] == 'd') {
-								//%lld
-								arg = [NSNumber numberWithLongLong:va_arg(args, long long)];
-							} else if (i < length && [sql characterAtIndex:i] == 'u') {
-								//%llu
-								arg = [NSNumber numberWithUnsignedLongLong:va_arg(args, unsigned long long)];
-							} else {
-								i--;
-							}
-						} else if (next == 'd') {
-							//%ld
-							arg = [NSNumber numberWithLong:va_arg(args, long)];
-						} else if (next == 'u') {
-							//%lu
-							arg = [NSNumber numberWithUnsignedLong:va_arg(args, unsigned long)];
-						} else {
-							i--;
-						}
-					} else {
-						i--;
-					}
-					break;
-				default:
-					// something else that we can't interpret. just pass it on through like normal
-					break;
-			}
-		} else if (current == '%') {
-			// percent sign; skip this character
-			add = '\0';
-		}
-		
-		if (arg != nil) {
-			[cleanedSQL appendString:@"?"];
-			[arguments addObject:arg];
-		} else if (add != '\0') {
-			[cleanedSQL appendFormat:@"%C", add];
-		}
-		last = current;
-	}
-	
+    NSUInteger length = [sql length];
+    unichar last = '\0';
+    for (NSUInteger i = 0; i < length; ++i) {
+        id arg = nil;
+        unichar current = [sql characterAtIndex:i];
+        unichar add = current;
+        if (last == '%') {
+            switch (current) {
+                case '@':
+                    arg = va_arg(args, id); break;
+                case 'c':
+                    arg = [NSNumber numberWithChar:va_arg(args, char)]; break;
+                case 's':
+                    arg = [NSString stringWithUTF8String:va_arg(args, char*)]; break;
+                case 'd':
+                case 'D':
+                case 'i':
+                    arg = [NSNumber numberWithInt:va_arg(args, int)]; break;
+                case 'u':
+                case 'U':
+                    arg = [NSNumber numberWithUnsignedInt:va_arg(args, unsigned int)]; break;
+                case 'h':
+                    i++;
+                    if (i < length && [sql characterAtIndex:i] == 'i') {
+                        arg = [NSNumber numberWithShort:va_arg(args, short)];
+                    }
+                    else if (i < length && [sql characterAtIndex:i] == 'u') {
+                        arg = [NSNumber numberWithUnsignedShort:va_arg(args, unsigned short)];
+                    }
+                    else {
+                        i--;
+                    }
+                    break;
+                case 'q':
+                    i++;
+                    if (i < length && [sql characterAtIndex:i] == 'i') {
+                        arg = [NSNumber numberWithLongLong:va_arg(args, long long)];
+                    }
+                    else if (i < length && [sql characterAtIndex:i] == 'u') {
+                        arg = [NSNumber numberWithUnsignedLongLong:va_arg(args, unsigned long long)];
+                    }
+                    else {
+                        i--;
+                    }
+                    break;
+                case 'f':
+                    arg = [NSNumber numberWithDouble:va_arg(args, double)]; break;
+                case 'g':
+                    arg = [NSNumber numberWithFloat:va_arg(args, float)]; break;
+                case 'l':
+                    i++;
+                    if (i < length) {
+                        unichar next = [sql characterAtIndex:i];
+                        if (next == 'l') {
+                            i++;
+                            if (i < length && [sql characterAtIndex:i] == 'd') {
+                                //%lld
+                                arg = [NSNumber numberWithLongLong:va_arg(args, long long)];
+                            }
+                            else if (i < length && [sql characterAtIndex:i] == 'u') {
+                                //%llu
+                                arg = [NSNumber numberWithUnsignedLongLong:va_arg(args, unsigned long long)];
+                            }
+                            else {
+                                i--;
+                            }
+                        }
+                        else if (next == 'd') {
+                            //%ld
+                            arg = [NSNumber numberWithLong:va_arg(args, long)];
+                        }
+                        else if (next == 'u') {
+                            //%lu
+                            arg = [NSNumber numberWithUnsignedLong:va_arg(args, unsigned long)];
+                        }
+                        else {
+                            i--;
+                        }
+                    }
+                    else {
+                        i--;
+                    }
+                    break;
+                default:
+                    // something else that we can't interpret. just pass it on through like normal
+                    break;
+            }
+        }
+        else if (current == '%') {
+            // percent sign; skip this character
+            add = '\0';
+        }
+        
+        if (arg != nil) {
+            [cleanedSQL appendString:@"?"];
+            [arguments addObject:arg];
+        }
+        else if (add != '\0') {
+            [cleanedSQL appendFormat:@"%C", add];
+        }
+        last = current;
+    }
+    
 }
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
@@ -500,8 +512,8 @@
     // the statement gets closed in rs's dealloc or [rs close];
     rs = [FMResultSet resultSetWithStatement:statement usingParentDatabase:self];
     [rs setQuery:sql];
-	NSValue *openResultSet = [NSValue valueWithNonretainedObject:rs];
-	[openResultSets addObject:openResultSet];
+    NSValue *openResultSet = [NSValue valueWithNonretainedObject:rs];
+    [openResultSets addObject:openResultSet];
     
     statement.useCount = statement.useCount + 1;
     
@@ -523,16 +535,16 @@
 }
 
 - (FMResultSet *)executeQueryWithFormat:(NSString*)format, ... {
-	va_list args;
-	va_start(args, format);
-	
-	NSMutableString *sql = [NSMutableString stringWithCapacity:[format length]];
-	NSMutableArray *arguments = [NSMutableArray array];
-	[self _extractSQL:format argumentsList:args intoString:sql arguments:arguments];	
-	
-	va_end(args);
-	
-	return [self executeQuery:sql withArgumentsInArray:arguments];
+    va_list args;
+    va_start(args, format);
+    
+    NSMutableString *sql = [NSMutableString stringWithCapacity:[format length]];
+    NSMutableArray *arguments = [NSMutableArray array];
+    [self _extractSQL:format argumentsList:args intoString:sql arguments:arguments];    
+    
+    va_end(args);
+    
+    return [self executeQuery:sql withArgumentsInArray:arguments];
 }
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
@@ -540,7 +552,7 @@
 }
 
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
-	
+    
     if (inUse) {
         [self compainAboutInUse];
         return NO;
@@ -650,12 +662,12 @@
             // this will happen if the db is locked, like if we are doing an update or insert.
             // in that case, retry the step... and maybe wait just 10 milliseconds.
             retry = YES;
-			if (SQLITE_LOCKED == rc) {
-				rc = sqlite3_reset(pStmt);
-				if (rc != SQLITE_LOCKED) {
-					NSLog(@"Unexpected result from sqlite3_reset (%d) eu", rc);
-				}
-			}
+            if (SQLITE_LOCKED == rc) {
+                rc = sqlite3_reset(pStmt);
+                if (rc != SQLITE_LOCKED) {
+                    NSLog(@"Unexpected result from sqlite3_reset (%d) eu", rc);
+                }
+            }
             usleep(20);
             
             if (busyRetryTimeout && (numberOfRetries++ > busyRetryTimeout)) {
@@ -731,16 +743,16 @@
 }
 
 - (BOOL)executeUpdateWithFormat:(NSString*)format, ... {
-	va_list args;
-	va_start(args, format);
-	
-	NSMutableString *sql = [NSMutableString stringWithCapacity:[format length]];
-	NSMutableArray *arguments = [NSMutableArray array];
-	[self _extractSQL:format argumentsList:args intoString:sql arguments:arguments];	
-	
-	va_end(args);
-	
-	return [self executeUpdate:sql withArgumentsInArray:arguments];
+    va_list args;
+    va_start(args, format);
+    
+    NSMutableString *sql = [NSMutableString stringWithCapacity:[format length]];
+    NSMutableArray *arguments = [NSMutableArray array];
+    [self _extractSQL:format argumentsList:args intoString:sql arguments:arguments];    
+    
+    va_end(args);
+    
+    return [self executeUpdate:sql withArgumentsInArray:arguments];
 }
 
 - (BOOL)update:(NSString*)sql error:(NSError**)outErr bind:(id)bindArgs, ... {
@@ -873,14 +885,14 @@
 @implementation FMStatement
 
 - (void)finalize {
-	[self close];
-	[super finalize];
+    [self close];
+    [super finalize];
 }
 
 - (void)dealloc {
-	[self close];
+    [self close];
     [query release];
-	[super dealloc];
+    [super dealloc];
 }
 
 
