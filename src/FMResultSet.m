@@ -104,7 +104,7 @@
         NSEnumerator *columnNames = [columnNameToIndexMap keyEnumerator];
         NSString *columnName = nil;
         while ((columnName = [columnNames nextObject])) {
-            id objectValue = [self objectForColumnName:columnName];
+            id objectValue = [self objectForColumn:columnName];
             [dict setObject:objectValue forKey:columnName];
         }
         
