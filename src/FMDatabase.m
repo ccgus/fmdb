@@ -404,8 +404,7 @@
     
 }
 
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
-    
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionary orVAList:(va_list)args {
     if (inUse) {
         [self compainAboutInUse];
         return nil;
@@ -473,24 +472,45 @@
     id obj;
     int idx = 0;
     int queryCount = sqlite3_bind_parameter_count(pStmt); // pointed out by Dominic Yu (thanks!)
-    
-    while (idx < queryCount) {
-        
-        if (arrayArgs) {
-            obj = [arrayArgs objectAtIndex:idx];
-        }
-        else {
-            obj = va_arg(args, id);
-        }
-        
-        if (traceExecution) {
-            NSLog(@"obj: %@", obj);
-        }
-        
-        idx++;
-        
-        [self bindObject:obj toColumn:idx inStatement:pStmt];
-    }
+	
+	if (dictionary) {
+		// Use named parameters.
+		for (NSString *dictionaryKey in [dictionary allKeys]) {
+			// Prefix the key with a colon.
+			NSString *parameterName = [[NSString alloc] initWithFormat:@":%@", dictionaryKey];
+			
+			// Get the index for the parameter name.
+			int namedIdx = sqlite3_bind_parameter_index(pStmt, [parameterName UTF8String]);
+			
+			// Don't forget to release it!
+			[parameterName release];
+			
+			// Standard binding from here.
+			[self bindObject:[dictionary objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+		}
+		
+		// "Hack" to avoid the error below.
+		idx = [[dictionary allKeys] count];
+	} else {
+		// Use numeric indexes to bind params.
+		while (idx < queryCount) {
+			
+			if (arrayArgs) {
+				obj = [arrayArgs objectAtIndex:idx];
+			} else {
+				obj = va_arg(args, id);
+			}
+			
+			if (traceExecution) {
+				NSLog(@"obj: %@", obj);
+			}
+			
+			idx++;
+			
+			[self bindObject:obj toColumn:idx inStatement:pStmt];
+		}
+		
+	}
     
     if (idx != queryCount) {
         NSLog(@"Error: the bind count is not correct for the # of variables (executeQuery)");
@@ -529,7 +549,7 @@
     va_list args;
     va_start(args, sql);
     
-    id result = [self executeQuery:sql withArgumentsInArray:nil orVAList:args];
+    id result = [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:args];
     
     va_end(args);
     return result;
@@ -549,7 +569,11 @@
 }
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
-    return [self executeQuery:sql withArgumentsInArray:arguments orVAList:nil];
+    return [self executeQuery:sql withArgumentsInArray:arguments orDictionary:nil orVAList:nil];
+}
+
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInDictionary:(NSDictionary *)dictionary {
+	return [self executeQuery:sql withArgumentsInArray:nil orDictionary:dictionary orVAList:nil];
 }
 
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
