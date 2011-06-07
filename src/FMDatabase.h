@@ -50,7 +50,8 @@
 - (BOOL)executeUpdate:(NSString*)sql, ...;
 - (BOOL)executeUpdateWithFormat:(NSString *)format, ...;
 - (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
-- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args; // you shouldn't ever need to call this.  use the previous two instead.
+- (BOOL)executeUpdate:(NSString*)sql withArgumentsInDictionary:(NSDictionary *)arguments;
+- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args; // you shouldn't ever need to call this.  use the previous three instead.
 
 - (FMResultSet *)executeQuery:(NSString*)sql, ...;
 - (FMResultSet *)executeQueryWithFormat:(NSString*)format, ...;
