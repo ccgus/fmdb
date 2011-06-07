@@ -452,9 +452,7 @@ int main (int argc, const char * argv[]) {
         
         [rs close];
     }
-    
-    
-    
+	
     
     {
         FMDBQuickCheck([db tableExists:@"t4"]);
@@ -468,6 +466,30 @@ int main (int argc, const char * argv[]) {
     
     
     {
+		// -------------------------------------------------------------------------------
+		// Named parameters.
+		FMDBQuickCheck([db executeUpdate:@"create table namedparamtest (a text, b text, c integer, d double)"]);
+		NSMutableDictionary *dictionaryArgs = [NSMutableDictionary dictionary];
+		[dictionaryArgs setObject:@"Text1" forKey:@"a"];
+		[dictionaryArgs setObject:@"Text2" forKey:@"b"];
+		[dictionaryArgs setObject:[NSNumber numberWithInt:1] forKey:@"c"];
+		[dictionaryArgs setObject:[NSNumber numberWithDouble:2.0] forKey:@"d"];
+		FMDBQuickCheck([db executeUpdate:@"insert into namedparamtest values (:a, :b, :c, :d)" withArgumentsInDictionary:dictionaryArgs]);
+		
+		rs = [db executeQuery:@"select * from namedparamtest"];
+		
+		FMDBQuickCheck((rs != nil));
+		
+		[rs next];
+		
+		FMDBQuickCheck([[rs stringForColumn:@"a"] isEqualToString:@"Text1"]);
+		FMDBQuickCheck([[rs stringForColumn:@"b"] isEqualToString:@"Text2"]);
+		FMDBQuickCheck([rs intForColumn:@"c"] == 1);
+		FMDBQuickCheck([rs doubleForColumn:@"d"] == 2.0);
+	}
+	
+	
+	{
         FMDBQuickCheck([db executeUpdate:@"create table t5 (a text, b int, c blob, d text, e text)"]);
         FMDBQuickCheck(([db executeUpdateWithFormat:@"insert into t5 values (%s, %d, %@, %c, %lld)", "text", 42, @"BLOB", 'd', 12345678901234]));
         
@@ -504,7 +526,6 @@ int main (int argc, const char * argv[]) {
         }
     }
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
-    
     
     [db close];
     
