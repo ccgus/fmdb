@@ -213,6 +213,16 @@
 #endif
 }
 
+- (void)complainAboutNotOpen {
+	NSLog(@"The FMDatabase %@ is not open.", self);
+
+#ifndef NS_BLOCK_ASSERTIONS
+	if (crashOnErrors) {
+		NSAssert1(false, @"The FMDatabase %@ is not open.", self);
+	}
+#endif
+}
+
 - (NSString*)lastErrorMessage {
     return [NSString stringWithUTF8String:sqlite3_errmsg(db)];
 }
@@ -405,6 +415,11 @@
 }
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
+	if (! db) {
+		[self complainAboutNotOpen];
+		return NO;
+	}
+	
     if (inUse) {
         [self compainAboutInUse];
         return nil;
@@ -490,7 +505,7 @@
 		}
 		
 		// "Hack" to avoid the error below.
-		idx = [[dictionaryArgs allKeys] count];
+		idx = (int) [[dictionaryArgs allKeys] count];
 	} else {
 		// Use numeric indexes to bind params.
 		while (idx < queryCount) {
@@ -578,6 +593,11 @@
 
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
+	if (! db) {
+		[self complainAboutNotOpen];
+		return NO;
+	}
+	
     if (inUse) {
         [self compainAboutInUse];
         return NO;
@@ -666,7 +686,7 @@
 		}
 		
 		// "Hack" to avoid the error below.
-		idx = [[dictionaryArgs allKeys] count];
+		idx = (int) [[dictionaryArgs allKeys] count];
 	} else {
 		// Use numeric indexes to bind params.
 		while (idx < queryCount) {
