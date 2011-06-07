@@ -404,7 +404,7 @@
     
 }
 
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionary orVAList:(va_list)args {
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     if (inUse) {
         [self compainAboutInUse];
         return nil;
@@ -473,9 +473,9 @@
     int idx = 0;
     int queryCount = sqlite3_bind_parameter_count(pStmt); // pointed out by Dominic Yu (thanks!)
 	
-	if (dictionary) {
+	if (dictionaryArgs) {
 		// Use named parameters.
-		for (NSString *dictionaryKey in [dictionary allKeys]) {
+		for (NSString *dictionaryKey in [dictionaryArgs allKeys]) {
 			// Prefix the key with a colon.
 			NSString *parameterName = [[NSString alloc] initWithFormat:@":%@", dictionaryKey];
 			
@@ -486,11 +486,11 @@
 			[parameterName release];
 			
 			// Standard binding from here.
-			[self bindObject:[dictionary objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+			[self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
 		}
 		
 		// "Hack" to avoid the error below.
-		idx = [[dictionary allKeys] count];
+		idx = [[dictionaryArgs allKeys] count];
 	} else {
 		// Use numeric indexes to bind params.
 		while (idx < queryCount) {
@@ -572,8 +572,8 @@
     return [self executeQuery:sql withArgumentsInArray:arguments orDictionary:nil orVAList:nil];
 }
 
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInDictionary:(NSDictionary *)dictionary {
-	return [self executeQuery:sql withArgumentsInArray:nil orDictionary:dictionary orVAList:nil];
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInDictionary:(NSDictionary *)arguments {
+	return [self executeQuery:sql withArgumentsInArray:nil orDictionary:arguments orVAList:nil];
 }
 
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {

@@ -56,8 +56,8 @@
 - (FMResultSet *)executeQuery:(NSString*)sql, ...;
 - (FMResultSet *)executeQueryWithFormat:(NSString*)format, ...;
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInDictionary:(NSDictionary *)dictionary;
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionary orVAList:(va_list)args; // you shouldn't ever need to call this.  use the previous three instead.
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInDictionary:(NSDictionary *)arguments;
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args; // you shouldn't ever need to call this.  use the previous three instead.
 
 - (BOOL)rollback;
 - (BOOL)commit;
