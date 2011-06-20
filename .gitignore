@@ -3,4 +3,5 @@ build
 *.xcodeproj/*.pbxuser
 *.xcodeproj/*.perspectivev3
 *.xcodeproj/xcuserdata
-
+*.xcodeproj/*.mode1v3
+*.xcodeproj/project.xcworkspace
