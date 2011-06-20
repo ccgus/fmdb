@@ -86,6 +86,7 @@
     
     int  rc;
     BOOL retry;
+    BOOL triedClose = NO;
     int numberOfRetries = 0;
     do {
         retry   = NO;
@@ -97,6 +98,14 @@
                 NSLog(@"%s:%d", __FUNCTION__, __LINE__);
                 NSLog(@"Database busy, unable to close");
                 return NO;
+            }
+            if (!triedClose) {
+                triedClose = YES;
+                sqlite3_stmt *pStmt;
+                while( (pStmt = sqlite3_next_stmt(db, 0))!=0 ){
+                    NSLog(@"Closing leaked statement");
+                    sqlite3_finalize(pStmt);
+                }
             }
         }
         else if (SQLITE_OK != rc) {
