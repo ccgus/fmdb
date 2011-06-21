@@ -43,13 +43,14 @@
 
 - (void)close {
     [statement reset];
-    [statement release];
-    statement = nil;
     
     // we don't need this anymore... (i think)
     //[parentDB setInUse:NO];
     [parentDB resultSetDidClose:self];
     parentDB = nil;
+
+    [statement release];
+    statement = nil;
 }
 
 - (int)columnCount {

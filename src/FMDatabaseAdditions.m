@@ -147,4 +147,9 @@ return ret;
     return validationSucceeded;
 }
 
+- (BOOL)hasOpenStatements {
+    sqlite3_stmt *pStmt = sqlite3_next_stmt(db, 0);
+    return pStmt != nil;
+}
+
 @end

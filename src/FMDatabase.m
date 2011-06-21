@@ -148,6 +148,9 @@
 - (void)resultSetDidClose:(FMResultSet *)resultSet {
     NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
     [openResultSets removeObject:setValue];
+    if (!shouldCacheStatements) {
+        [[resultSet statement] close];
+    }
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
