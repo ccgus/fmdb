@@ -466,6 +466,10 @@
                 if (logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
+                    if (rc == SQLITE_NOMEM) {
+                        // a common mistake: http://stackoverflow.com/questions/693329/iphone-sqlite-problem-out-of-memory-on-sqlite3-prepare-v2
+                        NSLog(@"  Did you remember to call [db open]?");
+                    }
 #ifndef NS_BLOCK_ASSERTIONS
                     if (crashOnErrors) {
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
@@ -612,6 +616,10 @@
                 if (logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
+                    if (rc == SQLITE_NOMEM) {
+                        // a common mistake: http://stackoverflow.com/questions/693329/iphone-sqlite-problem-out-of-memory-on-sqlite3-prepare-v2
+                        NSLog(@"  Did you remember to call [db open]?");
+                    }
 #ifndef NS_BLOCK_ASSERTIONS
                     if (crashOnErrors) {
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
