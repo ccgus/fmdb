@@ -2,6 +2,13 @@
 #import "unistd.h"
 
 @implementation FMDatabase
+@synthesize inTransaction;
+@synthesize cachedStatements;
+@synthesize logsErrors;
+@synthesize crashOnErrors;
+@synthesize busyRetryTimeout;
+@synthesize checkedOut;
+@synthesize traceExecution;
 
 + (id)databaseWithPath:(NSString*)aPath {
     return [[[self alloc] initWithPath:aPath] autorelease];
@@ -798,19 +805,7 @@
     return b;
 }
 
-- (BOOL)logsErrors {
-    return logsErrors;
-}
-- (void)setLogsErrors:(BOOL)flag {
-    logsErrors = flag;
-}
 
-- (BOOL)crashOnErrors {
-    return crashOnErrors;
-}
-- (void)setCrashOnErrors:(BOOL)flag {
-    crashOnErrors = flag;
-}
 
 - (BOOL)inUse {
     return inUse || inTransaction;
@@ -818,35 +813,6 @@
 
 - (void)setInUse:(BOOL)b {
     inUse = b;
-}
-
-- (BOOL)inTransaction {
-    return inTransaction;
-}
-- (void)setInTransaction:(BOOL)flag {
-    inTransaction = flag;
-}
-
-- (BOOL)traceExecution {
-    return traceExecution;
-}
-- (void)setTraceExecution:(BOOL)flag {
-    traceExecution = flag;
-}
-
-- (BOOL)checkedOut {
-    return checkedOut;
-}
-- (void)setCheckedOut:(BOOL)flag {
-    checkedOut = flag;
-}
-
-
-- (int)busyRetryTimeout {
-    return busyRetryTimeout;
-}
-- (void)setBusyRetryTimeout:(int)newBusyRetryTimeout {
-    busyRetryTimeout = newBusyRetryTimeout;
 }
 
 
@@ -867,23 +833,15 @@
     }
 }
 
-- (NSMutableDictionary *)cachedStatements {
-    return cachedStatements;
-}
-
-- (void)setCachedStatements:(NSMutableDictionary *)value {
-    if (cachedStatements != value) {
-        [cachedStatements release];
-        cachedStatements = [value retain];
-    }
-}
-
 
 @end
 
 
 
 @implementation FMStatement
+@synthesize statement;
+@synthesize query;
+@synthesize useCount;
 
 - (void)finalize {
     [self close];
@@ -896,7 +854,6 @@
     [super dealloc];
 }
 
-
 - (void)close {
     if (statement) {
         sqlite3_finalize(statement);
@@ -907,35 +864,6 @@
 - (void)reset {
     if (statement) {
         sqlite3_reset(statement);
-    }
-}
-
-- (sqlite3_stmt *)statement {
-    return statement;
-}
-
-- (void)setStatement:(sqlite3_stmt *)value {
-    statement = value;
-}
-
-- (NSString *)query {
-    return query;
-}
-
-- (void)setQuery:(NSString *)value {
-    if (query != value) {
-        [query release];
-        query = [value retain];
-    }
-}
-
-- (long)useCount {
-    return useCount;
-}
-
-- (void)setUseCount:(long)value {
-    if (useCount != value) {
-        useCount = value;
     }
 }
 

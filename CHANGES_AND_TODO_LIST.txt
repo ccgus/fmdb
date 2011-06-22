@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2011.06.22
+    Changed some methods to properties.  Hello 2011.
+
 2011.04.09
 	Added a method to validate a SQL statement.
 	Added a method to retrieve the number of columns in a result set.

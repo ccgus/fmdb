@@ -13,6 +13,9 @@
 @end
 
 @implementation FMResultSet
+@synthesize query;
+@synthesize columnNameToIndexMap;
+@synthesize statement;
 
 + (id)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB {
     
@@ -370,39 +373,6 @@
 - (void)setParentDB:(FMDatabase *)newDb {
     parentDB = newDb;
 }
-
-
-- (NSString *)query {
-    return query;
-}
-
-- (void)setQuery:(NSString *)value {
-    [value retain];
-    [query release];
-    query = value;
-}
-
-- (NSMutableDictionary *)columnNameToIndexMap {
-    return columnNameToIndexMap;
-}
-
-- (void)setColumnNameToIndexMap:(NSMutableDictionary *)value {
-    [value retain];
-    [columnNameToIndexMap release];
-    columnNameToIndexMap = value;
-}
-
-- (FMStatement *)statement {
-    return statement;
-}
-
-- (void)setStatement:(FMStatement *)value {
-    if (statement != value) {
-        [statement release];
-        statement = [value retain];
-    }
-}
-
 
 
 @end

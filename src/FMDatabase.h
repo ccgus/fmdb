@@ -19,6 +19,15 @@
 }
 
 
+@property (assign) BOOL inTransaction;
+@property (assign) BOOL traceExecution;
+@property (assign) BOOL checkedOut;
+@property (assign) int busyRetryTimeout;
+@property (assign) BOOL crashOnErrors;
+@property (assign) BOOL logsErrors;
+@property (retain) NSMutableDictionary *cachedStatements;
+
+
 + (id)databaseWithPath:(NSString*)inPath;
 - (id)initWithPath:(NSString*)inPath;
 
@@ -62,32 +71,12 @@
 - (BOOL)beginTransaction;
 - (BOOL)beginDeferredTransaction;
 
-- (BOOL)logsErrors;
-- (void)setLogsErrors:(BOOL)flag;
-
-- (BOOL)crashOnErrors;
-- (void)setCrashOnErrors:(BOOL)flag;
-
 - (BOOL)inUse;
 - (void)setInUse:(BOOL)value;
 
-- (BOOL)inTransaction;
-- (void)setInTransaction:(BOOL)flag;
-
-- (BOOL)traceExecution;
-- (void)setTraceExecution:(BOOL)flag;
-
-- (BOOL)checkedOut;
-- (void)setCheckedOut:(BOOL)flag;
-
-- (int)busyRetryTimeout;
-- (void)setBusyRetryTimeout:(int)newBusyRetryTimeout;
 
 - (BOOL)shouldCacheStatements;
 - (void)setShouldCacheStatements:(BOOL)value;
-
-- (NSMutableDictionary *)cachedStatements;
-- (void)setCachedStatements:(NSMutableDictionary *)value;
 
 
 + (NSString*)sqliteLibVersion;
@@ -102,19 +91,12 @@
     long useCount;
 }
 
+@property (assign) long useCount;
+@property (retain) NSString *query;
+@property (assign) sqlite3_stmt *statement;
 
 - (void)close;
 - (void)reset;
-
-- (sqlite3_stmt *)statement;
-- (void)setStatement:(sqlite3_stmt *)value;
-
-- (NSString *)query;
-- (void)setQuery:(NSString *)value;
-
-- (long)useCount;
-- (void)setUseCount:(long)value;
-
 
 @end
 
