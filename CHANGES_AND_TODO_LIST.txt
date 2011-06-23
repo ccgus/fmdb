@@ -5,6 +5,7 @@ If you would like to contribute some code- awesome!  I just ask that you make it
 
 2011.06.22
     Changed some methods to properties.  Hello 2011.
+    Added a warning when you try and use a database that wasn't opened.  Hacked together based on patches from Drarok Ithaqua
 
 2011.04.09
 	Added a method to validate a SQL statement.

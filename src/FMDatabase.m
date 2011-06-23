@@ -210,7 +210,7 @@
     return NO;
 }
 
-- (void)compainAboutInUse {
+- (void)warnInUse {
     NSLog(@"The FMDatabase %@ is currently in use.", self);
     
 #ifndef NS_BLOCK_ASSERTIONS
@@ -218,6 +218,24 @@
         NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
     }
 #endif
+}
+
+- (BOOL)databaseExists {
+    
+    if (!db) {
+            
+        NSLog(@"The FMDatabase %@ is not open.", self);
+        
+    #ifndef NS_BLOCK_ASSERTIONS
+        if (crashOnErrors) {
+            NSAssert1(false, @"The FMDatabase %@ is not open.", self);
+        }
+    #endif
+        
+        return NO;
+    }
+    
+    return YES;
 }
 
 - (NSString*)lastErrorMessage {
@@ -237,7 +255,7 @@
 - (sqlite_int64)lastInsertRowId {
     
     if (inUse) {
-        [self compainAboutInUse];
+        [self warnInUse];
         return NO;
     }
     [self setInUse:YES];
@@ -251,7 +269,7 @@
 
 - (int)changes {
     if (inUse) {
-        [self compainAboutInUse];
+        [self warnInUse];
         return 0;
     }
     
@@ -413,17 +431,21 @@
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
     
+    if (![self databaseExists]) {
+        return 0x00;
+    }
+    
     if (inUse) {
-        [self compainAboutInUse];
-        return nil;
+        [self warnInUse];
+        return 0x00;
     }
     
     [self setInUse:YES];
     
     FMResultSet *rs = nil;
     
-    int rc                  = 0x00;;
-    sqlite3_stmt *pStmt     = 0x00;;
+    int rc                  = 0x00;
+    sqlite3_stmt *pStmt     = 0x00;
     FMStatement *statement  = 0x00;
     
     if (traceExecution && sql) {
@@ -561,8 +583,12 @@
 
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
     
+    if (![self databaseExists]) {
+        return NO;
+    }
+    
     if (inUse) {
-        [self compainAboutInUse];
+        [self warnInUse];
         return NO;
     }
     
@@ -570,7 +596,7 @@
     
     int rc                   = 0x00;
     sqlite3_stmt *pStmt      = 0x00;
-    FMStatement *cachedStmt = 0x00;
+    FMStatement *cachedStmt  = 0x00;
     
     if (traceExecution && sql) {
         NSLog(@"%@ executeUpdate: %@", self, sql);
