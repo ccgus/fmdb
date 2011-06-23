@@ -13,6 +13,8 @@ int main (int argc, const char * argv[]) {
     
     FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
     
+    NSLog(@"Is SQLite compiled with it's thread safe options turned on? %@!", [FMDatabase isThreadSafe] ? @"Yes" : @"No");
+    
     {
 		// -------------------------------------------------------------------------------
 		// Un-opened database check.		

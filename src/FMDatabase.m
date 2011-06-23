@@ -94,6 +94,8 @@
     int  rc;
     BOOL retry;
     int numberOfRetries = 0;
+    BOOL triedFinalizingOpenStatements = NO;
+    
     do {
         retry   = NO;
         rc      = sqlite3_close(db);
@@ -104,6 +106,15 @@
                 NSLog(@"%s:%d", __FUNCTION__, __LINE__);
                 NSLog(@"Database busy, unable to close");
                 return NO;
+            }
+            
+            if (!triedFinalizingOpenStatements) {
+                triedFinalizingOpenStatements = YES;
+                sqlite3_stmt *pStmt;
+                while ((pStmt = sqlite3_next_stmt(db, 0x00)) !=0) {
+                    NSLog(@"Closing leaked statement");
+                    sqlite3_finalize(pStmt);
+                }
             }
         }
         else if (SQLITE_OK != rc) {
@@ -859,6 +870,10 @@
     }
 }
 
++ (BOOL)isThreadSafe {
+    // make sure to read the sqlite headers on this guy!
+    return sqlite3_threadsafe();
+}
 
 @end
 

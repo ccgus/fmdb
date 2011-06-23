@@ -78,7 +78,7 @@
 - (BOOL)shouldCacheStatements;
 - (void)setShouldCacheStatements:(BOOL)value;
 
-
++ (BOOL)isThreadSafe;
 + (NSString*)sqliteLibVersion;
 
 - (int)changes;
