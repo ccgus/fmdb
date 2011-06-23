@@ -635,6 +635,8 @@ int main (int argc, const char * argv[]) {
     
     [db commit];
     
+	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+    
     FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
     
     

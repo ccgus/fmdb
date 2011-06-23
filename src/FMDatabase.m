@@ -845,8 +845,10 @@
     BOOL b = [self executeUpdate:@"ROLLBACK TRANSACTION;"];
     if (b) {
         _inTransaction = NO;
-        [self pushInPoolIfClose];
     }
+    
+    [self pushInPoolIfClose];
+    
     return b;
 }
 
@@ -854,31 +856,37 @@
     BOOL b =  [self executeUpdate:@"COMMIT TRANSACTION;"];
     if (b) {
         _inTransaction = NO;
-        [self pushInPoolIfClose];
     }
+    
+    [self pushInPoolIfClose];
+    
     return b;
 }
 
 - (BOOL)beginDeferredTransaction {
+    
+    if (_pool) {
+        [self pullFromPool];
+    }
+    
     BOOL b =  [self executeUpdate:@"BEGIN DEFERRED TRANSACTION;"];
     if (b) {
         _inTransaction = YES;
-        
-        if (_pool) {
-            [self pullFromPool];
-        }
     }
+    
     return b;
 }
 
 - (BOOL)beginTransaction {
+    
+    if (_pool) {
+        [self pullFromPool];
+    }
+    
     BOOL b =  [self executeUpdate:@"BEGIN EXCLUSIVE TRANSACTION;"];
     if (b) {
         _inTransaction = YES;
         
-        if (_pool) {
-            [self pullFromPool];
-        }
         
     }
     return b;
