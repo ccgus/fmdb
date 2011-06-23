@@ -8,7 +8,6 @@
 	NSString*   databasePath;
     BOOL        logsErrors;
     BOOL        crashOnErrors;
-    BOOL        inUse;
     BOOL        inTransaction;
     BOOL        traceExecution;
     BOOL        checkedOut;
@@ -16,6 +15,9 @@
     BOOL        shouldCacheStatements;
     NSMutableDictionary *cachedStatements;
 	NSMutableSet *openResultSets;
+    
+    dispatch_queue_t _lockQueue;
+    
 }
 
 
@@ -70,10 +72,6 @@
 - (BOOL)commit;
 - (BOOL)beginTransaction;
 - (BOOL)beginDeferredTransaction;
-
-- (BOOL)inUse;
-- (void)setInUse:(BOOL)value;
-
 
 - (BOOL)shouldCacheStatements;
 - (void)setShouldCacheStatements:(BOOL)value;
