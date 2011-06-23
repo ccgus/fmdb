@@ -150,7 +150,7 @@
     [self executeLocked:^() {
         
         for (FMStatement *cachedStmt in [cachedStatements objectEnumerator]) {
-            NSLog(@"cachedStmt: '%@'", cachedStmt);
+            //NSLog(@"cachedStmt: '%@'", cachedStmt);
             [cachedStmt close];
         }
         
