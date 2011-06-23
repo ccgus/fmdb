@@ -33,10 +33,6 @@
 
 - (void)close;
 
-
-- (FMStatement *)statement;
-- (void)setStatement:(FMStatement *)value;
-
 - (void)setParentDB:(FMDatabase *)newDb;
 
 - (BOOL)next;
