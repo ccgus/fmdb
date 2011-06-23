@@ -114,7 +114,7 @@ Internally, the `-execute*WithFormat:` methods are properly boxing things for yo
 
 ## Using FMDatabasePool and Thread Safety.
 
-**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.
+**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.  I'm also not a fan of the method names I've added (pullFromPool, pushTowardsPool, useDatabase:, useTransaction:) - if you've got better ideas of a name, let me know.
 
 Using a single instance of FMDatabase from multiple threads at once is not supported.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
 
