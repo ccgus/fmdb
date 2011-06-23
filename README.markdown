@@ -111,6 +111,88 @@ Alternatively, you can use the `-execute*WithFormat:` variant to use `NSString`-
 	
 Internally, the `-execute*WithFormat:` methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
 
+
+## Using FMDatabasePool and Thread Safety.
+
+**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.
+
+Using a single instance of FMDatabase from multiple threads at once is not supported.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
+
+**Don't instantiate a single FMDatabase object and use it across threads.**
+
+Instead, use FMDatabasePool.  It's your friend and it's here to help.  Here's how to use it:
+
+First, make your pool.
+
+	FMDatabasePool *pool = [FMDatabasePool databasePoolWithPath:aPath];
+
+If you just have a single statement- use it like so:
+
+	[[pool db] executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:42]];
+
+The pool's db method will return an instance of FMDatabase that knows it is in a pool.  After it is done with the update, it will place itself back into the pool.
+
+Making a query is similar:
+	
+	FMResultSet *rs = [[pool db] executeQuery:@"SELECT * FROM myTable"];
+	while ([rs next]) {
+		//retrieve values for each record
+	}
+
+When the result set is exhausted or [rs close] is called, the result set will tell the database it was created from to put itself back into the pool for use later on.
+
+If you'd rather use multiple queries without having to call [pool db] each time, you can grab a database instance, tell it to stay out of the pool, and then tell it to go back in the pool when you're done:
+
+	FMDatabase *db = [[pool db] pullFromPool];
+	…
+	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
+	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
+	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+	…
+	// put the database back in the pool.
+	[db pushTowardsPool];
+
+Alternatively, you can use this nifty block based approach:
+
+	[dbPool useDatabase: ^(FMDatabase *aDb) {
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+	}];
+
+And it will do the right thing.
+
+Beginning a transaction will automatically keep the db from going back into the pool as well:
+
+	FMDatabase *db = [[pool db] pullFromPool];
+	[db beginTransaction];
+	
+	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
+	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
+	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+	
+	[db commit]; // or a rollback here would work as well.
+ 
+
+And there is also a block based approach to this which might make more sense for you to use:
+
+	[dbPool useTransaction:^(FMDatabase *db, BOOL *rollback) {
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+    }];
+
+
+
+If you check out a database, but never execute a statement or query, **you need to put it back in the pool yourself**.
+	FMDatabase *db = [pool db];
+	// lala, don't do anything with the database
+	…
+	// oh look, I BETTER PUT THE DB BACK IN THE POOL OR ELSE IT IS GOING TO LEAK:
+	[db pushTowardsPool];
+	
+	
+
 ## History
 
 The history and changes are availbe on its [GitHub page](https://github.com/ccgus/fmdb) and are summarized in the "CHANGES_AND_TODO_LIST.txt" file.

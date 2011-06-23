@@ -1,23 +1,26 @@
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"
 #import "FMResultSet.h"
+#import "FMDatabasePool.h"
 
-@interface FMDatabase : NSObject 
-{
-	sqlite3*    db;
-	NSString*   databasePath;
-    BOOL        logsErrors;
-    BOOL        crashOnErrors;
-    BOOL        inTransaction;
-    BOOL        traceExecution;
-    BOOL        checkedOut;
-    int         busyRetryTimeout;
-    BOOL        shouldCacheStatements;
-    NSMutableDictionary *cachedStatements;
-	NSMutableSet *openResultSets;
+@interface FMDatabase : NSObject  {
     
-    dispatch_queue_t _lockQueue;
+	sqlite3*            _db;
+	NSString*           _databasePath;
+    BOOL                _logsErrors;
+    BOOL                _crashOnErrors;
+    BOOL                _inTransaction;
+    BOOL                _traceExecution;
+    BOOL                _checkedOut;
+    BOOL                _shouldCacheStatements;
+    BOOL                _inUse;
+    int                 _busyRetryTimeout;
+    NSInteger           _keepOutOfPoolCount;
     
+    NSMutableDictionary *_cachedStatements;
+	NSMutableSet        *_openResultSets;
+    
+    FMDatabasePool      *_pool;
 }
 
 
@@ -28,6 +31,7 @@
 @property (assign) BOOL crashOnErrors;
 @property (assign) BOOL logsErrors;
 @property (retain) NSMutableDictionary *cachedStatements;
+@property (assign) FMDatabasePool *pool;
 
 
 + (id)databaseWithPath:(NSString*)inPath;
@@ -45,7 +49,6 @@
 // encryption methods.  You need to have purchased the sqlite encryption extensions for these to work.
 - (BOOL)setKey:(NSString*)key;
 - (BOOL)rekey:(NSString*)key;
-
 
 - (NSString *)databasePath;
 
@@ -76,10 +79,14 @@
 - (BOOL)shouldCacheStatements;
 - (void)setShouldCacheStatements:(BOOL)value;
 
-+ (BOOL)isThreadSafe;
++ (BOOL)isSQLiteThreadSafe;
 + (NSString*)sqliteLibVersion;
 
 - (int)changes;
+
+- (FMDatabase*)pullFromPool;
+- (void)pushTowardsPool;
+
 
 @end
 

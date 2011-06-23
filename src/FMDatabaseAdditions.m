@@ -119,12 +119,12 @@ return ret;
     
     while (keepTrying == YES) {
         keepTrying = NO;
-        int rc = sqlite3_prepare_v2(db, [sql UTF8String], -1, &pStmt, 0);
+        int rc = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
         if (rc == SQLITE_BUSY || rc == SQLITE_LOCKED) {
             keepTrying = YES;
             usleep(20);
             
-            if (busyRetryTimeout && (numberOfRetries++ > busyRetryTimeout)) {
+            if (_busyRetryTimeout && (numberOfRetries++ > _busyRetryTimeout)) {
                 NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
                 NSLog(@"Database busy");
             }          

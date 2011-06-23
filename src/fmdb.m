@@ -1,19 +1,22 @@
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import "FMDatabasePool.h"
 
-#define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); return 123; } }
+#define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
 int main (int argc, const char * argv[]) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     
+    NSString *dbPath = @"/tmp/tmp.db";
+    
     // delete the old db.
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:@"/tmp/tmp.db" error:nil];
+    [fileManager removeItemAtPath:dbPath error:nil];
     
-    FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
     
-    NSLog(@"Is SQLite compiled with it's thread safe options turned on? %@!", [FMDatabase isThreadSafe] ? @"Yes" : @"No");
+    NSLog(@"Is SQLite compiled with it's thread safe options turned on? %@!", [FMDatabase isSQLiteThreadSafe] ? @"Yes" : @"No");
     
     {
 		// -------------------------------------------------------------------------------
@@ -159,7 +162,7 @@ int main (int argc, const char * argv[]) {
     
     [db setBusyRetryTimeout:50000];
     
-    FMDatabase *newDb = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+    FMDatabase *newDb = [FMDatabase databaseWithPath:dbPath];
     [newDb open];
     
     rs = [newDb executeQuery:@"select rowid,* from test where a = ?", @"hi'"];
@@ -514,11 +517,158 @@ int main (int argc, const char * argv[]) {
         	NSLog(@"%@", statement);
         }
     }
-    NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     
     
     [db close];
     
+    
+    
+    
+    
+    
+    FMDatabasePool *dbPool = [FMDatabasePool databasePoolWithPath:dbPath];
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 0);
+    
+    db = [dbPool db];
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
+    
+    FMDBQuickCheck([db tableExists:@"t4"]);
+    
+    FMDBQuickCheck(![db pool]);
+    
+    FMDatabase *db2 = [dbPool db];
+    
+    FMDBQuickCheck(db2 == db);
+    
+    db = [dbPool db];
+    
+    FMDBQuickCheck(db2 != db);
+    
+    FMDBQuickCheck([db pool]);
+    FMDBQuickCheck([db2 pool]);
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 2);
+    
+    FMDBQuickCheck([db executeUpdate:@"create table easy (a text)"]);
+    FMDBQuickCheck([db2 executeUpdate:@"create table easy2 (a text)"]);
+    
+    db = [dbPool db];
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 2);
+    
+    [db pushTowardsPool];
+    
+    [[dbPool db] pushTowardsPool];
+    [[dbPool db] pushTowardsPool];
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 2);
+    
+    [dbPool releaseAllDatabases];
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 0);
+    
+    [dbPool useDatabase: ^(FMDatabase *aDb) {
+        
+        FMDBQuickCheck([aDb tableExists:@"t4"]);
+        
+        FMDBQuickCheck(([aDb executeUpdate:@"insert into easy (a) values (?)", @"hi"]));
+        
+        // just for fun.
+        FMResultSet *rs2 = [db executeQuery:@"select * from easy"];
+        FMDBQuickCheck([rs2 next]);
+        while ([rs2 next]) { ; } // whatevers.
+        
+        FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
+    }];
+    
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
+    
+    
+    db = [[dbPool db] pullFromPool];
+    
+	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1]];
+	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:2]];
+	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+    
+    [db pushTowardsPool];
+    
+    [[dbPool db] pushTowardsPool];
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
+    
+    [dbPool setMaximumNumberOfDatabasesToCreate:2];
+    
+    FMDatabase *adb = [dbPool db];
+    FMDatabase *bbd = [dbPool db];
+    
+    FMDBQuickCheck(![dbPool db]);
+    
+    FMDBQuickCheck([adb tableExists:@"t4"]);
+    FMDBQuickCheck([bbd tableExists:@"t4"]);
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 2);
+    
+    [dbPool setMaximumNumberOfDatabasesToCreate:0];
+    
+    adb = [dbPool db];
+    bbd = [dbPool db];
+    FMDatabase *cbd = [dbPool db];
+    
+    FMDBQuickCheck([adb tableExists:@"t4"]);
+    FMDBQuickCheck([bbd tableExists:@"t4"]);
+    FMDBQuickCheck([cbd tableExists:@"t4"]);
+    
+    [dbPool releaseAllDatabases];
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 0);
+    
+    
+    
+    db = [dbPool db];
+    
+    [db beginTransaction];
+    
+	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1]];
+	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:2]];
+	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+    
+    [db commit];
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
+    
+    
+    [dbPool useTransaction:^(FMDatabase *db, BOOL *rollback) {
+        [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1001]];
+        [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1002]];
+        [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1003]];
+    }];
+    
+    
+    FMResultSet *rs2 = [[dbPool db] executeQuery:@"select * from easy where a = ?", [NSNumber numberWithInt:1001]];
+    FMDBQuickCheck([rs2 next]);
+    FMDBQuickCheck(![rs2 next]);
+    
+    
+    [dbPool useTransaction:^(FMDatabase *db, BOOL *rollback) {
+        [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1004]];
+        [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1005]];
+        
+        *rollback = YES;
+    }];
+    
+    
+    rs2 = [[dbPool db] executeQuery:@"select * from easy where a = ?", [NSNumber numberWithInt:1004]];
+    FMDBQuickCheck(![rs2 next]);
+    
+    rs2 = [[dbPool db] executeQuery:@"select * from easy where a = ?", [NSNumber numberWithInt:1005]];
+    FMDBQuickCheck(![rs2 next]);
+    
+    FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
+    
+    NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
+    
     [pool release];
+    
     return 0;
 }
