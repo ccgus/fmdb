@@ -165,7 +165,7 @@ Alternatively, you can use this nifty block based approach:
 
 And it will do the right thing.
 
-Starting a transaction will automatically keep the db from going back into the pool automatically:
+Starting a transaction will keep the db from going back into the pool automatically:
 
 	FMDatabase *db = [pool db];
 	[db beginTransaction];
