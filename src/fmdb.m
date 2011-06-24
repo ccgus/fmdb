@@ -656,16 +656,29 @@ int main (int argc, const char * argv[]) {
     FMDBQuickCheck([dbPool countOfOpenDatabases] == 0);
     
     
-    
-    db = [dbPool db];
-    
-    [db beginTransaction];
-    
-	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1]];
-	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:2]];
-	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
-    
-    [db commit];
+    {
+        
+        db = [dbPool db];
+        
+        [db beginTransaction];
+        
+        [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1]];
+        [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:2]];
+        [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+        
+        FMDBQuickCheck([dbPool countOfCheckedInDatabases] == 0);
+        FMDBQuickCheck([dbPool countOfCheckedOutDatabases] == 1);
+        
+        [db popFromPool];
+        
+        [db commit];
+        
+        [db pushToPool];
+        
+        FMDBQuickCheck([dbPool countOfCheckedInDatabases] == 1);
+        FMDBQuickCheck([dbPool countOfCheckedOutDatabases] == 0);
+        
+    }
     
 	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
     

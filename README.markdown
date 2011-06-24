@@ -112,15 +112,18 @@ Alternatively, you can use the `-execute*WithFormat:` variant to use `NSString`-
 Internally, the `-execute*WithFormat:` methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
 
 
-## Using FMDatabasePool and Thread Safety.
+<h2 id="threads">Using FMDatabasePool and Thread Safety.</h2>
 
-**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.  I'm also not a fan of the method names I've added (useDatabase:, useTransaction:) - if you've got better ideas of a name, let me know.
+**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.  I'm also not a fan of the some method names I've added (useDatabase:, useTransaction:) - if you've got better ideas for a name, let me know.
 
-Using a single instance of FMDatabase from multiple threads at once is not supported.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
+Using a single instance of FMDatabase from multiple threads at once is not supported. The Fine Print: It's always been ok to make a FMDatabase object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
 
-**Don't instantiate a single FMDatabase object and use it across threads.**
+**So don't instantiate a single FMDatabase object and use it across multiple threads.**
+
+
 
 Instead, use FMDatabasePool.  It's your friend and it's here to help.  Here's how to use it:
+
 
 First, make your pool.
 
@@ -162,9 +165,9 @@ Alternatively, you can use this nifty block based approach:
 
 And it will do the right thing.
 
-Beginning a transaction will automatically keep the db from going back into the pool as well:
+Starting a transaction will automatically keep the db from going back into the pool automatically:
 
-	FMDatabase *db = [[pool db] pullFromPool];
+	FMDatabase *db = [pool db];
 	[db beginTransaction];
 	
 	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
@@ -174,7 +177,7 @@ Beginning a transaction will automatically keep the db from going back into the 
 	[db commit]; // or a rollback here would work as well.
  
 
-And there is also a block based approach to this which might make more sense for you to use:
+There is also a block based transaction approach:
 
 	[dbPool useTransaction:^(FMDatabase *db, BOOL *rollback) {
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
@@ -185,6 +188,7 @@ And there is also a block based approach to this which might make more sense for
 
 
 If you check out a database, but never execute a statement or query, **you need to put it back in the pool yourself**.
+
 	FMDatabase *db = [pool db];
 	// lala, don't do anything with the database
 	…
