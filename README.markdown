@@ -195,7 +195,7 @@ If you check out a database, but never execute a statement or query, **you need 
 	// oh look, I BETTER PUT THE DB BACK IN THE POOL OR ELSE IT IS GOING TO LEAK:
 	[db pushToPool];
 	
-	
+Do you have feedback on this pooled approach?  Email Gus!  The plan is to eventually move this class to the master branch once it's been tweaked and baked a while.
 
 ## History
 
