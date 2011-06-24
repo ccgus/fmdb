@@ -114,7 +114,7 @@ Internally, the `-execute*WithFormat:` methods are properly boxing things for yo
 
 <h2 id="threads">Using FMDatabasePool and Thread Safety.</h2>
 
-**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.  I'm also not a fan of the some method names I've added (useDatabase:, useTransaction:) - if you've got better ideas for a name, let me know.
+**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.
 
 Using a single instance of FMDatabase from multiple threads at once is not supported. The Fine Print: It's always been ok to make a FMDatabase object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
 
