@@ -38,9 +38,16 @@
 - (NSUInteger)countOfOpenDatabases;
 - (void)releaseAllDatabases;
 
-- (void)useDatabase:(void (^)(FMDatabase *db))block;
+- (void)inDatabase:(void (^)(FMDatabase *db))block;
 
-- (void)useTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+
+#if SQLITE_VERSION_NUMBER >= 3007000
+// NOTE: you can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock.
+// If you need to nest, use FMDatabase's startSavePointWithName:error: instead.
+- (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
+#endif
 
 @end
 

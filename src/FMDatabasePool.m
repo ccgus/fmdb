@@ -154,7 +154,7 @@
     }];
 }
 
-- (void)useDatabase:(void (^)(FMDatabase *db))block {
+- (void)inDatabase:(void (^)(FMDatabase *db))block {
     
     FMDatabase *db = [[self db] popFromPool];
     
@@ -163,13 +163,19 @@
     [db pushToPool];
 }
 
-- (void)useTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     
     BOOL shouldRollback = NO;
     
     FMDatabase *db = [self db];
     
-    [db beginTransaction];
+    if (useDeferred) {
+        [db beginDeferredTransaction];
+    }
+    else {
+        [db beginTransaction];
+    }
+    
     
     block(db, &shouldRollback);
     
@@ -181,6 +187,41 @@
     }
 }
 
+- (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
+    [self beginTransaction:YES withBlock:block];
+}
+
+- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
+    [self beginTransaction:NO withBlock:block];
+}
+
+- (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
+    
+    static unsigned long savePointIdx = 0;
+    
+    NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
+    
+    BOOL shouldRollback = NO;
+    
+    FMDatabase *db = [self db];
+    
+    NSError *err = 0x00;
+    
+    if (![db startSavePointWithName:name error:&err]) {
+        return err;
+    }
+    
+    block(db, &shouldRollback);
+    
+    if (shouldRollback) {
+        [db rollbackToSavePointWithName:name error:&err];
+    }
+    else {
+        [db releaseSavePointWithName:name error:&err];
+    }
+    
+    return err;
+}
 
 
 @end

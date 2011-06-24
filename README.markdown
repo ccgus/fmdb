@@ -179,7 +179,7 @@ Starting a transaction will keep the db from going back into the pool automatica
 
 There is also a block based transaction approach:
 
-	[dbPool useTransaction:^(FMDatabase *db, BOOL *rollback) {
+	[dbPool inTransaction:^(FMDatabase *db, BOOL *rollback) {
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];

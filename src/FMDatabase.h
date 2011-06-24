@@ -9,14 +9,12 @@
 	NSString*           _databasePath;
     BOOL                _logsErrors;
     BOOL                _crashOnErrors;
-    BOOL                _inTransaction;
     BOOL                _traceExecution;
     BOOL                _checkedOut;
     BOOL                _shouldCacheStatements;
-    BOOL                _inUse;
+    BOOL                _isExecutingStatement;
+    BOOL                _inTransaction;
     int                 _busyRetryTimeout;
-    
-    
     
     NSMutableDictionary *_cachedStatements;
 	NSMutableSet        *_openResultSets;
@@ -26,7 +24,6 @@
 }
 
 
-@property (assign) BOOL inTransaction;
 @property (assign) BOOL traceExecution;
 @property (assign) BOOL checkedOut;
 @property (assign) int busyRetryTimeout;
@@ -58,6 +55,8 @@
 
 - (int)lastErrorCode;
 - (BOOL)hadError;
+- (NSError*)lastError;
+
 - (sqlite_int64)lastInsertRowId;
 
 - (sqlite3*)sqliteHandle;
@@ -77,9 +76,16 @@
 - (BOOL)commit;
 - (BOOL)beginTransaction;
 - (BOOL)beginDeferredTransaction;
-
+- (BOOL)inTransaction;
 - (BOOL)shouldCacheStatements;
 - (void)setShouldCacheStatements:(BOOL)value;
+
+#if SQLITE_VERSION_NUMBER >= 3007000
+- (BOOL)startSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (NSError*)inSavePoint:(void (^)(BOOL *rollback))block;
+#endif
 
 + (BOOL)isSQLiteThreadSafe;
 + (NSString*)sqliteLibVersion;

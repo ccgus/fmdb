@@ -4,13 +4,10 @@
 @interface FMDatabase ()
 
 - (void)checkPoolPushBack;
-- (BOOL)inUse;
-- (void)setInUse:(BOOL)b;
 
 @end
 
 @implementation FMDatabase
-@synthesize inTransaction=_inTransaction;
 @synthesize cachedStatements=_cachedStatements;
 @synthesize logsErrors=_logsErrors;
 @synthesize crashOnErrors=_crashOnErrors;
@@ -18,7 +15,6 @@
 @synthesize checkedOut=_checkedOut;
 @synthesize traceExecution=_traceExecution;
 @synthesize pool=_pool;
-
 
 + (id)databaseWithPath:(NSString*)aPath {
     return [[[self alloc] initWithPath:aPath] autorelease];
@@ -287,33 +283,37 @@
     return sqlite3_errcode(_db);
 }
 
+- (NSError*)lastError {
+    return [NSError errorWithDomain:@"FMDatabase" code:sqlite3_errcode(_db) userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage] forKey:NSLocalizedDescriptionKey]];
+}
+
 - (sqlite_int64)lastInsertRowId {
     
-    if (_inUse) {
+    if (_isExecutingStatement) {
         [self warnInUse];
         return NO;
     }
     
-    _inUse = YES;
+    _isExecutingStatement = YES;
     
     sqlite_int64 ret = sqlite3_last_insert_rowid(_db);
     
-    _inUse = NO;
+    _isExecutingStatement = NO;
     
     return ret;
 }
 
 - (int)changes {
-    if (_inUse) {
+    if (_isExecutingStatement) {
         [self warnInUse];
         return 0;
     }
     
-    _inUse = YES;
+    _isExecutingStatement = YES;
     
     int ret = sqlite3_changes(_db);
     
-    _inUse = NO;
+    _isExecutingStatement = NO;
     
     return ret;
 }
@@ -472,13 +472,13 @@
         return 0x00;
     }
     
-    if (_inUse) {
+    if (_isExecutingStatement) {
         [self warnInUse];
         [self checkPoolPushBack];
         return 0x00;
     }
     
-    [self setInUse:YES];
+    _isExecutingStatement = YES;
     
     int rc                  = 0x00;
     sqlite3_stmt *pStmt     = 0x00;
@@ -510,7 +510,7 @@
                     NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
                     NSLog(@"Database busy");
                     sqlite3_finalize(pStmt);
-                    [self setInUse:NO];
+                    _isExecutingStatement = NO;
                     [self checkPoolPushBack];
                     return nil;
                 }
@@ -528,7 +528,7 @@
                 }
                 
                 sqlite3_finalize(pStmt);
-                [self setInUse:NO];
+                _isExecutingStatement = NO;
                 [self checkPoolPushBack];
                 return nil;
             }
@@ -561,7 +561,7 @@
     if (idx != queryCount) {
         NSLog(@"Error: the bind count is not correct for the # of variables (executeQuery)");
         sqlite3_finalize(pStmt);
-        [self setInUse:NO];
+        _isExecutingStatement = NO;
         [self checkPoolPushBack];
         return nil;
     }
@@ -588,7 +588,7 @@
     
     [statement release];    
     
-    [self setInUse:NO];
+    _isExecutingStatement = NO;
     
     return rs;
 }
@@ -627,13 +627,13 @@
         return NO;
     }
     
-    if (_inUse) {
+    if (_isExecutingStatement) {
         [self checkPoolPushBack];
         [self warnInUse];
         return NO;
     }
     
-    [self setInUse:YES];
+    _isExecutingStatement = YES;
     
     int rc                   = 0x00;
     sqlite3_stmt *pStmt      = 0x00;
@@ -664,7 +664,7 @@
                     NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
                     NSLog(@"Database busy");
                     sqlite3_finalize(pStmt);
-                    [self setInUse:NO];
+                    _isExecutingStatement = NO;
                     [self checkPoolPushBack];
                     return NO;
                 }
@@ -687,7 +687,7 @@
                     *outErr = [NSError errorWithDomain:[NSString stringWithUTF8String:sqlite3_errmsg(_db)] code:rc userInfo:nil];
                 }
                 
-                [self setInUse:NO];
+                _isExecutingStatement = NO;
                 [self checkPoolPushBack];
                 return NO;
             }
@@ -720,7 +720,7 @@
     if (idx != queryCount) {
         NSLog(@"Error: the bind count is not correct for the # of variables (%@) (executeUpdate)", sql);
         sqlite3_finalize(pStmt);
-        [self setInUse:NO];
+        _isExecutingStatement = NO;
         [self checkPoolPushBack];
         return NO;
     }
@@ -796,7 +796,7 @@
         rc = sqlite3_finalize(pStmt);
     }
     
-    [self setInUse:NO];
+    _isExecutingStatement = NO;
     [self checkPoolPushBack];
     return (rc == SQLITE_OK);
 }
@@ -841,23 +841,25 @@
 }
 
 - (BOOL)rollback {
-    BOOL b = [self executeUpdate:@"ROLLBACK TRANSACTION;"];
+    BOOL b = [self executeUpdate:@"rollback transaction"];
+    
+    [self pushToPool];
+    
     if (b) {
         _inTransaction = NO;
     }
-    
-    [self pushToPool];
     
     return b;
 }
 
 - (BOOL)commit {
-    BOOL b =  [self executeUpdate:@"COMMIT TRANSACTION;"];
+    BOOL b =  [self executeUpdate:@"commit transaction"];
+    
+    [self pushToPool];
+    
     if (b) {
         _inTransaction = NO;
     }
-    
-    [self pushToPool];
     
     return b;
 }
@@ -868,7 +870,7 @@
         [self popFromPool];
     }
     
-    BOOL b =  [self executeUpdate:@"BEGIN DEFERRED TRANSACTION;"];
+    BOOL b = [self executeUpdate:@"begin deferred transaction"];
     if (b) {
         _inTransaction = YES;
     }
@@ -882,7 +884,7 @@
         [self popFromPool];
     }
     
-    BOOL b =  [self executeUpdate:@"BEGIN EXCLUSIVE TRANSACTION;"];
+    BOOL b = [self executeUpdate:@"begin exclusive transaction"];
     if (b) {
         _inTransaction = YES;
     }
@@ -890,13 +892,95 @@
     return b;
 }
 
-- (BOOL)inUse {
-    return _inUse || _inTransaction;
+- (BOOL)inTransaction {
+    return _inTransaction;
 }
 
-- (void)setInUse:(BOOL)b {
-    _inUse = b;
+#if SQLITE_VERSION_NUMBER >= 3007000
+
+- (BOOL)startSavePointWithName:(NSString*)name error:(NSError**)outErr {
+    
+    // FIXME: make sure the savepoint name doesn't have a ' in it.
+    
+    NSAssert(name, @"Missing name for a savepoint", nil);
+    
+    if (_pool) {
+        [self popFromPool];
+    }
+    
+    if (![self executeUpdate:[NSString stringWithFormat:@"savepoint '%@';", name]]) {
+        
+        if (*outErr) {
+            *outErr = [self lastError];
+        }
+        
+        return NO;
+    }
+    
+    return YES;
 }
+
+- (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr {
+    
+    NSAssert(name, @"Missing name for a savepoint", nil);
+    
+    BOOL worked = [self executeUpdate:[NSString stringWithFormat:@"release savepoint '%@';", name]];
+    
+    if (!worked && *outErr) {
+        *outErr = [self lastError];
+    }
+    
+    if (_pool) {
+        [self pushToPool];
+    }
+    
+    return worked;
+}
+
+- (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr {
+    
+    NSAssert(name, @"Missing name for a savepoint", nil);
+    
+    BOOL worked = [self executeUpdate:[NSString stringWithFormat:@"rollback transaction to savepoint '%@';", name]];
+    
+    if (!worked && *outErr) {
+        *outErr = [self lastError];
+    }
+    
+    if (_pool) {
+        [self pushToPool];
+    }
+    
+    return worked;
+}
+
+- (NSError*)inSavePoint:(void (^)(BOOL *rollback))block {
+    static unsigned long savePointIdx = 0;
+    
+    NSString *name = [NSString stringWithFormat:@"dbSavePoint%ld", savePointIdx++];
+    
+    BOOL shouldRollback = NO;
+    
+    NSError *err = 0x00;
+    
+    if (![self startSavePointWithName:name error:&err]) {
+        return err;
+    }
+    
+    block(&shouldRollback);
+    
+    if (shouldRollback) {
+        [self rollbackToSavePointWithName:name error:&err];
+    }
+    else {
+        [self releaseSavePointWithName:name error:&err];
+    }
+    
+    return err;
+}
+
+#endif
+
 
 - (BOOL)shouldCacheStatements {
     return _shouldCacheStatements;
@@ -914,6 +998,7 @@
         [self setCachedStatements:nil];
     }
 }
+
 
 - (FMDatabase*)popFromPool {
     
