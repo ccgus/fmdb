@@ -33,6 +33,8 @@
 - (void)pushDatabaseBackInPool:(FMDatabase*)db;
 - (FMDatabase*)db;
 
+- (NSUInteger)countOfCheckedInDatabases;
+- (NSUInteger)countOfCheckedOutDatabases;
 - (NSUInteger)countOfOpenDatabases;
 - (void)releaseAllDatabases;
 

@@ -93,8 +93,8 @@
             }
             
             db = [FMDatabase databaseWithPath:_path];
+            
             if ([db open]) {
-                
                 if ([_delegate respondsToSelector:@selector(databasePool:shouldAddDatabaseToPool:)] && ![_delegate databasePool:self shouldAddDatabaseToPool:db]) {
                     [db close];
                     db = 0x00;
@@ -113,6 +113,28 @@
     }];
     
     return db;
+}
+
+- (NSUInteger)countOfCheckedInDatabases {
+    
+    __block NSInteger count;
+    
+    [self executeLocked:^() {
+        count = [_databaseInPool count];
+    }];
+    
+    return count;
+}
+
+- (NSUInteger)countOfCheckedOutDatabases {
+    
+    __block NSInteger count;
+    
+    [self executeLocked:^() {
+        count = [_databaseOutPool count];
+    }];
+    
+    return count;
 }
 
 - (NSUInteger)countOfOpenDatabases {
@@ -134,11 +156,11 @@
 
 - (void)useDatabase:(void (^)(FMDatabase *db))block {
     
-    FMDatabase *db = [[self db] pullFromPool];
+    FMDatabase *db = [[self db] popFromPool];
     
     block(db);
     
-    [db pushTowardsPool];
+    [db pushToPool];
 }
 
 - (void)useTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {

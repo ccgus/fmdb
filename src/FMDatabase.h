@@ -15,12 +15,14 @@
     BOOL                _shouldCacheStatements;
     BOOL                _inUse;
     int                 _busyRetryTimeout;
-    NSInteger           _keepOutOfPoolCount;
+    
+    
     
     NSMutableDictionary *_cachedStatements;
 	NSMutableSet        *_openResultSets;
     
     FMDatabasePool      *_pool;
+    NSInteger           _poolPopCount;
 }
 
 
@@ -84,8 +86,8 @@
 
 - (int)changes;
 
-- (FMDatabase*)pullFromPool;
-- (void)pushTowardsPool;
+- (FMDatabase*)popFromPool;
+- (void)pushToPool;
 
 
 @end

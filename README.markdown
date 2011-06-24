@@ -114,7 +114,7 @@ Internally, the `-execute*WithFormat:` methods are properly boxing things for yo
 
 ## Using FMDatabasePool and Thread Safety.
 
-**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.  I'm also not a fan of the method names I've added (pullFromPool, pushTowardsPool, useDatabase:, useTransaction:) - if you've got better ideas of a name, let me know.
+**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.  I'm also not a fan of the method names I've added (useDatabase:, useTransaction:) - if you've got better ideas of a name, let me know.
 
 Using a single instance of FMDatabase from multiple threads at once is not supported.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
 
@@ -143,14 +143,14 @@ When the result set is exhausted or [rs close] is called, the result set will te
 
 If you'd rather use multiple queries without having to call [pool db] each time, you can grab a database instance, tell it to stay out of the pool, and then tell it to go back in the pool when you're done:
 
-	FMDatabase *db = [[pool db] pullFromPool];
+	FMDatabase *db = [[pool db] popFromPool];
 	…
 	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
 	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
 	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
 	…
 	// put the database back in the pool.
-	[db pushTowardsPool];
+	[db pushToPool];
 
 Alternatively, you can use this nifty block based approach:
 
@@ -189,7 +189,7 @@ If you check out a database, but never execute a statement or query, **you need 
 	// lala, don't do anything with the database
 	…
 	// oh look, I BETTER PUT THE DB BACK IN THE POOL OR ELSE IT IS GOING TO LEAK:
-	[db pushTowardsPool];
+	[db pushToPool];
 	
 	
 

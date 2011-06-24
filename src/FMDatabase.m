@@ -3,7 +3,7 @@
 
 @interface FMDatabase ()
 
-- (void)pushInPoolIfClose;
+- (void)checkPoolPushBack;
 - (BOOL)inUse;
 - (void)setInUse:(BOOL)b;
 
@@ -176,8 +176,7 @@
     
     [_openResultSets removeObject:setValue];
     
-    [self pushInPoolIfClose];
-    
+    [self checkPoolPushBack];
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
@@ -295,11 +294,11 @@
         return NO;
     }
     
-    [self setInUse:YES];
+    _inUse = YES;
     
     sqlite_int64 ret = sqlite3_last_insert_rowid(_db);
     
-    [self setInUse:NO];
+    _inUse = NO;
     
     return ret;
 }
@@ -310,11 +309,11 @@
         return 0;
     }
     
-    [self setInUse:YES];
+    _inUse = YES;
     
     int ret = sqlite3_changes(_db);
     
-    [self setInUse:NO];
+    _inUse = NO;
     
     return ret;
 }
@@ -361,7 +360,7 @@
     }
 }
 
-- (void)_extractSQL:(NSString *)sql argumentsList:(va_list)args intoString:(NSMutableString *)cleanedSQL arguments:(NSMutableArray *)arguments {
+- (void)extractSQL:(NSString *)sql argumentsList:(va_list)args intoString:(NSMutableString *)cleanedSQL arguments:(NSMutableArray *)arguments {
     
     NSUInteger length = [sql length];
     unichar last = '\0';
@@ -474,8 +473,8 @@
     }
     
     if (_inUse) {
-        [self pushTowardsPool];
         [self warnInUse];
+        [self checkPoolPushBack];
         return 0x00;
     }
     
@@ -512,7 +511,7 @@
                     NSLog(@"Database busy");
                     sqlite3_finalize(pStmt);
                     [self setInUse:NO];
-                    [self pushTowardsPool];
+                    [self checkPoolPushBack];
                     return nil;
                 }
             }
@@ -530,7 +529,7 @@
                 
                 sqlite3_finalize(pStmt);
                 [self setInUse:NO];
-                [self pushTowardsPool];
+                [self checkPoolPushBack];
                 return nil;
             }
         }
@@ -563,7 +562,7 @@
         NSLog(@"Error: the bind count is not correct for the # of variables (executeQuery)");
         sqlite3_finalize(pStmt);
         [self setInUse:NO];
-        [self pushTowardsPool];
+        [self checkPoolPushBack];
         return nil;
     }
     
@@ -610,7 +609,7 @@
     
     NSMutableString *sql = [NSMutableString stringWithCapacity:[format length]];
     NSMutableArray *arguments = [NSMutableArray array];
-    [self _extractSQL:format argumentsList:args intoString:sql arguments:arguments];    
+    [self extractSQL:format argumentsList:args intoString:sql arguments:arguments];    
     
     va_end(args);
     
@@ -624,12 +623,12 @@
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
     
     if (![self databaseExists]) {
-        [self pushTowardsPool];
+        [self checkPoolPushBack];
         return NO;
     }
     
     if (_inUse) {
-        [self pushTowardsPool];
+        [self checkPoolPushBack];
         [self warnInUse];
         return NO;
     }
@@ -666,7 +665,7 @@
                     NSLog(@"Database busy");
                     sqlite3_finalize(pStmt);
                     [self setInUse:NO];
-                    [self pushTowardsPool];
+                    [self checkPoolPushBack];
                     return NO;
                 }
             }
@@ -689,7 +688,7 @@
                 }
                 
                 [self setInUse:NO];
-                [self pushTowardsPool];
+                [self checkPoolPushBack];
                 return NO;
             }
         }
@@ -722,7 +721,7 @@
         NSLog(@"Error: the bind count is not correct for the # of variables (%@) (executeUpdate)", sql);
         sqlite3_finalize(pStmt);
         [self setInUse:NO];
-        [self pushTowardsPool];
+        [self checkPoolPushBack];
         return NO;
     }
     
@@ -798,7 +797,7 @@
     }
     
     [self setInUse:NO];
-    [self pushTowardsPool];
+    [self checkPoolPushBack];
     return (rc == SQLITE_OK);
 }
 
@@ -824,7 +823,7 @@
     NSMutableString *sql      = [NSMutableString stringWithCapacity:[format length]];
     NSMutableArray *arguments = [NSMutableArray array];
     
-    [self _extractSQL:format argumentsList:args intoString:sql arguments:arguments];    
+    [self extractSQL:format argumentsList:args intoString:sql arguments:arguments];    
     
     va_end(args);
     
@@ -847,7 +846,7 @@
         _inTransaction = NO;
     }
     
-    [self pushInPoolIfClose];
+    [self pushToPool];
     
     return b;
 }
@@ -858,7 +857,7 @@
         _inTransaction = NO;
     }
     
-    [self pushInPoolIfClose];
+    [self pushToPool];
     
     return b;
 }
@@ -866,7 +865,7 @@
 - (BOOL)beginDeferredTransaction {
     
     if (_pool) {
-        [self pullFromPool];
+        [self popFromPool];
     }
     
     BOOL b =  [self executeUpdate:@"BEGIN DEFERRED TRANSACTION;"];
@@ -880,15 +879,14 @@
 - (BOOL)beginTransaction {
     
     if (_pool) {
-        [self pullFromPool];
+        [self popFromPool];
     }
     
     BOOL b =  [self executeUpdate:@"BEGIN EXCLUSIVE TRANSACTION;"];
     if (b) {
         _inTransaction = YES;
-        
-        
     }
+    
     return b;
 }
 
@@ -917,34 +915,35 @@
     }
 }
 
-- (FMDatabase*)pullFromPool {
+- (FMDatabase*)popFromPool {
     
     if (!_pool) {
         NSLog(@"No FMDatabasePool in place for %@", self);
         return 0x00;
     }
     
-    _keepOutOfPoolCount++;
+    _poolPopCount++;
     
     return self;
 }
 
-- (void)pushTowardsPool {
-    _keepOutOfPoolCount--;
+- (void)pushToPool {
+    _poolPopCount--;
     
-    [self pushInPoolIfClose];
+    [self checkPoolPushBack];
 }
 
-- (void)pushInPoolIfClose {
+- (void)checkPoolPushBack {
     
-    if (_keepOutOfPoolCount <= 0) {
+    if (_poolPopCount <= 0) {
         [_pool pushDatabaseBackInPool:self];
         
-        if (_keepOutOfPoolCount < 0) {
-            _keepOutOfPoolCount = 0;
+        if (_poolPopCount < 0) {
+            _poolPopCount = 0;
         }
     }
 }
+
 
 @end
 
