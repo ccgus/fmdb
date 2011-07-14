@@ -5,6 +5,7 @@ If you would like to contribute some code- awesome!  I just ask that you make it
 
 2011.07.14:
     Added methods for named parameters, using keys from an NSDictionary (Thanks to Drarok Ithaqua for the patches!)
+    Changed FMDatabase's "- (BOOL)update:(NSString*)sql error:(NSError**)outErr bind:(id)bindArgs, ... " to "- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ..." as the previous method didn't actually work as advertised in the way it was written.  Thanks to @jaekwon for pointing this out.
 
 2011.06.22
     Changed some methods to properties.  Hello 2011.

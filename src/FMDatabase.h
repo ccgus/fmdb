@@ -61,7 +61,7 @@
 
 - (sqlite3*)sqliteHandle;
 
-- (BOOL)update:(NSString*)sql error:(NSError**)outErr bind:(id)bindArgs, ...;
+- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
 - (BOOL)executeUpdate:(NSString*)sql, ...;
 - (BOOL)executeUpdateWithFormat:(NSString *)format, ...;
 - (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;

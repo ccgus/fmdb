@@ -321,6 +321,8 @@
 
 - (void)bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt*)pStmt {
     
+    NSLog(@"%d", idx);
+    
     if ((!obj) || ((NSNull *)obj == [NSNull null])) {
         sqlite3_bind_null(pStmt, idx);
     }
@@ -898,9 +900,9 @@
     return [self executeUpdate:sql withArgumentsInArray:arguments];
 }
 
-- (BOOL)update:(NSString*)sql error:(NSError**)outErr bind:(id)bindArgs, ... {
+- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... {
     va_list args;
-    va_start(args, bindArgs);
+    va_start(args, outErr);
     
     BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:args];
     

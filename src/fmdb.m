@@ -45,7 +45,7 @@ int main (int argc, const char * argv[]) {
     }
     
     NSError *err = 0x00;
-    FMDBQuickCheck(![db update:@"blah blah blah" error:&err bind:nil]);
+    FMDBQuickCheck(![db update:@"blah blah blah" withErrorAndBindings:&err]);
     FMDBQuickCheck(err != nil);
     FMDBQuickCheck([err code] == SQLITE_ERROR);
     NSLog(@"err: '%@'", err);
@@ -497,6 +497,11 @@ int main (int argc, const char * argv[]) {
         FMDBQuickCheck(([rs longLongIntForColumn:@"e"] == 12345678901234));
     }
     
+    {
+        NSError *err;
+        FMDBQuickCheck(([db update:@"insert into t5 values (?, ?, ?, ?, ?)" withErrorAndBindings:&err, @"text", [NSNumber numberWithInt:42], @"BLOB", @"d", [NSNumber numberWithInt:0]]));
+        
+    }
     
     
     
