@@ -198,7 +198,7 @@
         return NO;
     }
     
-    int rc = sqlite3_rekey(_db, [key UTF8String], strlen([key UTF8String]));
+    int rc = sqlite3_rekey(_db, [key UTF8String], (int)strlen([key UTF8String]));
     
     if (rc != SQLITE_OK) {
         NSLog(@"error on rekey: %d", rc);
@@ -217,7 +217,7 @@
         return NO;
     }
     
-    int rc = sqlite3_key(_db, [key UTF8String], strlen([key UTF8String]));
+    int rc = sqlite3_key(_db, [key UTF8String], (int)strlen([key UTF8String]));
     
     return (rc == SQLITE_OK);
 #else
