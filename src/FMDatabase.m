@@ -4,7 +4,8 @@
 @interface FMDatabase ()
 
 - (void)checkPoolPushBack;
-
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
+- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 @end
 
 @implementation FMDatabase
@@ -466,7 +467,11 @@
     }
 }
 
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
+- (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments {
+    return [self executeQuery:sql withArgumentsInArray:nil orDictionary:arguments orVAList:nil];
+}
+
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
     if (![self databaseExists]) {
         return 0x00;
@@ -540,22 +545,52 @@
     int idx = 0;
     int queryCount = sqlite3_bind_parameter_count(pStmt); // pointed out by Dominic Yu (thanks!)
     
-    while (idx < queryCount) {
+    // If dictionaryArgs is passed in, that means we are using sqlite's named parameter support
+    if (dictionaryArgs) {
         
-        if (arrayArgs) {
-            obj = [arrayArgs objectAtIndex:idx];
+        for (NSString *dictionaryKey in [dictionaryArgs allKeys]) {
+            
+            // Prefix the key with a colon.
+            NSString *parameterName = [[NSString alloc] initWithFormat:@":%@", dictionaryKey];
+            
+            // Get the index for the parameter name.
+            int namedIdx = sqlite3_bind_parameter_index(pStmt, [parameterName UTF8String]);
+            
+            NSLog(@"namedIdx: %d", namedIdx);
+            NSLog(@"%@", [dictionaryArgs objectForKey:dictionaryKey]);
+            [parameterName release];
+            
+            if (namedIdx > 0) {
+                // Standard binding from here.
+                [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+            }
+            else {
+                NSLog(@"Could not find index for %@", dictionaryKey);
+            }
         }
-        else {
-            obj = va_arg(args, id);
+        
+        // we need the count of params to avoid an error below.
+        idx = (int) [[dictionaryArgs allKeys] count];
+    }
+    else {
+            
+        while (idx < queryCount) {
+            
+            if (arrayArgs) {
+                obj = [arrayArgs objectAtIndex:idx];
+            }
+            else {
+                obj = va_arg(args, id);
+            }
+            
+            if (_traceExecution) {
+                NSLog(@"obj: %@", obj);
+            }
+            
+            idx++;
+            
+            [self bindObject:obj toColumn:idx inStatement:pStmt];
         }
-        
-        if (_traceExecution) {
-            NSLog(@"obj: %@", obj);
-        }
-        
-        idx++;
-        
-        [self bindObject:obj toColumn:idx inStatement:pStmt];
     }
     
     if (idx != queryCount) {
@@ -597,7 +632,7 @@
     va_list args;
     va_start(args, sql);
     
-    id result = [self executeQuery:sql withArgumentsInArray:nil orVAList:args];
+    id result = [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:args];
     
     va_end(args);
     return result;
@@ -617,10 +652,10 @@
 }
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
-    return [self executeQuery:sql withArgumentsInArray:arguments orVAList:nil];
+    return [self executeQuery:sql withArgumentsInArray:arguments orDictionary:nil orVAList:nil];
 }
 
-- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orVAList:(va_list)args {
+- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
     if (![self databaseExists]) {
         [self checkPoolPushBack];
@@ -699,23 +734,52 @@
     int idx = 0;
     int queryCount = sqlite3_bind_parameter_count(pStmt);
     
-    while (idx < queryCount) {
+    // If dictionaryArgs is passed in, that means we are using sqlite's named parameter support
+    if (dictionaryArgs) {
         
-        if (arrayArgs) {
-            obj = [arrayArgs objectAtIndex:idx];
+        for (NSString *dictionaryKey in [dictionaryArgs allKeys]) {
+            
+            // Prefix the key with a colon.
+            NSString *parameterName = [[NSString alloc] initWithFormat:@":%@", dictionaryKey];
+            
+            // Get the index for the parameter name.
+            int namedIdx = sqlite3_bind_parameter_index(pStmt, [parameterName UTF8String]);
+            
+            [parameterName release];
+            
+            if (namedIdx > 0) {
+                // Standard binding from here.
+                [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+            }
+            else {
+                NSLog(@"Could not find index for %@", dictionaryKey);
+            }
         }
-        else {
-            obj = va_arg(args, id);
-        }
         
-        if (_traceExecution) {
-            NSLog(@"obj: %@", obj);
-        }
-        
-        idx++;
-        
-        [self bindObject:obj toColumn:idx inStatement:pStmt];
+        // we need the count of params to avoid an error below.
+        idx = (int) [[dictionaryArgs allKeys] count];
     }
+    else {
+        
+        while (idx < queryCount) {
+            
+            if (arrayArgs) {
+                obj = [arrayArgs objectAtIndex:idx];
+            }
+            else {
+                obj = va_arg(args, id);
+            }
+            
+            if (_traceExecution) {
+                NSLog(@"obj: %@", obj);
+            }
+            
+            idx++;
+            
+            [self bindObject:obj toColumn:idx inStatement:pStmt];
+        }
+    }
+    
     
     if (idx != queryCount) {
         NSLog(@"Error: the bind count is not correct for the # of variables (%@) (executeUpdate)", sql);
@@ -806,14 +870,18 @@
     va_list args;
     va_start(args, sql);
     
-    BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orVAList:args];
+    BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:args];
     
     va_end(args);
     return result;
 }
 
 - (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments {
-    return [self executeUpdate:sql error:nil withArgumentsInArray:arguments orVAList:nil];
+    return [self executeUpdate:sql error:nil withArgumentsInArray:arguments orDictionary:nil orVAList:nil];
+}
+
+- (BOOL)executeUpdate:(NSString*)sql withParameterDictionary:(NSDictionary *)arguments {
+    return [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:arguments orVAList:nil];
 }
 
 - (BOOL)executeUpdateWithFormat:(NSString*)format, ... {
@@ -834,7 +902,7 @@
     va_list args;
     va_start(args, bindArgs);
     
-    BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orVAList:args];
+    BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:args];
     
     va_end(args);
     return result;

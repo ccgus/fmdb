@@ -87,7 +87,16 @@ When providing a SQL statement to FMDB, you should not attempt to "sanitize" any
 
 	INSERT INTO myTable VALUES (?, ?, ?)
 	
-The `?` character is recognized by SQLite as a placeholder for a value to be inserted.  The execution methods all accept a variable number of arguments (or a representation of those arguments, such as an `NSArray` or a `va_list`), which are properly escaped for you.
+The `?` character is recognized by SQLite as a placeholder for a value to be inserted.  The execution methods all accept a variable number of arguments (or a representation of those arguments, such as an `NSArray`, `NSDictionary`, or a `va_list`), which are properly escaped for you.
+
+Alternatively, you may use named parameters syntax:
+
+    INSERT INTO myTable VALUES (:id, :name, :value)
+    
+The parameters *must* start with a colon. SQLite itself supports other characters, but internally the Dictionary keys are prefixed with a colon, do **not** include the colon in your dictionary keys.
+
+    NSDictionary *argsDict = [NSDictionary dictionaryWithObjectsAndKeys:@"My Name", @"name", nil];
+    [db executeUpdate:@"INSERT INTO myTable (name) VALUES (:name)" withArgumentsInDictionary:argsDict];
 
 Thus, you SHOULD NOT do this (or anything like this):
 

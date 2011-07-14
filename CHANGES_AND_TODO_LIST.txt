@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2011.07.14:
+    Added methods for named parameters, using keys from an NSDictionary (Thanks to Drarok Ithaqua for the patches!)
+
 2011.06.22
     Changed some methods to properties.  Hello 2011.
     Added a warning when you try and use a database that wasn't opened.  Hacked together based on patches from Drarok Ithaqua.
