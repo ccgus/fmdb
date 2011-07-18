@@ -376,7 +376,8 @@
                 case '@':
                     arg = va_arg(args, id); break;
                 case 'c':
-                    arg = [NSString stringWithFormat:@"%c", va_arg(args, char)]; break;
+                    // warning: second argument to 'va_arg' is of promotable type 'char'; this va_arg has undefined behavior because arguments will be promoted to 'int'
+                    arg = [NSString stringWithFormat:@"%c", va_arg(args, int)]; break;
                 case 's':
                     arg = [NSString stringWithUTF8String:va_arg(args, char*)]; break;
                 case 'd':
@@ -389,10 +390,12 @@
                 case 'h':
                     i++;
                     if (i < length && [sql characterAtIndex:i] == 'i') {
-                        arg = [NSNumber numberWithShort:va_arg(args, short)];
+                        //  warning: second argument to 'va_arg' is of promotable type 'short'; this va_arg has undefined behavior because arguments will be promoted to 'int'
+                        arg = [NSNumber numberWithShort:va_arg(args, int)];
                     }
                     else if (i < length && [sql characterAtIndex:i] == 'u') {
-                        arg = [NSNumber numberWithUnsignedShort:va_arg(args, unsigned short)];
+                        // warning: second argument to 'va_arg' is of promotable type 'unsigned short'; this va_arg has undefined behavior because arguments will be promoted to 'int'
+                        arg = [NSNumber numberWithUnsignedShort:va_arg(args, uint)];
                     }
                     else {
                         i--;
@@ -413,7 +416,8 @@
                 case 'f':
                     arg = [NSNumber numberWithDouble:va_arg(args, double)]; break;
                 case 'g':
-                    arg = [NSNumber numberWithFloat:va_arg(args, float)]; break;
+                    // warning: second argument to 'va_arg' is of promotable type 'float'; this va_arg has undefined behavior because arguments will be promoted to 'double'
+                    arg = [NSNumber numberWithFloat:va_arg(args, double)]; break;
                 case 'l':
                     i++;
                     if (i < length) {
