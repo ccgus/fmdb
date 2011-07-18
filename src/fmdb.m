@@ -495,7 +495,44 @@ int main (int argc, const char * argv[]) {
         FMDBQuickCheck([[rs stringForColumn:@"c"] isEqualToString:@"BLOB"]);
         FMDBQuickCheck([[rs stringForColumn:@"d"] isEqualToString:@"d"]);
         FMDBQuickCheck(([rs longLongIntForColumn:@"e"] == 12345678901234));
+        
+        [rs close];
     }
+    
+    
+    
+    {
+        FMDBQuickCheck([db executeUpdate:@"create table t55 (a text, b int, c float)"]);
+        short testShort = -4;
+        float testFloat = 5.5;
+        FMDBQuickCheck(([db executeUpdateWithFormat:@"insert into t55 values (%c, %hi, %g)", 'a', testShort, testFloat]));
+        
+        unsigned short testUShort = 6;
+        FMDBQuickCheck(([db executeUpdateWithFormat:@"insert into t55 values (%c, %hu, %g)", 'a', testUShort, testFloat]));
+        
+        
+        rs = [db executeQueryWithFormat:@"select * from t55 where a = %s order by 2", "a"];
+        FMDBQuickCheck((rs != nil));
+        
+        [rs next];
+        
+        FMDBQuickCheck([[rs stringForColumn:@"a"] isEqualToString:@"a"]);
+        FMDBQuickCheck(([rs intForColumn:@"b"] == -4));
+        FMDBQuickCheck([[rs stringForColumn:@"c"] isEqualToString:@"5.5"]);
+        
+        
+        [rs next];
+        
+        FMDBQuickCheck([[rs stringForColumn:@"a"] isEqualToString:@"a"]);
+        FMDBQuickCheck(([rs intForColumn:@"b"] == 6));
+        FMDBQuickCheck([[rs stringForColumn:@"c"] isEqualToString:@"5.5"]);
+        
+        [rs close];
+        
+    }
+    
+    
+    
     
     {
         NSError *err;
