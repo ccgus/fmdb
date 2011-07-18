@@ -321,8 +321,6 @@
 
 - (void)bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt*)pStmt {
     
-    NSLog(@"%d", idx);
-    
     if ((!obj) || ((NSNull *)obj == [NSNull null])) {
         sqlite3_bind_null(pStmt, idx);
     }
