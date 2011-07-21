@@ -247,6 +247,7 @@
     
 #ifndef NS_BLOCK_ASSERTIONS
     if (_crashOnErrors) {
+        abort();
         NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
     }
 #endif
@@ -260,6 +261,7 @@
         
     #ifndef NS_BLOCK_ASSERTIONS
         if (_crashOnErrors) {
+            abort();
             NSAssert1(false, @"The FMDatabase %@ is not open.", self);
         }
     #endif
@@ -531,6 +533,7 @@
                     NSLog(@"DB Query: %@", sql);
 #ifndef NS_BLOCK_ASSERTIONS
                     if (_crashOnErrors) {
+                        abort();
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
 #endif
@@ -715,6 +718,7 @@
                     NSLog(@"DB Query: %@", sql);
 #ifndef NS_BLOCK_ASSERTIONS
                     if (_crashOnErrors) {
+                        abort();
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
 #endif
