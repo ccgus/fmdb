@@ -872,6 +872,39 @@ int main (int argc, const char * argv[]) {
         
     }
     
+    {
+        
+        [dbPool inDatabase:^(FMDatabase *db) {
+            [db executeUpdate:@"create table likefoo (foo text)"];
+            [db executeUpdate:@"insert into likefoo values ('hi')"];
+            [db executeUpdate:@"insert into likefoo values ('hello')"];
+            [db executeUpdate:@"insert into likefoo values ('not')"];
+            
+            int count = 0;
+            FMResultSet *rsl = [db executeQuery:@"select * from likefoo where foo like 'h%'"];
+            while ([rsl next]) {
+                count++;
+            }
+            
+            FMDBQuickCheck(count == 2);
+            
+            count = 0;
+            rsl = [db executeQuery:@"select * from likefoo where foo like ?", @"h%"];
+            while ([rsl next]) {
+                count++;
+            }
+            
+            FMDBQuickCheck(count == 2);
+        
+        }];
+        
+        
+    }
+    
+    
+    
+    
+    
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     
     [pool release];
