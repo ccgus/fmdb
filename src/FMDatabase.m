@@ -591,6 +591,10 @@
     return [self executeQuery:sql withArgumentsInArray:nil orDictionary:arguments orVAList:nil];
 }
 
+- (BOOL)executeBatch:(NSString *)sql {
+	return sqlite3_exec(db, [sql UTF8String], NULL, nil, nil) == SQLITE_OK;
+}
+
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
     if (! db) {

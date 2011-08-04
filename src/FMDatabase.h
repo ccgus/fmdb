@@ -59,6 +59,8 @@
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInDictionary:(NSDictionary *)arguments;
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args; // you shouldn't ever need to call this.  use the previous three instead.
 
+- (BOOL)executeBatch:(NSString *)sql;
+
 - (BOOL)rollback;
 - (BOOL)commit;
 - (BOOL)beginTransaction;
