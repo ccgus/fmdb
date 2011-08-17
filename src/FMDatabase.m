@@ -346,7 +346,7 @@
                 case '@':
                     arg = va_arg(args, id); break;
                 case 'c':
-                    arg = [NSString stringWithFormat:@"%c", va_arg(args, char)]; break;
+                    arg = [NSString stringWithFormat:@"%c", va_arg(args, int)]; break;
                 case 's':
                     arg = [NSString stringWithUTF8String:va_arg(args, char*)]; break;
                 case 'd':
@@ -359,10 +359,10 @@
                 case 'h':
                     i++;
                     if (i < length && [sql characterAtIndex:i] == 'i') {
-                        arg = [NSNumber numberWithShort:va_arg(args, short)];
+                        arg = [NSNumber numberWithInt:va_arg(args, int)];
                     }
                     else if (i < length && [sql characterAtIndex:i] == 'u') {
-                        arg = [NSNumber numberWithUnsignedShort:va_arg(args, unsigned short)];
+                        arg = [NSNumber numberWithInt:va_arg(args, int)];
                     }
                     else {
                         i--;
@@ -383,7 +383,7 @@
                 case 'f':
                     arg = [NSNumber numberWithDouble:va_arg(args, double)]; break;
                 case 'g':
-                    arg = [NSNumber numberWithFloat:va_arg(args, float)]; break;
+                    arg = [NSNumber numberWithDouble:va_arg(args, double)]; break;
                 case 'l':
                     i++;
                     if (i < length) {
