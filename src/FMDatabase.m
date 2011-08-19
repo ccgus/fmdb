@@ -1,6 +1,8 @@
 #import "FMDatabase.h"
 #import "unistd.h"
 
+#pragma message "FIXME: make _pool a weak ivar if possible."
+
 @interface FMDatabase ()
 
 - (void)checkPoolPushBack;
