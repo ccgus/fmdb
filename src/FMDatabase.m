@@ -1,7 +1,6 @@
 #import "FMDatabase.h"
 #import "unistd.h"
-
-#pragma message "FIXME: make _pool a weak ivar if possible."
+#import <objc/runtime.h>
 
 @interface FMDatabase ()
 
@@ -17,7 +16,6 @@
 @synthesize busyRetryTimeout=_busyRetryTimeout;
 @synthesize checkedOut=_checkedOut;
 @synthesize traceExecution=_traceExecution;
-@synthesize pool=_pool;
 
 + (id)databaseWithPath:(NSString*)aPath {
     return [[[self alloc] initWithPath:aPath] autorelease];
@@ -61,6 +59,10 @@
     [_openResultSets release];
     [_cachedStatements release];
     [_databasePath release];
+    
+#ifdef FMDB_USE_WEAK_POOL    
+    objc_storeWeak(&_poolAccessViaMethodOnly, nil);
+#endif
     
     [super dealloc];
 }
@@ -944,7 +946,7 @@
 
 - (BOOL)beginDeferredTransaction {
     
-    if (_pool) {
+    if ([self pool]) {
         [self popFromPool];
     }
     
@@ -958,7 +960,7 @@
 
 - (BOOL)beginTransaction {
     
-    if (_pool) {
+    if ([self pool]) {
         [self popFromPool];
     }
     
@@ -982,7 +984,7 @@
     
     NSAssert(name, @"Missing name for a savepoint", nil);
     
-    if (_pool) {
+    if ([self pool]) {
         [self popFromPool];
     }
     
@@ -1008,7 +1010,7 @@
         *outErr = [self lastError];
     }
     
-    if (_pool) {
+    if ([self pool]) {
         [self pushToPool];
     }
     
@@ -1025,7 +1027,7 @@
         *outErr = [self lastError];
     }
     
-    if (_pool) {
+    if ([self pool]) {
         [self pushToPool];
     }
     
@@ -1080,7 +1082,7 @@
 
 - (FMDatabase*)popFromPool {
     
-    if (!_pool) {
+    if (![self pool]) {
         NSLog(@"No FMDatabasePool in place for %@", self);
         return 0x00;
     }
@@ -1099,13 +1101,35 @@
 - (void)checkPoolPushBack {
     
     if (_poolPopCount <= 0) {
-        [_pool pushDatabaseBackInPool:self];
+        [[self pool] pushDatabaseBackInPool:self];
         
         if (_poolPopCount < 0) {
             _poolPopCount = 0;
         }
     }
 }
+
+- (FMDatabasePool *)pool {
+#ifdef FMDB_USE_WEAK_POOL    
+    return objc_loadWeak(&_poolAccessViaMethodOnly);
+#else
+     return _poolAccessViaMethodOnly;
+#endif
+    
+   
+}
+
+- (void)setPool:(FMDatabasePool *)value {
+#ifdef FMDB_USE_WEAK_POOL    
+    objc_storeWeak(&_poolAccessViaMethodOnly, value);
+#else
+    _poolAccessViaMethodOnly = value;
+#endif
+}
+
+
+
+
 
 
 @end

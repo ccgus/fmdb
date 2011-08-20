@@ -3,6 +3,10 @@
 #import "FMResultSet.h"
 #import "FMDatabasePool.h"
 
+#if MAC_OS_X_VERSION_10_7 <= MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_5 <= __IPHONE_OS_VERSION_MAX_ALLOWED
+    #define FMDB_USE_WEAK_POOL 1
+#endif
+
 @interface FMDatabase : NSObject  {
     
 	sqlite3*            _db;
@@ -18,9 +22,16 @@
     
     NSMutableDictionary *_cachedStatements;
 	NSMutableSet        *_openResultSets;
+
+#ifdef FMDB_USE_WEAK_POOL
+    __weak FMDatabasePool *_poolAccessViaMethodOnly;
+#else
+    FMDatabasePool      *_poolAccessViaMethodOnly;
+#endif
     
-    FMDatabasePool      *_pool;
     NSInteger           _poolPopCount;
+    
+    FMDatabasePool      *pool;
 }
 
 
@@ -30,7 +41,6 @@
 @property (assign) BOOL crashOnErrors;
 @property (assign) BOOL logsErrors;
 @property (retain) NSMutableDictionary *cachedStatements;
-@property (assign) FMDatabasePool *pool;
 
 
 + (id)databaseWithPath:(NSString*)inPath;
@@ -94,6 +104,10 @@
 
 - (FMDatabase*)popFromPool;
 - (void)pushToPool;
+
+- (FMDatabasePool *)pool;
+- (void)setPool:(FMDatabasePool *)value;
+
 
 
 @end
