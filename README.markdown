@@ -2,6 +2,10 @@
 
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
+## Mailing List:
+
+http://groups.google.com/group/fmdb
+
 ## Usage
 
 There are two main classes in FMDB:
