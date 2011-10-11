@@ -535,6 +535,7 @@
                 if (_logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
+                    NSLog(@"DB Path: %@", _databasePath);
 #ifndef NS_BLOCK_ASSERTIONS
                     if (_crashOnErrors) {
                         abort();
@@ -720,6 +721,7 @@
                 if (_logsErrors) {
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
+                    NSLog(@"DB Path: %@", _databasePath);
 #ifndef NS_BLOCK_ASSERTIONS
                     if (_crashOnErrors) {
                         abort();
@@ -848,8 +850,9 @@
         
     } while (retry);
     
-    assert(rc != SQLITE_ROW );
-    
+    if (rc == SQLITE_ROW) {
+        NSAssert(NO, @"A executeUpdate is being called with a query string", 0x00);
+    }
     
     if (_shouldCacheStatements && !cachedStmt) {
         cachedStmt = [[FMStatement alloc] init];
