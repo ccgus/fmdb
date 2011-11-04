@@ -60,7 +60,7 @@
     [_cachedStatements release];
     [_databasePath release];
     
-#ifdef FMDB_USE_WEAK_POOL    
+#ifdef FMDB_USE_WEAK_POOL
     objc_storeWeak(&_poolAccessViaMethodOnly, nil);
 #endif
     
@@ -1113,7 +1113,7 @@
 }
 
 - (FMDatabasePool *)pool {
-#ifdef FMDB_USE_WEAK_POOL    
+#ifdef FMDB_USE_WEAK_POOL
     return objc_loadWeak(&_poolAccessViaMethodOnly);
 #else
      return _poolAccessViaMethodOnly;

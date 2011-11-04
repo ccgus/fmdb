@@ -3,7 +3,11 @@
 #import "FMResultSet.h"
 #import "FMDatabasePool.h"
 
-#if MAC_OS_X_VERSION_10_7 <= MAC_OS_X_VERSION_MAX_ALLOWED || __IPHONE_5 <= __IPHONE_OS_VERSION_MAX_ALLOWED
+#ifndef MAC_OS_X_VERSION_10_7
+#define MAC_OS_X_VERSION_10_7 1070
+#endif
+
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_7
     #define FMDB_USE_WEAK_POOL 1
 #endif
 
