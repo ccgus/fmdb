@@ -194,7 +194,7 @@
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:NO withBlock:block];
 }
-
+#if SQLITE_VERSION_NUMBER >= 3007000
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
     
     static unsigned long savePointIdx = 0;
@@ -222,6 +222,6 @@
     
     return err;
 }
-
+#endif
 
 @end
