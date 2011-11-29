@@ -2,6 +2,7 @@
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
 #import "FMDatabasePool.h"
+#import "FMDatabaseQueue.h"
 
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
@@ -901,13 +902,70 @@ int main (int argc, const char * argv[]) {
         
     }
     
-    
-    
-    
-    
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     
     [pool release];
+    
+    
+    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
+    
+    FMDBQuickCheck(queue);
+    
+    {
+        
+        [queue inDatabase:^(FMDatabase *db) {
+            
+            
+            int count = 0;
+            FMResultSet *rsl = [db executeQuery:@"select * from likefoo where foo like 'h%'"];
+            while ([rsl next]) {
+                count++;
+            }
+            
+            FMDBQuickCheck(count == 2);
+            
+            count = 0;
+            rsl = [db executeQuery:@"select * from likefoo where foo like ?", @"h%"];
+            while ([rsl next]) {
+                count++;
+            }
+            
+            FMDBQuickCheck(count == 2);
+        }];
+        
+    }
+    
+    
+    {
+        
+        int ops = 16;
+        
+        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        
+        dispatch_apply(ops, dqueue, ^(size_t nby) {
+            
+            // just mix things up a bit for demonstration purposes.
+            if (nby % 2 == 1) {
+                [NSThread sleepForTimeInterval:.1];
+            }
+            
+            if (nby % 3 == 1) {
+                [NSThread sleepForTimeInterval:.1];
+            }
+            
+            [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+                NSLog(@"Starting %ld", nby);
+                [db executeUpdate:@"insert into likefoo values ('1')"];
+                [db executeUpdate:@"insert into likefoo values ('2')"];
+                [db executeUpdate:@"insert into likefoo values ('3')"];
+                NSLog(@"Ending   %ld", nby);
+            }];
+        });
+        
+    }
+    
+    
+    
     
     return 0;
 }
