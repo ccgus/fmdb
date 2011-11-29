@@ -11,6 +11,8 @@
 
 @implementation FMDatabaseQueue
 
+@synthesize path = _path;
+
 + (id)databaseQueueWithPath:(NSString*)aPath {
     return [[[self alloc] initWithPath:aPath] autorelease];
 }
@@ -29,6 +31,8 @@
             return 0x00;
         }
         
+        _path = [aPath retain];
+        
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
 	}
     
@@ -38,6 +42,7 @@
 - (void)dealloc {
     
     [_db release];
+    [_path release];
     
     if (_queue) {
         dispatch_release(_queue);
@@ -47,9 +52,28 @@
     [super dealloc];
 }
 
-- (void)inDatabase:(void (^)(FMDatabase *db))block {
+- (void)close {
+    [_db close];
+    [_db release];
+    _db = 0x00;
+}
+
+- (FMDatabase*)db {
+    if (!_db) {
+        _db = [[FMDatabase databaseWithPath:_path] retain];
+        if (![_db open]) {
+            NSLog(@"FMDatabaseQueue could not reopen database for path %@", _path);
+            [_db release];
+            _db  = 0x00;
+            return 0x00;
+        }
+    }
     
-    dispatch_sync(_queue, ^() { block(_db); });
+    return _db;
+}
+
+- (void)inDatabase:(void (^)(FMDatabase *db))block {
+    dispatch_sync(_queue, ^() { block([self db]); });
 }
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
@@ -59,19 +83,19 @@
         BOOL shouldRollback = NO;
         
         if (useDeferred) {
-            [_db beginDeferredTransaction];
+            [[self db] beginDeferredTransaction];
         }
         else {
-            [_db beginTransaction];
+            [[self db] beginTransaction];
         }
         
-        block(_db, &shouldRollback);
+        block([self db], &shouldRollback);
         
         if (shouldRollback) {
-            [_db rollback];
+            [[self db] rollback];
         }
         else {
-            [_db commit];
+            [[self db] commit];
         }
     
     });
@@ -97,15 +121,15 @@
         
         BOOL shouldRollback = NO;
         
-        if ([_db startSavePointWithName:name error:&err]) {
+        if ([[self db] startSavePointWithName:name error:&err]) {
             
-            block(_db, &shouldRollback);
+            block([self db], &shouldRollback);
             
             if (shouldRollback) {
-                [_db rollbackToSavePointWithName:name error:&err];
+                [[self db] rollbackToSavePointWithName:name error:&err];
             }
             else {
-                [_db releaseSavePointWithName:name error:&err];
+                [[self db] releaseSavePointWithName:name error:&err];
             }
             
         }

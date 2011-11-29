@@ -12,12 +12,16 @@
 @class FMDatabase;
 
 @interface FMDatabaseQueue : NSObject {
+    NSString            *_path;
     dispatch_queue_t    _queue;
     FMDatabase          *_db;
 }
 
+@property (retain) NSString *path;
+
 + (id)databaseQueueWithPath:(NSString*)aPath;
 - (id)initWithPath:(NSString*)aPath;
+- (void)close;
 
 - (void)inDatabase:(void (^)(FMDatabase *db))block;
 

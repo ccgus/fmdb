@@ -970,6 +970,11 @@ int main (int argc, const char * argv[]) {
             }];
         });
         
+        [queue close];
+        
+        [queue inDatabase:^(FMDatabase *db) {
+            FMDBQuickCheck([db executeUpdate:@"insert into likefoo values ('1')"]);
+        }];
     }
     
     
