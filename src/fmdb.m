@@ -902,11 +902,6 @@ int main (int argc, const char * argv[]) {
         
     }
     
-    NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
-    
-    [pool release];
-    
-    
     FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
     
     FMDBQuickCheck(queue);
@@ -947,6 +942,19 @@ int main (int argc, const char * argv[]) {
             // just mix things up a bit for demonstration purposes.
             if (nby % 2 == 1) {
                 [NSThread sleepForTimeInterval:.1];
+                
+                
+                [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+                    NSLog(@"Starting query  %ld", nby);
+                    
+                    FMResultSet *rsl = [db executeQuery:@"select * from likefoo where foo like 'h%'"];
+                    while ([rsl next]) {
+                        ;// whatever.
+                    }
+                    
+                    NSLog(@"Ending query    %ld", nby);
+                }];
+                
             }
             
             if (nby % 3 == 1) {
@@ -954,15 +962,21 @@ int main (int argc, const char * argv[]) {
             }
             
             [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-                NSLog(@"Starting %ld", nby);
+                NSLog(@"Starting update %ld", nby);
                 [db executeUpdate:@"insert into likefoo values ('1')"];
                 [db executeUpdate:@"insert into likefoo values ('2')"];
                 [db executeUpdate:@"insert into likefoo values ('3')"];
-                NSLog(@"Ending   %ld", nby);
+                NSLog(@"Ending update   %ld", nby);
             }];
         });
         
     }
+    
+    
+    
+    NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
+    
+    [pool release];
     
     
     
