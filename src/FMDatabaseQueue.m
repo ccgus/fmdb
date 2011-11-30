@@ -73,7 +73,17 @@
 }
 
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
-    dispatch_sync(_queue, ^() { block([self db]); });
+    
+    dispatch_sync(_queue, ^() {
+        
+        FMDatabase *db = [self db];
+        block(db);
+        
+        if ([db hasOpenResultSets]) {
+            NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
+        }
+        
+    });
 }
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {

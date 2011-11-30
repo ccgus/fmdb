@@ -58,6 +58,7 @@
 - (BOOL)goodConnection;
 - (void)clearCachedStatements;
 - (void)closeOpenResultSets;
+- (BOOL)hasOpenResultSets;
 
 // encryption methods.  You need to have purchased the sqlite encryption extensions for these to work.
 - (BOOL)setKey:(NSString*)key;

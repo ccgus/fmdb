@@ -159,6 +159,10 @@
     [_cachedStatements removeAllObjects];
 }
 
+- (BOOL)hasOpenResultSets {
+    return [_openResultSets count] > 0;
+}
+
 - (void)closeOpenResultSets {
     
     //Copy the set so we don't get mutation errors
