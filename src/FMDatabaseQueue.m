@@ -53,9 +53,11 @@
 }
 
 - (void)close {
-    [_db close];
-    [_db release];
-    _db = 0x00;
+    dispatch_sync(_queue, ^() { 
+        [_db close];
+        [_db release];
+        _db = 0x00;
+    });
 }
 
 - (FMDatabase*)db {
