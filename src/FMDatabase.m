@@ -488,6 +488,8 @@
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
     if (![self databaseExists]) {
+        //Pushing the FMDatabase instance back to the pool if error occurs
+        [self checkPoolPushBack];
         return 0x00;
     }
     
