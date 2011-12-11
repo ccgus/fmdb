@@ -93,20 +93,24 @@
             }
             
             db = [FMDatabase databaseWithPath:_path];
-            
-            if ([db open]) {
-                if ([_delegate respondsToSelector:@selector(databasePool:shouldAddDatabaseToPool:)] && ![_delegate databasePool:self shouldAddDatabaseToPool:db]) {
-                    [db close];
-                    db = 0x00;
-                }
-                else {
+        }
+        
+        //This ensures that the db is opened before returning
+        if ([db open]) {
+            if ([_delegate respondsToSelector:@selector(databasePool:shouldAddDatabaseToPool:)] && ![_delegate databasePool:self shouldAddDatabaseToPool:db]) {
+                [db close];
+                db = 0x00;
+            }
+            else {
+                //It should not get added in the pool twice if lastObject was found
+                if (![_databaseOutPool containsObject:db]) {
                     [_databaseOutPool addObject:db];
                 }
             }
-            else {
-                NSLog(@"Could not open up the database at path %@", _path);
-                db = 0x00;
-            }
+        }
+        else {
+            NSLog(@"Could not open up the database at path %@", _path);
+            db = 0x00;
         }
         
         [db setPool:self];
