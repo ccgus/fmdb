@@ -60,7 +60,7 @@
     });
 }
 
-- (FMDatabase*)db {
+- (FMDatabase*)database {
     if (!_db) {
         _db = [[FMDatabase databaseWithPath:_path] retain];
         if (![_db open]) {
@@ -78,7 +78,7 @@
     
     dispatch_sync(_queue, ^() {
         
-        FMDatabase *db = [self db];
+        FMDatabase *db = [self database];
         block(db);
         
         if ([db hasOpenResultSets]) {
@@ -95,19 +95,19 @@
         BOOL shouldRollback = NO;
         
         if (useDeferred) {
-            [[self db] beginDeferredTransaction];
+            [[self database] beginDeferredTransaction];
         }
         else {
-            [[self db] beginTransaction];
+            [[self database] beginTransaction];
         }
         
-        block([self db], &shouldRollback);
+        block([self database], &shouldRollback);
         
         if (shouldRollback) {
-            [[self db] rollback];
+            [[self database] rollback];
         }
         else {
-            [[self db] commit];
+            [[self database] commit];
         }
     
     });
@@ -133,15 +133,15 @@
         
         BOOL shouldRollback = NO;
         
-        if ([[self db] startSavePointWithName:name error:&err]) {
+        if ([[self database] startSavePointWithName:name error:&err]) {
             
-            block([self db], &shouldRollback);
+            block([self database], &shouldRollback);
             
             if (shouldRollback) {
-                [[self db] rollbackToSavePointWithName:name error:&err];
+                [[self database] rollbackToSavePointWithName:name error:&err];
             }
             else {
-                [[self db] releaseSavePointWithName:name error:&err];
+                [[self database] releaseSavePointWithName:name error:&err];
             }
             
         }
