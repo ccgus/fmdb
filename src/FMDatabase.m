@@ -836,7 +836,7 @@
                 retry = NO;
             }
         }
-        else if (SQLITE_DONE == rc || SQLITE_ROW == rc) {
+        else if (SQLITE_DONE == rc) {
             // all is well, let's return.
         }
         else if (SQLITE_ERROR == rc) {
@@ -870,20 +870,27 @@
         [cachedStmt release];
     }
     
+    int closeErrorCode;
+    
     if (cachedStmt) {
         [cachedStmt setUseCount:[cachedStmt useCount] + 1];
-        rc = sqlite3_reset(pStmt);
+        closeErrorCode = sqlite3_reset(pStmt);
     }
     else {
         /* Finalize the virtual machine. This releases all memory and other
          ** resources allocated by the sqlite3_prepare() call above.
          */
-        rc = sqlite3_finalize(pStmt);
+        closeErrorCode = sqlite3_finalize(pStmt);
+    }
+    
+    if (closeErrorCode != SQLITE_OK) {
+        NSLog(@"Unknown error finalizing or resetting statement (%d: %s)", closeErrorCode, sqlite3_errmsg(_db));
+        NSLog(@"DB Query: %@", sql);
     }
     
     _isExecutingStatement = NO;
     [self checkPoolPushBack];
-    return (rc == SQLITE_OK);
+    return (rc == SQLITE_DONE || rc == SQLITE_OK);
 }
 
 
