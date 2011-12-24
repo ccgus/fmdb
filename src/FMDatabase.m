@@ -18,7 +18,7 @@
 @synthesize traceExecution=_traceExecution;
 
 + (id)databaseWithPath:(NSString*)aPath {
-    return [[[self alloc] initWithPath:aPath] autorelease];
+    return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
 }
 
 + (NSString*)sqliteLibVersion {
@@ -55,16 +55,15 @@
 
 - (void)dealloc {
     [self close];
+    FMDBRelease(_openResultSets);
+    FMDBRelease(_cachedStatements);
+    FMDBRelease(_databasePath);
     
-    [_openResultSets release];
-    [_cachedStatements release];
-    [_databasePath release];
+    [self setPool:0x00];
     
-#ifdef FMDB_USE_WEAK_POOL
-    objc_storeWeak(&_poolAccessViaMethodOnly, nil);
-#endif
-    
+#if ! __has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 - (NSString *)databasePath {
@@ -166,7 +165,8 @@
 - (void)closeOpenResultSets {
     
     //Copy the set so we don't get mutation errors
-    for (NSValue *rsInWrappedInATastyValueMeal in [[_openResultSets copy] autorelease]) {
+    NSMutableSet *openSetCopy = FMDBReturnAutoreleased([_openResultSets copy]);
+    for (NSValue *rsInWrappedInATastyValueMeal in openSetCopy) {
         FMResultSet *rs = (FMResultSet *)[rsInWrappedInATastyValueMeal pointerValue];
         
         [rs setParentDB:nil];
@@ -197,7 +197,7 @@
     
     [_cachedStatements setObject:statement forKey:query];
     
-    [query release];
+    FMDBRelease(query);
 }
 
 
@@ -574,9 +574,7 @@
             // Get the index for the parameter name.
             int namedIdx = sqlite3_bind_parameter_index(pStmt, [parameterName UTF8String]);
             
-            NSLog(@"namedIdx: %d", namedIdx);
-            NSLog(@"%@", [dictionaryArgs objectForKey:dictionaryKey]);
-            [parameterName release];
+            FMDBRelease(parameterName);
             
             if (namedIdx > 0) {
                 // Standard binding from here.
@@ -619,7 +617,7 @@
         return nil;
     }
     
-    [statement retain]; // to balance the release below
+    FMDBRetain(statement); // to balance the release below
     
     if (!statement) {
         statement = [[FMStatement alloc] init];
@@ -639,7 +637,7 @@
     
     [statement setUseCount:[statement useCount] + 1];
     
-    [statement release];    
+    FMDBRelease(statement); 
     
     _isExecutingStatement = NO;
     
@@ -765,7 +763,7 @@
             // Get the index for the parameter name.
             int namedIdx = sqlite3_bind_parameter_index(pStmt, [parameterName UTF8String]);
             
-            [parameterName release];
+            FMDBRelease(parameterName);
             
             if (namedIdx > 0) {
                 // Standard binding from here.
@@ -867,7 +865,7 @@
         
         [self setCachedStatement:cachedStmt forQuery:sql];
         
-        [cachedStmt release];
+        FMDBRelease(cachedStmt);
     }
     
     int closeErrorCode;
@@ -1125,18 +1123,18 @@
     }
 }
 
+// #if __has_feature(objc_arc_weak)
+
 - (FMDatabasePool *)pool {
-#ifdef FMDB_USE_WEAK_POOL
+#if FMDB_USE_WEAK_POOL && (!__has_feature(objc_arc_weak))
     return objc_loadWeak(&_poolAccessViaMethodOnly);
 #else
      return _poolAccessViaMethodOnly;
 #endif
-    
-   
 }
 
 - (void)setPool:(FMDatabasePool *)value {
-#ifdef FMDB_USE_WEAK_POOL    
+#if FMDB_USE_WEAK_POOL && (!__has_feature(objc_arc_weak))
     objc_storeWeak(&_poolAccessViaMethodOnly, value);
 #else
     _poolAccessViaMethodOnly = value;
@@ -1153,9 +1151,9 @@
 
 
 @implementation FMStatement
-@synthesize statement;
-@synthesize query;
-@synthesize useCount;
+@synthesize statement=_statement;
+@synthesize query=_query;
+@synthesize useCount=_useCount;
 
 - (void)finalize {
     [self close];
@@ -1164,25 +1162,27 @@
 
 - (void)dealloc {
     [self close];
-    [query release];
+    FMDBRelease(_query);
+#if ! __has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 - (void)close {
-    if (statement) {
-        sqlite3_finalize(statement);
-        statement = 0x00;
+    if (_statement) {
+        sqlite3_finalize(_statement);
+        _statement = 0x00;
     }
 }
 
 - (void)reset {
-    if (statement) {
-        sqlite3_reset(statement);
+    if (_statement) {
+        sqlite3_reset(_statement);
     }
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat:@"%@ %d hit(s) for query %@", [super description], useCount, query];
+    return [NSString stringWithFormat:@"%@ %d hit(s) for query %@", [super description], _useCount, _query];
 }
 
 

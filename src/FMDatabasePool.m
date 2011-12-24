@@ -16,7 +16,7 @@
 
 
 + (id)databasePoolWithPath:(NSString*)aPath {
-    return [[[self alloc] initWithPath:aPath] autorelease];
+    return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
 }
 
 - (id)initWithPath:(NSString*)aPath {
@@ -26,8 +26,8 @@
 	if (self != nil) {
         _path               = [aPath copy];
         _lockQueue          = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
-        _databaseInPool     = [[NSMutableArray array] retain];
-        _databaseOutPool    = [[NSMutableArray array] retain];
+        _databaseInPool     = FMDBReturnRetained([NSMutableArray array]);
+        _databaseOutPool    = FMDBReturnRetained([NSMutableArray array]);
 	}
     
 	return self;
@@ -36,17 +36,17 @@
 - (void)dealloc {
     
     _delegate = 0x00;
-    
-    [_path release];
-    [_databaseInPool release];
-    [_databaseOutPool release];
+    FMDBRelease(_path);
+    FMDBRelease(_databaseInPool);
+    FMDBRelease(_databaseOutPool);
     
     if (_lockQueue) {
         dispatch_release(_lockQueue);
         _lockQueue = 0x00;
     }
-    
+#if ! __has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 

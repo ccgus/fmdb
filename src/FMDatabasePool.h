@@ -19,7 +19,7 @@
     NSMutableArray      *_databaseInPool;
     NSMutableArray      *_databaseOutPool;
     
-    id                  _delegate;
+    __unsafe_unretained id _delegate;
     
     NSUInteger          _maximumNumberOfDatabasesToCreate;
 }

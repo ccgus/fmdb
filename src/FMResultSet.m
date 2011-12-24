@@ -24,7 +24,7 @@
     [rs setStatement:statement];
     [rs setParentDB:aDB];
     
-    return [rs autorelease];
+    return FMDBReturnAutoreleased(rs);
 }
 
 - (void)finalize {
@@ -35,18 +35,20 @@
 - (void)dealloc {
     [self close];
     
-    [_query release];
+    FMDBRelease(_query);
     _query = nil;
     
-    [_columnNameToIndexMap release];
+    FMDBRelease(_columnNameToIndexMap);
     _columnNameToIndexMap = nil;
     
+#if ! __has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 - (void)close {
     [_statement reset];
-    [_statement release];
+    FMDBRelease(_statement);
     _statement = nil;
     
     // we don't need this anymore... (i think)
@@ -111,7 +113,7 @@
             [dict setObject:objectValue forKey:columnName];
         }
         
-        return [[dict copy] autorelease];
+        return FMDBReturnAutoreleased([dict copy]);
     }
     else {
         NSLog(@"Warning: There seem to be no columns in this set.");

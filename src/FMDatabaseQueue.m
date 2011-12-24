@@ -14,7 +14,12 @@
 @synthesize path = _path;
 
 + (id)databaseQueueWithPath:(NSString*)aPath {
-    return [[[self alloc] initWithPath:aPath] autorelease];
+    
+    FMDatabaseQueue *q = [[self alloc] initWithPath:aPath];
+    
+    FMDBAutorelease(q);
+    
+    return q;
 }
 
 - (id)initWithPath:(NSString*)aPath {
@@ -23,15 +28,16 @@
     
 	if (self != nil) {
         
-        _db = [[FMDatabase databaseWithPath:aPath] retain];
+        _db = [FMDatabase databaseWithPath:aPath];
+        FMDBRetain(_db);
         
         if (![_db open]) {
             NSLog(@"Could not create database queue for path %@", aPath);
-            [self release];
+            FMDBRelease(self);
             return 0x00;
         }
         
-        _path = [aPath retain];
+        _path = FMDBReturnRetained(aPath);
         
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
 	}
@@ -41,31 +47,33 @@
 
 - (void)dealloc {
     
-    [_db release];
-    [_path release];
+    FMDBRelease(_db);
+    FMDBRelease(_path);
     
     if (_queue) {
         dispatch_release(_queue);
         _queue = 0x00;
     }
-    
+#if ! __has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 - (void)close {
     dispatch_sync(_queue, ^() { 
         [_db close];
-        [_db release];
+        FMDBRelease(_db);
         _db = 0x00;
     });
 }
 
 - (FMDatabase*)database {
     if (!_db) {
-        _db = [[FMDatabase databaseWithPath:_path] retain];
+        _db = FMDBReturnRetained([FMDatabase databaseWithPath:_path]);
+        
         if (![_db open]) {
             NSLog(@"FMDatabaseQueue could not reopen database for path %@", _path);
-            [_db release];
+            FMDBRelease(_db);
             _db  = 0x00;
             return 0x00;
         }

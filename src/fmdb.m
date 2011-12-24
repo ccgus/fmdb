@@ -7,7 +7,9 @@
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
 int main (int argc, const char * argv[]) {
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    
+    @autoreleasepool {
+        
     
     NSString *dbPath = @"/tmp/tmp.db";
     
@@ -29,7 +31,7 @@ int main (int argc, const char * argv[]) {
     
     if (![db open]) {
         NSLog(@"Could not open db.");
-        [pool release];
+        
         return 0;
     }
     
@@ -980,10 +982,8 @@ int main (int argc, const char * argv[]) {
     
     
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
-    
-    [pool release];
-    
-    
+        
+    }
     
     
     return 0;
