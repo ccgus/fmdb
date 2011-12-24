@@ -33,8 +33,8 @@
 
 @interface FMDatabase : NSObject  {
     
-	sqlite3*            _db;
-	NSString*           _databasePath;
+    sqlite3*            _db;
+    NSString*           _databasePath;
     BOOL                _logsErrors;
     BOOL                _crashOnErrors;
     BOOL                _traceExecution;
