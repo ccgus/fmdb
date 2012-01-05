@@ -1,13 +1,15 @@
 # FMDB
-
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
-## Mailing List:
-
+## The FMDB Mailing List:
 http://groups.google.com/group/fmdb
 
-## Usage
+## Read the SQLite FAQ:
+http://www.sqlite.org/faq.html
 
+Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: http://www.sqlite.org/docs.html
+
+## Usage
 There are two main classes in FMDB:
 
 1. `FMDatabase` - Represents a single SQLite database.  Used for executing SQL statements.
