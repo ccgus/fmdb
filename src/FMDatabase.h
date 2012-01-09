@@ -46,8 +46,9 @@
     
     NSMutableDictionary *_cachedStatements;
 	NSMutableSet        *_openResultSets;
+	NSMutableSet        *_openFunctions;
 
-#ifdef FMDB_USE_WEAK_POOK
+#ifdef FMDB_USE_WEAK_POOL
     __weak FMDatabasePool *_poolAccessViaMethodOnly;
 #else
     FMDatabasePool      *_poolAccessViaMethodOnly;
@@ -133,7 +134,7 @@
 - (FMDatabasePool *)pool;
 - (void)setPool:(FMDatabasePool *)value;
 
-
+- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
 
 @end
 

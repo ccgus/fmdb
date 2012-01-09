@@ -3,6 +3,12 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2012.01.06:
+    Added a new method to FMDatabase to make custom functions out of a block:
+    - (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block
+    
+    Check out the function "testSQLiteFunction" in main.m for an example.
+
 2011.07.14:
     Added methods for named parameters, using keys from an NSDictionary (Thanks to Drarok Ithaqua for the patches!)
     Changed FMDatabase's "- (BOOL)update:(NSString*)sql error:(NSError**)outErr bind:(id)bindArgs, ... " to "- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ..." as the previous method didn't actually work as advertised in the way it was written.  Thanks to @jaekwon for pointing this out.
