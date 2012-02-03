@@ -856,7 +856,7 @@
     } while (retry);
     
     if (rc == SQLITE_ROW) {
-        NSAssert(NO, @"A executeUpdate is being called with a query string", 0x00);
+        NSAssert1(NO, @"A executeUpdate is being called with a query string '%@'", sql);
     }
     
     if (_shouldCacheStatements && !cachedStmt) {
@@ -997,7 +997,7 @@
     
     // FIXME: make sure the savepoint name doesn't have a ' in it.
     
-    NSAssert(name, @"Missing name for a savepoint", nil);
+    NSAssert1(name, @"Missing name for a savepoint", nil);
     
     if ([self pool]) {
         [self popFromPool];
@@ -1017,7 +1017,7 @@
 
 - (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr {
     
-    NSAssert(name, @"Missing name for a savepoint", nil);
+    NSAssert1(name, @"Missing name for a savepoint", nil);
     
     BOOL worked = [self executeUpdate:[NSString stringWithFormat:@"release savepoint '%@';", name]];
     
@@ -1034,7 +1034,7 @@
 
 - (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr {
     
-    NSAssert(name, @"Missing name for a savepoint", nil);
+    NSAssert1(name, @"Missing name for a savepoint", nil);
     
     BOOL worked = [self executeUpdate:[NSString stringWithFormat:@"rollback transaction to savepoint '%@';", name]];
     

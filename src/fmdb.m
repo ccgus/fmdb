@@ -163,7 +163,7 @@ int main (int argc, const char * argv[]) {
     
     // test the busy rety timeout schtuff.
     
-    [db setBusyRetryTimeout:50000];
+    [db setBusyRetryTimeout:500];
     
     FMDatabase *newDb = [FMDatabase databaseWithPath:dbPath];
     [newDb open];
