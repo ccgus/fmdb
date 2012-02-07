@@ -22,11 +22,11 @@ int main (int argc, const char * argv[]) {
     NSLog(@"Is SQLite compiled with it's thread safe options turned on? %@!", [FMDatabase isSQLiteThreadSafe] ? @"Yes" : @"No");
     
     {
-		// -------------------------------------------------------------------------------
-		// Un-opened database check.		
-		FMDBQuickCheck([db executeQuery:@"select * from table"] == nil);
-		NSLog(@"%d: %@", [db lastErrorCode], [db lastErrorMessage]);
-	}
+        // -------------------------------------------------------------------------------
+        // Un-opened database check.
+        FMDBQuickCheck([db executeQuery:@"select * from table"] == nil);
+        NSLog(@"%d: %@", [db lastErrorCode], [db lastErrorMessage]);
+    }
     
     
     if (![db open]) {
@@ -609,7 +609,7 @@ int main (int argc, const char * argv[]) {
         FMStatement *statement;
         
         while ((statement = [e nextObject])) {
-        	NSLog(@"%@", statement);
+            NSLog(@"%@", statement);
         }
     }
     
@@ -775,7 +775,7 @@ int main (int argc, const char * argv[]) {
         
     }
     
-	[db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+    [db executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
     
     FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
     

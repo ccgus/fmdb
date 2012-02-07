@@ -20,17 +20,17 @@
 }
 
 - (id)initWithPath:(NSString*)aPath {
-	
+    
     self = [super init];
     
-	if (self != nil) {
+    if (self != nil) {
         _path               = [aPath copy];
         _lockQueue          = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
         _databaseInPool     = FMDBReturnRetained([NSMutableArray array]);
         _databaseOutPool    = FMDBReturnRetained([NSMutableArray array]);
-	}
+    }
     
-	return self;
+    return self;
 }
 
 - (void)dealloc {

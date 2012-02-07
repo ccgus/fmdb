@@ -23,10 +23,10 @@
 }
 
 - (id)initWithPath:(NSString*)aPath {
-	
+    
     self = [super init];
     
-	if (self != nil) {
+    if (self != nil) {
         
         _db = [FMDatabase databaseWithPath:aPath];
         FMDBRetain(_db);
@@ -40,9 +40,9 @@
         _path = FMDBReturnRetained(aPath);
         
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
-	}
+    }
     
-	return self;
+    return self;
 }
 
 - (void)dealloc {

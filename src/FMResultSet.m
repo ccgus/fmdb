@@ -58,7 +58,7 @@
 }
 
 - (int)columnCount {
-	return sqlite3_column_count([_statement statement]);
+    return sqlite3_column_count([_statement statement]);
 }
 
 - (void)setupColumnNames {

@@ -45,8 +45,8 @@
     int                 _busyRetryTimeout;
     
     NSMutableDictionary *_cachedStatements;
-	NSMutableSet        *_openResultSets;
-	NSMutableSet        *_openFunctions;
+    NSMutableSet        *_openResultSets;
+    NSMutableSet        *_openFunctions;
 
 #ifdef FMDB_USE_WEAK_POOL
     __weak FMDatabasePool *_poolAccessViaMethodOnly;

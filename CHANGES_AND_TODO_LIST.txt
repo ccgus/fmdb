@@ -20,18 +20,18 @@ If you would like to contribute some code- awesome!  I just ask that you make it
     Added + (BOOL)isThreadSafe to FMDatabase.  It'll let you know if the version of SQLite you are running is compiled with it's thread safe options.  THIS DOES NOT MEAN FMDATABASE IS THREAD SAFE.  I haven't done a review of it for this case, so I'm just saying.
 
 2011.04.09
-	Added a method to validate a SQL statement.
-	Added a method to retrieve the number of columns in a result set.
-	Added two methods to execute queries and updates with NSString-style format specifiers.
+    Added a method to validate a SQL statement.
+    Added a method to retrieve the number of columns in a result set.
+    Added two methods to execute queries and updates with NSString-style format specifiers.
     Thanks to Dave DeLong for the patches!
 
 2011.03.12
-	Added compatibility with garbage collection.
-	When an FMDatabase is closed, all open FMResultSets pertaining to that database are also closed.
+    Added compatibility with garbage collection.
+    When an FMDatabase is closed, all open FMResultSets pertaining to that database are also closed.
     Added:
     - (id) objectForColumnIndex:(int)columnIdx;
     - (id) objectForColumnName:(NSString*)columnName;
-	Changes by Dave DeLong.
+    Changes by Dave DeLong.
 
 2011.02.05
     The -(int)changes; method on FMDatabase is a bit more robust now, and there's a new static library target.  And if a database path is nil, we now open up a :memory: database. Patch from Pascal Pfiffner!
