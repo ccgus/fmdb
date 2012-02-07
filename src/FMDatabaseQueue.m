@@ -9,6 +9,8 @@
 #import "FMDatabaseQueue.h"
 #import "FMDatabase.h"
 
+// Note: we call [self retain]; before using dispatch_sync, just incase FMDatabaseQueue is released on another thread and we're in the middle of doing something in dispatch_sync
+
 @implementation FMDatabaseQueue
 
 @synthesize path = _path;
@@ -60,11 +62,13 @@
 }
 
 - (void)close {
+    [self retain];
     dispatch_sync(_queue, ^() { 
         [_db close];
         FMDBRelease(_db);
         _db = 0x00;
     });
+    [self release];
 }
 
 - (FMDatabase*)database {
@@ -83,6 +87,7 @@
 }
 
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
+    [self retain];
     
     dispatch_sync(_queue, ^() {
         
@@ -92,12 +97,13 @@
         if ([db hasOpenResultSets]) {
             NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
         }
-        
     });
+    
+    [self release];
 }
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    
+    [self retain];
     dispatch_sync(_queue, ^() { 
         
         BOOL shouldRollback = NO;
@@ -117,8 +123,9 @@
         else {
             [[self database] commit];
         }
-    
     });
+    
+    [self release];
 }
 
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
@@ -134,7 +141,7 @@
     
     static unsigned long savePointIdx = 0;
     __block NSError *err = 0x00;
-    
+    [self retain];
     dispatch_sync(_queue, ^() { 
         
         NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
@@ -154,7 +161,7 @@
             
         }
     });
-    
+    [self release];
     return err;
 }
 #endif
