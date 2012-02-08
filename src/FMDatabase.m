@@ -997,7 +997,7 @@
     
     // FIXME: make sure the savepoint name doesn't have a ' in it.
     
-    NSAssert1(name, @"Missing name for a savepoint", nil);
+    NSParameterAssert(name);
     
     if ([self pool]) {
         [self popFromPool];
@@ -1017,7 +1017,7 @@
 
 - (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr {
     
-    NSAssert1(name, @"Missing name for a savepoint", nil);
+    NSParameterAssert(name);
     
     BOOL worked = [self executeUpdate:[NSString stringWithFormat:@"release savepoint '%@';", name]];
     
@@ -1034,7 +1034,7 @@
 
 - (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr {
     
-    NSAssert1(name, @"Missing name for a savepoint", nil);
+    NSParameterAssert(name);
     
     BOOL worked = [self executeUpdate:[NSString stringWithFormat:@"rollback transaction to savepoint '%@';", name]];
     
@@ -1144,7 +1144,11 @@
 
 void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3_value **argv);
 void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3_value **argv) {
-    void (^block)(sqlite3_context *context, int argc, sqlite3_value **argv) = (__bridge id)sqlite3_user_data(context);    
+#if ! __has_feature(objc_arc)
+    void (^block)(sqlite3_context *context, int argc, sqlite3_value **argv) = (id)sqlite3_user_data(context);
+#else
+    void (^block)(sqlite3_context *context, int argc, sqlite3_value **argv) = (__bridge id)sqlite3_user_data(context);
+#endif
     block(context, argc, argv);
 }
 
@@ -1160,7 +1164,11 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
     [_openFunctions addObject:b];
     
     /* I tried adding custom functions to release the block when the connection is destroyed- but they seemed to never be called, so we use _openFunctions to store the values instead. */
+#if ! __has_feature(objc_arc)
+    sqlite3_create_function([self sqliteHandle], [name UTF8String], count, SQLITE_UTF8, (void*)b, &FMDBBlockSQLiteCallBackFunction, 0x00, 0x00);
+#else
     sqlite3_create_function([self sqliteHandle], [name UTF8String], count, SQLITE_UTF8, (__bridge void*)b, &FMDBBlockSQLiteCallBackFunction, 0x00, 0x00);
+#endif
 }
 
 @end
@@ -1199,7 +1207,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat:@"%@ %d hit(s) for query %@", [super description], _useCount, _query];
+    return [NSString stringWithFormat:@"%@ %ld hit(s) for query %@", [super description], _useCount, _query];
 }
 
 
