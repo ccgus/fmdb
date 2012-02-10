@@ -4,7 +4,6 @@
 
 @interface FMDatabase ()
 
-- (void)checkPoolPushBack;
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 @end
@@ -59,8 +58,6 @@
     FMDBRelease(_cachedStatements);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
-    
-    [self setPool:0x00];
     
 #if ! __has_feature(objc_arc)
     [super dealloc];
@@ -181,8 +178,6 @@
     NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
     
     [_openResultSets removeObject:setValue];
-    
-    [self checkPoolPushBack];
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
@@ -489,14 +484,11 @@
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
     if (![self databaseExists]) {
-        //Pushing the FMDatabase instance back to the pool if error occurs
-        [self checkPoolPushBack];
         return 0x00;
     }
     
     if (_isExecutingStatement) {
         [self warnInUse];
-        [self checkPoolPushBack];
         return 0x00;
     }
     
@@ -533,7 +525,6 @@
                     NSLog(@"Database busy");
                     sqlite3_finalize(pStmt);
                     _isExecutingStatement = NO;
-                    [self checkPoolPushBack];
                     return nil;
                 }
             }
@@ -553,7 +544,6 @@
                 
                 sqlite3_finalize(pStmt);
                 _isExecutingStatement = NO;
-                [self checkPoolPushBack];
                 return nil;
             }
         }
@@ -614,7 +604,6 @@
         NSLog(@"Error: the bind count is not correct for the # of variables (executeQuery)");
         sqlite3_finalize(pStmt);
         _isExecutingStatement = NO;
-        [self checkPoolPushBack];
         return nil;
     }
     
@@ -675,12 +664,10 @@
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
     if (![self databaseExists]) {
-        [self checkPoolPushBack];
         return NO;
     }
     
     if (_isExecutingStatement) {
-        [self checkPoolPushBack];
         [self warnInUse];
         return NO;
     }
@@ -717,7 +704,6 @@
                     NSLog(@"Database busy");
                     sqlite3_finalize(pStmt);
                     _isExecutingStatement = NO;
-                    [self checkPoolPushBack];
                     return NO;
                 }
             }
@@ -742,7 +728,6 @@
                 }
                 
                 _isExecutingStatement = NO;
-                [self checkPoolPushBack];
                 return NO;
             }
         }
@@ -804,7 +789,6 @@
         NSLog(@"Error: the bind count is not correct for the # of variables (%@) (executeUpdate)", sql);
         sqlite3_finalize(pStmt);
         _isExecutingStatement = NO;
-        [self checkPoolPushBack];
         return NO;
     }
     
@@ -888,7 +872,6 @@
     }
     
     _isExecutingStatement = NO;
-    [self checkPoolPushBack];
     return (rc == SQLITE_DONE || rc == SQLITE_OK);
 }
 
@@ -938,8 +921,6 @@
 - (BOOL)rollback {
     BOOL b = [self executeUpdate:@"rollback transaction"];
     
-    [self pushToPool];
-    
     if (b) {
         _inTransaction = NO;
     }
@@ -950,8 +931,6 @@
 - (BOOL)commit {
     BOOL b =  [self executeUpdate:@"commit transaction"];
     
-    [self pushToPool];
-    
     if (b) {
         _inTransaction = NO;
     }
@@ -960,10 +939,6 @@
 }
 
 - (BOOL)beginDeferredTransaction {
-    
-    if ([self pool]) {
-        [self popFromPool];
-    }
     
     BOOL b = [self executeUpdate:@"begin deferred transaction"];
     if (b) {
@@ -974,10 +949,6 @@
 }
 
 - (BOOL)beginTransaction {
-    
-    if ([self pool]) {
-        [self popFromPool];
-    }
     
     BOOL b = [self executeUpdate:@"begin exclusive transaction"];
     if (b) {
@@ -998,10 +969,6 @@
     // FIXME: make sure the savepoint name doesn't have a ' in it.
     
     NSParameterAssert(name);
-    
-    if ([self pool]) {
-        [self popFromPool];
-    }
     
     if (![self executeUpdate:[NSString stringWithFormat:@"savepoint '%@';", name]]) {
         
@@ -1025,10 +992,6 @@
         *outErr = [self lastError];
     }
     
-    if ([self pool]) {
-        [self pushToPool];
-    }
-    
     return worked;
 }
 
@@ -1040,10 +1003,6 @@
     
     if (!worked && *outErr) {
         *outErr = [self lastError];
-    }
-    
-    if ([self pool]) {
-        [self pushToPool];
     }
     
     return worked;
@@ -1092,54 +1051,6 @@
     if (!_shouldCacheStatements) {
         [self setCachedStatements:nil];
     }
-}
-
-
-- (FMDatabase*)popFromPool {
-    
-    if (![self pool]) {
-        NSLog(@"No FMDatabasePool in place for %@", self);
-        return 0x00;
-    }
-    
-    _poolPopCount++;
-    
-    return self;
-}
-
-- (void)pushToPool {
-    _poolPopCount--;
-    
-    [self checkPoolPushBack];
-}
-
-- (void)checkPoolPushBack {
-    
-    if (_poolPopCount <= 0) {
-        [[self pool] pushDatabaseBackInPool:self];
-        
-        if (_poolPopCount < 0) {
-            _poolPopCount = 0;
-        }
-    }
-}
-
-// #if __has_feature(objc_arc_weak)
-
-- (FMDatabasePool *)pool {
-#if FMDB_USE_WEAK_POOL && (!__has_feature(objc_arc_weak))
-    return objc_loadWeak(&_poolAccessViaMethodOnly);
-#else
-     return _poolAccessViaMethodOnly;
-#endif
-}
-
-- (void)setPool:(FMDatabasePool *)value {
-#if FMDB_USE_WEAK_POOL && (!__has_feature(objc_arc_weak))
-    objc_storeWeak(&_poolAccessViaMethodOnly, value);
-#else
-    _poolAccessViaMethodOnly = value;
-#endif
 }
 
 void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3_value **argv);

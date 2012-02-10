@@ -15,7 +15,7 @@
 Before using FMDatabasePool, please consider using FMDatabaseQueue instead.
 
 I'm also not 100% sold on this interface.  So if you use FMDatabasePool, things like
-[[pool db] popFromPool] might go away.
+[[pool db] popFromPool] might go away.  In fact, I'm pretty darn sure they will.
 
 If you really really really know what you're doing and FMDatabasePool is what
 you really really need, OK you can use it.  But just be careful not to deadlock!
@@ -121,9 +121,6 @@ If you check out a database, but never execute a statement or query, **you need 
 
 + (id)databasePoolWithPath:(NSString*)aPath;
 - (id)initWithPath:(NSString*)aPath;
-
-- (void)pushDatabaseBackInPool:(FMDatabase*)db;
-- (FMDatabase*)db;
 
 - (NSUInteger)countOfCheckedInDatabases;
 - (NSUInteger)countOfCheckedOutDatabases;

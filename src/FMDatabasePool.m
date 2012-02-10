@@ -9,6 +9,14 @@
 #import "FMDatabasePool.h"
 #import "FMDatabase.h"
 
+@interface FMDatabasePool()
+
+- (void)pushDatabaseBackInPool:(FMDatabase*)db;
+- (FMDatabase*)db;
+
+@end
+
+
 @implementation FMDatabasePool
 @synthesize path=_path;
 @synthesize delegate=_delegate;
@@ -56,6 +64,10 @@
 
 - (void)pushDatabaseBackInPool:(FMDatabase*)db {
     
+    if (!db) { // db can be null if we set an upper bound on the # of databases to create.
+        return;
+    }
+    
     [self executeLocked:^() {
         
         if ([_databaseInPool containsObject:db]) {
@@ -64,8 +76,6 @@
         
         [_databaseInPool addObject:db];
         [_databaseOutPool removeObject:db];
-        
-        [db setPool:0x00];
         
     }];
 }
@@ -112,8 +122,6 @@
             NSLog(@"Could not open up the database at path %@", _path);
             db = 0x00;
         }
-        
-        [db setPool:self];
     }];
     
     return db;
@@ -160,11 +168,11 @@
 
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
     
-    FMDatabase *db = [[self db] popFromPool];
+    FMDatabase *db = [self db];
     
     block(db);
     
-    [db pushToPool];
+    [self pushDatabaseBackInPool:db];
 }
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
@@ -189,6 +197,8 @@
     else {
         [db commit];
     }
+    
+    [self pushDatabaseBackInPool:db];
 }
 
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
@@ -212,6 +222,7 @@
     NSError *err = 0x00;
     
     if (![db startSavePointWithName:name error:&err]) {
+        [self pushDatabaseBackInPool:db];
         return err;
     }
     
@@ -223,6 +234,8 @@
     else {
         [db releaseSavePointWithName:name error:&err];
     }
+    
+    [self pushDatabaseBackInPool:db];
     
     return err;
 }
