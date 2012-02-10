@@ -6,9 +6,11 @@
 
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
+void testPool(NSString *dbPath);
+
 int main (int argc, const char * argv[]) {
     
-    @autoreleasepool {
+@autoreleasepool {
         
     
     NSString *dbPath = @"/tmp/tmp.db";
@@ -587,13 +589,6 @@ int main (int argc, const char * argv[]) {
         
     }
     
-    
-    
-    
-    
-    
-    
-    
     // just for fun.
     rs = [db executeQuery:@"PRAGMA database_list"];
     while ([rs next]) {
@@ -617,15 +612,148 @@ int main (int argc, const char * argv[]) {
     [db close];
     
     
+    testPool(dbPath);
     
     
     
+    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
+    
+    FMDBQuickCheck(queue);
+    
+    {
+        [queue inDatabase:^(FMDatabase *db) {
+            
+            
+            int count = 0;
+            FMResultSet *rsl = [db executeQuery:@"select * from likefoo where foo like 'h%'"];
+            while ([rsl next]) {
+                count++;
+            }
+            
+            FMDBQuickCheck(count == 2);
+            
+            count = 0;
+            rsl = [db executeQuery:@"select * from likefoo where foo like ?", @"h%"];
+            while ([rsl next]) {
+                count++;
+            }
+            
+            FMDBQuickCheck(count == 2);
+        }];
+        
+    }
+    
+    
+    {
+        // You should see pairs of numbers show up in stdout for this stuff:
+        int ops = 16;
+        
+        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        
+        dispatch_apply(ops, dqueue, ^(size_t nby) {
+            
+            // just mix things up a bit for demonstration purposes.
+            if (nby % 2 == 1) {
+                [NSThread sleepForTimeInterval:.1];
+                
+                [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+                    NSLog(@"Starting query  %ld", nby);
+                    
+                    FMResultSet *rsl = [db executeQuery:@"select * from likefoo where foo like 'h%'"];
+                    while ([rsl next]) {
+                        ;// whatever.
+                    }
+                    
+                    NSLog(@"Ending query    %ld", nby);
+                }];
+                
+            }
+            
+            if (nby % 3 == 1) {
+                [NSThread sleepForTimeInterval:.1];
+            }
+            
+            [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+                NSLog(@"Starting update %ld", nby);
+                [db executeUpdate:@"insert into likefoo values ('1')"];
+                [db executeUpdate:@"insert into likefoo values ('2')"];
+                [db executeUpdate:@"insert into likefoo values ('3')"];
+                NSLog(@"Ending update   %ld", nby);
+            }];
+        });
+        
+        [queue close];
+        
+        [queue inDatabase:^(FMDatabase *db) {
+            FMDBQuickCheck([db executeUpdate:@"insert into likefoo values ('1')"]);
+        }];
+    }
+    
+    
+    
+    {
+        [queue inDatabase:^(FMDatabase *db) {
+            [db executeUpdate:@"create table transtest (a integer)"];
+            FMDBQuickCheck([db executeUpdate:@"insert into transtest values (1)"]);
+            FMDBQuickCheck([db executeUpdate:@"insert into transtest values (2)"]);
+            
+            int rowCount = 0;
+            FMResultSet *rs = [db executeQuery:@"select * from transtest"];
+            while ([rs next]) {
+                rowCount++;
+            }
+            
+            FMDBQuickCheck(rowCount == 2);
+        }];
+        
+        
+        
+        [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+            FMDBQuickCheck([db executeUpdate:@"insert into transtest values (3)"]);
+            
+            if (YES) {
+                // uh oh!, something went wrong (not really, this is just a test
+                *rollback = YES;
+                return;
+            }
+            
+            FMDBQuickCheck([db executeUpdate:@"insert into transtest values (4)"]);
+        }];
+        
+        [queue inDatabase:^(FMDatabase *db) {
+        
+            int rowCount = 0;
+            FMResultSet *rs = [db executeQuery:@"select * from transtest"];
+            while ([rs next]) {
+                rowCount++;
+            }
+            
+            NSLog(@"after rollback, rowCount is %d (should be 2)", rowCount);
+            
+            FMDBQuickCheck(rowCount == 2);
+        }];
+    }
+    
+    NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
+    
+    
+}// this is the end of our @autorelease pool.
+    
+    
+    return 0;
+}
+
+/*
+ Test the various FMDatabasePool things.
+*/
+
+void testPool(NSString *dbPath) {
     
     FMDatabasePool *dbPool = [FMDatabasePool databasePoolWithPath:dbPath];
     
     FMDBQuickCheck([dbPool countOfOpenDatabases] == 0);
     
-    db = [dbPool db];
+    FMDatabase *db = [dbPool db];
     
     FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
     
@@ -821,7 +949,7 @@ int main (int argc, const char * argv[]) {
     FMDBQuickCheck([dbPool countOfOpenDatabases] == 1);
     
     
-    err = [dbPool inSavePoint:^(FMDatabase *db, BOOL *rollback) {
+    NSError *err = [dbPool inSavePoint:^(FMDatabase *db, BOOL *rollback) {
         FMDBQuickCheck(![adb hadError]);
         [adb executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1006]];
     }];
@@ -855,7 +983,7 @@ int main (int argc, const char * argv[]) {
     
     
     {
-            
+        
         err = [dbPool inSavePoint:^(FMDatabase *adb, BOOL *rollback) {
             FMDBQuickCheck(![adb hadError]);
             [adb executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:1009]];
@@ -898,93 +1026,10 @@ int main (int argc, const char * argv[]) {
             }
             
             FMDBQuickCheck(count == 2);
-        
+            
         }];
         
         
     }
-    
-    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
-    
-    FMDBQuickCheck(queue);
-    
-    {
-        
-        [queue inDatabase:^(FMDatabase *db) {
-            
-            
-            int count = 0;
-            FMResultSet *rsl = [db executeQuery:@"select * from likefoo where foo like 'h%'"];
-            while ([rsl next]) {
-                count++;
-            }
-            
-            FMDBQuickCheck(count == 2);
-            
-            count = 0;
-            rsl = [db executeQuery:@"select * from likefoo where foo like ?", @"h%"];
-            while ([rsl next]) {
-                count++;
-            }
-            
-            FMDBQuickCheck(count == 2);
-        }];
-        
-    }
-    
-    
-    {
-        
-        int ops = 16;
-        
-        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
-        
-        dispatch_apply(ops, dqueue, ^(size_t nby) {
-            
-            // just mix things up a bit for demonstration purposes.
-            if (nby % 2 == 1) {
-                [NSThread sleepForTimeInterval:.1];
-                
-                
-                [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-                    NSLog(@"Starting query  %ld", nby);
-                    
-                    FMResultSet *rsl = [db executeQuery:@"select * from likefoo where foo like 'h%'"];
-                    while ([rsl next]) {
-                        ;// whatever.
-                    }
-                    
-                    NSLog(@"Ending query    %ld", nby);
-                }];
-                
-            }
-            
-            if (nby % 3 == 1) {
-                [NSThread sleepForTimeInterval:.1];
-            }
-            
-            [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-                NSLog(@"Starting update %ld", nby);
-                [db executeUpdate:@"insert into likefoo values ('1')"];
-                [db executeUpdate:@"insert into likefoo values ('2')"];
-                [db executeUpdate:@"insert into likefoo values ('3')"];
-                NSLog(@"Ending update   %ld", nby);
-            }];
-        });
-        
-        [queue close];
-        
-        [queue inDatabase:^(FMDatabase *db) {
-            FMDBQuickCheck([db executeUpdate:@"insert into likefoo values ('1')"]);
-        }];
-    }
-    
-    
-    
-    NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
-        
-    }
-    
-    
-    return 0;
+
 }

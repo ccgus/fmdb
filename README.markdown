@@ -9,11 +9,15 @@ http://www.sqlite.org/faq.html
 
 Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: http://www.sqlite.org/docs.html
 
+## Automatic Reference Counting (ARC) or Manual Memory Management?
+You can use either style in your Cocoa project.  FMDB Will figure out which you are using at compile time and do the right thing.
+
 ## Usage
-There are two main classes in FMDB:
+There are three main classes in FMDB:
 
 1. `FMDatabase` - Represents a single SQLite database.  Used for executing SQL statements.
 2. `FMResultSet` - Represents the results of executing a query on an `FMDatabase`.
+3. `FMDatabaseQueue` - If you're wanting to perform queries and updates on multiple threads, you'll want to use this class.  It's described in the "Thread Safety" section below.
 
 ### Database Creation
 An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
@@ -127,90 +131,48 @@ Alternatively, you can use the `-execute*WithFormat:` variant to use `NSString`-
 Internally, the `-execute*WithFormat:` methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
 
 
-<h2 id="threads">Using FMDatabasePool and Thread Safety.</h2>
+<h2 id="threads">Using FMDatabaseQueue and Thread Safety.</h2>
 
-**Note:** This is preliminary and subject to change.  Consider it experimental, but feel free to try it out and give me feedback.
-
-Using a single instance of FMDatabase from multiple threads at once is not supported. The Fine Print: It's always been ok to make a FMDatabase object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
+Using a single instance of FMDatabase from multiple threads at once is a bad idea.  It has always been OK to make a FMDatabase object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
 
 **So don't instantiate a single FMDatabase object and use it across multiple threads.**
 
+Instead, use FMDatabaseQueue.  It's your friend and it's here to help.  Here's how to use it:
 
+First, make your queue.
 
-Instead, use FMDatabasePool.  It's your friend and it's here to help.  Here's how to use it:
+	FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:aPath];
 
+Then use it like so:
 
-First, make your pool.
-
-	FMDatabasePool *pool = [FMDatabasePool databasePoolWithPath:aPath];
-
-If you just have a single statement- use it like so:
-
-	[[pool db] executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:42]];
-
-The pool's db method will return an instance of FMDatabase that knows it is in a pool.  After it is done with the update, it will place itself back into the pool.
-
-Making a query is similar:
-	
-	FMResultSet *rs = [[pool db] executeQuery:@"SELECT * FROM myTable"];
-	while ([rs next]) {
-		//retrieve values for each record
-	}
-
-When the result set is exhausted or [rs close] is called, the result set will tell the database it was created from to put itself back into the pool for use later on.
-
-If you'd rather use multiple queries without having to call [pool db] each time, you can grab a database instance, tell it to stay out of the pool, and then tell it to go back in the pool when you're done:
-
-	FMDatabase *db = [[pool db] popFromPool];
-	…
-	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
-	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
-	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
-	…
-	// put the database back in the pool.
-	[db pushToPool];
-
-Alternatively, you can use this nifty block based approach:
-
-	[dbPool useDatabase: ^(FMDatabase *aDb) {
+    [queue inDatabase:^(FMDatabase *db) {
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
-	}];
+		
+		FMResultSet *rs = [db executeQuery:@"select * from foo"];
+        while ([rs next]) {
+            …
+        }
+    }];
 
-And it will do the right thing.
+An easy way to wrap things up in a transaction can be done like this:
 
-Starting a transaction will keep the db from going back into the pool automatically:
-
-	FMDatabase *db = [pool db];
-	[db beginTransaction];
-	
-	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
-	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
-	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
-	
-	[db commit]; // or a rollback here would work as well.
- 
-
-There is also a block based transaction approach:
-
-	[dbPool inTransaction:^(FMDatabase *db, BOOL *rollback) {
-		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
+    [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+		
+		if (whoopsSomethingWrongHappened) {
+		    *rollback = YES;
+		    return;
+		}
+		// etc…
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:4]];
     }];
 
 
-
-If you check out a database, but never execute a statement or query, **you need to put it back in the pool yourself**.
-
-	FMDatabase *db = [pool db];
-	// lala, don't do anything with the database
-	…
-	// oh look, I BETTER PUT THE DB BACK IN THE POOL OR ELSE IT IS GOING TO LEAK:
-	[db pushToPool];
-	
-Do you have feedback on this pooled approach?  Email Gus!  The plan is to eventually move this class to the master branch once it's been tweaked and baked a while.
+FMDatabaseQueue will make a serialized GCD queue in the background and execute the blocks you pass to the GCD queue.  This means if you call your FMDatabaseQueue's methods from multiple threads at the same time GDC will execute them in the order they are received.  This means queries and updates won't step on each other's toes, and every one is happy.
 
 ## History
 
