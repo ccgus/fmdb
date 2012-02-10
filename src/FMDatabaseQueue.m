@@ -9,7 +9,19 @@
 #import "FMDatabaseQueue.h"
 #import "FMDatabase.h"
 
-// Note: we call [self retain]; before using dispatch_sync, just incase FMDatabaseQueue is released on another thread and we're in the middle of doing something in dispatch_sync
+/*
+ 
+ Note: we call [self retain]; before using dispatch_sync, just incase 
+ FMDatabaseQueue is released on another thread and we're in the middle of doing
+ something in dispatch_sync
+ 
+ Another Note:
+ Some day, I think it would be awesome to add support for creating a queue with
+ DISPATCH_QUEUE_CONCURRENT, and then make  dispatch_barrier_async the default
+ way to execute things- but give the option to use dispatch_sync for cases where
+ we know we're going to make read only operations for the database.
+
+ */
 
 @implementation FMDatabaseQueue
 
