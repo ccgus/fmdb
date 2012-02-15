@@ -149,7 +149,6 @@
 - (void)clearCachedStatements {
     
     for (FMStatement *cachedStmt in [_cachedStatements objectEnumerator]) {
-        //NSLog(@"cachedStmt: '%@'", cachedStmt);
         [cachedStmt close];
     }
     
@@ -185,7 +184,6 @@
 }
 
 - (void)setCachedStatement:(FMStatement*)statement forQuery:(NSString*)query {
-    //NSLog(@"setting query: %@", query);
     
     query = [query copy]; // in case we got handed in a mutable string...
     

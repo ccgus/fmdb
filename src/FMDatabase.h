@@ -2,15 +2,8 @@
 #import "sqlite3.h"
 #import "FMResultSet.h"
 #import "FMDatabasePool.h"
-/*
-#ifndef MAC_OS_X_VERSION_10_7
-    #define MAC_OS_X_VERSION_10_7 1070
-#endif
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_7
-    #define FMDB_USE_WEAK_POOL 1
-#endif
-*/
+
 #if ! __has_feature(objc_arc)
     #define FMDBAutorelease(__v) ([__v autorelease]);
     #define FMDBReturnAutoreleased FMDBAutorelease
@@ -47,17 +40,7 @@
     NSMutableDictionary *_cachedStatements;
     NSMutableSet        *_openResultSets;
     NSMutableSet        *_openFunctions;
-    /*
-#ifdef FMDB_USE_WEAK_POOL
-    __weak FMDatabasePool *_poolAccessViaMethodOnly;
-#else
-    FMDatabasePool      *_poolAccessViaMethodOnly;
-#endif
-    
-    NSInteger           _poolPopCount;
-    
-    FMDatabasePool      *pool;
-    */
+
 }
 
 
