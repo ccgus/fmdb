@@ -27,6 +27,8 @@ An `FMDatabase` is created with a path to a SQLite database file.  This path can
 2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
 3. `NULL`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
 
+(For more information on temporary and in-memory databases, read the sqlite documentation on the subject: http://www.sqlite.org/inmemorydb.html)
+
 	FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
 	
 ### Opening
