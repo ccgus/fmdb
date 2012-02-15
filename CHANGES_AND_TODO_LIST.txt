@@ -3,6 +3,22 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2012.02.10:
+    Changed up FMDatabasePool so that you can't "pop" it from a pool anymore.  I just consider this too risky- use the block based functions instead.
+    Also provided a good reason in main.m for why you should use FMDatabaseQueue instead.  Search for "ONLY_USE_THE_POOL_IF_YOU_ARE_DOING_READS".
+    I consider this branch 2.0 at this point- I'll let it bake for a couple of days, then push it to the main repo.
+    
+
+2012.01.06:
+    Added a new method to FMDatabase to make custom functions out of a block:
+    - (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block
+    
+    Check out the function "testSQLiteFunction" in main.m for an example.
+
+2011.07.14:
+    Added methods for named parameters, using keys from an NSDictionary (Thanks to Drarok Ithaqua for the patches!)
+    Changed FMDatabase's "- (BOOL)update:(NSString*)sql error:(NSError**)outErr bind:(id)bindArgs, ... " to "- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ..." as the previous method didn't actually work as advertised in the way it was written.  Thanks to @jaekwon for pointing this out.
+
 2011.06.22
     Changed some methods to properties.  Hello 2011.
     Added a warning when you try and use a database that wasn't opened.  Hacked together based on patches from Drarok Ithaqua.
@@ -10,18 +26,18 @@ If you would like to contribute some code- awesome!  I just ask that you make it
     Added + (BOOL)isThreadSafe to FMDatabase.  It'll let you know if the version of SQLite you are running is compiled with it's thread safe options.  THIS DOES NOT MEAN FMDATABASE IS THREAD SAFE.  I haven't done a review of it for this case, so I'm just saying.
 
 2011.04.09
-	Added a method to validate a SQL statement.
-	Added a method to retrieve the number of columns in a result set.
-	Added two methods to execute queries and updates with NSString-style format specifiers.
+    Added a method to validate a SQL statement.
+    Added a method to retrieve the number of columns in a result set.
+    Added two methods to execute queries and updates with NSString-style format specifiers.
     Thanks to Dave DeLong for the patches!
 
 2011.03.12
-	Added compatibility with garbage collection.
-	When an FMDatabase is closed, all open FMResultSets pertaining to that database are also closed.
+    Added compatibility with garbage collection.
+    When an FMDatabase is closed, all open FMResultSets pertaining to that database are also closed.
     Added:
     - (id) objectForColumnIndex:(int)columnIdx;
     - (id) objectForColumnName:(NSString*)columnName;
-	Changes by Dave DeLong.
+    Changes by Dave DeLong.
 
 2011.02.05
     The -(int)changes; method on FMDatabase is a bit more robust now, and there's a new static library target.  And if a database path is nil, we now open up a :memory: database. Patch from Pascal Pfiffner!

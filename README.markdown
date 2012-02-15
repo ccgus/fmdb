@@ -1,17 +1,24 @@
 # FMDB
-
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
-## Mailing List:
 
+## The FMDB Mailing List:
 http://groups.google.com/group/fmdb
 
-## Usage
+## Read the SQLite FAQ:
+http://www.sqlite.org/faq.html
 
-There are two main classes in FMDB:
+Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: http://www.sqlite.org/docs.html
+
+## Automatic Reference Counting (ARC) or Manual Memory Management?
+You can use either style in your Cocoa project.  FMDB Will figure out which you are using at compile time and do the right thing.
+
+## Usage
+There are three main classes in FMDB:
 
 1. `FMDatabase` - Represents a single SQLite database.  Used for executing SQL statements.
 2. `FMResultSet` - Represents the results of executing a query on an `FMDatabase`.
+3. `FMDatabaseQueue` - If you're wanting to perform queries and updates on multiple threads, you'll want to use this class.  It's described in the "Thread Safety" section below.
 
 ### Database Creation
 An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
@@ -91,7 +98,16 @@ When providing a SQL statement to FMDB, you should not attempt to "sanitize" any
 
 	INSERT INTO myTable VALUES (?, ?, ?)
 	
-The `?` character is recognized by SQLite as a placeholder for a value to be inserted.  The execution methods all accept a variable number of arguments (or a representation of those arguments, such as an `NSArray` or a `va_list`), which are properly escaped for you.
+The `?` character is recognized by SQLite as a placeholder for a value to be inserted.  The execution methods all accept a variable number of arguments (or a representation of those arguments, such as an `NSArray`, `NSDictionary`, or a `va_list`), which are properly escaped for you.
+
+Alternatively, you may use named parameters syntax:
+
+    INSERT INTO myTable VALUES (:id, :name, :value)
+    
+The parameters *must* start with a colon. SQLite itself supports other characters, but internally the Dictionary keys are prefixed with a colon, do **not** include the colon in your dictionary keys.
+
+    NSDictionary *argsDict = [NSDictionary dictionaryWithObjectsAndKeys:@"My Name", @"name", nil];
+    [db executeUpdate:@"INSERT INTO myTable (name) VALUES (:name)" withArgumentsInDictionary:argsDict];
 
 Thus, you SHOULD NOT do this (or anything like this):
 
@@ -114,6 +130,54 @@ Alternatively, you can use the `-execute*WithFormat:` variant to use `NSString`-
 	[db executeUpdateWithFormat:@"INSERT INTO myTable VALUES (%d)", 42];
 	
 Internally, the `-execute*WithFormat:` methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
+
+
+<h2 id="threads">Using FMDatabaseQueue and Thread Safety.</h2>
+
+Using a single instance of FMDatabase from multiple threads at once is a bad idea.  It has always been OK to make a FMDatabase object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
+
+**So don't instantiate a single FMDatabase object and use it across multiple threads.**
+
+Instead, use FMDatabaseQueue.  It's your friend and it's here to help.  Here's how to use it:
+
+First, make your queue.
+
+	FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:aPath];
+
+Then use it like so:
+
+    [queue inDatabase:^(FMDatabase *db) {
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+		
+		FMResultSet *rs = [db executeQuery:@"select * from foo"];
+        while ([rs next]) {
+            …
+        }
+    }];
+
+An easy way to wrap things up in a transaction can be done like this:
+
+    [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+		
+		if (whoopsSomethingWrongHappened) {
+		    *rollback = YES;
+		    return;
+		}
+		// etc…
+		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:4]];
+    }];
+
+
+FMDatabaseQueue will make a serialized GCD queue in the background and execute the blocks you pass to the GCD queue.  This means if you call your FMDatabaseQueue's methods from multiple threads at the same time GDC will execute them in the order they are received.  This means queries and updates won't step on each other's toes, and every one is happy.
+
+## Making custom sqlite functions, based on blocks.
+
+You can do this!  For an example, look for "makeFunctionNamed:" in main.m
 
 ## History
 
