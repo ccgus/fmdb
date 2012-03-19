@@ -117,6 +117,21 @@ int main (int argc, const char * argv[]) {
     // the autorelease pool closes, so sqlite will complain about it.
     [rs close];  
     
+    
+    [db executeUpdate:@"create table ull (a integer)"];
+    
+    [db executeUpdate:@"insert into ull (a) values (?)" , [NSNumber numberWithUnsignedLongLong:ULLONG_MAX]];
+    
+    rs = [db executeQuery:@"select  a from ull"];
+    while ([rs next]) {
+        unsigned long long a = [rs unsignedLongLongIntForColumnIndex:0];
+        unsigned long long b = [rs unsignedLongLongIntForColumn:@"a"];
+        
+        FMDBQuickCheck(a == ULLONG_MAX);
+        FMDBQuickCheck(b == ULLONG_MAX);
+    }
+    
+    
     // ----------------------------------------------------------------------------------------
     // blob support.
     [db executeUpdate:@"create table blobTable (a text, b blob)"];
