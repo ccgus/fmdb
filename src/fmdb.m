@@ -117,6 +117,8 @@ int main (int argc, const char * argv[]) {
     // the autorelease pool closes, so sqlite will complain about it.
     [rs close];  
     
+    FMDBQuickCheck(![db hasOpenResultSets]);
+    
     // ----------------------------------------------------------------------------------------
     // blob support.
     [db executeUpdate:@"create table blobTable (a text, b blob)"];
@@ -735,6 +737,8 @@ int main (int argc, const char * argv[]) {
             while ([rs next]) {
                 rowCount++;
             }
+            
+            FMDBQuickCheck(![db hasOpenResultSets]);
             
             NSLog(@"after rollback, rowCount is %d (should be 2)", rowCount);
             
