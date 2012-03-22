@@ -350,6 +350,9 @@
         else if (strcmp([obj objCType], @encode(long long)) == 0) {
             sqlite3_bind_int64(pStmt, idx, [obj longLongValue]);
         }
+        else if (strcmp([obj objCType], @encode(unsigned long long)) == 0) {
+            sqlite3_bind_int64(pStmt, idx, [obj unsignedLongLongValue]);
+        }
         else if (strcmp([obj objCType], @encode(float)) == 0) {
             sqlite3_bind_double(pStmt, idx, [obj floatValue]);
         }

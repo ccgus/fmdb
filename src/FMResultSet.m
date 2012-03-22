@@ -228,6 +228,14 @@
     return sqlite3_column_int64([_statement statement], columnIdx);
 }
 
+- (unsigned long long int)unsignedLongLongIntForColumn:(NSString*)columnName {
+    return [self unsignedLongLongIntForColumnIndex:[self columnIndexForName:columnName]];
+}
+
+- (unsigned long long int)unsignedLongLongIntForColumnIndex:(int)columnIdx {
+    return (unsigned long long int)[self longLongIntForColumnIndex:columnIdx];
+}
+
 - (BOOL)boolForColumn:(NSString*)columnName {
     return [self boolForColumnIndex:[self columnIndexForName:columnName]];
 }
