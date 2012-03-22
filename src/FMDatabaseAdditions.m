@@ -89,7 +89,7 @@ return ret;
 - (FMResultSet*)getTableSchema:(NSString*)tableName {
     
     //result colums: cid[INTEGER], name,type [STRING], notnull[INTEGER], dflt_value[],pk[INTEGER]
-    FMResultSet *rs = [self executeQuery:[NSString stringWithFormat: @"PRAGMA table_info(%@)", tableName]];
+    FMResultSet *rs = [self executeQuery:[NSString stringWithFormat: @"PRAGMA table_info('%@')", tableName]];
     
     return rs;
 }

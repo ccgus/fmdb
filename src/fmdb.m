@@ -150,6 +150,15 @@ int main (int argc, const char * argv[]) {
     }
     
     
+    // check funky table names + getTableSchema
+    [db executeUpdate:@"create table '234 fds' (foo text)"];
+    FMDBQuickCheck(![db hadError]);
+    rs = [db getTableSchema:@"234 fds"];
+    FMDBQuickCheck([rs next]);
+    [rs close];
+    
+    
+    
     // ----------------------------------------------------------------------------------------
     // blob support.
     [db executeUpdate:@"create table blobTable (a text, b blob)"];

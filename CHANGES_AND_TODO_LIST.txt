@@ -3,6 +3,12 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+
+2012.03.22:
+    Deprecated resultDict and replaced it with resultDictionary on FMResultSet.  Slight change in behavior as well- resultDictionary will return case sensitive keys.
+    Fixed a problem with getTableSchema: not working with table names that start with a number.
+
+
 2012.02.10:
     Changed up FMDatabasePool so that you can't "pop" it from a pool anymore.  I just consider this too risky- use the block based functions instead.
     Also provided a good reason in main.m for why you should use FMDatabaseQueue instead.  Search for "ONLY_USE_THE_POOL_IF_YOU_ARE_DOING_READS".
