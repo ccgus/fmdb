@@ -88,7 +88,15 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 - (BOOL)columnIndexIsNull:(int)columnIdx;
 - (BOOL)columnIsNull:(NSString*)columnName;
 
-- (void)kvcMagic:(id)object;
-- (NSDictionary *)resultDict;
 
+/* Returns a dictionary of the row results mapped to case sensitive keys of the column names. */
+- (NSDictionary*)resultDictionary;
+ 
+/* Please use resultDictionary instead.  Also, beware that resultDictionary is case sensitive! */
+- (NSDictionary*)resultDict  __attribute__ ((deprecated));
+
+- (void)kvcMagic:(id)object;
+
+ 
 @end
+

@@ -132,6 +132,24 @@ int main (int argc, const char * argv[]) {
         FMDBQuickCheck(b == ULLONG_MAX);
     }
     
+    
+    // check case sensitive result dictionary.
+    [db executeUpdate:@"create table cs (aRowName integer, bRowName text)"];
+    FMDBQuickCheck(![db hadError]);
+    [db executeUpdate:@"insert into cs (aRowName, bRowName) values (?, ?)" , [NSNumber numberWithBool:1], @"hello"];
+    FMDBQuickCheck(![db hadError]);
+    
+    rs = [db executeQuery:@"select * from cs"];
+    while ([rs next]) {
+        NSDictionary *d = [rs resultDictionary];
+        
+        FMDBQuickCheck([d objectForKey:@"aRowName"]);
+        FMDBQuickCheck(![d objectForKey:@"arowname"]);
+        FMDBQuickCheck([d objectForKey:@"bRowName"]);
+        FMDBQuickCheck(![d objectForKey:@"browname"]);
+    }
+    
+    
     // ----------------------------------------------------------------------------------------
     // blob support.
     [db executeUpdate:@"create table blobTable (a text, b blob)"];
