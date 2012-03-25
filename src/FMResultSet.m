@@ -95,6 +95,9 @@
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 - (NSDictionary*)resultDict {
     
     int num_cols = sqlite3_data_count([_statement statement]);
@@ -122,6 +125,7 @@
     return nil;
 }
 
+#pragma clang diagnostic pop
 
 - (NSDictionary*)resultDictionary {
     
