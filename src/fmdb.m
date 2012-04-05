@@ -588,6 +588,26 @@ int main (int argc, const char * argv[]) {
     }
     
     
+    // test attach for the heck of it.
+    {
+        
+        //FMDatabase *dbA = [FMDatabase databaseWithPath:dbPath];
+        [fileManager removeItemAtPath:@"/tmp/attachme.db" error:nil];
+        FMDatabase *dbB = [FMDatabase databaseWithPath:@"/tmp/attachme.db"];
+        FMDBQuickCheck([dbB open]);
+        FMDBQuickCheck([dbB executeUpdate:@"create table attached (a text)"]);
+        FMDBQuickCheck(([dbB executeUpdate:@"insert into attached values (?)", @"test"]));
+        FMDBQuickCheck([dbB close]);
+        
+        [db executeUpdate:@"attach database '/tmp/attachme.db' as attack"];
+        
+        rs = [db executeQuery:@"select * from attack.attached"];
+        FMDBQuickCheck([rs next]);
+        [rs close];
+        
+    }
+    
+    
     
     {
         // -------------------------------------------------------------------------------
