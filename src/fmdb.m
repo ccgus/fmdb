@@ -851,7 +851,7 @@ int main (int argc, const char * argv[]) {
         
     }];
     
-    // safely switch between databases
+    // safely switch between databases, copying the new database to replace the old one and using the queue to make this safe
     {
         [queue close];
         [fileManager removeItemAtPath:dbPath error:nil];
