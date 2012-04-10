@@ -829,7 +829,7 @@ int main (int argc, const char * argv[]) {
                 }
             }
             else {
-                NSLog(@"Unknown formart for StringStartsWithH (%d) %s:%d", sqlite3_value_type(argv[0]), __FUNCTION__, __LINE__);
+                NSLog(@"Unknown format for StringStartsWithH (%d) %s:%d", sqlite3_value_type(argv[0]), __FUNCTION__, __LINE__);
                 sqlite3_result_null(context);
             }
         }];
@@ -851,6 +851,45 @@ int main (int argc, const char * argv[]) {
         
     }];
     
+    // safely switch between databases
+    {
+        [queue close];
+        [fileManager removeItemAtPath:dbPath error:nil];
+        queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
+        FMDBQuickCheck(queue);
+
+        [fileManager removeItemAtPath:@"/tmp/second.db" error:nil];
+        
+        // make sure we can switch to dbB and query it successfully
+        FMDatabase *dbB = [FMDatabase databaseWithPath:@"/tmp/second.db"];
+        [dbB open];
+        [dbB executeUpdate:@"create table test (a text, b text, c integer, d double, e double)"];
+        [dbB beginTransaction];
+        int i = 0;
+        while (i++ < 20) {
+            [dbB executeUpdate:@"insert into test (a, b, c, d, e) values (?, ?, ?, ?, ?)" ,
+             @"hi'", // look!  I put in a ', and I'm not escaping it!
+             [NSString stringWithFormat:@"number %d", i],
+             [NSNumber numberWithInt:i],
+             [NSDate date],
+             [NSNumber numberWithFloat:2.2f]];
+        }
+        [dbB commit];
+        [dbB close];
+
+        [queue switchToDatabaseWithPath:@"/tmp/second.db"];
+        [queue inDatabase:^(FMDatabase *db) {
+            int count = 0;
+            FMResultSet *rsl = [db executeQuery:@"select * from test where a like 'h%'"];
+            while ([rsl next]) {
+                count++;
+            }
+            FMDBQuickCheck(count == 20);
+        }];
+        
+
+        
+    }
     
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     

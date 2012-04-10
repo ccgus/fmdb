@@ -92,6 +92,40 @@
     return _db;
 }
 
+- (NSError *)switchToDatabaseWithPath:(NSString *)aPath {
+    // use the queue to ensure that we're not accessing the db as we switch
+    __block NSError *error = 0x00;
+    
+    dispatch_sync(_queue, ^() { 
+        
+        [_db close];
+        FMDBRelease(_db);
+        _db = 0x00;
+        
+        if([[NSFileManager defaultManager] removeItemAtPath:_path error:&error] &&
+           [[NSFileManager defaultManager] copyItemAtPath:aPath
+                                                   toPath:_path
+                                                    error:&error]){
+               NSLog(@"%@ successfully copied to %@", aPath, _path);
+           } else {
+               NSLog(@"Error description-%@ \n", [error localizedDescription]);
+               NSLog(@"Error reason-%@", [error localizedFailureReason]);
+           }
+        
+        _db = [FMDatabase databaseWithPath:_path];
+        FMDBRetain(_db);
+        
+        if (![_db open]) {
+            NSLog(@"Could not create database queue for path %@", aPath);
+            FMDBRelease(self);
+            NSLog(@"Warning: failed to switch databases [FMDatabaseQueue switchToDatabaseWithPath:]");
+            error = [NSError errorWithDomain:@"FMDatabaseQueue" code:-1L userInfo:nil];
+        }
+    });
+    return error;
+}
+
+
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
     FMDBRetain(self);
     

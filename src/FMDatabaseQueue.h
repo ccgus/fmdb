@@ -23,6 +23,8 @@
 - (id)initWithPath:(NSString*)aPath;
 - (void)close;
 
+- (NSError *)switchToDatabaseWithPath:(NSString *)aPath;
+
 - (void)inDatabase:(void (^)(FMDatabase *db))block;
 
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
