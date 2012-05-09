@@ -453,6 +453,17 @@ int main (int argc, const char * argv[]) {
     
     
     {
+        
+        [db executeUpdate:@"create table utest (a text)"];
+        [db executeUpdate:@"insert into utest values (?)", @"/übertest"];
+        
+        rs = [db executeQuery:@"select * from utest where a = ?", @"/übertest"];
+        FMDBQuickCheck([rs next]);
+        [rs close];
+    }   
+    
+    
+    {
         [db executeUpdate:@"create table testOneHundredTwelvePointTwo (a text, b integer)"];
         [db executeUpdate:@"insert into testOneHundredTwelvePointTwo values (?, ?)" withArgumentsInArray:[NSArray arrayWithObjects:@"one", [NSNumber numberWithInteger:2], nil]];
         [db executeUpdate:@"insert into testOneHundredTwelvePointTwo values (?, ?)" withArgumentsInArray:[NSArray arrayWithObjects:@"one", [NSNumber numberWithInteger:3], nil]];
