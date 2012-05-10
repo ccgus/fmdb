@@ -189,6 +189,24 @@ The history and changes are availbe on its [GitHub page](https://github.com/ccgu
 
 The contributors to FMDB are contained in the "Contributors.txt" file.
 
+## Reporting bugs
+
+Reduce your bug down to the smallest amount of code possible.  You want to make it super easy for the developers to see and reproduce your bug.  If it helps, pretend that the person who can fix your bug is active on shipping 3 major products, works on a handful of open source projects, has a newborn baby, and is generally very very busy.
+
+And we've even added a template function to main.m (FMDBReportABugFunction) in the FMDB distribution to help you out:
+
+* Open up fmdb project in Xcode.
+* Open up main.m and modify the FMDBReportABugFunction to reproduce your bug.
+	* Setup your table(s) in the code.
+	* Make your query or update(s).
+	* Add some assertions which demonstrate the bug.
+	
+Then you can bring it up on the FMDB mailing list by showing your nice and compact FMDBReportABugFunction, or you can report the bug via the github FMDB bug reporter.
+
+**Optional:**
+
+Figure out where the bug is, fix it, and send a patch in or bring that up on the mailing list.  Make sure all the other tests run after your modifications.
+
 ## License
 
 The license for FMDB is contained in the "License.txt" file.
