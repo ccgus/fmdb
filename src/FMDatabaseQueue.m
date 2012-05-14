@@ -16,7 +16,7 @@
  something in dispatch_sync
  
  */
- 
+
 @implementation FMDatabaseQueue
 
 @synthesize path = _path;
@@ -95,15 +95,21 @@
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
     FMDBRetain(self);
     
-    dispatch_sync(_queue, ^() {
-        
+    void (^workBlock)(void) = ^{
         FMDatabase *db = [self database];
         block(db);
-        
-        if ([db hasOpenResultSets]) {
-            NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
-        }
-    });
+    };
+    
+    if (dispatch_get_current_queue() == _queue)
+        workBlock();
+    else
+        dispatch_sync(_queue, ^{
+            workBlock();
+            
+            if ([[self database] hasOpenResultSets]) {
+                NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
+            }
+        });
     
     FMDBRelease(self);
 }
