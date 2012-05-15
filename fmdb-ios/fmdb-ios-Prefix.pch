@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'fmdb-ios' target in the 'fmdb-ios' project
-//
-
-#ifdef __OBJC__
-   #import <Foundation/Foundation.h>
-#endif
