@@ -26,8 +26,12 @@
 - (BOOL)tableExists:(NSString*)tableName;
 - (FMResultSet*)getSchema;
 - (FMResultSet*)getTableSchema:(NSString*)tableName;
-- (BOOL)columnExists:(NSString*)tableName columnName:(NSString*)columnName;
+
+- (BOOL)columnExists:(NSString*)columnName inTableWithName:(NSString*)tableName;
 
 - (BOOL)validateSQL:(NSString*)sql error:(NSError**)error;
+
+// deprecated - use columnExists:inTableWithName: instead.
+- (BOOL)columnExists:(NSString*)tableName columnName:(NSString*)columnName __attribute__ ((deprecated));
 
 @end

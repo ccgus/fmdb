@@ -345,8 +345,9 @@ int main (int argc, const char * argv[]) {
     }
     
     
-    
-    
+    FMDBQuickCheck([db columnExists:@"a" inTableWithName:@"nulltest"]);
+    FMDBQuickCheck([db columnExists:@"b" inTableWithName:@"nulltest"]);
+    FMDBQuickCheck(![db columnExists:@"c" inTableWithName:@"nulltest"]);
     
     
     // null dates
