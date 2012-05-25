@@ -288,8 +288,15 @@
     return sqlite3_errcode(_db);
 }
 
+
+- (NSError*)errorWithMessage:(NSString*)message {
+    NSDictionary* errorMessage = [NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey];
+    
+    return [NSError errorWithDomain:@"FMDatabase" code:sqlite3_errcode(_db) userInfo:errorMessage];    
+}
+
 - (NSError*)lastError {
-    return [NSError errorWithDomain:@"FMDatabase" code:sqlite3_errcode(_db) userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage] forKey:NSLocalizedDescriptionKey]];
+   return [self errorWithMessage:[self lastErrorMessage]];
 }
 
 - (sqlite_int64)lastInsertRowId {
@@ -725,7 +732,7 @@
                 sqlite3_finalize(pStmt);
                 
                 if (outErr) {
-                    *outErr = [NSError errorWithDomain:[NSString stringWithUTF8String:sqlite3_errmsg(_db)] code:rc userInfo:nil];
+                    *outErr = [self errorWithMessage:[NSString stringWithUTF8String:sqlite3_errmsg(_db)]];
                 }
                 
                 _isExecutingStatement = NO;
