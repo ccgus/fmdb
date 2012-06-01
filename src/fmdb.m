@@ -57,6 +57,18 @@ int main (int argc, const char * argv[]) {
     FMDBQuickCheck([err code] == SQLITE_ERROR);
     NSLog(@"err: '%@'", err);
     
+    
+    
+    // empty strings should still return a value.
+    FMDBQuickCheck(([db boolForQuery:@"SELECT ? not null", @""]));
+    
+    // same with empty bits o' mutable data
+    FMDBQuickCheck(([db boolForQuery:@"SELECT ? not null", [NSMutableData data]]));
+    
+    // same with empty bits o' data
+    FMDBQuickCheck(([db boolForQuery:@"SELECT ? not null", [NSData data]]));
+
+    
     // but of course, I don't bother checking the error codes below.
     // Bad programmer, no cookie.
     
