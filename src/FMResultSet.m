@@ -300,7 +300,7 @@
         return nil;
     }
     
-    return [NSString stringWithUTF8String:c];
+    return [NSString stringWithFormat:@"%s", c];
 }
 
 - (NSString*)stringForColumn:(NSString*)columnName {
