@@ -129,7 +129,7 @@
 
 - (NSUInteger)countOfCheckedInDatabases {
     
-    __block NSInteger count;
+    __block NSUInteger count;
     
     [self executeLocked:^() {
         count = [_databaseInPool count];
@@ -140,7 +140,7 @@
 
 - (NSUInteger)countOfCheckedOutDatabases {
     
-    __block NSInteger count;
+    __block NSUInteger count;
     
     [self executeLocked:^() {
         count = [_databaseOutPool count];
@@ -150,7 +150,7 @@
 }
 
 - (NSUInteger)countOfOpenDatabases {
-    __block NSInteger count;
+    __block NSUInteger count;
     
     [self executeLocked:^() {
         count = [_databaseOutPool count] + [_databaseInPool count];
