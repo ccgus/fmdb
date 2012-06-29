@@ -58,8 +58,6 @@ return ret;
 
 - (BOOL)tableExists:(NSString*)tableName {
     
-    tableName = [tableName lowercaseString];
-    
     FMResultSet *rs = [self executeQuery:@"select [sql] from sqlite_master where [type] = 'table' and lower(name) = ?", tableName];
     
     //if at least one next exists, table exists
@@ -98,14 +96,11 @@ return ret;
     
     BOOL returnBool = NO;
     
-    tableName  = [tableName lowercaseString];
-    columnName = [columnName lowercaseString];
-    
     FMResultSet *rs = [self getTableSchema:tableName];
     
     //check if column is present in table schema
     while ([rs next]) {
-        if ([[[rs stringForColumn:@"name"] lowercaseString] isEqualToString:columnName]) {
+        if ([[rs stringForColumn:@"name"] isEqualToString:columnName]) {
             returnBool = YES;
             break;
         }
