@@ -69,6 +69,24 @@ int main (int argc, const char * argv[]) {
     FMDBQuickCheck(([db boolForQuery:@"SELECT ? not null", [NSData data]]));
 
     
+    
+    // how do we do pragmas?  Like so:
+    FMResultSet *ps = [db executeQuery:@"PRAGMA journal_mode=delete"];
+    FMDBQuickCheck(![db hadError]);
+    FMDBQuickCheck(ps);
+    FMDBQuickCheck([ps next]);
+    [ps close];
+    
+    // oh, but some pragmas require updates?
+    [db executeUpdate:@"PRAGMA page_size=2048"];
+    FMDBQuickCheck(![db hadError]);
+    
+    // what about a vacuum?
+    [db executeUpdate:@"vacuum"];
+    FMDBQuickCheck(![db hadError]);
+    
+    exit(0);
+    
     // but of course, I don't bother checking the error codes below.
     // Bad programmer, no cookie.
     
