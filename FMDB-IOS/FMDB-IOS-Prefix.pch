@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'FMDB-IOS' target in the 'FMDB-IOS' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

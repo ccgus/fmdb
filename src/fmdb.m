@@ -1150,7 +1150,7 @@ void testPool(NSString *dbPath) {
             }];
         });
         
-        NSLog(@"Number of open databases after crazy gcd stuff: %ld", [dbPool countOfOpenDatabases]);
+        NSLog(@"Number of open databases after crazy gcd stuff: %u", [dbPool countOfOpenDatabases]);
     }
     
     
