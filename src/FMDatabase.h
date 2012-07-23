@@ -44,12 +44,12 @@
 }
 
 
-@property (assign) BOOL traceExecution;
-@property (assign) BOOL checkedOut;
-@property (assign) int busyRetryTimeout;
-@property (assign) BOOL crashOnErrors;
-@property (assign) BOOL logsErrors;
-@property (retain) NSMutableDictionary *cachedStatements;
+@property (atomic, assign) BOOL traceExecution;
+@property (atomic, assign) BOOL checkedOut;
+@property (atomic, assign) int busyRetryTimeout;
+@property (atomic, assign) BOOL crashOnErrors;
+@property (atomic, assign) BOOL logsErrors;
+@property (atomic, retain) NSMutableDictionary *cachedStatements;
 
 
 + (id)databaseWithPath:(NSString*)inPath;
@@ -122,9 +122,9 @@
     long _useCount;
 }
 
-@property (assign) long useCount;
-@property (retain) NSString *query;
-@property (assign) sqlite3_stmt *statement;
+@property (atomic, assign) long useCount;
+@property (atomic, retain) NSString *query;
+@property (atomic, assign) sqlite3_stmt *statement;
 
 - (void)close;
 - (void)reset;
