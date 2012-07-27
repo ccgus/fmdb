@@ -150,6 +150,20 @@ int main (int argc, const char * argv[]) {
     
     FMDBQuickCheck(![db hasOpenResultSets]);
     
+    // Test returning an error directly from a query.
+    err = nil;
+    rs = [db query:@"select rowid,* from test where a = ?" withErrorAndBindings:&err, @"hi'"];
+    FMDBQuickCheck(rs)
+    FMDBQuickCheck(!err);
+    rs = [db query:@"BROKEN select rowid,* from test where a = ?" withErrorAndBindings:&err, @"hi'"];
+    FMDBQuickCheck(!rs)
+    FMDBQuickCheck(err);
+    FMDBQuickCheck([[err domain] isEqualToString:@"FMDatabase"]);
+    FMDBQuickCheck([err code] == 1);
+    FMDBQuickCheck([[err localizedDescription] rangeOfString:@"syntax error"].location != NSNotFound);
+    
+    //
+    
     [db executeUpdate:@"create table ull (a integer)"];
     
     [db executeUpdate:@"insert into ull (a) values (?)" , [NSNumber numberWithUnsignedLongLong:ULLONG_MAX]];

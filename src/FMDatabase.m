@@ -655,6 +655,20 @@
     return rs;
 }
 
+- (FMResultSet *)query:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... {
+    va_list args;
+    va_start(args, outErr);
+    
+    id result = [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    
+    va_end(args);
+    
+    if (!result && outErr) {
+        *outErr = [self errorWithMessage:[NSString stringWithUTF8String:sqlite3_errmsg(_db)]];
+    }
+    return result;
+}
+
 - (FMResultSet *)executeQuery:(NSString*)sql, ... {
     va_list args;
     va_start(args, sql);
