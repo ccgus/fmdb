@@ -59,7 +59,7 @@
     FMDBRelease(_path);
     
     if (_queue) {
-        dispatch_release(_queue);
+        FMDBDispatchQueueRelease(_queue);
         _queue = 0x00;
     }
 #if ! __has_feature(objc_arc)
