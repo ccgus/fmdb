@@ -49,7 +49,7 @@
     FMDBRelease(_databaseOutPool);
     
     if (_lockQueue) {
-        dispatch_release(_lockQueue);
+        FMDBDispatchQueueRelease(_lockQueue);
         _lockQueue = 0x00;
     }
 #if ! __has_feature(objc_arc)
