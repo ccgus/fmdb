@@ -31,5 +31,6 @@ Dave DeLong
 Drarok Ithaqua
 Chris Dolan
 Sriram Patil
+Geoffrey Foster
 
 Aaaaannnd, Gus Mueller (that's me!)

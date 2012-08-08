@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2012.08.08
+    Fixed some problems when compiling with ARC against the 10.8 SDK (patch from Geoffrey Foster!).
+
 2012.05.29:
     Changed up the behavior of binding empty NSData objects ([NSData data]).  It will now insert an empty value, rather than a null value- which is consistent with [NSMutableData data] and empty strings (see https://github.com/ccgus/fmdb/issues/73 for a discussion on this).  Thanks to Jens Alfke for pointing this out!
     
