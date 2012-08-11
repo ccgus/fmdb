@@ -12,6 +12,8 @@
     #define FMDBReturnRetained FMDBRetain
 
     #define FMDBRelease(__v) ([__v release]);
+
+	#define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
 #else
     // -fobjc-arc
     #define FMDBAutorelease(__v)
@@ -21,6 +23,26 @@
     #define FMDBReturnRetained(__v) (__v)
 
     #define FMDBRelease(__v)
+
+	#if TARGET_OS_IPHONE
+		// Compiling for iOS
+		#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+			// iOS 6.0 or later
+			#define FMDBDispatchQueueRelease(__v)
+		#else
+			// iOS 5.X or earlier
+			#define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
+		#endif
+	#else
+		// Compiling for Mac OS X
+		#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1080     
+			// Mac OS X 10.8 or later
+			#define FMDBDispatchQueueRelease(__v)
+		#else
+			// Mac OS X 10.7 or earlier
+			#define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
+		#endif
+	#endif
 #endif
 
 
