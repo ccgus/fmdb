@@ -7,6 +7,7 @@ Pod::Spec.new do |s|
   s.author   = { 'August Mueller' => 'gus@flyingmeat.com' }
   s.source   = { :git => 'git@boohee-apple:/opt/git/Plugins/FMDB.git', :tag => "2.0build"}
   s.source_files = 'build/Release-lipo/include/*.h'
-  s.libraries = 'sqlite3', "FMDB"
+  s.libraries    = 'sqlite3', "FMDB"
   s.preserve_paths = 'build/Release-lipo/libFMDB.a'
+  s.xcconfig  =  { 'LIBRARY_SEARCH_PATHS' => '$(PODS_ROOT)/fmdb/build/Release-lipo' }
 end
