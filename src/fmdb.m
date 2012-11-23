@@ -85,8 +85,6 @@ int main (int argc, const char * argv[]) {
     [db executeUpdate:@"vacuum"];
     FMDBQuickCheck(![db hadError]);
     
-    exit(0);
-    
     // but of course, I don't bother checking the error codes below.
     // Bad programmer, no cookie.
     
@@ -150,6 +148,22 @@ int main (int argc, const char * argv[]) {
     [rs close];  
     
     FMDBQuickCheck(![db hasOpenResultSets]);
+    
+    
+    
+    rs = [db executeQuery:@"select rowid, a, b, c from test"];
+    while ([rs next]) {
+        
+        FMDBQuickCheck([rs[0] isEqualTo:rs[@"rowid"]]);
+        FMDBQuickCheck([rs[1] isEqualTo:rs[@"a"]]);
+        FMDBQuickCheck([rs[2] isEqualTo:rs[@"b"]]);
+        FMDBQuickCheck([rs[3] isEqualTo:rs[@"c"]]);
+    }
+    [rs close];
+    
+    
+    
+    
     
     [db executeUpdate:@"create table ull (a integer)"];
     
