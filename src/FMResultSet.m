@@ -419,5 +419,13 @@
     _parentDB = newDb;
 }
 
+- (id)objectAtIndexedSubscript:(int)columnIdx {
+    return [self objectForColumnIndex:columnIdx];
+}
+
+- (id)objectForKeyedSubscript:(NSString *)columnName {
+    return [self objectForColumnName:columnName];
+}
+
 
 @end
