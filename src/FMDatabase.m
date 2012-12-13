@@ -591,14 +591,13 @@
             if (namedIdx > 0) {
                 // Standard binding from here.
                 [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+                // increment the binding count, so our check below works out
+                idx++;
             }
             else {
                 NSLog(@"Could not find index for %@", dictionaryKey);
             }
         }
-        
-        // we need the count of params to avoid an error below.
-        idx = (int) [[dictionaryArgs allKeys] count];
     }
     else {
             
@@ -775,14 +774,14 @@
             if (namedIdx > 0) {
                 // Standard binding from here.
                 [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+                
+                // increment the binding count, so our check below works out
+                idx++;
             }
             else {
                 NSLog(@"Could not find index for %@", dictionaryKey);
             }
         }
-        
-        // we need the count of params to avoid an error below.
-        idx = (int) [[dictionaryArgs allKeys] count];
     }
     else {
         
@@ -807,7 +806,7 @@
     
     
     if (idx != queryCount) {
-        NSLog(@"Error: the bind count is not correct for the # of variables (%@) (executeUpdate)", sql);
+        NSLog(@"Error: the bind count (%d) is not correct for the # of variables in the query (%d) (%@) (executeUpdate)", idx, queryCount, sql);
         sqlite3_finalize(pStmt);
         _isExecutingStatement = NO;
         return NO;

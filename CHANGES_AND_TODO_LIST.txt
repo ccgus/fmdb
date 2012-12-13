@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2012.12.13
+    Changed up how the binding count is calculated when passing a dictionary for named parameter support.  Thanks to Samuel Chen for pointing out the problem.
+
 2012.11.23
     Added keyed and indexed subscript support to FMResultSet- so you can do use the fancy boxed syntax against it (rs[@"foo"] & rs[0]).  Thanks to Robert Ryan for the patches!
 

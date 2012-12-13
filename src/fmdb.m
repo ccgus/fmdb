@@ -205,6 +205,71 @@ int main (int argc, const char * argv[]) {
     
     
     
+    
+    
+    
+    {
+        // -------------------------------------------------------------------------------
+        // Named parameters count test.
+        FMDBQuickCheck([db executeUpdate:@"create table namedparamcounttest (a text, b text, c integer, d double)"]);
+        NSMutableDictionary *dictionaryArgs = [NSMutableDictionary dictionary];
+        [dictionaryArgs setObject:@"Text1" forKey:@"a"];
+        [dictionaryArgs setObject:@"Text2" forKey:@"b"];
+        [dictionaryArgs setObject:[NSNumber numberWithInt:1] forKey:@"c"];
+        [dictionaryArgs setObject:[NSNumber numberWithDouble:2.0] forKey:@"d"];
+        FMDBQuickCheck([db executeUpdate:@"insert into namedparamcounttest values (:a, :b, :c, :d)" withParameterDictionary:dictionaryArgs]);
+        
+        rs = [db executeQuery:@"select * from namedparamcounttest"];
+        
+        FMDBQuickCheck((rs != nil));
+        
+        [rs next];
+        
+        FMDBQuickCheck([[rs stringForColumn:@"a"] isEqualToString:@"Text1"]);
+        FMDBQuickCheck([[rs stringForColumn:@"b"] isEqualToString:@"Text2"]);
+        FMDBQuickCheck([rs intForColumn:@"c"] == 1);
+        FMDBQuickCheck([rs doubleForColumn:@"d"] == 2.0);
+        
+        [rs close];
+        
+        // note that at this point, dictionaryArgs has way more values than we need, but the query should still work since
+        // a is in there, and that's all we need.
+        rs = [db executeQuery:@"select * from namedparamcounttest where a = :a" withParameterDictionary:dictionaryArgs];
+        
+        FMDBQuickCheck((rs != nil));
+        FMDBQuickCheck([rs next]);
+        [rs close];
+        
+        
+        
+        // ***** Please note the following codes *****
+        
+        dictionaryArgs = [NSMutableDictionary dictionary];
+        
+        [dictionaryArgs setObject:@"NewText1" forKey:@"a"];
+        [dictionaryArgs setObject:@"NewText2" forKey:@"b"];
+        [dictionaryArgs setObject:@"OneMoreText" forKey:@"OneMore"];
+        
+        BOOL rc = [db executeUpdate:@"update namedparamcounttest set a = :a, b = :b where b = 'Text2'" withParameterDictionary:dictionaryArgs];
+        
+        FMDBQuickCheck(rc);
+        
+        if (!rc) {
+            NSLog(@"ERROR: %d - %@", db.lastErrorCode, db.lastErrorMessage);
+        }
+    
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // ----------------------------------------------------------------------------------------
     // blob support.
     [db executeUpdate:@"create table blobTable (a text, b blob)"];
