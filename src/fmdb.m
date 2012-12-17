@@ -793,6 +793,15 @@ int main (int argc, const char * argv[]) {
     }
     
     
+    [db setShouldCacheStatements:true];
+    
+    [db executeUpdate:@"CREATE TABLE testCacheStatements(key INTEGER PRIMARY KEY, value INTEGER)"];
+    [db executeUpdate:@"INSERT INTO testCacheStatements (key, value) VALUES (1, 2)"];
+    [db executeUpdate:@"INSERT INTO testCacheStatements (key, value) VALUES (2, 4)"];
+    
+    FMDBQuickCheck([[db executeQuery:@"SELECT * FROM testCacheStatements WHERE key=1"] next]);
+    FMDBQuickCheck([[db executeQuery:@"SELECT * FROM testCacheStatements WHERE key=1"] next]);
+    
     [db close];
     
     
