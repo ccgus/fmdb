@@ -665,6 +665,12 @@
     return result;
 }
 
+- (FMResultSet *)executeQuery:(NSString*)sql withVAList: (va_list)args {
+    id result = [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    
+    return result;
+}
+
 - (FMResultSet *)executeQueryWithFormat:(NSString*)format, ... {
     va_list args;
     va_start(args, format);
@@ -905,6 +911,12 @@
     BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:args];
     
     va_end(args);
+    return result;
+}
+
+- (BOOL)executeUpdate:(NSString*)sql withVAList: (va_list)args {
+    BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    
     return result;
 }
 
