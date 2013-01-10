@@ -2,6 +2,8 @@
 #import "unistd.h"
 #import <objc/runtime.h>
 
+#import "FMError.h"
+
 @interface FMDatabase ()
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
@@ -294,9 +296,9 @@
     NSDictionary* errorMessage_ = [ NSDictionary dictionaryWithObject: message_ 
                                                                forKey: NSLocalizedDescriptionKey];
     
-    return [NSError errorWithDomain:@"FMDatabase" 
-                               code:sqlite3_errcode(_db)
-                           userInfo:errorMessage_];    
+    return [ FMError errorWithDomain:@"FMDatabase"
+                                code:sqlite3_errcode(_db)
+                            userInfo:errorMessage_];
 }
 
 -(NSError*)lastError

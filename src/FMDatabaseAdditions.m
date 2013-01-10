@@ -8,6 +8,7 @@
 
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import "FMError.h"
 
 @interface FMDatabase (PrivateStuff)
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
@@ -139,7 +140,7 @@ return ret;
         else if (rc != SQLITE_OK) {
             validationSucceeded = NO;
             if (error) {
-                *error = [NSError errorWithDomain:NSCocoaErrorDomain 
+                *error = [FMError errorWithDomain: @"FMDatabase"
                                              code:[self lastErrorCode]
                                          userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage] 
                                                                               forKey:NSLocalizedDescriptionKey]];
