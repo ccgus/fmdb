@@ -49,7 +49,7 @@
     FMDBRelease(_databaseOutPool);
     
     if (_lockQueue) {
-        dispatch_release(_lockQueue);
+        FMDBDispatchQueueRelease(_lockQueue);
         _lockQueue = 0x00;
     }
 #if ! __has_feature(objc_arc)
@@ -129,7 +129,7 @@
 
 - (NSUInteger)countOfCheckedInDatabases {
     
-    __block NSInteger count;
+    __block NSUInteger count;
     
     [self executeLocked:^() {
         count = [_databaseInPool count];
@@ -140,7 +140,7 @@
 
 - (NSUInteger)countOfCheckedOutDatabases {
     
-    __block NSInteger count;
+    __block NSUInteger count;
     
     [self executeLocked:^() {
         count = [_databaseOutPool count];
@@ -150,7 +150,7 @@
 }
 
 - (NSUInteger)countOfOpenDatabases {
-    __block NSInteger count;
+    __block NSUInteger count;
     
     [self executeLocked:^() {
         count = [_databaseOutPool count] + [_databaseInPool count];

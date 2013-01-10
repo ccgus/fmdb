@@ -3,7 +3,25 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2012.12.17
+    Now resetting cached statements before executing a query on them (as well as resetting them at the close of a result set).  There was an issue where if you used the same query twice without closing the result set of the first one, you would get results back from the previous query, or maybe an exhausted result set.  Thanks to note173 on github for pointing out the problem.
 
+2012.12.13
+    Changed up how the binding count is calculated when passing a dictionary for named parameter support.  Thanks to Samuel Chen for pointing out the problem.
+
+2012.11.23
+    Added keyed and indexed subscript support to FMResultSet- so you can do use the fancy boxed syntax against it (rs[@"foo"] & rs[0]).  Thanks to Robert Ryan for the patches!
+
+2012.08.08
+    Fixed some problems when compiling with ARC against the 10.8 SDK (patch from Geoffrey Foster!).
+
+2012.05.29:
+    Changed up the behavior of binding empty NSData objects ([NSData data]).  It will now insert an empty value, rather than a null value- which is consistent with [NSMutableData data] and empty strings (see https://github.com/ccgus/fmdb/issues/73 for a discussion on this).  Thanks to Jens Alfke for pointing this out!
+    
+2012.05.25:
+    Deprecated columnExists:columnName: in favor of columnExists:inTableWithName:
+    Remembered to update the changes notes.  I've been forgetting to do this recently.
+    
 2012.03.22:
     Deprecated resultDict and replaced it with resultDictionary on FMResultSet.  Slight change in behavior as well- resultDictionary will return case sensitive keys.
     Fixed a problem with getTableSchema: not working with table names that start with a number.
