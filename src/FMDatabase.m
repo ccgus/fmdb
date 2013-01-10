@@ -288,7 +288,6 @@
     return sqlite3_errcode(_db);
 }
 
-
 -(NSError*)errorWithMessage:( NSString* )message_
 {
     NSDictionary* errorMessage_ = [ NSDictionary dictionaryWithObject: message_ 
@@ -708,9 +707,19 @@
         do {
             retry   = NO;
             rc      = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
-            if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
+            
+            // SQLITE_ERROR is received instead of SQLITE_LOCKED on indexing a table when some parallel "insert" operations executing.
+            BOOL createIndexWorkaroundCondition_ = (SQLITE_ERROR == rc);
+            
+            if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc || createIndexWorkaroundCondition_ )
+            {
                 retry = YES;
                 usleep(20);
+            
+                if ( createIndexWorkaroundCondition_ )
+                {
+                    NSLog( @"[FMDatabase] : CREATE INDEX workaround applied." );
+                }
                 
                 if (_busyRetryTimeout && (numberOfRetries++ > _busyRetryTimeout)) {
                     NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
