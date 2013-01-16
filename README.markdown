@@ -175,7 +175,7 @@ An easy way to wrap things up in a transaction can be done like this:
     }];
 
 
-FMDatabaseQueue will make a serialized GCD queue in the background and execute the blocks you pass to the GCD queue.  This means if you call your FMDatabaseQueue's methods from multiple threads at the same time GDC will execute them in the order they are received.  This means queries and updates won't step on each other's toes, and every one is happy.
+FMDatabaseQueue will make a serialized GCD queue in the background and execute the blocks you pass to the GCD queue.  This means if you call your FMDatabaseQueue's methods from multiple threads at the same time GCD will execute them in the order they are received.  This means queries and updates won't step on each other's toes, and every one is happy.
 
 ## Making custom sqlite functions, based on blocks.
 
