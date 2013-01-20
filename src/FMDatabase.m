@@ -249,8 +249,8 @@
     
 #ifndef NS_BLOCK_ASSERTIONS
     if (_crashOnErrors) {
-        abort();
         NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
+        abort();
     }
 #endif
 }
@@ -263,8 +263,8 @@
         
     #ifndef NS_BLOCK_ASSERTIONS
         if (_crashOnErrors) {
-            abort();
             NSAssert1(false, @"The FMDatabase %@ is not open.", self);
+            abort();
         }
     #endif
         
