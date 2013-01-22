@@ -74,12 +74,50 @@
     return _db;
 }
 
-- (BOOL)open {
-    if (_db) {
++(BOOL)isMemoryPath:( NSString* )dbPath_
+{
+    if ( nil == dbPath_ )
+    {
+        return YES;
+    }
+    else if ( [dbPath_ isEqualToString: @":memory:" ] )
+    {
+        return YES;
+    }
+        
+    return NO;
+}
+
+-(BOOL)isMemoryPath:( NSString* )dbPath_
+{
+    return [ [ self class ] isMemoryPath: dbPath_ ];
+}
+
+-(const char* )fileNameForOpening
+{
+    const char* fileName_ = NULL;
+    if ( [ self isMemoryPath: self->_databasePath ] )
+    {
+        fileName_ = ":memory:";
+    }
+    else
+    {
+        fileName_ = [ self->_databasePath fileSystemRepresentation ];
+    }
+    
+    return fileName_;
+}
+
+- (BOOL)open
+{
+    if (_db)
+    {
         return YES;
     }
     
-    int err = sqlite3_open((_databasePath ? [_databasePath fileSystemRepresentation] : ":memory:"), &_db );
+    const char* fileName_ = [ self fileNameForOpening ];
+    int err = sqlite3_open( fileName_, &_db );
+    
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
@@ -89,9 +127,12 @@
 }
 
 #if SQLITE_VERSION_NUMBER >= 3005000
-- (BOOL)openWithFlags:(int)flags {
-    int err = sqlite3_open_v2((_databasePath ? [_databasePath fileSystemRepresentation] : ":memory:"), &_db, flags, NULL /* Name of VFS module to use */);
-    if(err != SQLITE_OK) {
+- (BOOL)openWithFlags:(int)flags
+{
+    const char* fileName_ = [ self fileNameForOpening ];
+    int err = sqlite3_open_v2( fileName_, &_db, flags, NULL /* Name of VFS module to use */);
+    if(err != SQLITE_OK)
+    {
         NSLog(@"error opening!: %d", err);
         return NO;
     }
@@ -721,6 +762,7 @@
                 if ( createIndexWorkaroundCondition_ )
                 {
                     NSLog( @"[FMDatabase] : CREATE INDEX workaround applied." );
+                    NSLog( @"DB path : %@", self->_databasePath );
                 }
                 
                 if (_busyRetryTimeout && (numberOfRetries++ > _busyRetryTimeout)) {
