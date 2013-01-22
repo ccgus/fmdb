@@ -4,3 +4,7 @@ build
 *.xcodeproj/*.perspectivev3
 *.xcodeproj/xcuserdata
 fmdb.xcodeproj/*.mode1v3
+._*
+*xcworkspace*
+*xcuserdata*
+
