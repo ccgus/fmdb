@@ -849,7 +849,7 @@ int main (int argc, const char * argv[]) {
         // You should see pairs of numbers show up in stdout for this stuff:
         size_t ops = 16;
         
-        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
         dispatch_apply(ops, dqueue, ^(size_t nby) {
             
