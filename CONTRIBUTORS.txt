@@ -34,5 +34,6 @@ Sriram Patil
 Geoffrey Foster
 Robert Ryan
 Samuel Chen
+Daniel Dickison
 
 Aaaaannnd, Gus Mueller (that's me!)

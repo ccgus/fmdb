@@ -58,7 +58,7 @@
 - (NSMutableDictionary *)columnNameToIndexMap {
     if (!_columnNameToIndexMap) {
         int columnCount = sqlite3_column_count([_statement statement]);
-        _columnNameToIndexMap = [[NSMutableDictionary alloc] initWithCapacity:columnCount];
+        _columnNameToIndexMap = [[NSMutableDictionary alloc] initWithCapacity:(NSUInteger)columnCount];
         int columnIdx = 0;
         for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
             [_columnNameToIndexMap setObject:[NSNumber numberWithInt:columnIdx]
@@ -96,7 +96,7 @@
     if (num_cols > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
         
-        NSEnumerator *columnNames = [self.columnNameToIndexMap keyEnumerator];
+        NSEnumerator *columnNames = [[self columnNameToIndexMap] keyEnumerator];
         NSString *columnName = nil;
         while ((columnName = [columnNames nextObject])) {
             id objectValue = [self objectForColumnName:columnName];
@@ -208,7 +208,7 @@
 - (int)columnIndexForName:(NSString*)columnName {
     columnName = [columnName lowercaseString];
     
-    NSNumber *n = [self.columnNameToIndexMap objectForKey:columnName];
+    NSNumber *n = [[self columnNameToIndexMap] objectForKey:columnName];
     
     if (n) {
         return [n intValue];

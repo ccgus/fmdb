@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2013.01.31
+    Lazy init of columnNameToIndexMap in FMResultSet, and you are now able to use it before asking for any rows first.  Thanks to Daniel Dickison for the patch!
+
 2012.12.17
     Now resetting cached statements before executing a query on them (as well as resetting them at the close of a result set).  There was an issue where if you used the same query twice without closing the result set of the first one, you would get results back from the previous query, or maybe an exhausted result set.  Thanks to note173 on github for pointing out the problem.
 
