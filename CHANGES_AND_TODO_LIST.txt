@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2013.02.05
+    Added an "extra" folder which contains additional things which might be useful for programmers, but which I don't think should be part of the standard classes.  At this time- there's only a single category in there which will load and save an on disk database to an in memory database.  Thanks to Peter Carr who provided these additions!  
+
 2013.01.31
     Lazy init of columnNameToIndexMap in FMResultSet, and you are now able to use it before asking for any rows first.  Thanks to Daniel Dickison for the patch!
 
