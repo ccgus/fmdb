@@ -72,12 +72,26 @@
     return _db;
 }
 
+- (const char*)sqlitePath {
+    
+    if (!_databasePath) {
+        return ":memory:";
+    }
+    
+    if ([_databasePath length] == 0) {
+        return ""; // this creates a temporary database (it's an sqlite thing).
+    }
+    
+    return [_databasePath fileSystemRepresentation];
+    
+}
+
 - (BOOL)open {
     if (_db) {
         return YES;
     }
     
-    int err = sqlite3_open((_databasePath ? [_databasePath fileSystemRepresentation] : ":memory:"), &_db );
+    int err = sqlite3_open([self sqlitePath], &_db );
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
@@ -88,7 +102,7 @@
 
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags {
-    int err = sqlite3_open_v2((_databasePath ? [_databasePath fileSystemRepresentation] : ":memory:"), &_db, flags, NULL /* Name of VFS module to use */);
+    int err = sqlite3_open_v2([self sqlitePath], &_db, flags, NULL /* Name of VFS module to use */);
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
