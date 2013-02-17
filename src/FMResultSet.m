@@ -294,12 +294,18 @@
 }
 
 - (NSDate*)dateForColumnIndex:(int)columnIdx {
-    
-    if (sqlite3_column_type([_statement statement], columnIdx) == SQLITE_NULL || (columnIdx < 0)) {
-        return nil;
+    int columnType = sqlite3_column_type([_statement statement], columnIdx);
+    NSDate * resultDate = nil;
+    if(columnIdx >= 0) {
+        if (columnType == SQLITE_TEXT) {
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            resultDate = [dateFormatter dateFromString:[self stringForColumnIndex:columnIdx]];
+        } else if(columnType == SQLITE_INTEGER) {
+            resultDate = [NSDate dateWithTimeIntervalSince1970:[self doubleForColumnIndex:columnIdx]];
+        }
     }
-    
-    return [NSDate dateWithTimeIntervalSince1970:[self doubleForColumnIndex:columnIdx]];
+    return resultDate;
 }
 
 
