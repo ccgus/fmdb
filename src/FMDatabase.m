@@ -1007,8 +1007,8 @@
     NSParameterAssert(name);
     
     if (![self executeUpdate:[NSString stringWithFormat:@"savepoint '%@';", name]]) {
-        
-        if (*outErr) {
+
+        if (outErr) {
             *outErr = [self lastError];
         }
         
@@ -1024,7 +1024,7 @@
     
     BOOL worked = [self executeUpdate:[NSString stringWithFormat:@"release savepoint '%@';", name]];
     
-    if (!worked && *outErr) {
+    if (!worked && outErr) {
         *outErr = [self lastError];
     }
     
