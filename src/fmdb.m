@@ -1319,7 +1319,7 @@ void testPool(NSString *dbPath) {
 
 
 /*
- Test the date formate
+ Test the date format
  */
 
 void testOneDateFormat( FMDatabase *db, NSDate *testDate ) {
