@@ -1319,10 +1319,10 @@ void testPool(NSString *dbPath) {
 
 
 /*
- Test the various FMDatabasePool things.
+ Test the date formate
  */
 
-void testAFormat( FMDatabase *db, NSDate *testDate ) {
+void testOneDateFormat( FMDatabase *db, NSDate *testDate ) {
     [db executeUpdate:@"DROP TABLE IF EXISTS test_format"];
     [db executeUpdate:@"CREATE TABLE test_format ( test TEXT )"];
     [db executeUpdate:@"INSERT INTO test_format(test) VALUES (?)", testDate];
@@ -1348,11 +1348,11 @@ void testDateFormat() {
     NSDate *testDate = [fmt dateFromString:@"2013-02-20 12:00:00"];
     
     // test timestamp dates (ensuring our change does not break those)
-    testAFormat(db,testDate);
+    testOneDateFormat(db,testDate);
     
     // now test the string-based timestamp
     [db setDateFormat:fmt];
-    testAFormat(db,testDate);
+    testOneDateFormat(db,testDate);
     
     [db close];
 }
