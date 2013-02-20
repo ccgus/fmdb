@@ -63,6 +63,7 @@
     NSMutableSet        *_openResultSets;
     NSMutableSet        *_openFunctions;
 
+    NSDateFormatter     *_dateFormat;
 }
 
 
@@ -72,6 +73,30 @@
 @property (atomic, assign) BOOL crashOnErrors;
 @property (atomic, assign) BOOL logsErrors;
 @property (atomic, retain) NSMutableDictionary *cachedStatements;
+
+/** Set to a date formatter to use string dates with sqlite instead of the default UNIX timestamps.
+ 
+ Set to nil to use UNIX timestamps.
+ 
+ Defaults to nil.
+ 
+ Should be set using [FMDatabase storeableDateFormat].
+ 
+ */
+@property (atomic, retain) NSDateFormatter *dateFormat;
+
+/** Generate an NSDateFormat that won't be broken by timezone or locale changes.
+ 
+ Use this method to generate values to set the dateFormat property.
+ 
+ @param dateFormat A valid NSDateFormatter format string.
+ 
+ Example:
+ 
+   myDB.dateFormat = [FMDatabase storeableDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+ 
+ */
++ (NSDateFormatter *)storeableDateFormat:(NSString *)format;
 
 
 + (id)databaseWithPath:(NSString*)inPath;

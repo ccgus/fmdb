@@ -10,6 +10,7 @@
 
 @implementation FMDatabase
 @synthesize cachedStatements=_cachedStatements;
+@synthesize dateFormat=_dateFormat;
 @synthesize logsErrors=_logsErrors;
 @synthesize crashOnErrors=_crashOnErrors;
 @synthesize busyRetryTimeout=_busyRetryTimeout;
@@ -56,6 +57,7 @@
     [self close];
     FMDBRelease(_openResultSets);
     FMDBRelease(_cachedStatements);
+    FMDBRelease(_dateFormat);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
     
@@ -242,6 +244,16 @@
 #endif
 }
 
++ (NSDateFormatter *)storeableDateFormat:(NSString *)format {
+    
+    NSDateFormatter *result = FMDBReturnAutoreleased([[NSDateFormatter alloc] init]);
+    [result setDateFormat:format];
+    [result setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    [result setLocale:FMDBReturnAutoreleased([[NSLocale alloc] initWithLocaleIdentifier:@"en_US"])];
+    return result;
+}
+
+
 - (BOOL)goodConnection {
     
     if (!_db) {
@@ -361,7 +373,10 @@
         sqlite3_bind_blob(pStmt, idx, bytes, (int)[obj length], SQLITE_STATIC);
     }
     else if ([obj isKindOfClass:[NSDate class]]) {
-        sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
+        if (_dateFormat)
+            sqlite3_bind_text(pStmt, idx, [[_dateFormat stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
+        else
+            sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
     }
     else if ([obj isKindOfClass:[NSNumber class]]) {
         

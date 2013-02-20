@@ -7,6 +7,7 @@
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
 void testPool(NSString *dbPath);
+void testDateFormat();
 void FMDBReportABugFunction();
 
 int main (int argc, const char * argv[]) {
@@ -806,6 +807,7 @@ int main (int argc, const char * argv[]) {
     
     
     testPool(dbPath);
+    testDateFormat();
     
     
     
@@ -1313,6 +1315,46 @@ void testPool(NSString *dbPath) {
     }
 #endif
 
+}
+
+
+/*
+ Test the various FMDatabasePool things.
+ */
+
+void testAFormat( FMDatabase *db, NSDate *testDate ) {
+    [db executeUpdate:@"DROP TABLE IF EXISTS test_format"];
+    [db executeUpdate:@"CREATE TABLE test_format ( test TEXT )"];
+    [db executeUpdate:@"INSERT INTO test_format(test) VALUES (?)", testDate];
+    FMResultSet *rs = [db executeQuery:@"SELECT test FROM test_format"];
+    if ([rs next]) {
+        NSDate *found = [rs dateForColumnIndex:0];
+        if (NSOrderedSame != [testDate compare:found]) {
+            NSLog(@"Did not get back what we stored.");
+        }
+    } else {
+        NSLog(@"Insertion borked");
+    }
+    [rs close];
+}
+
+void testDateFormat() {
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:nil]; // use in-memory DB
+    [db open];
+    
+    NSDateFormatter *fmt = [FMDatabase storeableDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSDate *testDate = [fmt dateFromString:@"2013-02-20 12:00:00"];
+    
+    // test timestamp dates (ensuring our change does not break those)
+    testAFormat(db,testDate);
+    
+    // now test the string-based timestamp
+    [db setDateFormat:fmt];
+    testAFormat(db,testDate);
+    
+    [db close];
 }
 
 
