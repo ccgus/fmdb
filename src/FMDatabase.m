@@ -505,7 +505,7 @@
             [cleanedSQL appendString:@"?"];
             [arguments addObject:arg];
         }
-        else if (add == (unichar)'@')
+        else if (add == (unichar)'@' && last == (unichar) '%')
         {
             [cleanedSQL appendFormat:@"NULL"];
         }
