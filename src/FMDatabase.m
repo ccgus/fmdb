@@ -626,7 +626,12 @@
             }
             
             if (_traceExecution) {
-                NSLog(@"obj: %@", obj);
+                if ([obj isKindOfClass:[NSData class]]) {
+                    NSLog(@"data: %d byte", [(NSData*)obj length]);
+                }
+                else {
+                    NSLog(@"obj: %@", obj);
+                }
             }
             
             idx++;
@@ -811,7 +816,12 @@
             }
             
             if (_traceExecution) {
-                NSLog(@"obj: %@", obj);
+                if ([obj isKindOfClass:[NSData class]]) {
+                    NSLog(@"data: %d byte", [(NSData*)obj length]);
+                }
+                else {
+                    NSLog(@"obj: %@", obj);
+                }
             }
             
             idx++;
