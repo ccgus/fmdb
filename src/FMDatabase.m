@@ -72,12 +72,26 @@
     return _db;
 }
 
+- (const char*)sqlitePath {
+    
+    if (!_databasePath) {
+        return ":memory:";
+    }
+    
+    if ([_databasePath length] == 0) {
+        return ""; // this creates a temporary database (it's an sqlite thing).
+    }
+    
+    return [_databasePath fileSystemRepresentation];
+    
+}
+
 - (BOOL)open {
     if (_db) {
         return YES;
     }
     
-    int err = sqlite3_open((_databasePath ? [_databasePath fileSystemRepresentation] : ":memory:"), &_db );
+    int err = sqlite3_open([self sqlitePath], &_db );
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
@@ -88,7 +102,7 @@
 
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags {
-    int err = sqlite3_open_v2((_databasePath ? [_databasePath fileSystemRepresentation] : ":memory:"), &_db, flags, NULL /* Name of VFS module to use */);
+    int err = sqlite3_open_v2([self sqlitePath], &_db, flags, NULL /* Name of VFS module to use */);
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
@@ -249,8 +263,8 @@
     
 #ifndef NS_BLOCK_ASSERTIONS
     if (_crashOnErrors) {
-        abort();
         NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
+        abort();
     }
 #endif
 }
@@ -263,8 +277,8 @@
         
     #ifndef NS_BLOCK_ASSERTIONS
         if (_crashOnErrors) {
-            abort();
             NSAssert1(false, @"The FMDatabase %@ is not open.", self);
+            abort();
         }
     #endif
         
@@ -527,6 +541,7 @@
     if (_shouldCacheStatements) {
         statement = [self cachedStatementForQuery:sql];
         pStmt = statement ? [statement statement] : 0x00;
+        [statement reset];
     }
     
     int numberOfRetries = 0;
@@ -591,14 +606,13 @@
             if (namedIdx > 0) {
                 // Standard binding from here.
                 [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+                // increment the binding count, so our check below works out
+                idx++;
             }
             else {
                 NSLog(@"Could not find index for %@", dictionaryKey);
             }
         }
-        
-        // we need the count of params to avoid an error below.
-        idx = (int) [[dictionaryArgs allKeys] count];
     }
     else {
             
@@ -706,6 +720,7 @@
     if (_shouldCacheStatements) {
         cachedStmt = [self cachedStatementForQuery:sql];
         pStmt = cachedStmt ? [cachedStmt statement] : 0x00;
+        [cachedStmt reset];
     }
     
     int numberOfRetries = 0;
@@ -775,14 +790,14 @@
             if (namedIdx > 0) {
                 // Standard binding from here.
                 [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+                
+                // increment the binding count, so our check below works out
+                idx++;
             }
             else {
                 NSLog(@"Could not find index for %@", dictionaryKey);
             }
         }
-        
-        // we need the count of params to avoid an error below.
-        idx = (int) [[dictionaryArgs allKeys] count];
     }
     else {
         
@@ -807,7 +822,7 @@
     
     
     if (idx != queryCount) {
-        NSLog(@"Error: the bind count is not correct for the # of variables (%@) (executeUpdate)", sql);
+        NSLog(@"Error: the bind count (%d) is not correct for the # of variables in the query (%d) (%@) (executeUpdate)", idx, queryCount, sql);
         sqlite3_finalize(pStmt);
         _isExecutingStatement = NO;
         return NO;
@@ -992,8 +1007,8 @@
     NSParameterAssert(name);
     
     if (![self executeUpdate:[NSString stringWithFormat:@"savepoint '%@';", name]]) {
-        
-        if (*outErr) {
+
+        if (outErr) {
             *outErr = [self lastError];
         }
         
@@ -1009,7 +1024,7 @@
     
     BOOL worked = [self executeUpdate:[NSString stringWithFormat:@"release savepoint '%@';", name]];
     
-    if (!worked && *outErr) {
+    if (!worked && outErr) {
         *outErr = [self lastError];
     }
     

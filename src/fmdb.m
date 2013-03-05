@@ -85,8 +85,6 @@ int main (int argc, const char * argv[]) {
     [db executeUpdate:@"vacuum"];
     FMDBQuickCheck(![db hadError]);
     
-    exit(0);
-    
     // but of course, I don't bother checking the error codes below.
     // Bad programmer, no cookie.
     
@@ -151,6 +149,22 @@ int main (int argc, const char * argv[]) {
     
     FMDBQuickCheck(![db hasOpenResultSets]);
     
+    
+    
+    rs = [db executeQuery:@"select rowid, a, b, c from test"];
+    while ([rs next]) {
+        
+        FMDBQuickCheck([rs[0] isEqualTo:rs[@"rowid"]]);
+        FMDBQuickCheck([rs[1] isEqualTo:rs[@"a"]]);
+        FMDBQuickCheck([rs[2] isEqualTo:rs[@"b"]]);
+        FMDBQuickCheck([rs[3] isEqualTo:rs[@"c"]]);
+    }
+    [rs close];
+    
+    
+    
+    
+    
     [db executeUpdate:@"create table ull (a integer)"];
     
     [db executeUpdate:@"insert into ull (a) values (?)" , [NSNumber numberWithUnsignedLongLong:ULLONG_MAX]];
@@ -188,6 +202,71 @@ int main (int argc, const char * argv[]) {
     rs = [db getTableSchema:@"234 fds"];
     FMDBQuickCheck([rs next]);
     [rs close];
+    
+    
+    
+    
+    
+    
+    {
+        // -------------------------------------------------------------------------------
+        // Named parameters count test.
+        FMDBQuickCheck([db executeUpdate:@"create table namedparamcounttest (a text, b text, c integer, d double)"]);
+        NSMutableDictionary *dictionaryArgs = [NSMutableDictionary dictionary];
+        [dictionaryArgs setObject:@"Text1" forKey:@"a"];
+        [dictionaryArgs setObject:@"Text2" forKey:@"b"];
+        [dictionaryArgs setObject:[NSNumber numberWithInt:1] forKey:@"c"];
+        [dictionaryArgs setObject:[NSNumber numberWithDouble:2.0] forKey:@"d"];
+        FMDBQuickCheck([db executeUpdate:@"insert into namedparamcounttest values (:a, :b, :c, :d)" withParameterDictionary:dictionaryArgs]);
+        
+        rs = [db executeQuery:@"select * from namedparamcounttest"];
+        
+        FMDBQuickCheck((rs != nil));
+        
+        [rs next];
+        
+        FMDBQuickCheck([[rs stringForColumn:@"a"] isEqualToString:@"Text1"]);
+        FMDBQuickCheck([[rs stringForColumn:@"b"] isEqualToString:@"Text2"]);
+        FMDBQuickCheck([rs intForColumn:@"c"] == 1);
+        FMDBQuickCheck([rs doubleForColumn:@"d"] == 2.0);
+        
+        [rs close];
+        
+        // note that at this point, dictionaryArgs has way more values than we need, but the query should still work since
+        // a is in there, and that's all we need.
+        rs = [db executeQuery:@"select * from namedparamcounttest where a = :a" withParameterDictionary:dictionaryArgs];
+        
+        FMDBQuickCheck((rs != nil));
+        FMDBQuickCheck([rs next]);
+        [rs close];
+        
+        
+        
+        // ***** Please note the following codes *****
+        
+        dictionaryArgs = [NSMutableDictionary dictionary];
+        
+        [dictionaryArgs setObject:@"NewText1" forKey:@"a"];
+        [dictionaryArgs setObject:@"NewText2" forKey:@"b"];
+        [dictionaryArgs setObject:@"OneMoreText" forKey:@"OneMore"];
+        
+        BOOL rc = [db executeUpdate:@"update namedparamcounttest set a = :a, b = :b where b = 'Text2'" withParameterDictionary:dictionaryArgs];
+        
+        FMDBQuickCheck(rc);
+        
+        if (!rc) {
+            NSLog(@"ERROR: %d - %@", db.lastErrorCode, db.lastErrorMessage);
+        }
+    
+        
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -714,6 +793,15 @@ int main (int argc, const char * argv[]) {
     }
     
     
+    [db setShouldCacheStatements:true];
+    
+    [db executeUpdate:@"CREATE TABLE testCacheStatements(key INTEGER PRIMARY KEY, value INTEGER)"];
+    [db executeUpdate:@"INSERT INTO testCacheStatements (key, value) VALUES (1, 2)"];
+    [db executeUpdate:@"INSERT INTO testCacheStatements (key, value) VALUES (2, 4)"];
+    
+    FMDBQuickCheck([[db executeQuery:@"SELECT * FROM testCacheStatements WHERE key=1"] next]);
+    FMDBQuickCheck([[db executeQuery:@"SELECT * FROM testCacheStatements WHERE key=1"] next]);
+    
     [db close];
     
     
@@ -761,7 +849,7 @@ int main (int argc, const char * argv[]) {
         // You should see pairs of numbers show up in stdout for this stuff:
         size_t ops = 16;
         
-        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
         dispatch_apply(ops, dqueue, ^(size_t nby) {
             
@@ -802,6 +890,28 @@ int main (int argc, const char * argv[]) {
         }];
     }
     
+    {
+        
+        
+        [queue inDatabase:^(FMDatabase *adb) {
+            [adb executeUpdate:@"create table colNameTest (a, b, c, d)"];
+            FMDBQuickCheck([adb executeUpdate:@"insert into colNameTest values (1, 2, 3, 4)"]);
+            
+            FMResultSet *ars = [adb executeQuery:@"select * from colNameTest"];
+            
+            NSDictionary *d = [ars columnNameToIndexMap];
+            FMDBQuickCheck([d count] == 4);
+            
+            FMDBQuickCheck([[d objectForKey:@"a"] intValue] == 0);
+            FMDBQuickCheck([[d objectForKey:@"b"] intValue] == 1);
+            FMDBQuickCheck([[d objectForKey:@"c"] intValue] == 2);
+            FMDBQuickCheck([[d objectForKey:@"d"] intValue] == 3);
+            
+            [ars close];
+            
+        }];
+        
+    }
     
     
     {
@@ -1126,7 +1236,7 @@ void testPool(NSString *dbPath) {
         
         size_t ops = 128;
         
-        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
         dispatch_apply(ops, dqueue, ^(size_t nby) {
             
@@ -1161,7 +1271,7 @@ void testPool(NSString *dbPath) {
         
         int ops = 16;
         
-        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
         dispatch_apply(ops, dqueue, ^(size_t nby) {
             
