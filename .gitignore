@@ -4,3 +4,7 @@ build
 *.xcodeproj/*.perspectivev3
 *.xcodeproj/xcuserdata
 fmdb.xcodeproj/*.mode1v3
+
+fmdb.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+
+fmdb.xcodeproj/project.xcworkspace/xcuserdata/dim.xcuserdatad/UserInterfaceState.xcuserstate
