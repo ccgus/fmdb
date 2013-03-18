@@ -10,7 +10,6 @@
 
 @implementation FMDatabase
 @synthesize cachedStatements=_cachedStatements;
-@synthesize dateFormat=_dateFormat;
 @synthesize logsErrors=_logsErrors;
 @synthesize crashOnErrors=_crashOnErrors;
 @synthesize busyRetryTimeout=_busyRetryTimeout;
@@ -43,6 +42,8 @@
         _logsErrors         = 0x00;
         _crashOnErrors      = 0x00;
         _busyRetryTimeout   = 0x00;
+        
+        _dateFormatLock = [[NSObject alloc] init];
     }
     
     return self;
@@ -60,6 +61,7 @@
     FMDBRelease(_dateFormat);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
+    FMDBRelease(_dateFormatLock);
     
 #if ! __has_feature(objc_arc)
     [super dealloc];
@@ -247,10 +249,34 @@
 + (NSDateFormatter *)storeableDateFormat:(NSString *)format {
     
     NSDateFormatter *result = FMDBReturnAutoreleased([[NSDateFormatter alloc] init]);
-    [result setDateFormat:format];
-    [result setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-    [result setLocale:FMDBReturnAutoreleased([[NSLocale alloc] initWithLocaleIdentifier:@"en_US"])];
+    result.dateFormat = format;
+    result.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    result.locale = FMDBReturnAutoreleased([[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]);
     return result;
+}
+
+
+- (BOOL)hasDateFormatter {
+    return _dateFormat != nil;
+}
+
+- (void)setDateFormat:(NSDateFormatter *)format {
+    @synchronized (_dateFormatLock) {
+        FMDBAutorelease(_dateFormat);
+        _dateFormat = FMDBReturnRetained(format);
+    }
+}
+
+- (NSDate *)dateFromString:(NSString *)s {
+    @synchronized (_dateFormatLock) {
+        return [_dateFormat dateFromString:s];
+    }
+}
+
+- (NSString *)stringFromDate:(NSDate *)date {
+    @synchronized (_dateFormatLock) {
+        return [_dateFormat stringFromDate:date];
+    }
 }
 
 
@@ -373,8 +399,8 @@
         sqlite3_bind_blob(pStmt, idx, bytes, (int)[obj length], SQLITE_STATIC);
     }
     else if ([obj isKindOfClass:[NSDate class]]) {
-        if (_dateFormat)
-            sqlite3_bind_text(pStmt, idx, [[_dateFormat stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
+        if (self.hasDateFormatter)
+            sqlite3_bind_text(pStmt, idx, [[self stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
         else
             sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
     }

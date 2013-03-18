@@ -300,8 +300,8 @@
     }
     
     
-	return _parentDB.dateFormat
-        ? [_parentDB.dateFormat dateFromString:[self stringForColumnIndex:columnIdx]]
+	return _parentDB.hasDateFormatter
+        ? [_parentDB dateFromString:[self stringForColumnIndex:columnIdx]]
         : [NSDate dateWithTimeIntervalSince1970:[self doubleForColumnIndex:columnIdx]];
 }
 
