@@ -176,7 +176,7 @@
 - (void)closeOpenResultSets {
     
     //Copy the set so we don't get mutation errors
-    NSMutableSet *openSetCopy = FMDBReturnAutoreleased([_openResultSets copy]);
+    NSSet *openSetCopy = FMDBReturnAutoreleased([_openResultSets copy]);
     for (NSValue *rsInWrappedInATastyValueMeal in openSetCopy) {
         FMResultSet *rs = (FMResultSet *)[rsInWrappedInATastyValueMeal pointerValue];
         
