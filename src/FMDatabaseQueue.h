@@ -1,5 +1,5 @@
 //
-//  FMDatabasePool.h
+//  FMDatabaseQueue.h
 //  fmdb
 //
 //  Created by August Mueller on 6/22/11.

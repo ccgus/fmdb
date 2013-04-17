@@ -511,6 +511,9 @@ int main (int argc, const char * argv[]) {
     
     [db executeUpdate:@"create table nulltest2 (s text, d data, i integer, f double, b integer)"];
     
+    // grab the data for this again, since we overwrote it with some memory that has since disapeared.
+    safariCompass = [NSData dataWithContentsOfFile:@"/Applications/Safari.app/Contents/Resources/compass.icns"];
+    
     [db executeUpdate:@"insert into nulltest2 (s, d, i, f, b) values (?, ?, ?, ?, ?)" , @"Hi", safariCompass, [NSNumber numberWithInt:12], [NSNumber numberWithFloat:4.4f], [NSNumber numberWithBool:YES]];
     [db executeUpdate:@"insert into nulltest2 (s, d, i, f, b) values (?, ?, ?, ?, ?)" , nil, nil, nil, nil, [NSNull null]];
     
@@ -849,7 +852,7 @@ int main (int argc, const char * argv[]) {
         // You should see pairs of numbers show up in stdout for this stuff:
         size_t ops = 16;
         
-        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
         dispatch_apply(ops, dqueue, ^(size_t nby) {
             
@@ -890,6 +893,28 @@ int main (int argc, const char * argv[]) {
         }];
     }
     
+    {
+        
+        
+        [queue inDatabase:^(FMDatabase *adb) {
+            [adb executeUpdate:@"create table colNameTest (a, b, c, d)"];
+            FMDBQuickCheck([adb executeUpdate:@"insert into colNameTest values (1, 2, 3, 4)"]);
+            
+            FMResultSet *ars = [adb executeQuery:@"select * from colNameTest"];
+            
+            NSDictionary *d = [ars columnNameToIndexMap];
+            FMDBQuickCheck([d count] == 4);
+            
+            FMDBQuickCheck([[d objectForKey:@"a"] intValue] == 0);
+            FMDBQuickCheck([[d objectForKey:@"b"] intValue] == 1);
+            FMDBQuickCheck([[d objectForKey:@"c"] intValue] == 2);
+            FMDBQuickCheck([[d objectForKey:@"d"] intValue] == 3);
+            
+            [ars close];
+            
+        }];
+        
+    }
     
     
     {
@@ -1214,7 +1239,7 @@ void testPool(NSString *dbPath) {
         
         size_t ops = 128;
         
-        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
         dispatch_apply(ops, dqueue, ^(size_t nby) {
             
@@ -1249,7 +1274,7 @@ void testPool(NSString *dbPath) {
         
         int ops = 16;
         
-        dispatch_queue_t dqueue = dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH);
+        dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
         dispatch_apply(ops, dqueue, ^(size_t nby) {
             
