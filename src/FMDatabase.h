@@ -90,6 +90,8 @@
 // encryption methods.  You need to have purchased the sqlite encryption extensions for these to work.
 - (BOOL)setKey:(NSString*)key;
 - (BOOL)rekey:(NSString*)key;
+- (BOOL)setKeyWithData:(NSData *)keyData;
+- (BOOL)rekeyWithData:(NSData *)keyData;
 
 - (NSString *)databasePath;
 
