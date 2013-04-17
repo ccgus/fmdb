@@ -221,7 +221,7 @@
         return NO;
     }
     
-    int rc = sqlite3_rekey(_db, [keyData bytes], [keyData length]);
+    int rc = sqlite3_rekey(_db, [keyData bytes], (int)[keyData length]);
     
     if (rc != SQLITE_OK) {
         NSLog(@"error on rekey: %d", rc);
@@ -246,7 +246,7 @@
         return NO;
     }
     
-    int rc = sqlite3_key(_db, [keyData bytes], [keyData length]);
+    int rc = sqlite3_key(_db, [keyData bytes], (int)[keyData length]);
     
     return (rc == SQLITE_OK);
 #else
