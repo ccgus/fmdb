@@ -47,7 +47,7 @@
         
         _path = FMDBReturnRetained(aPath);
         
-        _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
+        _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], DISPATCH_QUEUE_SERIAL);
     }
     
     return self;
@@ -95,7 +95,7 @@
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
     FMDBRetain(self);
     
-    dispatch_sync(_queue, ^() {
+    dispatch_async(_queue, ^() {
         
         FMDatabase *db = [self database];
         block(db);
@@ -111,7 +111,7 @@
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+    dispatch_async(_queue, ^() {
         
         BOOL shouldRollback = NO;
         
@@ -149,7 +149,7 @@
     static unsigned long savePointIdx = 0;
     __block NSError *err = 0x00;
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+    dispatch_async(_queue, ^() {
         
         NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
         
