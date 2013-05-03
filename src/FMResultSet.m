@@ -219,6 +219,27 @@
     return -1;
 }
 
+- (FMColumnType)columnTypeForColumn:(NSString*)columnName {
+    return [self columnTypeForColumnIndex:[self columnIndexForName:columnName]];
+}
+
+- (FMColumnType)columnTypeForColumnIndex:(int)columnIdx {
+    int columnType = sqlite3_column_type([_statement statement], columnIdx);
+
+    switch (columnType) {
+    case SQLITE_INTEGER:
+        return FMColumnTypeInteger;
+
+    case SQLITE_FLOAT:
+        return FMColumnTypeFloat;
+
+    case SQLITE_BLOB:
+        return FMColumnTypeBlob;
+
+    default:
+        return FMColumnTypeOther;
+    }
+}
 
 
 - (int)intForColumn:(NSString*)columnName {
