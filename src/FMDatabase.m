@@ -210,7 +210,7 @@
 
 
 - (BOOL)rekey:(NSString*)key {
-    NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(int)strlen([key UTF8String])];
+    NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
     
     return [self rekeyWithData:keyData];
 }
@@ -235,7 +235,7 @@
 }
 
 - (BOOL)setKey:(NSString*)key {
-    NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(int)strlen([key UTF8String])];
+    NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
     
     return [self setKeyWithData:keyData];
 }
