@@ -210,12 +210,18 @@
 
 
 - (BOOL)rekey:(NSString*)key {
+    NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(int)strlen([key UTF8String])];
+    
+    return [self rekeyWithData:keyData];
+}
+
+- (BOOL)rekeyWithData:(NSData *)keyData {
 #ifdef SQLITE_HAS_CODEC
-    if (!key) {
+    if (!keyData) {
         return NO;
     }
     
-    int rc = sqlite3_rekey(_db, [key UTF8String], (int)strlen([key UTF8String]));
+    int rc = sqlite3_rekey(_db, [keyData bytes], (int)[keyData length]);
     
     if (rc != SQLITE_OK) {
         NSLog(@"error on rekey: %d", rc);
@@ -229,12 +235,18 @@
 }
 
 - (BOOL)setKey:(NSString*)key {
+    NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(int)strlen([key UTF8String])];
+    
+    return [self setKeyWithData:keyData];
+}
+
+- (BOOL)setKeyWithData:(NSData *)keyData {
 #ifdef SQLITE_HAS_CODEC
-    if (!key) {
+    if (!keyData) {
         return NO;
     }
     
-    int rc = sqlite3_key(_db, [key UTF8String], (int)strlen([key UTF8String]));
+    int rc = sqlite3_key(_db, [keyData bytes], (int)[keyData length]);
     
     return (rc == SQLITE_OK);
 #else
