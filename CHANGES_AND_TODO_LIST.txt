@@ -6,6 +6,7 @@ If you would like to contribute some code- awesome!  I just ask that you make it
 2013.05.24
     Merged in Chris Wright's date format additions to FMDatabase.
     Fixed a problem where executeUpdateWithFormat: + %@ as a placeholder and the value was nil would cause a bad value to be inserted.  Thanks to rustybox on github for the fix.
+     Fixed a variable argument crash if an incorrect number of arguments are passed in - patch by Joshua Tessier.
 
 2013.04.17
     Added two new methods to FMDatabase for setting crypto keys, which take NSData objects.  Thanks to Phillip Kast for the patch! <https://github.com/ccgus/fmdb/pull/135>

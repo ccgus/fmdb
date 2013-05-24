@@ -727,6 +727,10 @@ int main (int argc, const char * argv[]) {
         
     }
     
+    {
+        rs = [db executeQuery:@"select * from t5 where a=?" withArgumentsInArray:@[]];
+        FMDBQuickCheck((![rs next]));
+    }
     
     // test attach for the heck of it.
     {
