@@ -59,7 +59,6 @@
     FMDBRelease(_dateFormat);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
-    FMDBRelease(_dateFormatLock);
     
 #if ! __has_feature(objc_arc)
     [super dealloc];
@@ -549,6 +548,9 @@
         if (arg != nil) {
             [cleanedSQL appendString:@"?"];
             [arguments addObject:arg];
+        }
+        else if (add == (unichar)'@' && last == (unichar) '%') {
+            [cleanedSQL appendFormat:@"NULL"];
         }
         else if (add != '\0') {
             [cleanedSQL appendFormat:@"%C", add];

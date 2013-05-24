@@ -705,7 +705,21 @@ int main (int argc, const char * argv[]) {
         
     }
     
-    
+    {
+        FMDBQuickCheck([db executeUpdate:@"create table tatwhat (a text)"]);
+        
+        BOOL worked = [db executeUpdateWithFormat:@"insert into tatwhat values(%@)", nil];
+        
+        FMDBQuickCheck(worked);
+        
+        rs = [db executeQueryWithFormat:@"select * from tatwhat"];
+        FMDBQuickCheck((rs != nil));
+        FMDBQuickCheck(([rs next]));
+        FMDBQuickCheck([rs columnIndexIsNull:0]);
+        
+        FMDBQuickCheck((![rs next]));
+        
+    }
     
     
     {
