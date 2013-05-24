@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2013.05.24
+    Merged in Chris Wright's date format additions to FMDatabase.
+
 2013.04.17
     Added two new methods to FMDatabase for setting crypto keys, which take NSData objects.  Thanks to Phillip Kast for the patch! <https://github.com/ccgus/fmdb/pull/135>
 

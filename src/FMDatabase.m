@@ -56,8 +56,10 @@
     [self close];
     FMDBRelease(_openResultSets);
     FMDBRelease(_cachedStatements);
+    FMDBRelease(_dateFormat);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
+    FMDBRelease(_dateFormatLock);
     
 #if ! __has_feature(objc_arc)
     [super dealloc];
@@ -254,6 +256,34 @@
 #endif
 }
 
++ (NSDateFormatter *)storeableDateFormat:(NSString *)format {
+    
+    NSDateFormatter *result = FMDBReturnAutoreleased([[NSDateFormatter alloc] init]);
+    result.dateFormat = format;
+    result.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    result.locale = FMDBReturnAutoreleased([[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]);
+    return result;
+}
+
+
+- (BOOL)hasDateFormatter {
+    return _dateFormat != nil;
+}
+
+- (void)setDateFormat:(NSDateFormatter *)format {
+    FMDBAutorelease(_dateFormat);
+    _dateFormat = FMDBReturnRetained(format);
+}
+
+- (NSDate *)dateFromString:(NSString *)s {
+    return [_dateFormat dateFromString:s];
+}
+
+- (NSString *)stringFromDate:(NSDate *)date {
+        return [_dateFormat stringFromDate:date];
+}
+
+
 - (BOOL)goodConnection {
     
     if (!_db) {
@@ -373,7 +403,10 @@
         sqlite3_bind_blob(pStmt, idx, bytes, (int)[obj length], SQLITE_STATIC);
     }
     else if ([obj isKindOfClass:[NSDate class]]) {
-        sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
+        if (self.hasDateFormatter)
+            sqlite3_bind_text(pStmt, idx, [[self stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
+        else
+            sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
     }
     else if ([obj isKindOfClass:[NSNumber class]]) {
         
