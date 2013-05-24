@@ -13,6 +13,13 @@
 #endif
 #endif
 
+typedef enum {
+    FMColumnTypeOther,
+    FMColumnTypeInteger,
+    FMColumnTypeFloat,
+    FMColumnTypeBlob
+} FMColumnType;
+
 @class FMDatabase;
 @class FMStatement;
 
@@ -41,6 +48,9 @@
 
 - (int)columnIndexForName:(NSString*)columnName;
 - (NSString*)columnNameForIndex:(int)columnIdx;
+
+- (FMColumnType)columnTypeForColumn:(NSString*)columnName;
+- (FMColumnType)columnTypeForColumnIndex:(int)columnIdx;
 
 - (int)intForColumn:(NSString*)columnName;
 - (int)intForColumnIndex:(int)columnIdx;
