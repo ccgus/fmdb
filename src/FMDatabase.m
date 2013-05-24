@@ -674,7 +674,7 @@
             
             if (_traceExecution) {
                 if ([obj isKindOfClass:[NSData class]]) {
-                    NSLog(@"data: %d byte", [(NSData*)obj length]);
+                    NSLog(@"data: %ld bytes", (unsigned long)[(NSData*)obj length]);
                 }
                 else {
                     NSLog(@"obj: %@", obj);
