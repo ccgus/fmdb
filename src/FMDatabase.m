@@ -211,7 +211,7 @@
 
 
 - (BOOL)rekey:(NSString*)key {
-    NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(int)strlen([key UTF8String])];
+    NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
     
     return [self rekeyWithData:keyData];
 }
@@ -236,7 +236,7 @@
 }
 
 - (BOOL)setKey:(NSString*)key {
-    NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(int)strlen([key UTF8String])];
+    NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
     
     return [self setKeyWithData:keyData];
 }
@@ -864,7 +864,7 @@
             
             if (_traceExecution) {
                 if ([obj isKindOfClass:[NSData class]]) {
-                    NSLog(@"data: %d byte", [(NSData*)obj length]);
+                    NSLog(@"data: %ld bytes", (unsigned long)[(NSData*)obj length]);
                 }
                 else {
                     NSLog(@"obj: %@", obj);
