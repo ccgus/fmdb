@@ -31,6 +31,16 @@
 
 - (BOOL)validateSQL:(NSString*)sql error:(NSError**)error;
 
+
+#if SQLITE_VERSION_NUMBER >= 3007017
+- (uint32_t)applicationID;
+- (void)setApplicationID:(uint32_t)appID;
+
+- (NSString*)applicationIDString;
+- (void)setApplicationIDString:(NSString*)s;
+#endif
+
+
 // deprecated - use columnExists:inTableWithName: instead.
 - (BOOL)columnExists:(NSString*)tableName columnName:(NSString*)columnName __attribute__ ((deprecated));
 

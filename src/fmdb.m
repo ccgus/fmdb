@@ -203,8 +203,31 @@ int main (int argc, const char * argv[]) {
     rs = [db getTableSchema:@"234 fds"];
     FMDBQuickCheck([rs next]);
     [rs close];
+
+
+#if SQLITE_VERSION_NUMBER >= 3007017
+    {
+        uint32_t appID = NSHFSTypeCodeFromFileType(NSFileTypeForHFSTypeCode('fmdb'));
+        
+        [db setApplicationID:appID];
+        
+        uint32_t rAppID = [db applicationID];
+        
+        NSLog(@"rAppID: %d", rAppID);
+        
+        FMDBQuickCheck(rAppID == appID);
+        
+        [db setApplicationIDString:@"acrn"];
+        
+        NSString *s = [db applicationIDString];
+        
+        NSLog(@"s: '%@'", s);
+        
+        FMDBQuickCheck([s isEqualToString:@"acrn"]);
+        
+    }
     
-    
+#endif
     
     
     
