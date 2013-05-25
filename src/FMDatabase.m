@@ -56,6 +56,7 @@
     [self close];
     FMDBRelease(_openResultSets);
     FMDBRelease(_cachedStatements);
+    FMDBRelease(_dateFormat);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
     
@@ -210,7 +211,7 @@
 
 
 - (BOOL)rekey:(NSString*)key {
-    NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(int)strlen([key UTF8String])];
+    NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
     
     return [self rekeyWithData:keyData];
 }
@@ -235,7 +236,7 @@
 }
 
 - (BOOL)setKey:(NSString*)key {
-    NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(int)strlen([key UTF8String])];
+    NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
     
     return [self setKeyWithData:keyData];
 }
@@ -253,6 +254,34 @@
     return NO;
 #endif
 }
+
++ (NSDateFormatter *)storeableDateFormat:(NSString *)format {
+    
+    NSDateFormatter *result = FMDBReturnAutoreleased([[NSDateFormatter alloc] init]);
+    result.dateFormat = format;
+    result.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    result.locale = FMDBReturnAutoreleased([[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]);
+    return result;
+}
+
+
+- (BOOL)hasDateFormatter {
+    return _dateFormat != nil;
+}
+
+- (void)setDateFormat:(NSDateFormatter *)format {
+    FMDBAutorelease(_dateFormat);
+    _dateFormat = FMDBReturnRetained(format);
+}
+
+- (NSDate *)dateFromString:(NSString *)s {
+    return [_dateFormat dateFromString:s];
+}
+
+- (NSString *)stringFromDate:(NSDate *)date {
+        return [_dateFormat stringFromDate:date];
+}
+
 
 - (BOOL)goodConnection {
     
@@ -373,7 +402,10 @@
         sqlite3_bind_blob(pStmt, idx, bytes, (int)[obj length], SQLITE_STATIC);
     }
     else if ([obj isKindOfClass:[NSDate class]]) {
-        sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
+        if (self.hasDateFormatter)
+            sqlite3_bind_text(pStmt, idx, [[self stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
+        else
+            sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
     }
     else if ([obj isKindOfClass:[NSNumber class]]) {
         
@@ -517,6 +549,9 @@
             [cleanedSQL appendString:@"?"];
             [arguments addObject:arg];
         }
+        else if (add == (unichar)'@' && last == (unichar) '%') {
+            [cleanedSQL appendFormat:@"NULL"];
+        }
         else if (add != '\0') {
             [cleanedSQL appendFormat:@"%C", add];
         }
@@ -630,15 +665,24 @@
             
         while (idx < queryCount) {
             
-            if (arrayArgs) {
+            if (arrayArgs && idx < [arrayArgs count]) {
                 obj = [arrayArgs objectAtIndex:(NSUInteger)idx];
             }
-            else {
+            else if (args) {
                 obj = va_arg(args, id);
             }
+			else {
+				//We ran out of arguments
+				break;
+			}
             
             if (_traceExecution) {
-                NSLog(@"obj: %@", obj);
+                if ([obj isKindOfClass:[NSData class]]) {
+                    NSLog(@"data: %ld bytes", (unsigned long)[(NSData*)obj length]);
+                }
+                else {
+                    NSLog(@"obj: %@", obj);
+                }
             }
             
             idx++;
@@ -815,15 +859,24 @@
         
         while (idx < queryCount) {
             
-            if (arrayArgs) {
+            if (arrayArgs && idx < [arrayArgs count]) {
                 obj = [arrayArgs objectAtIndex:(NSUInteger)idx];
             }
-            else {
+            else if (args) {
                 obj = va_arg(args, id);
             }
+			else {
+				//We ran out of arguments
+				break;
+			}
             
             if (_traceExecution) {
-                NSLog(@"obj: %@", obj);
+                if ([obj isKindOfClass:[NSData class]]) {
+                    NSLog(@"data: %ld bytes", (unsigned long)[(NSData*)obj length]);
+                }
+                else {
+                    NSLog(@"obj: %@", obj);
+                }
             }
             
             idx++;

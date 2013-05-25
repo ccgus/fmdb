@@ -5,3 +5,4 @@ build
 *.xcodeproj/xcuserdata
 fmdb.xcodeproj/*.mode1v3
 *.xcodeproj/project.xcworkspace/xcuserdata/
+fmdb.xcodeproj/project.xcworkspace
