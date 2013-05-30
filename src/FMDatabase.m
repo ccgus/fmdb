@@ -634,8 +634,8 @@
     }
     
     id obj;
-    int idx = 0;
-    int queryCount = sqlite3_bind_parameter_count(pStmt); // pointed out by Dominic Yu (thanks!)
+    unsigned long idx = 0;
+    unsigned long queryCount = sqlite3_bind_parameter_count(pStmt); // pointed out by Dominic Yu (thanks!)
     
     // If dictionaryArgs is passed in, that means we are using sqlite's named parameter support
     if (dictionaryArgs) {
@@ -827,8 +827,8 @@
     }
     
     id obj;
-    int idx = 0;
-    int queryCount = sqlite3_bind_parameter_count(pStmt);
+    unsigned long idx = 0;
+    unsigned long queryCount = sqlite3_bind_parameter_count(pStmt);
     
     // If dictionaryArgs is passed in, that means we are using sqlite's named parameter support
     if (dictionaryArgs) {
@@ -887,7 +887,7 @@
     
     
     if (idx != queryCount) {
-        NSLog(@"Error: the bind count (%d) is not correct for the # of variables in the query (%d) (%@) (executeUpdate)", idx, queryCount, sql);
+        NSLog(@"Error: the bind count (%ld) is not correct for the # of variables in the query (%ld) (%@) (executeUpdate)", idx, queryCount, sql);
         sqlite3_finalize(pStmt);
         _isExecutingStatement = NO;
         return NO;
