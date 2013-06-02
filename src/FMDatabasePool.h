@@ -124,7 +124,7 @@
 
  @param block The code to be run on the `FMDatabasePool` pool.
 
- @warning You can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock. If you need to nest, use `<FMDatabase>`'s <startSavePointWithName:error:> instead.
+ @warning You can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock. If you need to nest, use `<[FMDatabase startSavePointWithName:error:]>` instead.
 */
 
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
