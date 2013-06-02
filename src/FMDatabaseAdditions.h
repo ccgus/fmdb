@@ -108,22 +108,41 @@
 
 /** The schema of the database.
  
- This will be the schema for the entire database.
+ This will be the schema for the entire database. For each entity, each row of the result set will include the following fields:
+ 
+ - `type` - The type of entity (e.g. table, index, view, or trigger)
+ - `name` - The name of the object
+ - `tbl_name` - The name of the table to which the object references
+ - `rootpage` - The page number of the root b-tree page for tables and indices
+ - `sql` - The SQL that created the entity
 
  @return `FMResultSet` of schema; `nil` on error.
+ 
+ @see [SQLite File Format](http://www.sqlite.org/fileformat.html)
  */
 
 - (FMResultSet*)getSchema;
 
 /** The schema of the database.
 
- This will be the schema for a particular table as report by SQLite `PRAGMA`:
+ This will be the schema for a particular table as report by SQLite `PRAGMA`, for example:
  
-    PRAGMA table_info('%@')
+    PRAGMA table_info('employees')
+ 
+ This will report:
+ 
+ - `cid` - The column ID number
+ - `name` - The name of the column
+ - `type` - The data type specified for the column
+ - `notnull` - whether the field is defined as NOT NULL (i.e. values required)
+ - `dflt_value` - The default value for the column
+ - `pk` - Whether the field is part of the primary key of the table
 
  @param tableName The name of the table for whom the schema will be returned.
  
  @return `FMResultSet` of schema; `nil` on error.
+ 
+ @see [table_info](http://www.sqlite.org/pragma.html#pragma_table_info)
  */
 
 - (FMResultSet*)getTableSchema:(NSString*)tableName;
