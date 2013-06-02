@@ -295,7 +295,7 @@
 
  @param columnName `NSString` value of the name of the column.
 
- @return Either NSNumber, NSString, NSData, or NSNull. If the column was `NULL`, this returns `[NSNull null]` object.
+ @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
 
  @see objectForKeyedSubscript:
  */
@@ -306,7 +306,7 @@
 
  @param columnIdx Zero-based index for column.
 
- @return Either NSNumber, NSString, NSData, or NSNull. If the column was `NULL`, this returns `[NSNull null]` object.
+ @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
 
  @see objectAtIndexedSubscript:
  */
@@ -329,7 +329,7 @@
 
  @param columnName `NSString` value of the name of the column.
 
- @return Either NSNumber, NSString, NSData, or NSNull. If the column was `NULL`, this returns `[NSNull null]` object.
+ @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
  */
 
 - (id)objectForKeyedSubscript:(NSString *)columnName;
@@ -338,19 +338,19 @@
 
  This method allows the use of the "boxed" syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:
 
- id result = rs[0];
+    id result = rs[0];
 
  This simplified syntax is equivalent to calling:
 
- id result = [rs objectForKeyedSubscript:0];
+    id result = [rs objectForKeyedSubscript:0];
 
  which is, it turns out, equivalent to calling:
 
- id result = [rs objectForColumnName:0];
+    id result = [rs objectForColumnName:0];
 
  @param columnIdx Zero-based index for column.
 
- @return Either NSNumber, NSString, NSData, or NSNull. If the column was `NULL`, this returns `[NSNull null]` object.
+ @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
  */
 
 - (id)objectAtIndexedSubscript:(int)columnIdx;
@@ -362,7 +362,7 @@
  @return `NSData` value of the result set's column.
 
  @warning If you are going to use this data after you iterate over the next row, or after you close the
-result set, make sure to make a copy of the data first (or just use dataForColumn:/dataForColumnIndex:)
+result set, make sure to make a copy of the data first (or just use `<dataForColumn:>`/`<dataForColumnIndex:>`)
 If you don't, you're going to be in a world of hurt when you try and use the data.
  
  */
@@ -376,7 +376,7 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
  @return `NSData` value of the result set's column.
 
  @warning If you are going to use this data after you iterate over the next row, or after you close the
- result set, make sure to make a copy of the data first (or just use dataForColumn:/dataForColumnIndex:)
+ result set, make sure to make a copy of the data first (or just use `<dataForColumn:>`/`<dataForColumnIndex:>`)
  If you don't, you're going to be in a world of hurt when you try and use the data.
 
  */
