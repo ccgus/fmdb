@@ -46,14 +46,8 @@
 #endif
 
 
-/** Database object
+/** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
  
- Represents a single SQLite database.  Used for executing SQL statements.
- 
- This is an Objective-C wrapper around SQLite ([http://sqlite.org/](http://sqlite.org/)).
- 
- The source code is available on GitHub at [https://github.com/ccgus/fmdb](https://github.com/ccgus/fmdb)
-
  ### The FMDB Mailing List:
  [http://groups.google.com/group/fmdb](http://groups.google.com/group/fmdb)
 
@@ -61,6 +55,9 @@
  [http://www.sqlite.org/faq.html](http://www.sqlite.org/faq.html)
 
  Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: [http://www.sqlite.org/docs.html](http://www.sqlite.org/docs.html)
+
+ ### The FMDB Source Code:
+ The source code is available on GitHub at [https://github.com/ccgus/fmdb](https://github.com/ccgus/fmdb)
 
  ### Automatic Reference Counting (ARC) or Manual Memory Management?
  You can use either style in your Cocoa project.  FMDB Will figure out which you are using at compile time and do the right thing.
@@ -77,15 +74,23 @@
 
  1. A file system path.  The file does not have to exist on disk.  If it does not exist, it is created for you.
  2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
- 3. `NULL`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
+ 3. `nil`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
 
- (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
+ For example, to create/open a database in your Mac OS X `tmp` folder:
 
     FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
 
+ Or, in iOS, you might open a database in the app's `Documents` directory:
+
+    NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
+    FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
+
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
+
  #### Opening
 
- Before you can interact with the database, it must be opened.  Opening fails if there are insufficient resources or permissions to open and/or create the database.
+ Before you can interact with the database, it must be opened (see `<open>`).  Opening fails if there are insufficient resources or permissions to open and/or create the database.
 
     if (![db open]) {
         [db release];
@@ -96,22 +101,22 @@
 
  Any sort of SQL statement which is not a `SELECT` statement qualifies as an update.  This includes `CREATE`, `UPDATE`, `INSERT`, `ALTER`, `COMMIT`, `BEGIN`, `DETACH`, `DELETE`, `DROP`, `END`, `EXPLAIN`, `VACUUM`, and `REPLACE` statements (plus many more).  Basically, if your SQL statement does not begin with `SELECT`, it is an update statement.
 
- Executing updates returns a single value, a `BOOL`.  A return value of `YES` means the update was successfully executed, and a return value of `NO` means that some error was encountered.  You may invoke the [`lastErrorMessage`](lastErrorMessage) and [`lastErrorMessage`](lastErrorCode) methods to retrieve more information.
+ Executing updates returns a single value, a `BOOL`.  A return value of `YES` means the update was successfully executed, and a return value of `NO` means that some error was encountered.  You may invoke the `<lastErrorMessage>` and `<lastErrorMessage>` methods to retrieve more information.
 
  #### Executing Queries
 
  A `SELECT` statement is a query and is executed via one of the `-executeQuery...` methods.
 
- Executing queries returns an `<FMResultSet>` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the [`lastErrorMessage`](lastErrorMessage) and [`lastErrorMessage`](lastErrorCode) methods to determine why a query failed.
+ Executing queries returns an `<FMResultSet>` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the `<lastErrorMessage>` and `<lastErrorMessage>` methods to determine why a query failed.
 
- In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" from one record to the other.  With FMDB, the easiest way to do that is like this:
+ In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" (via `<[FMResultSet next]>`) from one record to the other.  With FMDB, the easiest way to do that is like this:
 
     FMResultSet *s = [db executeQuery:@"SELECT * FROM myTable"];
     while ([s next]) {
         //retrieve values for each record
     }
 
- You must always invoke `-[FMResultSet next]` before attempting to access the values returned in a query, even if you're only expecting one:
+ You must always invoke `<FMResultSet next>` before attempting to access the values returned in a query, even if you're only expecting one:
 
     FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM myTable"];
     if ([s next]) {
@@ -120,25 +125,25 @@
 
  `<FMResultSet>` has many methods to retrieve data in an appropriate format:
 
- - `intForColumn:`
- - `longForColumn:`
- - `longLongIntForColumn:`
- - `boolForColumn:`
- - `doubleForColumn:`
- - `stringForColumn:`
- - `dateForColumn:`
- - `dataForColumn:`
- - `dataNoCopyForColumn:`
- - `UTF8StringForColumnIndex:`
- - `objectForColumn:`
+ - `<[FMResultSet intForColumn:]>`
+ - `<[FMResultSet longForColumn:]>`
+ - `<[FMResultSet longLongIntForColumn:]>`
+ - `<[FMResultSet boolForColumn:]>`
+ - `<[FMResultSet doubleForColumn:]>`
+ - `<[FMResultSet stringForColumn:]>`
+ - `<[FMResultSet dateForColumn:]>`
+ - `<[FMResultSet dataForColumn:]>`
+ - `<[FMResultSet dataNoCopyForColumn:]>`
+ - `<[FMResultSet UTF8StringForColumnName:]>`
+ - `<[FMResultSet objectForColumnName:]>`
 
  Each of these methods also has a `{type}ForColumnIndex:` variant that is used to retrieve the data based on the position of the column in the results, as opposed to the column's name.
 
- Typically, there's no need to [`close`](close) an `<FMResultSet>` yourself, since that happens when either the result set is deallocated, or the parent database is closed.
+ Typically, there's no need to `<[FMResultSet close]>` an `<FMResultSet>` yourself, since that happens when either the result set is deallocated, or the parent database is closed.
 
  #### Closing
 
- When you have finished executing queries and updates on the database, you should [`close`](close) the `FMDatabase` connection so that SQLite will relinquish any resources it has acquired during the course of its operation.
+ When you have finished executing queries and updates on the database, you should `<close>` the `FMDatabase` connection so that SQLite will relinquish any resources it has acquired during the course of its operation.
 
     [db close];
 
@@ -286,9 +291,17 @@
  2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
  3. `nil`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
 
- (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: http://www.sqlite.org/inmemorydb.html)
+ For example, to create/open a database in your Mac OS X `tmp` folder:
 
     FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+
+ Or, in iOS, you might open a database in the app's `Documents` directory:
+
+    NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
+    FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
+
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
 
  @param inPath Path of database file
 
@@ -304,9 +317,17 @@
  2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
  3. `nil`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
 
- (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: http://www.sqlite.org/inmemorydb.html)
+ For example, to create/open a database in your Mac OS X `tmp` folder:
 
     FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+
+ Or, in iOS, you might open a database in the app's `Documents` directory:
+
+    NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
+    FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
+
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
 
  @param inPath Path of database file
  
@@ -315,6 +336,7 @@
  */
 
 - (id)initWithPath:(NSString*)inPath;
+
 
 ///---------------------------------------------------------------------------------------
 /// @name Opening and closing database
@@ -326,7 +348,7 @@
 
  @return `YES` if successful, `NO` on error.
 
- @see http://sqlite.org/c3ref/open.html
+ @see [sqlite3_open()](http://sqlite.org/c3ref/open.html)
  @see openWithFlags:
  @see close
  */
@@ -351,7 +373,7 @@
  
  @return `YES` if successful, `NO` on error.
 
- @see http://sqlite.org/c3ref/open.html
+ @see [sqlite3_open_v2()](http://sqlite.org/c3ref/open.html)
  @see open
  @see close
  */
@@ -364,7 +386,7 @@
  
  @return `YES` if success, `NO` on error.
  
- @see http://sqlite.org/c3ref/close.html
+ @see [sqlite3_close()](http://sqlite.org/c3ref/close.html)
  @see open
  @see openWithFlags:
  */
@@ -382,6 +404,165 @@
  */
 
 - (BOOL)goodConnection;
+
+///---------------------------------------------------------------------------------------
+/// @name Perform updates
+///---------------------------------------------------------------------------------------
+
+- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
+
+/** Execute update statement
+
+ @param sql The SQL to be performed, with optional `?` placeholders.
+
+ @param ... Optional parameters to bind to `?` placeholders in the SQL statement.
+
+ @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ */
+
+- (BOOL)executeUpdate:(NSString*)sql, ...;
+
+/** Execute update statement
+
+ @param format The SQL to be performed, with `printf`-style escape sequences.
+
+ @param ... Optional parameters to bind to use in conjunction with the `printf`-style escape sequences in the SQL statement.
+
+ @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @warning This should be used with great care. Generally, you should use `<executeUpdate:>` (with `?` placeholders) rather than this method.
+ */
+
+- (BOOL)executeUpdateWithFormat:(NSString *)format, ...;
+
+/** Execute update statement
+
+ @param sql The SQL to be performed, with optional `?` placeholders.
+
+ @param arguments A `NSArray` of objects to be used when binding values to the `?` placeholders in the SQL statement.
+
+ @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ */
+
+- (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
+
+/** Execute update statement
+
+ @param sql The SQL to be performed, with optional `?` placeholders.
+
+ @param arguments A `NSDictionary` of objects keyed by column names that will be used when binding values to the `?` placeholders in the SQL statement.
+
+ @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ */
+
+- (BOOL)executeUpdate:(NSString*)sql withParameterDictionary:(NSDictionary *)arguments;
+
+
+///---------------------------------------------------------------------------------------
+/// @name Retrieving results
+///---------------------------------------------------------------------------------------
+
+/** Execute select statement
+
+ @param sql The SELECT statement to be performed, with optional `?` placeholders.
+
+ @param ... Optional parameters to bind to `?` placeholders in the SQL statement.
+
+ @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ */
+
+- (FMResultSet *)executeQuery:(NSString*)sql, ...;
+
+/** Execute select statement
+
+ @param format The SQL to be performed, with `printf`-style escape sequences.
+
+ @param ... Optional parameters to bind to use in conjunction with the `printf`-style escape sequences in the SQL statement.
+
+ @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @warning This should be used with great care. Generally, you should use `<executeQuery:>` (with `?` placeholders) rather than this method.
+ */
+
+- (FMResultSet *)executeQueryWithFormat:(NSString*)format, ...;
+
+/** Execute select statement
+
+ @param sql The SELECT statement to be performed, with optional `?` placeholders.
+
+ @param arguments A `NSArray` of objects to be used when binding values to the `?` placeholders in the SQL statement.
+
+ @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ */
+
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
+
+/** Execute select statement
+
+ @param sql The SELECT statement to be performed, with optional `?` placeholders.
+
+ @param arguments A `NSDictionary` of objects keyed by column names that will be used when binding values to the `?` placeholders in the SQL statement.
+
+ @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ */
+
+- (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
+
+///---------------------------------------------------------------------------------------
+/// @name Transactions
+///---------------------------------------------------------------------------------------
+
+/** Rollback a transaction
+
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ 
+ @see commit
+ @see beginTransaction
+ */
+
+- (BOOL)rollback;
+
+/** Commit a transaction
+
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @see rollback
+ @see beginTransaction
+ */
+
+- (BOOL)commit;
+
+/** Begin a transaction
+
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @see commit
+ @see rollback
+ */
+
+- (BOOL)beginTransaction;
+
+/** Begin a deferred transaction
+
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @see commit
+ @see rollback
+ */
+
+- (BOOL)beginDeferredTransaction;
+
+/** Identify whether currently in a transaction or not
+
+ @return `YES` on within transaction; `NO` if not.
+
+ @see beginTransaction
+ @see commit
+ @see rollback
+ */
+
+- (BOOL)inTransaction;
+
 
 ///---------------------------------------------------------------------------------------
 /// @name Cached statements and result sets
@@ -474,7 +655,7 @@
 
  @returns `NSString` of the last error message.
  
- @see http://sqlite.org/c3ref/errcode.html
+ @see [sqlite3_errmsg()](http://sqlite.org/c3ref/errcode.html)
  @see lastErrorCode
  @see lastError
  
@@ -488,7 +669,7 @@
 
  @returns Integer value of the last error code.
 
- @see http://sqlite.org/c3ref/errcode.html
+ @see [sqlite3_errcode()](http://sqlite.org/c3ref/errcode.html)
  @see lastErrorMessage
  @see lastError
 
@@ -518,6 +699,7 @@
 
 - (NSError*)lastError;
 
+
 ///---------------------------------------------------------------------------------------
 /// @name Row ID of last insert
 ///---------------------------------------------------------------------------------------
@@ -528,10 +710,12 @@
 
  This routine returns the rowid of the most recent successful INSERT into the database from the database connection in the first argument. As of SQLite version 3.7.7, this routines records the last insert rowid of both ordinary tables and virtual tables. If no successful INSERTs have ever occurred on that database connection, zero is returned.
  
- @see http://sqlite.org/c3ref/last_insert_rowid.html
+ @see [sqlite3_last_insert_rowid()](http://sqlite.org/c3ref/last_insert_rowid.html)
+ 
  */
 
 - (sqlite_int64)lastInsertRowId;
+
 
 ///---------------------------------------------------------------------------------------
 /// @name SQLite handle
@@ -539,34 +723,6 @@
 
 - (sqlite3*)sqliteHandle;
 
-///---------------------------------------------------------------------------------------
-/// @name Perform updates
-///---------------------------------------------------------------------------------------
-
-- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
-- (BOOL)executeUpdate:(NSString*)sql, ...;
-- (BOOL)executeUpdateWithFormat:(NSString *)format, ...;
-- (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
-- (BOOL)executeUpdate:(NSString*)sql withParameterDictionary:(NSDictionary *)arguments;
-
-///---------------------------------------------------------------------------------------
-/// @name Retrieving results
-///---------------------------------------------------------------------------------------
-
-- (FMResultSet *)executeQuery:(NSString*)sql, ...;
-- (FMResultSet *)executeQueryWithFormat:(NSString*)format, ...;
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
-- (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
-
-///---------------------------------------------------------------------------------------
-/// @name Transactions
-///---------------------------------------------------------------------------------------
-
-- (BOOL)rollback;
-- (BOOL)commit;
-- (BOOL)beginTransaction;
-- (BOOL)beginDeferredTransaction;
-- (BOOL)inTransaction;
 
 ///---------------------------------------------------------------------------------------
 /// @name Statement caching
@@ -594,14 +750,14 @@
 
  @return Zero if and only if SQLite was compiled with mutexing code omitted due to the SQLITE_THREADSAFE compile-time option being set to 0.
 
- @see http://sqlite.org/c3ref/threadsafe.html
+ @see [sqlite3_threadsafe()](http://sqlite.org/c3ref/threadsafe.html)
  */
 
 + (BOOL)isSQLiteThreadSafe;
 
 /** Run-time library version numbers
  
- @see http://sqlite.org/c3ref/libversion.html
+ @see [sqlite3_libversion()](http://sqlite.org/c3ref/libversion.html)
  */
 
 + (NSString*)sqliteLibVersion;
@@ -612,7 +768,7 @@
 
 /** This function returns the number of database rows that were changed or inserted or deleted by the most recently completed SQL statement on the database connection specified by the first parameter. Only changes that are directly specified by the INSERT, UPDATE, or DELETE statement are counted.
 
- @see http://sqlite.org/c3ref/changes.html
+ @see [sqlite3_changes()](http://sqlite.org/c3ref/changes.html)
  */
 
 - (int)changes;
@@ -662,7 +818,7 @@
 
  @param block The block of code for the function
 
- @see http://sqlite.org/c3ref/create_function.html
+ @see [sqlite3_create_function()](http://sqlite.org/c3ref/create_function.html)
  */
 
 - (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
