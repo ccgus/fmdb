@@ -176,7 +176,7 @@
 
     [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @"this has \" lots of ' bizarre \" quotes '"];
 
- All arguments provided to the `-executeUpdate:` method (or any of the variants that accept a `va_list` as a parameter) must be objects.  The following will not work (and will result in a crash):
+ All arguments provided to the <executeUpdate:> method (or any of the variants that accept a `va_list` as a parameter) must be objects.  The following will not work (and will result in a crash):
 
     [db executeUpdate:@"INSERT INTO myTable VALUES (?)", 42];
 
@@ -184,22 +184,21 @@
 
     [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:42]];
 
- Alternatively, you can use the `-execute*WithFormat:` variant to use `NSString`-style substitution:
+ Alternatively, you can use the <executeUpdateWithFormat:> variant to use `NSString`-style substitution:
 
     [db executeUpdateWithFormat:@"INSERT INTO myTable VALUES (%d)", 42];
 
- Internally, the `-execute*WithFormat:` methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
-
+ Internally, the <executeUpdateWithFormat:> methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
 
  ### Using FMDatabaseQueue and Thread Safety.
 
  Using a single instance of `FMDatabase` from multiple threads at once is a bad idea.  It has always been OK to make a `FMDatabase` object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
 
- Instead, use `<FMDatabaseQueue>`.  It's your friend and it's here to help.
+ Instead, use <FMDatabaseQueue>.  It's your friend and it's here to help.
  
  ### Making custom SQLite functions, based on blocks.
 
- You can do this!  For an example, see [`makeFunctionNamed`](makeFunctionNamed:maximumArguments:withBlock:).
+ You can do this!  For an example, see <makeFunctionNamed:maximumArguments:withBlock:>).
 
  ---
  
