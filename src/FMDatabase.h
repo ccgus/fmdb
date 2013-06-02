@@ -736,10 +736,59 @@
 ///---------------------------------------------------------------------------------------
 
 #if SQLITE_VERSION_NUMBER >= 3007000
+
+/** Start save point
+ 
+ @param name Name of save point.
+ @param outErr A `NSError` object to receive any error object (if any).
+ 
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ 
+ @see releaseSavePointWithName:error:
+ @see rollbackToSavePointWithName:error:
+ */
+
 - (BOOL)startSavePointWithName:(NSString*)name error:(NSError**)outErr;
+
+/** Release save point
+
+ @param name Name of save point.
+ @param outErr A `NSError` object to receive any error object (if any).
+ 
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @see startSavePointWithName:error:
+ @see rollbackToSavePointWithName:error:
+ */
+
 - (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr;
+
+/** Roll back to save point
+
+ @param name Name of save point.
+ @param outErr A `NSError` object to receive any error object (if any).
+ 
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ 
+ @see startSavePointWithName:error:
+ @see releaseSavePointWithName:error:
+ */
+
 - (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr;
+
+/** Start save point
+
+ @param block Block of code to perform from within save point.
+ 
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @see startSavePointWithName:error:
+ @see releaseSavePointWithName:error:
+ @see rollbackToSavePointWithName:error:
+ */
+
 - (NSError*)inSavePoint:(void (^)(BOOL *rollback))block;
+
 #endif
 
 ///---------------------------------------------------------------------------------------
