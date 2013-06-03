@@ -665,7 +665,7 @@
             
         while (idx < queryCount) {
             
-            if (arrayArgs && idx < [arrayArgs count]) {
+            if (arrayArgs && idx < (int)[arrayArgs count]) {
                 obj = [arrayArgs objectAtIndex:(NSUInteger)idx];
             }
             else if (args) {
@@ -859,7 +859,7 @@
         
         while (idx < queryCount) {
             
-            if (arrayArgs && idx < [arrayArgs count]) {
+            if (arrayArgs && idx < (int)[arrayArgs count]) {
                 obj = [arrayArgs objectAtIndex:(NSUInteger)idx];
             }
             else if (args) {
