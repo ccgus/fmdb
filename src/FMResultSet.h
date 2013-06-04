@@ -426,9 +426,9 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
  
 /** Returns a dictionary of the row results
  
- @warning **Deprecated**: Please use `<resultDictionary>` instead.  Also, beware that `<resultDictionary>` is case sensitive! 
- 
  @see resultDictionary
+ 
+ @warning **Deprecated**: Please use `<resultDictionary>` instead.  Also, beware that `<resultDictionary>` is case sensitive! 
  */
 
 - (NSDictionary*)resultDict  __attribute__ ((deprecated));

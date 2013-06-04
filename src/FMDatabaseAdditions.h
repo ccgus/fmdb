@@ -170,9 +170,9 @@
 
  @return `YES` if column exists in table in question; `NO` otherwise.
  
- @warning Deprecated - use `<columnExists:inTableWithName:>` instead.
- 
  @see columnExists:inTableWithName:
+ 
+ @warning Deprecated - use `<columnExists:inTableWithName:>` instead.
  */
 
 - (BOOL)columnExists:(NSString*)tableName columnName:(NSString*)columnName __attribute__ ((deprecated));
