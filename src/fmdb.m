@@ -7,6 +7,7 @@
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
 void testPool(NSString *dbPath);
+void testDateFormat();
 void FMDBReportABugFunction();
 
 int main (int argc, const char * argv[]) {
@@ -202,8 +203,31 @@ int main (int argc, const char * argv[]) {
     rs = [db getTableSchema:@"234 fds"];
     FMDBQuickCheck([rs next]);
     [rs close];
+
+
+#if SQLITE_VERSION_NUMBER >= 3007017
+    {
+        uint32_t appID = NSHFSTypeCodeFromFileType(NSFileTypeForHFSTypeCode('fmdb'));
+        
+        [db setApplicationID:appID];
+        
+        uint32_t rAppID = [db applicationID];
+        
+        NSLog(@"rAppID: %d", rAppID);
+        
+        FMDBQuickCheck(rAppID == appID);
+        
+        [db setApplicationIDString:@"acrn"];
+        
+        NSString *s = [db applicationIDString];
+        
+        NSLog(@"s: '%@'", s);
+        
+        FMDBQuickCheck([s isEqualToString:@"acrn"]);
+        
+    }
     
-    
+#endif
     
     
     
@@ -511,6 +535,9 @@ int main (int argc, const char * argv[]) {
     
     [db executeUpdate:@"create table nulltest2 (s text, d data, i integer, f double, b integer)"];
     
+    // grab the data for this again, since we overwrote it with some memory that has since disapeared.
+    safariCompass = [NSData dataWithContentsOfFile:@"/Applications/Safari.app/Contents/Resources/compass.icns"];
+    
     [db executeUpdate:@"insert into nulltest2 (s, d, i, f, b) values (?, ?, ?, ?, ?)" , @"Hi", safariCompass, [NSNumber numberWithInt:12], [NSNumber numberWithFloat:4.4f], [NSNumber numberWithBool:YES]];
     [db executeUpdate:@"insert into nulltest2 (s, d, i, f, b) values (?, ?, ?, ?, ?)" , nil, nil, nil, nil, [NSNull null]];
     
@@ -701,7 +728,21 @@ int main (int argc, const char * argv[]) {
         
     }
     
-    
+    {
+        FMDBQuickCheck([db executeUpdate:@"create table tatwhat (a text)"]);
+        
+        BOOL worked = [db executeUpdateWithFormat:@"insert into tatwhat values(%@)", nil];
+        
+        FMDBQuickCheck(worked);
+        
+        rs = [db executeQueryWithFormat:@"select * from tatwhat"];
+        FMDBQuickCheck((rs != nil));
+        FMDBQuickCheck(([rs next]));
+        FMDBQuickCheck([rs columnIndexIsNull:0]);
+        
+        FMDBQuickCheck((![rs next]));
+        
+    }
     
     
     {
@@ -709,6 +750,10 @@ int main (int argc, const char * argv[]) {
         
     }
     
+    {
+        rs = [db executeQuery:@"select * from t5 where a=?" withArgumentsInArray:@[]];
+        FMDBQuickCheck((![rs next]));
+    }
     
     // test attach for the heck of it.
     {
@@ -806,6 +851,7 @@ int main (int argc, const char * argv[]) {
     
     
     testPool(dbPath);
+    testDateFormat();
     
     
     
@@ -1313,6 +1359,47 @@ void testPool(NSString *dbPath) {
     }
 #endif
 
+}
+
+
+/*
+ Test the date format
+ */
+
+void testOneDateFormat( FMDatabase *db, NSDate *testDate ) {
+    [db executeUpdate:@"DROP TABLE IF EXISTS test_format"];
+    [db executeUpdate:@"CREATE TABLE test_format ( test TEXT )"];
+    [db executeUpdate:@"INSERT INTO test_format(test) VALUES (?)", testDate];
+    FMResultSet *rs = [db executeQuery:@"SELECT test FROM test_format"];
+    if ([rs next]) {
+        NSDate *found = [rs dateForColumnIndex:0];
+        if (NSOrderedSame != [testDate compare:found]) {
+            NSLog(@"Did not get back what we stored.");
+        }
+    }
+    else {
+        NSLog(@"Insertion borked");
+    }
+    [rs close];
+}
+
+void testDateFormat() {
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:nil]; // use in-memory DB
+    [db open];
+    
+    NSDateFormatter *fmt = [FMDatabase storeableDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    NSDate *testDate = [fmt dateFromString:@"2013-02-20 12:00:00"];
+    
+    // test timestamp dates (ensuring our change does not break those)
+    testOneDateFormat(db,testDate);
+    
+    // now test the string-based timestamp
+    [db setDateFormat:fmt];
+    testOneDateFormat(db, testDate);
+    
+    [db close];
 }
 
 
