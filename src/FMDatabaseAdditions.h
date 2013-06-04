@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 
 /** Category of additions for `<FMDatabase>` class.
+ 
+ ### See also
+
+ - `<FMDatabase>`
  */
 
 @interface FMDatabase (FMDatabaseAdditions)
