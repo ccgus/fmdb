@@ -13,11 +13,9 @@
 
 /** To perform queries and updates on multiple threads, you'll want to use `FMDatabaseQueue`.
 
- Using a single instance of `<FMDatabase>` from multiple threads at once is a bad idea.  It has always been OK to make a `FMDatabase` object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.
+ Using a single instance of `<FMDatabase>` from multiple threads at once is a bad idea.  It has always been OK to make a `<FMDatabase>` object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.
 
- **So don't instantiate a single `<FMDatabase>` object and use it across multiple threads.**
-
- Instead, use `FMDatabaseQueue`.  It's your friend and it's here to help.  Here's how to use it:
+ Instead, use `FMDatabaseQueue`. Here's how to use it:
 
  First, make your queue.
 
@@ -52,6 +50,10 @@
     }];
 
  `FMDatabaseQueue` will run the blocks on a serialized queue (hence the name of the class).  So if you call `FMDatabaseQueue`'s methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
+
+ ### See also
+
+ - `<FMDatabase>`
 
  @warning Do not instantiate a single `<FMDatabase>` object and use it across multiple threads. Use `FMDatabaseQueue` instead.
  
