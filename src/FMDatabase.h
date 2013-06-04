@@ -116,7 +116,7 @@
         //retrieve values for each record
     }
 
- You must always invoke `<FMResultSet next>` before attempting to access the values returned in a query, even if you're only expecting one:
+ You must always invoke `<[FMResultSet next]>` before attempting to access the values returned in a query, even if you're only expecting one:
 
     FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM myTable"];
     if ([s next]) {
@@ -176,7 +176,7 @@
 
     [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @"this has \" lots of ' bizarre \" quotes '"];
 
- All arguments provided to the <executeUpdate:> method (or any of the variants that accept a `va_list` as a parameter) must be objects.  The following will not work (and will result in a crash):
+ All arguments provided to the [`executeUpdate:`](<executeUpdate:>) method (or any of the variants that accept a `va_list` as a parameter) must be objects.  The following will not work (and will result in a crash):
 
     [db executeUpdate:@"INSERT INTO myTable VALUES (?)", 42];
 
@@ -184,11 +184,11 @@
 
     [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:42]];
 
- Alternatively, you can use the <executeUpdateWithFormat:> variant to use `NSString`-style substitution:
+ Alternatively, you can use the [`executeUpdateWithFormat:`](<executeUpdateWithFormat:>) variant to use `NSString`-style substitution:
 
     [db executeUpdateWithFormat:@"INSERT INTO myTable VALUES (%d)", 42];
 
- Internally, the <executeUpdateWithFormat:> methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
+ Internally, the [`executeUpdateWithFormat:`](<executeUpdateWithFormat:>) methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
 
  ### Using FMDatabaseQueue and Thread Safety.
 
@@ -255,6 +255,10 @@
 
     NSDateFormatter     *_dateFormat;
 }
+
+///---------------------------------------------------------------------------------------
+/// @name Properties
+///---------------------------------------------------------------------------------------
 
 /** Whether should trace execution */
 
@@ -456,6 +460,28 @@
 
 - (BOOL)executeUpdate:(NSString*)sql withParameterDictionary:(NSDictionary *)arguments;
 
+/** Last insert rowid
+ 
+ Each entry in an SQLite table has a unique 64-bit signed integer key called the "rowid". The rowid is always available as an undeclared column named `ROWID`, `OID`, or `_ROWID_` as long as those names are not also used by explicitly declared columns. If the table has a column of type `INTEGER PRIMARY KEY` then that column is another alias for the rowid.
+ 
+ This routine returns the rowid of the most recent successful `INSERT` into the database from the database connection in the first argument. As of SQLite version 3.7.7, this routines records the last insert rowid of both ordinary tables and virtual tables. If no successful `INSERT`s have ever occurred on that database connection, zero is returned.
+ 
+ @see [sqlite3_last_insert_rowid()](http://sqlite.org/c3ref/last_insert_rowid.html)
+ 
+ */
+
+- (sqlite_int64)lastInsertRowId;
+
+/** The number of rows changed by prior SQL statement.
+ 
+ This function returns the number of database rows that were changed or inserted or deleted by the most recently completed SQL statement on the database connection specified by the first parameter. Only changes that are directly specified by the INSERT, UPDATE, or DELETE statement are counted.
+ 
+ @see [sqlite3_changes()](http://sqlite.org/c3ref/changes.html)
+ 
+ */
+
+- (int)changes;
+
 
 ///---------------------------------------------------------------------------------------
 /// @name Retrieving results
@@ -582,6 +608,20 @@
 
 - (BOOL)hasOpenResultSets;
 
+/** Return whether should cache statements or not
+ 
+ @return `YES` if should cache statements; `NO` if not.
+ */
+
+- (BOOL)shouldCacheStatements;
+
+/** Set whether should cache statements or not
+ 
+ @param value `YES` if should cache statements; `NO` if not.
+ */
+
+- (void)setShouldCacheStatements:(BOOL)value;
+
 ///---------------------------------------------------------------------------------------
 /// @name Encryption methods
 ///
@@ -637,12 +677,25 @@
 - (BOOL)rekeyWithData:(NSData *)keyData;
 
 ///---------------------------------------------------------------------------------------
-/// @name Database path
+/// @name General inquiry methods
 ///---------------------------------------------------------------------------------------
 
-/** The path of the database file. */
+/** The path of the database file.
+ 
+ @return path of database.
+ 
+ */
 
 - (NSString *)databasePath;
+
+/** The underlying SQLite handle 
+ 
+ @return The `sqlite3` pointer.
+ 
+ */
+
+- (sqlite3*)sqliteHandle;
+
 
 ///---------------------------------------------------------------------------------------
 /// @name Retrieving error codes
@@ -683,13 +736,14 @@
  @see lastError
  @see lastErrorCode
  @see lastErrorMessage
+ 
  */
 
 - (BOOL)hadError;
 
 /** Last error.
 
- @returns `NSError` representing the last error.
+ @return `NSError` representing the last error.
  
  @see lastErrorCode
  @see lastErrorMessage
@@ -699,46 +753,16 @@
 - (NSError*)lastError;
 
 
-///---------------------------------------------------------------------------------------
-/// @name Row ID of last insert
-///---------------------------------------------------------------------------------------
-
-/** Last insert rowid
- 
- Each entry in an SQLite table has a unique 64-bit signed integer key called the "rowid". The rowid is always available as an undeclared column named ROWID, OID, or _ROWID_ as long as those names are not also used by explicitly declared columns. If the table has a column of type INTEGER PRIMARY KEY then that column is another alias for the rowid.
-
- This routine returns the rowid of the most recent successful INSERT into the database from the database connection in the first argument. As of SQLite version 3.7.7, this routines records the last insert rowid of both ordinary tables and virtual tables. If no successful INSERTs have ever occurred on that database connection, zero is returned.
- 
- @see [sqlite3_last_insert_rowid()](http://sqlite.org/c3ref/last_insert_rowid.html)
- 
- */
-
-- (sqlite_int64)lastInsertRowId;
-
-
-///---------------------------------------------------------------------------------------
-/// @name SQLite handle
-///---------------------------------------------------------------------------------------
-
-- (sqlite3*)sqliteHandle;
-
-
-///---------------------------------------------------------------------------------------
-/// @name Statement caching
-///---------------------------------------------------------------------------------------
-
-- (BOOL)shouldCacheStatements;
-- (void)setShouldCacheStatements:(BOOL)value;
+#if SQLITE_VERSION_NUMBER >= 3007000
 
 ///---------------------------------------------------------------------------------------
 /// @name Save points
 ///---------------------------------------------------------------------------------------
 
-#if SQLITE_VERSION_NUMBER >= 3007000
-
 /** Start save point
  
  @param name Name of save point.
+ 
  @param outErr A `NSError` object to receive any error object (if any).
  
  @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
@@ -752,12 +776,14 @@
 /** Release save point
 
  @param name Name of save point.
+ 
  @param outErr A `NSError` object to receive any error object (if any).
  
  @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
  @see startSavePointWithName:error:
  @see rollbackToSavePointWithName:error:
+ 
  */
 
 - (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr;
@@ -771,6 +797,7 @@
  
  @see startSavePointWithName:error:
  @see releaseSavePointWithName:error:
+ 
  */
 
 - (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr;
@@ -784,6 +811,7 @@
  @see startSavePointWithName:error:
  @see releaseSavePointWithName:error:
  @see rollbackToSavePointWithName:error:
+ 
  */
 
 - (NSError*)inSavePoint:(void (^)(BOOL *rollback))block;
@@ -810,16 +838,6 @@
 
 + (NSString*)sqliteLibVersion;
 
-///---------------------------------------------------------------------------------------
-/// @name Number of rows modified
-///---------------------------------------------------------------------------------------
-
-/** This function returns the number of database rows that were changed or inserted or deleted by the most recently completed SQL statement on the database connection specified by the first parameter. Only changes that are directly specified by the INSERT, UPDATE, or DELETE statement are counted.
-
- @see [sqlite3_changes()](http://sqlite.org/c3ref/changes.html)
- */
-
-- (int)changes;
 
 ///---------------------------------------------------------------------------------------
 /// @name Make SQL function
@@ -870,6 +888,7 @@
  */
 
 - (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
+
 
 ///---------------------------------------------------------------------------------------
 /// @name Date formatter
@@ -957,6 +976,7 @@
 - (NSString *)stringFromDate:(NSDate *)date;
 
 @end
+
 
 @interface FMStatement : NSObject {
     sqlite3_stmt *_statement;
