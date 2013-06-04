@@ -122,7 +122,9 @@
 /// @name Initialization
 ///---------------------------------------------------------------------------------------
 
-/** An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
+/** Create a `FMDatabase` object.
+ 
+ An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
 
  1. A file system path.  The file does not have to exist on disk.  If it does not exist, it is created for you.
  2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
@@ -148,7 +150,9 @@
 
 + (id)databaseWithPath:(NSString*)inPath;
 
-/** An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
+/** Initialize a `FMDatabase` object.
+ 
+ An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
 
  1. A file system path.  The file does not have to exist on disk.  If it does not exist, it is created for you.
  2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
@@ -242,9 +246,21 @@
 
 - (BOOL)goodConnection;
 
+
 ///---------------------------------------------------------------------------------------
 /// @name Perform updates
 ///---------------------------------------------------------------------------------------
+
+/** Execute update statement
+ 
+ @param sql The SQL to be performed, with optional `?` placeholders.
+ 
+ @param outErr A reference to the `NSError` pointer to be updated with an auto released `NSError` object if an error if an error occurs. If `nil`, no `NSError` object will be returned.
+ 
+ @param ... Optional parameters to bind to `?` placeholders in the SQL statement.
+ 
+ @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ */
 
 - (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
 
@@ -261,6 +277,8 @@
 
 /** Execute update statement
 
+ Any sort of SQL statement which is not a `SELECT` statement qualifies as an update.  This includes `CREATE`, `UPDATE`, `INSERT`, `ALTER`, `COMMIT`, `BEGIN`, `DETACH`, `DELETE`, `DROP`, `END`, `EXPLAIN`, `VACUUM`, and `REPLACE` statements (plus many more).  Basically, if your SQL statement does not begin with `SELECT`, it is an update statement.
+ 
  @param format The SQL to be performed, with `printf`-style escape sequences.
 
  @param ... Optional parameters to bind to use in conjunction with the `printf`-style escape sequences in the SQL statement.
@@ -274,6 +292,8 @@
 
 /** Execute update statement
 
+ Any sort of SQL statement which is not a `SELECT` statement qualifies as an update.  This includes `CREATE`, `UPDATE`, `INSERT`, `ALTER`, `COMMIT`, `BEGIN`, `DETACH`, `DELETE`, `DROP`, `END`, `EXPLAIN`, `VACUUM`, and `REPLACE` statements (plus many more).  Basically, if your SQL statement does not begin with `SELECT`, it is an update statement.
+
  @param sql The SQL to be performed, with optional `?` placeholders.
 
  @param arguments A `NSArray` of objects to be used when binding values to the `?` placeholders in the SQL statement.
@@ -284,6 +304,8 @@
 - (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
 
 /** Execute update statement
+
+ Any sort of SQL statement which is not a `SELECT` statement qualifies as an update.  This includes `CREATE`, `UPDATE`, `INSERT`, `ALTER`, `COMMIT`, `BEGIN`, `DETACH`, `DELETE`, `DROP`, `END`, `EXPLAIN`, `VACUUM`, and `REPLACE` statements (plus many more).  Basically, if your SQL statement does not begin with `SELECT`, it is an update statement.
 
  @param sql The SQL to be performed, with optional `?` placeholders.
 
@@ -323,17 +345,28 @@
 
 /** Execute select statement
 
+ Executing queries returns an `<FMResultSet>` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the `<lastErrorMessage>` and `<lastErrorMessage>` methods to determine why a query failed.
+ 
+ In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" (via `<[FMResultSet next]>`) from one record to the other.
+ 
  @param sql The SELECT statement to be performed, with optional `?` placeholders.
 
  @param ... Optional parameters to bind to `?` placeholders in the SQL statement.
 
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ 
+ @see FMResultSet
+ @see FMResultSet next
  */
 
 - (FMResultSet *)executeQuery:(NSString*)sql, ...;
 
 /** Execute select statement
 
+ Executing queries returns an `<FMResultSet>` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the `<lastErrorMessage>` and `<lastErrorMessage>` methods to determine why a query failed.
+ 
+ In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" (via `<[FMResultSet next]>`) from one record to the other.
+ 
  @param format The SQL to be performed, with `printf`-style escape sequences.
 
  @param ... Optional parameters to bind to use in conjunction with the `printf`-style escape sequences in the SQL statement.
@@ -341,28 +374,45 @@
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
  @warning This should be used with great care. Generally, you should use `<executeQuery:>` (with `?` placeholders) rather than this method.
+
+ @see FMResultSet
+ @see FMResultSet next
  */
 
 - (FMResultSet *)executeQueryWithFormat:(NSString*)format, ...;
 
 /** Execute select statement
 
+ Executing queries returns an `<FMResultSet>` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the `<lastErrorMessage>` and `<lastErrorMessage>` methods to determine why a query failed.
+ 
+ In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" (via `<[FMResultSet next]>`) from one record to the other.
+ 
  @param sql The SELECT statement to be performed, with optional `?` placeholders.
 
  @param arguments A `NSArray` of objects to be used when binding values to the `?` placeholders in the SQL statement.
 
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @see FMResultSet
+ @see FMResultSet next
  */
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
 
 /** Execute select statement
 
+ Executing queries returns an `<FMResultSet>` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the `<lastErrorMessage>` and `<lastErrorMessage>` methods to determine why a query failed.
+ 
+ In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" (via `<[FMResultSet next]>`) from one record to the other.
+ 
  @param sql The SELECT statement to be performed, with optional `?` placeholders.
 
  @param arguments A `NSDictionary` of objects keyed by column names that will be used when binding values to the `?` placeholders in the SQL statement.
 
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @see FMResultSet
+ @see FMResultSet next
  */
 
 - (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
@@ -371,51 +421,64 @@
 /// @name Transactions
 ///---------------------------------------------------------------------------------------
 
-/** Rollback a transaction
-
+/** Begin a transaction
+ 
  @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
  
  @see commit
- @see beginTransaction
- */
-
-- (BOOL)rollback;
-
-/** Commit a transaction
-
- @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
-
  @see rollback
- @see beginTransaction
- */
-
-- (BOOL)commit;
-
-/** Begin a transaction
-
- @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
-
- @see commit
- @see rollback
+ @see beginDeferredTransaction
+ @see inTransaction
  */
 
 - (BOOL)beginTransaction;
 
 /** Begin a deferred transaction
-
+ 
  @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
-
+ 
  @see commit
  @see rollback
+ @see beginTransaction
+ @see inTransaction
  */
 
 - (BOOL)beginDeferredTransaction;
 
-/** Identify whether currently in a transaction or not
+/** Commit a transaction
 
- @return `YES` on within transaction; `NO` if not.
-
+ Commit a transaction that was initiated with either `<beginTransaction>` or with `<beginDeferredTransaction>`.
+ 
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ 
  @see beginTransaction
+ @see beginDeferredTransaction
+ @see rollback
+ @see inTransaction
+ */
+
+- (BOOL)commit;
+
+/** Rollback a transaction
+
+ Rollback a transaction that was initiated with either `<beginTransaction>` or with `<beginDeferredTransaction>`.
+
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ 
+ @see beginTransaction
+ @see beginDeferredTransaction
+ @see commit
+ @see inTransaction
+ */
+
+- (BOOL)rollback;
+
+/** Identify whether currently in a transaction or not
+ 
+ @return `YES` if currently within transaction; `NO` if not.
+ 
+ @see beginTransaction
+ @see beginDeferredTransaction
  @see commit
  @see rollback
  */
@@ -455,6 +518,7 @@
  */
 
 - (void)setShouldCacheStatements:(BOOL)value;
+
 
 ///---------------------------------------------------------------------------------------
 /// @name Encryption methods
@@ -510,11 +574,12 @@
 
 - (BOOL)rekeyWithData:(NSData *)keyData;
 
+
 ///---------------------------------------------------------------------------------------
 /// @name General inquiry methods
 ///---------------------------------------------------------------------------------------
 
-/** The path of the database file.
+/** The path of the database file
  
  @return path of database.
  
@@ -535,7 +600,7 @@
 /// @name Retrieving error codes
 ///---------------------------------------------------------------------------------------
 
-/** Last error message.
+/** Last error message
  
  Returns the English-language text that describes the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.
 
@@ -549,7 +614,7 @@
 
 - (NSString*)lastErrorMessage;
 
-/** Last error code.
+/** Last error code
  
  Returns the numeric result code or extended result code for the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.
 
@@ -563,7 +628,7 @@
 
 - (int)lastErrorCode;
 
-/** Had error.
+/** Had error
 
  @return `YES` if there was an error, `NO` if no error.
  
@@ -575,7 +640,7 @@
 
 - (BOOL)hadError;
 
-/** Last error.
+/** Last error
 
  @return `NSError` representing the last error.
  
