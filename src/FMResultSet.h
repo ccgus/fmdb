@@ -18,7 +18,9 @@
 
 /** Represents the results of executing a query on an `<FMDatabase>`.
  
- @see FMDatabase
+ ### See also
+ 
+ - `<FMDatabase>`
  */
 
 @interface FMResultSet : NSObject {
@@ -49,6 +51,15 @@
 /// @name Creating and closing database
 ///---------------------------------------------------------------------------------------
 
+/** Create result set from `<FMStatement>`
+ 
+ @param statement A `<FMStatement>` to be performed
+ 
+ @param aDB A `<FMDatabase>` to be used
+ 
+ @return A `FMResultSet` on success; `nil` on failure
+ */
+
 + (id)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB;
 
 /** Close result set */
@@ -63,6 +74,8 @@
 
 /** Retrieve next row for result set.
  
+ You must always invoke `next` before attempting to access the values returned in a query, even if you're only expecting one.
+
  @return `YES` if row successfully retrieved; `NO` if end of result set reached
  */
 
