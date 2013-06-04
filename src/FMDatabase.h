@@ -62,6 +62,7 @@
  
  ### External links
  
+ - [FMDB on GitHub](https://github.com/ccgus/fmdb) including introductory documentation
  - [SQLite web site](http://sqlite.org/)
  - [FMDB mailing list](http://groups.google.com/group/fmdb)
  - [SQLite FAQ](http://www.sqlite.org/faq.html)
