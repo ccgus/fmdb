@@ -1,19 +1,6 @@
 # FMDB
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
-> This version of FMDB consists of solely changes to the .h files, adding comments. These comments hopefully make the .h more readable, but just as importantly, can be parsed by [`appledoc`](http://gentlebytes.com/appledoc/) to create a help file like found at http://robertmryan.github.io/fmdb.
->
-> To build that help documentation, once you've installed `appledoc`, you issue the command:
->
->     appledoc --project-name FMDB --project-company ccgus --explicit-crossref --no-merge-categories --output ../Documentation .
->
-> If you want online help integrated right into Xcode, you can issue the command:
->
->     appledoc --project-name FMDB --project-company ccgus --explicit-crossref --merge-categories --install-docset --output ../Documentation .
->
-> Robert M. Ryan, 3 June 2013
-
-
 ## The FMDB Mailing List:
 http://groups.google.com/group/fmdb
 

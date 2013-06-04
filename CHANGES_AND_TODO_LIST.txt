@@ -3,6 +3,17 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2013.06.04
+    Merged in Robert Ryan's comments in .h header files. These comments hopefully make the .h more readable, but just as importantly, can be parsed by [`appledoc`](http://gentlebytes.com/appledoc/) to create HTML documentation or Xcode docsets. <https://github.com/ccgus/fmdb/pull/150>
+
+        - To build that HTML documentation, once you've installed `appledoc`, you issue the command:
+
+             appledoc --project-name FMDB --project-company ccgus --explicit-crossref --no-merge-categories --output ../Documentation .
+
+        - If you want online help integrated right into Xcode, you can issue the command:
+
+            appledoc --project-name FMDB --project-company ccgus --explicit-crossref --merge-categories --install-docset --output ../Documentation .
+
 2013.05.24
     Merged in Chris Wright's date format additions to FMDatabase.
     Fixed a problem where executeUpdateWithFormat: + %@ as a placeholder and the value was nil would cause a bad value to be inserted.  Thanks to rustybox on github for the fix.
