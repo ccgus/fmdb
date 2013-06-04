@@ -812,17 +812,53 @@
 @end
 
 
+/** Objective-C wrapper for `sqlite3_stmt`
+ 
+ This is a wrapper for a SQLite `sqlite3_stmt`. Generally when using FMDB you will not need to interact directly with `FMStatement`, but rather with `<FMDatabase>` and `<FMResultSet>` only.
+ 
+ ### See also
+ 
+ - `<FMDatabase>`
+ - `<FMResultSet>`
+ - [`sqlite3_stmt`](http://www.sqlite.org/c3ref/stmt.html)
+ */
+
 @interface FMStatement : NSObject {
     sqlite3_stmt *_statement;
     NSString *_query;
     long _useCount;
 }
 
+///---------------------------------------------------------------------------------------
+/// @name Properties
+///---------------------------------------------------------------------------------------
+
+/** Usage count */
+
 @property (atomic, assign) long useCount;
+
+/** SQL statement */
+
 @property (atomic, retain) NSString *query;
+
+/** SQLite sqlite3_stmt
+ 
+ @see [`sqlite3_stmt`](http://www.sqlite.org/c3ref/stmt.html)
+ */
+
 @property (atomic, assign) sqlite3_stmt *statement;
 
+
+///---------------------------------------------------------------------------------------
+/// @name Closing and Resetting
+///---------------------------------------------------------------------------------------
+
+/** Close statement */
+
 - (void)close;
+
+/** Reset statement */
+
 - (void)reset;
 
 @end
