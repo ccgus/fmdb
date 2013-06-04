@@ -357,7 +357,7 @@
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
  
  @see FMResultSet
- @see FMResultSet next
+ @see [`FMResultSet next`](<[FMResultSet next]>)
  */
 
 - (FMResultSet *)executeQuery:(NSString*)sql, ...;
@@ -374,10 +374,11 @@
 
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
+ @see FMResultSet
+ @see [`FMResultSet next`](<[FMResultSet next]>)
+
  @warning This should be used with great care. Generally, you should use `<executeQuery:>` (with `?` placeholders) rather than this method.
 
- @see FMResultSet
- @see FMResultSet next
  */
 
 - (FMResultSet *)executeQueryWithFormat:(NSString*)format, ...;
@@ -395,7 +396,7 @@
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
  @see FMResultSet
- @see FMResultSet next
+ @see [`FMResultSet next`](<[FMResultSet next]>)
  */
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
@@ -413,7 +414,7 @@
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
  @see FMResultSet
- @see FMResultSet next
+ @see [`FMResultSet next`](<[FMResultSet next]>)
  */
 
 - (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
