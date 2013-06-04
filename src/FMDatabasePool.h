@@ -23,6 +23,10 @@
  `ONLY_USE_THE_POOL_IF_YOU_ARE_DOING_READS_OTHERWISE_YOULL_DEADLOCK_USE_FMDATABASEQUEUE_INSTEAD`
  in the main.m file.
  
+ ### See also
+
+ - `<FMDatabaseQueue>`
+ - `<FMDatabase>`
  */
 
 @interface FMDatabasePool : NSObject {
