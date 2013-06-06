@@ -91,9 +91,9 @@
     NSDateFormatter     *_dateFormat;
 }
 
-///---------------------------------------------------------------------------------------
+///-----------------
 /// @name Properties
-///---------------------------------------------------------------------------------------
+///-----------------
 
 /** Whether should trace execution */
 
@@ -119,9 +119,9 @@
 
 @property (atomic, retain) NSMutableDictionary *cachedStatements;
 
-///---------------------------------------------------------------------------------------
+///---------------------
 /// @name Initialization
-///---------------------------------------------------------------------------------------
+///---------------------
 
 /** Create a `FMDatabase` object.
  
@@ -180,9 +180,9 @@
 - (id)initWithPath:(NSString*)inPath;
 
 
-///---------------------------------------------------------------------------------------
+///-----------------------------------
 /// @name Opening and closing database
-///---------------------------------------------------------------------------------------
+///-----------------------------------
 
 /** Opening a new database connection
  
@@ -248,9 +248,9 @@
 - (BOOL)goodConnection;
 
 
-///---------------------------------------------------------------------------------------
+///----------------------
 /// @name Perform updates
-///---------------------------------------------------------------------------------------
+///----------------------
 
 /** Execute update statement
  
@@ -340,9 +340,9 @@
 - (int)changes;
 
 
-///---------------------------------------------------------------------------------------
+///-------------------------
 /// @name Retrieving results
-///---------------------------------------------------------------------------------------
+///-------------------------
 
 /** Execute select statement
 
@@ -419,9 +419,9 @@
 
 - (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
 
-///---------------------------------------------------------------------------------------
+///-------------------
 /// @name Transactions
-///---------------------------------------------------------------------------------------
+///-------------------
 
 /** Begin a transaction
  
@@ -488,9 +488,9 @@
 - (BOOL)inTransaction;
 
 
-///---------------------------------------------------------------------------------------
+///----------------------------------------
 /// @name Cached statements and result sets
-///---------------------------------------------------------------------------------------
+///----------------------------------------
 
 /** Clear cached statements */
 
@@ -522,11 +522,9 @@
 - (void)setShouldCacheStatements:(BOOL)value;
 
 
-///---------------------------------------------------------------------------------------
+///-------------------------
 /// @name Encryption methods
-///
-/// You need to have purchased the sqlite encryption extensions for these to work.
-///---------------------------------------------------------------------------------------
+///-------------------------
 
 /** Set encryption key.
  
@@ -535,7 +533,8 @@
  @return `YES` if success, `NO` on error.
 
  @see http://www.sqlite-encrypt.com/develop-guide.htm
-
+ 
+ @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
 
 - (BOOL)setKey:(NSString*)key;
@@ -548,6 +547,7 @@
 
  @see http://www.sqlite-encrypt.com/develop-guide.htm
 
+ @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
 
 - (BOOL)rekey:(NSString*)key;
@@ -560,6 +560,7 @@
 
  @see http://www.sqlite-encrypt.com/develop-guide.htm
  
+ @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
 
 - (BOOL)setKeyWithData:(NSData *)keyData;
@@ -572,14 +573,15 @@
 
  @see http://www.sqlite-encrypt.com/develop-guide.htm
 
+ @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
 
 - (BOOL)rekeyWithData:(NSData *)keyData;
 
 
-///---------------------------------------------------------------------------------------
+///------------------------------
 /// @name General inquiry methods
-///---------------------------------------------------------------------------------------
+///------------------------------
 
 /** The path of the database file
  
@@ -598,9 +600,9 @@
 - (sqlite3*)sqliteHandle;
 
 
-///---------------------------------------------------------------------------------------
+///-----------------------------
 /// @name Retrieving error codes
-///---------------------------------------------------------------------------------------
+///-----------------------------
 
 /** Last error message
  
@@ -656,9 +658,9 @@
 
 #if SQLITE_VERSION_NUMBER >= 3007000
 
-///---------------------------------------------------------------------------------------
+///------------------
 /// @name Save points
-///---------------------------------------------------------------------------------------
+///------------------
 
 /** Start save point
  
@@ -719,9 +721,9 @@
 
 #endif
 
-///---------------------------------------------------------------------------------------
+///----------------------------
 /// @name SQLite library status
-///---------------------------------------------------------------------------------------
+///----------------------------
 
 /** Test to see if the library is threadsafe
 
@@ -740,9 +742,9 @@
 + (NSString*)sqliteLibVersion;
 
 
-///---------------------------------------------------------------------------------------
+///------------------------
 /// @name Make SQL function
-///---------------------------------------------------------------------------------------
+///------------------------
 
 /** Adds SQL functions or aggregates or to redefine the behavior of existing SQL functions or aggregates.
  
@@ -791,9 +793,9 @@
 - (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
 
 
-///---------------------------------------------------------------------------------------
+///---------------------
 /// @name Date formatter
-///---------------------------------------------------------------------------------------
+///---------------------
 
 /** Generate an `NSDateFormatter` that won't be broken by permutations of timezones or locales.
  
@@ -897,9 +899,9 @@
     long _useCount;
 }
 
-///---------------------------------------------------------------------------------------
+///-----------------
 /// @name Properties
-///---------------------------------------------------------------------------------------
+///-----------------
 
 /** Usage count */
 
@@ -917,9 +919,9 @@
 @property (atomic, assign) sqlite3_stmt *statement;
 
 
-///---------------------------------------------------------------------------------------
+///----------------------------
 /// @name Closing and Resetting
-///---------------------------------------------------------------------------------------
+///----------------------------
 
 /** Close statement */
 
