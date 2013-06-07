@@ -1,0 +1,4217 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>FMDatabase Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.1 (build 858)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">FMDB </a></h1>
+				<a id="developerHome" href="../index.html">ccgus</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">FMDatabase Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/busyRetryTimeout">&nbsp;&nbsp;&nbsp;&nbsp;busyRetryTimeout</option>
+	
+	<option value="//api/name/cachedStatements">&nbsp;&nbsp;&nbsp;&nbsp;cachedStatements</option>
+	
+	<option value="//api/name/checkedOut">&nbsp;&nbsp;&nbsp;&nbsp;checkedOut</option>
+	
+	<option value="//api/name/crashOnErrors">&nbsp;&nbsp;&nbsp;&nbsp;crashOnErrors</option>
+	
+	<option value="//api/name/logsErrors">&nbsp;&nbsp;&nbsp;&nbsp;logsErrors</option>
+	
+	<option value="//api/name/traceExecution">&nbsp;&nbsp;&nbsp;&nbsp;traceExecution</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/databaseWithPath:">&nbsp;&nbsp;&nbsp;&nbsp;+ databaseWithPath:</option>
+	
+	<option value="//api/name/isSQLiteThreadSafe">&nbsp;&nbsp;&nbsp;&nbsp;+ isSQLiteThreadSafe</option>
+	
+	<option value="//api/name/sqliteLibVersion">&nbsp;&nbsp;&nbsp;&nbsp;+ sqliteLibVersion</option>
+	
+	<option value="//api/name/storeableDateFormat:">&nbsp;&nbsp;&nbsp;&nbsp;+ storeableDateFormat:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/beginDeferredTransaction">&nbsp;&nbsp;&nbsp;&nbsp;- beginDeferredTransaction</option>
+	
+	<option value="//api/name/beginTransaction">&nbsp;&nbsp;&nbsp;&nbsp;- beginTransaction</option>
+	
+	<option value="//api/name/changes">&nbsp;&nbsp;&nbsp;&nbsp;- changes</option>
+	
+	<option value="//api/name/clearCachedStatements">&nbsp;&nbsp;&nbsp;&nbsp;- clearCachedStatements</option>
+	
+	<option value="//api/name/close">&nbsp;&nbsp;&nbsp;&nbsp;- close</option>
+	
+	<option value="//api/name/closeOpenResultSets">&nbsp;&nbsp;&nbsp;&nbsp;- closeOpenResultSets</option>
+	
+	<option value="//api/name/commit">&nbsp;&nbsp;&nbsp;&nbsp;- commit</option>
+	
+	<option value="//api/name/databasePath">&nbsp;&nbsp;&nbsp;&nbsp;- databasePath</option>
+	
+	<option value="//api/name/dateFromString:">&nbsp;&nbsp;&nbsp;&nbsp;- dateFromString:</option>
+	
+	<option value="//api/name/executeQuery:">&nbsp;&nbsp;&nbsp;&nbsp;- executeQuery:</option>
+	
+	<option value="//api/name/executeQuery:withArgumentsInArray:">&nbsp;&nbsp;&nbsp;&nbsp;- executeQuery:withArgumentsInArray:</option>
+	
+	<option value="//api/name/executeQuery:withParameterDictionary:">&nbsp;&nbsp;&nbsp;&nbsp;- executeQuery:withParameterDictionary:</option>
+	
+	<option value="//api/name/executeQueryWithFormat:">&nbsp;&nbsp;&nbsp;&nbsp;- executeQueryWithFormat:</option>
+	
+	<option value="//api/name/executeUpdate:">&nbsp;&nbsp;&nbsp;&nbsp;- executeUpdate:</option>
+	
+	<option value="//api/name/executeUpdate:withArgumentsInArray:">&nbsp;&nbsp;&nbsp;&nbsp;- executeUpdate:withArgumentsInArray:</option>
+	
+	<option value="//api/name/executeUpdate:withParameterDictionary:">&nbsp;&nbsp;&nbsp;&nbsp;- executeUpdate:withParameterDictionary:</option>
+	
+	<option value="//api/name/executeUpdateWithFormat:">&nbsp;&nbsp;&nbsp;&nbsp;- executeUpdateWithFormat:</option>
+	
+	<option value="//api/name/goodConnection">&nbsp;&nbsp;&nbsp;&nbsp;- goodConnection</option>
+	
+	<option value="//api/name/hadError">&nbsp;&nbsp;&nbsp;&nbsp;- hadError</option>
+	
+	<option value="//api/name/hasDateFormatter">&nbsp;&nbsp;&nbsp;&nbsp;- hasDateFormatter</option>
+	
+	<option value="//api/name/hasOpenResultSets">&nbsp;&nbsp;&nbsp;&nbsp;- hasOpenResultSets</option>
+	
+	<option value="//api/name/inSavePoint:">&nbsp;&nbsp;&nbsp;&nbsp;- inSavePoint:</option>
+	
+	<option value="//api/name/inTransaction">&nbsp;&nbsp;&nbsp;&nbsp;- inTransaction</option>
+	
+	<option value="//api/name/initWithPath:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithPath:</option>
+	
+	<option value="//api/name/lastError">&nbsp;&nbsp;&nbsp;&nbsp;- lastError</option>
+	
+	<option value="//api/name/lastErrorCode">&nbsp;&nbsp;&nbsp;&nbsp;- lastErrorCode</option>
+	
+	<option value="//api/name/lastErrorMessage">&nbsp;&nbsp;&nbsp;&nbsp;- lastErrorMessage</option>
+	
+	<option value="//api/name/lastInsertRowId">&nbsp;&nbsp;&nbsp;&nbsp;- lastInsertRowId</option>
+	
+	<option value="//api/name/makeFunctionNamed:maximumArguments:withBlock:">&nbsp;&nbsp;&nbsp;&nbsp;- makeFunctionNamed:maximumArguments:withBlock:</option>
+	
+	<option value="//api/name/open">&nbsp;&nbsp;&nbsp;&nbsp;- open</option>
+	
+	<option value="//api/name/openWithFlags:">&nbsp;&nbsp;&nbsp;&nbsp;- openWithFlags:</option>
+	
+	<option value="//api/name/rekey:">&nbsp;&nbsp;&nbsp;&nbsp;- rekey:</option>
+	
+	<option value="//api/name/rekeyWithData:">&nbsp;&nbsp;&nbsp;&nbsp;- rekeyWithData:</option>
+	
+	<option value="//api/name/releaseSavePointWithName:error:">&nbsp;&nbsp;&nbsp;&nbsp;- releaseSavePointWithName:error:</option>
+	
+	<option value="//api/name/rollback">&nbsp;&nbsp;&nbsp;&nbsp;- rollback</option>
+	
+	<option value="//api/name/rollbackToSavePointWithName:error:">&nbsp;&nbsp;&nbsp;&nbsp;- rollbackToSavePointWithName:error:</option>
+	
+	<option value="//api/name/setDateFormat:">&nbsp;&nbsp;&nbsp;&nbsp;- setDateFormat:</option>
+	
+	<option value="//api/name/setKey:">&nbsp;&nbsp;&nbsp;&nbsp;- setKey:</option>
+	
+	<option value="//api/name/setKeyWithData:">&nbsp;&nbsp;&nbsp;&nbsp;- setKeyWithData:</option>
+	
+	<option value="//api/name/setShouldCacheStatements:">&nbsp;&nbsp;&nbsp;&nbsp;- setShouldCacheStatements:</option>
+	
+	<option value="//api/name/shouldCacheStatements">&nbsp;&nbsp;&nbsp;&nbsp;- shouldCacheStatements</option>
+	
+	<option value="//api/name/sqliteHandle">&nbsp;&nbsp;&nbsp;&nbsp;- sqliteHandle</option>
+	
+	<option value="//api/name/startSavePointWithName:error:">&nbsp;&nbsp;&nbsp;&nbsp;- startSavePointWithName:error:</option>
+	
+	<option value="//api/name/stringFromDate:">&nbsp;&nbsp;&nbsp;&nbsp;- stringFromDate:</option>
+	
+	<option value="//api/name/update:withErrorAndBindings:">&nbsp;&nbsp;&nbsp;&nbsp;- update:withErrorAndBindings:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Properties">Properties</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Initialization">Initialization</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Opening and closing database">Opening and closing database</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Perform updates">Perform updates</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Retrieving results">Retrieving results</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Transactions">Transactions</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Cached statements and result sets">Cached statements and result sets</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Encryption methods">Encryption methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_General inquiry methods">General inquiry methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Retrieving error codes">Retrieving error codes</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Save points">Save points</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_SQLite library status">SQLite library status</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Make SQL function">Make SQL function</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Date formatter">Date formatter</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/busyRetryTimeout">busyRetryTimeout</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/cachedStatements">cachedStatements</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/checkedOut">checkedOut</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/crashOnErrors">crashOnErrors</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/logsErrors">logsErrors</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/traceExecution">traceExecution</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/databaseWithPath:">databaseWithPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isSQLiteThreadSafe">isSQLiteThreadSafe</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sqliteLibVersion">sqliteLibVersion</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/storeableDateFormat:">storeableDateFormat:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/beginDeferredTransaction">beginDeferredTransaction</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/beginTransaction">beginTransaction</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/changes">changes</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/clearCachedStatements">clearCachedStatements</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/close">close</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/closeOpenResultSets">closeOpenResultSets</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/commit">commit</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/databasePath">databasePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dateFromString:">dateFromString:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/executeQuery:">executeQuery:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/executeQuery:withArgumentsInArray:">executeQuery:withArgumentsInArray:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/executeQuery:withParameterDictionary:">executeQuery:withParameterDictionary:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/executeQueryWithFormat:">executeQueryWithFormat:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/executeUpdate:">executeUpdate:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/executeUpdate:withArgumentsInArray:">executeUpdate:withArgumentsInArray:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/executeUpdate:withParameterDictionary:">executeUpdate:withParameterDictionary:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/executeUpdateWithFormat:">executeUpdateWithFormat:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/goodConnection">goodConnection</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hadError">hadError</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hasDateFormatter">hasDateFormatter</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hasOpenResultSets">hasOpenResultSets</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/inSavePoint:">inSavePoint:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/inTransaction">inTransaction</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithPath:">initWithPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastError">lastError</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastErrorCode">lastErrorCode</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastErrorMessage">lastErrorMessage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastInsertRowId">lastInsertRowId</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/makeFunctionNamed:maximumArguments:withBlock:">makeFunctionNamed:maximumArguments:withBlock:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/open">open</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/openWithFlags:">openWithFlags:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rekey:">rekey:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rekeyWithData:">rekeyWithData:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/releaseSavePointWithName:error:">releaseSavePointWithName:error:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rollback">rollback</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rollbackToSavePointWithName:error:">rollbackToSavePointWithName:error:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setDateFormat:">setDateFormat:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setKey:">setKey:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setKeyWithData:">setKeyWithData:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setShouldCacheStatements:">setShouldCacheStatements:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/shouldCacheStatements">shouldCacheStatements</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sqliteHandle">sqliteHandle</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/startSavePointWithName:error:">startSavePointWithName:error:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stringFromDate:">stringFromDate:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/update:withErrorAndBindings:">update:withErrorAndBindings:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="FMDatabase Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">FMDatabase Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">FMDatabase.h<br />FMDatabase.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>A SQLite (<a href="http://sqlite.org/">http://sqlite.org/</a>) Objective-C wrapper.</p>
+
+<h3>Usage</h3>
+
+<p>The three main classes in FMDB are:</p>
+
+<ul>
+<li><code>FMDatabase</code> - Represents a single SQLite database.  Used for executing SQL statements.</li>
+<li><a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> - Represents the results of executing a query on an <code>FMDatabase</code>.</li>
+<li><a href="../Classes/FMDatabaseQueue.html"><code>FMDatabaseQueue</code></a> - If you want to perform queries and updates on multiple threads, you&rsquo;ll want to use this class.</li>
+</ul>
+
+
+<h3>See also</h3>
+
+<ul>
+<li><a href="../Classes/FMDatabasePool.html"><code>FMDatabasePool</code></a> - A pool of <code>FMDatabase</code> objects.</li>
+<li><a href="../Classes/FMStatement.html"><code>FMStatement</code></a> - A wrapper for <code>sqlite_stmt</code>.</li>
+</ul>
+
+
+<h3>External links</h3>
+
+<ul>
+<li><a href="https://github.com/ccgus/fmdb">FMDB on GitHub</a> including introductory documentation</li>
+<li><a href="http://sqlite.org/">SQLite web site</a></li>
+<li><a href="http://groups.google.com/group/fmdb">FMDB mailing list</a></li>
+<li><a href="http://www.sqlite.org/faq.html">SQLite FAQ</a></li>
+</ul>
+<div class="warning"><p><strong>Warning:</strong> Do not instantiate a single <code>FMDatabase</code> object and use it across multiple threads. Instead, use <a href="../Classes/FMDatabaseQueue.html"><code>FMDatabaseQueue</code></a>.</p></div>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						<a title="Properties" name="task_Properties"></a>
+						<h3 class="subsubtitle task-title">Properties</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/traceExecution">&nbsp;&nbsp;traceExecution</a></code>
+		<span class="tooltip"><p>Whether should trace execution</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/checkedOut">&nbsp;&nbsp;checkedOut</a></code>
+		<span class="tooltip"><p>Whether checked out or not</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/busyRetryTimeout">&nbsp;&nbsp;busyRetryTimeout</a></code>
+		<span class="tooltip"><p>Busy retry timeout</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/crashOnErrors">&nbsp;&nbsp;crashOnErrors</a></code>
+		<span class="tooltip"><p>Crash on errors</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/logsErrors">&nbsp;&nbsp;logsErrors</a></code>
+		<span class="tooltip"><p>Logs errors</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/cachedStatements">&nbsp;&nbsp;cachedStatements</a></code>
+		<span class="tooltip"><p>Dictionary of cached statements</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="Initialization" name="task_Initialization"></a>
+						<h3 class="subsubtitle task-title">Initialization</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/databaseWithPath:">+&nbsp;databaseWithPath:</a></code>
+		<span class="tooltip"><p>Create a <code>FMDatabase</code> object.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithPath:">&ndash;&nbsp;initWithPath:</a></code>
+		<span class="tooltip"><p>Initialize a <code>FMDatabase</code> object.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Opening and closing database" name="task_Opening and closing database"></a>
+						<h3 class="subsubtitle task-title">Opening and closing database</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/open">&ndash;&nbsp;open</a></code>
+		<span class="tooltip"><p>Opening a new database connection</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/openWithFlags:">&ndash;&nbsp;openWithFlags:</a></code>
+		<span class="tooltip"><p>Opening a new database connection with flags</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/close">&ndash;&nbsp;close</a></code>
+		<span class="tooltip"><p>Closing a database connection</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/goodConnection">&ndash;&nbsp;goodConnection</a></code>
+		<span class="tooltip"><p>Test to see if we have a good connection to the database.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Perform updates" name="task_Perform updates"></a>
+						<h3 class="subsubtitle task-title">Perform updates</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/update:withErrorAndBindings:">&ndash;&nbsp;update:withErrorAndBindings:</a></code>
+		<span class="tooltip"><p>Execute update statement</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/executeUpdate:">&ndash;&nbsp;executeUpdate:</a></code>
+		<span class="tooltip"><p>Execute update statement</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/executeUpdateWithFormat:">&ndash;&nbsp;executeUpdateWithFormat:</a></code>
+		<span class="tooltip"><p>Execute update statement</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/executeUpdate:withArgumentsInArray:">&ndash;&nbsp;executeUpdate:withArgumentsInArray:</a></code>
+		<span class="tooltip"><p>Execute update statement</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/executeUpdate:withParameterDictionary:">&ndash;&nbsp;executeUpdate:withParameterDictionary:</a></code>
+		<span class="tooltip"><p>Execute update statement</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastInsertRowId">&ndash;&nbsp;lastInsertRowId</a></code>
+		<span class="tooltip"><p>Last insert rowid</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/changes">&ndash;&nbsp;changes</a></code>
+		<span class="tooltip"><p>The number of rows changed by prior SQL statement.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Retrieving results" name="task_Retrieving results"></a>
+						<h3 class="subsubtitle task-title">Retrieving results</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/executeQuery:">&ndash;&nbsp;executeQuery:</a></code>
+		<span class="tooltip"><p>Execute select statement</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/executeQueryWithFormat:">&ndash;&nbsp;executeQueryWithFormat:</a></code>
+		<span class="tooltip"><p>Execute select statement</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/executeQuery:withArgumentsInArray:">&ndash;&nbsp;executeQuery:withArgumentsInArray:</a></code>
+		<span class="tooltip"><p>Execute select statement</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/executeQuery:withParameterDictionary:">&ndash;&nbsp;executeQuery:withParameterDictionary:</a></code>
+		<span class="tooltip"><p>Execute select statement</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Transactions" name="task_Transactions"></a>
+						<h3 class="subsubtitle task-title">Transactions</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/beginTransaction">&ndash;&nbsp;beginTransaction</a></code>
+		<span class="tooltip"><p>Begin a transaction</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/beginDeferredTransaction">&ndash;&nbsp;beginDeferredTransaction</a></code>
+		<span class="tooltip"><p>Begin a deferred transaction</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/commit">&ndash;&nbsp;commit</a></code>
+		<span class="tooltip"><p>Commit a transaction</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/rollback">&ndash;&nbsp;rollback</a></code>
+		<span class="tooltip"><p>Rollback a transaction</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/inTransaction">&ndash;&nbsp;inTransaction</a></code>
+		<span class="tooltip"><p>Identify whether currently in a transaction or not</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Cached statements and result sets" name="task_Cached statements and result sets"></a>
+						<h3 class="subsubtitle task-title">Cached statements and result sets</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/clearCachedStatements">&ndash;&nbsp;clearCachedStatements</a></code>
+		<span class="tooltip"><p>Clear cached statements</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/closeOpenResultSets">&ndash;&nbsp;closeOpenResultSets</a></code>
+		<span class="tooltip"><p>Close all open result sets</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hasOpenResultSets">&ndash;&nbsp;hasOpenResultSets</a></code>
+		<span class="tooltip"><p>Whether database has any open result sets</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/shouldCacheStatements">&ndash;&nbsp;shouldCacheStatements</a></code>
+		<span class="tooltip"><p>Return whether should cache statements or not</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setShouldCacheStatements:">&ndash;&nbsp;setShouldCacheStatements:</a></code>
+		<span class="tooltip"><p>Set whether should cache statements or not</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Encryption methods" name="task_Encryption methods"></a>
+						<h3 class="subsubtitle task-title">Encryption methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setKey:">&ndash;&nbsp;setKey:</a></code>
+		<span class="tooltip"><p>Set encryption key.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/rekey:">&ndash;&nbsp;rekey:</a></code>
+		<span class="tooltip"><p>Reset encryption key</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setKeyWithData:">&ndash;&nbsp;setKeyWithData:</a></code>
+		<span class="tooltip"><p>Set encryption key using <code>keyData</code>.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/rekeyWithData:">&ndash;&nbsp;rekeyWithData:</a></code>
+		<span class="tooltip"><p>Reset encryption key using <code>keyData</code>.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="General inquiry methods" name="task_General inquiry methods"></a>
+						<h3 class="subsubtitle task-title">General inquiry methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/databasePath">&ndash;&nbsp;databasePath</a></code>
+		<span class="tooltip"><p>The path of the database file</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sqliteHandle">&ndash;&nbsp;sqliteHandle</a></code>
+		<span class="tooltip"><p>The underlying SQLite handle</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Retrieving error codes" name="task_Retrieving error codes"></a>
+						<h3 class="subsubtitle task-title">Retrieving error codes</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastErrorMessage">&ndash;&nbsp;lastErrorMessage</a></code>
+		<span class="tooltip"><p>Last error message</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastErrorCode">&ndash;&nbsp;lastErrorCode</a></code>
+		<span class="tooltip"><p>Last error code</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hadError">&ndash;&nbsp;hadError</a></code>
+		<span class="tooltip"><p>Had error</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastError">&ndash;&nbsp;lastError</a></code>
+		<span class="tooltip"><p>Last error</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Save points" name="task_Save points"></a>
+						<h3 class="subsubtitle task-title">Save points</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/startSavePointWithName:error:">&ndash;&nbsp;startSavePointWithName:error:</a></code>
+		<span class="tooltip"><p>Start save point</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/releaseSavePointWithName:error:">&ndash;&nbsp;releaseSavePointWithName:error:</a></code>
+		<span class="tooltip"><p>Release save point</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/rollbackToSavePointWithName:error:">&ndash;&nbsp;rollbackToSavePointWithName:error:</a></code>
+		<span class="tooltip"><p>Roll back to save point</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/inSavePoint:">&ndash;&nbsp;inSavePoint:</a></code>
+		<span class="tooltip"><p>Start save point</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="SQLite library status" name="task_SQLite library status"></a>
+						<h3 class="subsubtitle task-title">SQLite library status</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isSQLiteThreadSafe">+&nbsp;isSQLiteThreadSafe</a></code>
+		<span class="tooltip"><p>Test to see if the library is threadsafe</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sqliteLibVersion">+&nbsp;sqliteLibVersion</a></code>
+		<span class="tooltip"><p>Run-time library version numbers</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Make SQL function" name="task_Make SQL function"></a>
+						<h3 class="subsubtitle task-title">Make SQL function</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/makeFunctionNamed:maximumArguments:withBlock:">&ndash;&nbsp;makeFunctionNamed:maximumArguments:withBlock:</a></code>
+		<span class="tooltip"><p>Adds SQL functions or aggregates or to redefine the behavior of existing SQL functions or aggregates.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Date formatter" name="task_Date formatter"></a>
+						<h3 class="subsubtitle task-title">Date formatter</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/storeableDateFormat:">+&nbsp;storeableDateFormat:</a></code>
+		<span class="tooltip"><p>Generate an <code>NSDateFormatter</code> that won&rsquo;t be broken by permutations of timezones or locales.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hasDateFormatter">&ndash;&nbsp;hasDateFormatter</a></code>
+		<span class="tooltip"><p>Test whether the database has a date formatter assigned.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setDateFormat:">&ndash;&nbsp;setDateFormat:</a></code>
+		<span class="tooltip"><p>Set to a date formatter to use string dates with sqlite instead of the default UNIX timestamps.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dateFromString:">&ndash;&nbsp;dateFromString:</a></code>
+		<span class="tooltip"><p>Convert the supplied NSString to NSDate, using the current database formatter.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/stringFromDate:">&ndash;&nbsp;stringFromDate:</a></code>
+		<span class="tooltip"><p>Convert the supplied NSDate to NSString, using the current database formatter.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/busyRetryTimeout" title="busyRetryTimeout"></a>
+	<h3 class="subsubtitle method-title">busyRetryTimeout</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Busy retry timeout</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (atomic, assign) int busyRetryTimeout</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/cachedStatements" title="cachedStatements"></a>
+	<h3 class="subsubtitle method-title">cachedStatements</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Dictionary of cached statements</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSMutableDictionary *cachedStatements</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/checkedOut" title="checkedOut"></a>
+	<h3 class="subsubtitle method-title">checkedOut</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Whether checked out or not</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (atomic, assign) BOOL checkedOut</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/crashOnErrors" title="crashOnErrors"></a>
+	<h3 class="subsubtitle method-title">crashOnErrors</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Crash on errors</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (atomic, assign) BOOL crashOnErrors</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/logsErrors" title="logsErrors"></a>
+	<h3 class="subsubtitle method-title">logsErrors</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Logs errors</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (atomic, assign) BOOL logsErrors</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/traceExecution" title="traceExecution"></a>
+	<h3 class="subsubtitle method-title">traceExecution</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Whether should trace execution</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (atomic, assign) BOOL traceExecution</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/databaseWithPath:" title="databaseWithPath:"></a>
+	<h3 class="subsubtitle method-title">databaseWithPath:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Create a <code>FMDatabase</code> object.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (id)databaseWithPath:(NSString *)<em>inPath</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>inPath</em></dt>
+			<dd><p>Path of database file</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>FMDatabase</code> object if successful; <code>nil</code> if failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>An <code>FMDatabase</code> is created with a path to a SQLite database file.  This path can be one of these three:</p>
+
+<ol>
+<li>A file system path.  The file does not have to exist on disk.  If it does not exist, it is created for you.</li>
+<li>An empty string (<code>@""</code>).  An empty database is created at a temporary location.  This database is deleted with the <code>FMDatabase</code> connection is closed.</li>
+<li><code>nil</code>.  An in-memory database is created.  This database will be destroyed with the <code>FMDatabase</code> connection is closed.</li>
+</ol>
+
+
+<p>For example, to create/open a database in your Mac OS X <code>tmp</code> folder:</p>
+
+<pre><code>FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+</code></pre>
+
+<p>Or, in iOS, you might open a database in the app&rsquo;s <code>Documents</code> directory:</p>
+
+<pre><code>NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
+FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
+</code></pre>
+
+<p>(For more information on temporary and in-memory databases, read the sqlite documentation on the subject: <a href="http://www.sqlite.org/inmemorydb.html">http://www.sqlite.org/inmemorydb.html</a>)</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isSQLiteThreadSafe" title="isSQLiteThreadSafe"></a>
+	<h3 class="subsubtitle method-title">isSQLiteThreadSafe</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Test to see if the library is threadsafe</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (BOOL)isSQLiteThreadSafe</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Zero if and only if SQLite was compiled with mutexing code omitted due to the SQLITE_THREADSAFE compile-time option being set to 0.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/threadsafe.html">sqlite3_threadsafe()</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sqliteLibVersion" title="sqliteLibVersion"></a>
+	<h3 class="subsubtitle method-title">sqliteLibVersion</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Run-time library version numbers</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (NSString *)sqliteLibVersion</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/libversion.html">sqlite3_libversion()</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/storeableDateFormat:" title="storeableDateFormat:"></a>
+	<h3 class="subsubtitle method-title">storeableDateFormat:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Generate an <code>NSDateFormatter</code> that won&rsquo;t be broken by permutations of timezones or locales.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (NSDateFormatter *)storeableDateFormat:(NSString *)<em>format</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>format</em></dt>
+			<dd><p>A valid NSDateFormatter format string.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A <code>NSDateFormatter</code> that can be used for converting dates to strings and vice versa.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Use this method to generate values to set the dateFormat property.</p>
+
+<p>Example:</p>
+
+<pre><code>myDB.dateFormat = [FMDatabase storeableDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+</code></pre><div class="warning"><p><strong>Warning:</strong> Note that <code>NSDateFormatter</code> is not thread-safe, so the formatter generated by this method should be assigned to only one FMDB instance and should not be used for other purposes.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/hasDateFormatter">- hasDateFormatter</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/setDateFormat:">- setDateFormat:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/dateFromString:">- dateFromString:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/stringFromDate:">- stringFromDate:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/storeableDateFormat:">+ storeableDateFormat:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/beginDeferredTransaction" title="beginDeferredTransaction"></a>
+	<h3 class="subsubtitle method-title">beginDeferredTransaction</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Begin a deferred transaction</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)beginDeferredTransaction</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/commit">- commit</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/rollback">- rollback</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/beginTransaction">- beginTransaction</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/inTransaction">- inTransaction</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/beginTransaction" title="beginTransaction"></a>
+	<h3 class="subsubtitle method-title">beginTransaction</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Begin a transaction</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)beginTransaction</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/commit">- commit</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/rollback">- rollback</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/beginDeferredTransaction">- beginDeferredTransaction</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/inTransaction">- inTransaction</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/changes" title="changes"></a>
+	<h3 class="subsubtitle method-title">changes</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The number of rows changed by prior SQL statement.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (int)changes</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This function returns the number of database rows that were changed or inserted or deleted by the most recently completed SQL statement on the database connection specified by the first parameter. Only changes that are directly specified by the INSERT, UPDATE, or DELETE statement are counted.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/changes.html">sqlite3_changes()</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/clearCachedStatements" title="clearCachedStatements"></a>
+	<h3 class="subsubtitle method-title">clearCachedStatements</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Clear cached statements</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)clearCachedStatements</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/close" title="close"></a>
+	<h3 class="subsubtitle method-title">close</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Closing a database connection</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)close</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if success, <code>NO</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/close.html">sqlite3_close()</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/open">- open</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/openWithFlags:">- openWithFlags:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/closeOpenResultSets" title="closeOpenResultSets"></a>
+	<h3 class="subsubtitle method-title">closeOpenResultSets</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Close all open result sets</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)closeOpenResultSets</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/commit" title="commit"></a>
+	<h3 class="subsubtitle method-title">commit</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Commit a transaction</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)commit</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Commit a transaction that was initiated with either <a href="#//api/name/beginTransaction"><code>beginTransaction</code></a> or with <a href="#//api/name/beginDeferredTransaction"><code>beginDeferredTransaction</code></a>.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/beginTransaction">- beginTransaction</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/beginDeferredTransaction">- beginDeferredTransaction</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/rollback">- rollback</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/inTransaction">- inTransaction</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/databasePath" title="databasePath"></a>
+	<h3 class="subsubtitle method-title">databasePath</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The path of the database file</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)databasePath</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>path of database.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dateFromString:" title="dateFromString:"></a>
+	<h3 class="subsubtitle method-title">dateFromString:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Convert the supplied NSString to NSDate, using the current database formatter.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSDate *)dateFromString:(NSString *)<em>s</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>s</em></dt>
+			<dd><p><code>NSString</code> to convert to <code>NSDate</code>.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>nil</code> if no formatter is set.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/hasDateFormatter">- hasDateFormatter</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/setDateFormat:">- setDateFormat:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/dateFromString:">- dateFromString:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/stringFromDate:">- stringFromDate:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/storeableDateFormat:">+ storeableDateFormat:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/executeQuery:" title="executeQuery:"></a>
+	<h3 class="subsubtitle method-title">executeQuery:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute select statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQuery:(NSString *)<em>sql</em>, <em>...</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sql</em></dt>
+			<dd><p>The SELECT statement to be performed, with optional <code>?</code> placeholders.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>...</em></dt>
+			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> for the result set upon success; <code>nil</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
+
+<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="../Classes/FMResultSet.html">FMResultSet</a></p></code></li>
+			
+			<li><code><p><a href="../Classes/FMResultSet.html#//api/name/next"><code>FMResultSet next</code></a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/executeQuery:withArgumentsInArray:" title="executeQuery:withArgumentsInArray:"></a>
+	<h3 class="subsubtitle method-title">executeQuery:withArgumentsInArray:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute select statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQuery:(NSString *)<em>sql</em> withArgumentsInArray:(NSArray *)<em>arguments</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sql</em></dt>
+			<dd><p>The SELECT statement to be performed, with optional <code>?</code> placeholders.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>arguments</em></dt>
+			<dd><p>A <code>NSArray</code> of objects to be used when binding values to the <code>?</code> placeholders in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> for the result set upon success; <code>nil</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
+
+<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="../Classes/FMResultSet.html">FMResultSet</a></p></code></li>
+			
+			<li><code><p><a href="../Classes/FMResultSet.html#//api/name/next"><code>FMResultSet next</code></a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/executeQuery:withParameterDictionary:" title="executeQuery:withParameterDictionary:"></a>
+	<h3 class="subsubtitle method-title">executeQuery:withParameterDictionary:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute select statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQuery:(NSString *)<em>sql</em> withParameterDictionary:(NSDictionary *)<em>arguments</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sql</em></dt>
+			<dd><p>The SELECT statement to be performed, with optional <code>?</code> placeholders.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>arguments</em></dt>
+			<dd><p>A <code>NSDictionary</code> of objects keyed by column names that will be used when binding values to the <code>?</code> placeholders in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> for the result set upon success; <code>nil</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
+
+<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="../Classes/FMResultSet.html">FMResultSet</a></p></code></li>
+			
+			<li><code><p><a href="../Classes/FMResultSet.html#//api/name/next"><code>FMResultSet next</code></a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/executeQueryWithFormat:" title="executeQueryWithFormat:"></a>
+	<h3 class="subsubtitle method-title">executeQueryWithFormat:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute select statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQueryWithFormat:(NSString *)<em>format</em>, <em>...</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>format</em></dt>
+			<dd><p>The SQL to be performed, with <code>printf</code>-style escape sequences.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>...</em></dt>
+			<dd><p>Optional parameters to bind to use in conjunction with the <code>printf</code>-style escape sequences in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> for the result set upon success; <code>nil</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
+
+<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p><div class="warning"><p><strong>Warning:</strong> This should be used with great care. Generally, you should use <a href="#//api/name/executeQuery:"><code>executeQuery:</code></a> (with <code>?</code> placeholders) rather than this method.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="../Classes/FMResultSet.html">FMResultSet</a></p></code></li>
+			
+			<li><code><p><a href="../Classes/FMResultSet.html#//api/name/next"><code>FMResultSet next</code></a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/executeUpdate:" title="executeUpdate:"></a>
+	<h3 class="subsubtitle method-title">executeUpdate:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute update statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdate:(NSString *)<em>sql</em>, <em>...</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sql</em></dt>
+			<dd><p>The SQL to be performed, with optional <code>?</code> placeholders.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>...</em></dt>
+			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> upon success; <code>NO</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/executeUpdate:withArgumentsInArray:" title="executeUpdate:withArgumentsInArray:"></a>
+	<h3 class="subsubtitle method-title">executeUpdate:withArgumentsInArray:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute update statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdate:(NSString *)<em>sql</em> withArgumentsInArray:(NSArray *)<em>arguments</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sql</em></dt>
+			<dd><p>The SQL to be performed, with optional <code>?</code> placeholders.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>arguments</em></dt>
+			<dd><p>A <code>NSArray</code> of objects to be used when binding values to the <code>?</code> placeholders in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> upon success; <code>NO</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Any sort of SQL statement which is not a <code>SELECT</code> statement qualifies as an update.  This includes <code>CREATE</code>, <code>UPDATE</code>, <code>INSERT</code>, <code>ALTER</code>, <code>COMMIT</code>, <code>BEGIN</code>, <code>DETACH</code>, <code>DELETE</code>, <code>DROP</code>, <code>END</code>, <code>EXPLAIN</code>, <code>VACUUM</code>, and <code>REPLACE</code> statements (plus many more).  Basically, if your SQL statement does not begin with <code>SELECT</code>, it is an update statement.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/executeUpdate:withParameterDictionary:" title="executeUpdate:withParameterDictionary:"></a>
+	<h3 class="subsubtitle method-title">executeUpdate:withParameterDictionary:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute update statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdate:(NSString *)<em>sql</em> withParameterDictionary:(NSDictionary *)<em>arguments</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sql</em></dt>
+			<dd><p>The SQL to be performed, with optional <code>?</code> placeholders.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>arguments</em></dt>
+			<dd><p>A <code>NSDictionary</code> of objects keyed by column names that will be used when binding values to the <code>?</code> placeholders in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> upon success; <code>NO</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Any sort of SQL statement which is not a <code>SELECT</code> statement qualifies as an update.  This includes <code>CREATE</code>, <code>UPDATE</code>, <code>INSERT</code>, <code>ALTER</code>, <code>COMMIT</code>, <code>BEGIN</code>, <code>DETACH</code>, <code>DELETE</code>, <code>DROP</code>, <code>END</code>, <code>EXPLAIN</code>, <code>VACUUM</code>, and <code>REPLACE</code> statements (plus many more).  Basically, if your SQL statement does not begin with <code>SELECT</code>, it is an update statement.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/executeUpdateWithFormat:" title="executeUpdateWithFormat:"></a>
+	<h3 class="subsubtitle method-title">executeUpdateWithFormat:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute update statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdateWithFormat:(NSString *)<em>format</em>, <em>...</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>format</em></dt>
+			<dd><p>The SQL to be performed, with <code>printf</code>-style escape sequences.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>...</em></dt>
+			<dd><p>Optional parameters to bind to use in conjunction with the <code>printf</code>-style escape sequences in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> upon success; <code>NO</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Any sort of SQL statement which is not a <code>SELECT</code> statement qualifies as an update.  This includes <code>CREATE</code>, <code>UPDATE</code>, <code>INSERT</code>, <code>ALTER</code>, <code>COMMIT</code>, <code>BEGIN</code>, <code>DETACH</code>, <code>DELETE</code>, <code>DROP</code>, <code>END</code>, <code>EXPLAIN</code>, <code>VACUUM</code>, and <code>REPLACE</code> statements (plus many more).  Basically, if your SQL statement does not begin with <code>SELECT</code>, it is an update statement.</p><div class="warning"><p><strong>Warning:</strong> This should be used with great care. Generally, you should use <a href="#//api/name/executeUpdate:"><code>executeUpdate:</code></a> (with <code>?</code> placeholders) rather than this method.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/goodConnection" title="goodConnection"></a>
+	<h3 class="subsubtitle method-title">goodConnection</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Test to see if we have a good connection to the database.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)goodConnection</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if everything succeeds, <code>NO</code> on failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This will confirm whether:</p>
+
+<ul>
+<li>is database open</li>
+<li>if open, it will try a simple SELECT statement and confirm that it succeeds.</li>
+</ul>
+
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hadError" title="hadError"></a>
+	<h3 class="subsubtitle method-title">hadError</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Had error</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)hadError</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if there was an error, <code>NO</code> if no error.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hasDateFormatter" title="hasDateFormatter"></a>
+	<h3 class="subsubtitle method-title">hasDateFormatter</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Test whether the database has a date formatter assigned.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)hasDateFormatter</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if there is a date formatter; <code>NO</code> if not.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/hasDateFormatter">- hasDateFormatter</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/setDateFormat:">- setDateFormat:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/dateFromString:">- dateFromString:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/stringFromDate:">- stringFromDate:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/storeableDateFormat:">+ storeableDateFormat:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hasOpenResultSets" title="hasOpenResultSets"></a>
+	<h3 class="subsubtitle method-title">hasOpenResultSets</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Whether database has any open result sets</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)hasOpenResultSets</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if there are open result sets; <code>NO</code> if not.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/inSavePoint:" title="inSavePoint:"></a>
+	<h3 class="subsubtitle method-title">inSavePoint:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Start save point</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSError *)inSavePoint:(void ( ^ ) ( BOOL *rollback ))<em>block</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>block</em></dt>
+			<dd><p>Block of code to perform from within save point.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/startSavePointWithName:error:">- startSavePointWithName:error:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/releaseSavePointWithName:error:">- releaseSavePointWithName:error:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/rollbackToSavePointWithName:error:">- rollbackToSavePointWithName:error:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/inTransaction" title="inTransaction"></a>
+	<h3 class="subsubtitle method-title">inTransaction</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Identify whether currently in a transaction or not</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)inTransaction</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if currently within transaction; <code>NO</code> if not.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/beginTransaction">- beginTransaction</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/beginDeferredTransaction">- beginDeferredTransaction</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/commit">- commit</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/rollback">- rollback</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithPath:" title="initWithPath:"></a>
+	<h3 class="subsubtitle method-title">initWithPath:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Initialize a <code>FMDatabase</code> object.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (id)initWithPath:(NSString *)<em>inPath</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>inPath</em></dt>
+			<dd><p>Path of database file</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>FMDatabase</code> object if successful; <code>nil</code> if failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>An <code>FMDatabase</code> is created with a path to a SQLite database file.  This path can be one of these three:</p>
+
+<ol>
+<li>A file system path.  The file does not have to exist on disk.  If it does not exist, it is created for you.</li>
+<li>An empty string (<code>@""</code>).  An empty database is created at a temporary location.  This database is deleted with the <code>FMDatabase</code> connection is closed.</li>
+<li><code>nil</code>.  An in-memory database is created.  This database will be destroyed with the <code>FMDatabase</code> connection is closed.</li>
+</ol>
+
+
+<p>For example, to create/open a database in your Mac OS X <code>tmp</code> folder:</p>
+
+<pre><code>FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+</code></pre>
+
+<p>Or, in iOS, you might open a database in the app&rsquo;s <code>Documents</code> directory:</p>
+
+<pre><code>NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
+FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
+</code></pre>
+
+<p>(For more information on temporary and in-memory databases, read the sqlite documentation on the subject: <a href="http://www.sqlite.org/inmemorydb.html">http://www.sqlite.org/inmemorydb.html</a>)</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastError" title="lastError"></a>
+	<h3 class="subsubtitle method-title">lastError</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Last error</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSError *)lastError</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>NSError</code> representing the last error.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastErrorCode" title="lastErrorCode"></a>
+	<h3 class="subsubtitle method-title">lastErrorCode</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Last error code</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (int)lastErrorCode</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Integer value of the last error code.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Returns the numeric result code or extended result code for the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/errcode.html">sqlite3_errcode()</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastErrorMessage" title="lastErrorMessage"></a>
+	<h3 class="subsubtitle method-title">lastErrorMessage</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Last error message</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)lastErrorMessage</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>NSString</code> of the last error message.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Returns the English-language text that describes the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/errcode.html">sqlite3_errmsg()</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastInsertRowId" title="lastInsertRowId"></a>
+	<h3 class="subsubtitle method-title">lastInsertRowId</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Last insert rowid</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (sqlite_int64)lastInsertRowId</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Each entry in an SQLite table has a unique 64-bit signed integer key called the &ldquo;rowid&rdquo;. The rowid is always available as an undeclared column named <code>ROWID</code>, <code>OID</code>, or <code>_ROWID_</code> as long as those names are not also used by explicitly declared columns. If the table has a column of type <code>INTEGER PRIMARY KEY</code> then that column is another alias for the rowid.</p>
+
+<p>This routine returns the rowid of the most recent successful <code>INSERT</code> into the database from the database connection in the first argument. As of SQLite version 3.7.7, this routines records the last insert rowid of both ordinary tables and virtual tables. If no successful <code>INSERT</code>s have ever occurred on that database connection, zero is returned.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/last_insert_rowid.html">sqlite3_last_insert_rowid()</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/makeFunctionNamed:maximumArguments:withBlock:" title="makeFunctionNamed:maximumArguments:withBlock:"></a>
+	<h3 class="subsubtitle method-title">makeFunctionNamed:maximumArguments:withBlock:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Adds SQL functions or aggregates or to redefine the behavior of existing SQL functions or aggregates.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)makeFunctionNamed:(NSString *)<em>name</em> maximumArguments:(int)<em>count</em> withBlock:(void ( ^ ) ( sqlite3_context *context , int argc , sqlite3_value **argv ))<em>block</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>name</em></dt>
+			<dd><p>Name of function</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>count</em></dt>
+			<dd><p>Maximum number of parameters</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>block</em></dt>
+			<dd><p>The block of code for the function</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>For example:</p>
+
+<pre><code>[queue inDatabase:^(FMDatabase *adb) {
+
+    [adb executeUpdate:@"create table ftest (foo text)"];
+    [adb executeUpdate:@"insert into ftest values ('hello')"];
+    [adb executeUpdate:@"insert into ftest values ('hi')"];
+    [adb executeUpdate:@"insert into ftest values ('not h!')"];
+    [adb executeUpdate:@"insert into ftest values ('definitely not h!')"];
+
+    [adb makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(sqlite3_context *context, int aargc, sqlite3_value **aargv) {
+        if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
+            @autoreleasepool {
+                const char *c = (const char *)sqlite3_value_text(aargv[0]);
+                NSString *s = [NSString stringWithUTF8String:c];
+                sqlite3_result_int(context, [s hasPrefix:@"h"]);
+            }
+        }
+        else {
+            NSLog(@"Unknown formart for StringStartsWithH (%d) %s:%d", sqlite3_value_type(aargv[0]), __FUNCTION__, __LINE__);
+            sqlite3_result_null(context);
+        }
+    }];
+
+    int rowCount = 0;
+    FMResultSet *ars = [adb executeQuery:@"select * from ftest where StringStartsWithH(foo)"];
+    while ([ars next]) {
+        rowCount++;
+        NSLog(@"Does %@ start with 'h'?", [rs stringForColumnIndex:0]);
+    }
+    FMDBQuickCheck(rowCount == 2);
+}];
+</code></pre>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/create_function.html">sqlite3_create_function()</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/open" title="open"></a>
+	<h3 class="subsubtitle method-title">open</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Opening a new database connection</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)open</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if successful, <code>NO</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The database is opened for reading and writing, and is created if it does not already exist.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/open.html">sqlite3_open()</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/openWithFlags:">- openWithFlags:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/close">- close</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/openWithFlags:" title="openWithFlags:"></a>
+	<h3 class="subsubtitle method-title">openWithFlags:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Opening a new database connection with flags</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)openWithFlags:(int)<em>flags</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>flags</em></dt>
+			<dd><p>one of the following three values, optionally combined with the <code>SQLITE_OPEN_NOMUTEX</code>, <code>SQLITE_OPEN_FULLMUTEX</code>, <code>SQLITE_OPEN_SHAREDCACHE</code>, <code>SQLITE_OPEN_PRIVATECACHE</code>, and/or <code>SQLITE_OPEN_URI</code> flags:</p>
+
+<p><code>SQLITE_OPEN_READONLY</code></p>
+
+<p>The database is opened in read-only mode. If the database does not already exist, an error is returned.</p>
+
+<p><code>SQLITE_OPEN_READWRITE</code></p>
+
+<p>The database is opened for reading and writing if possible, or reading only if the file is write protected by the operating system. In either case the database must already exist, otherwise an error is returned.</p>
+
+<p><code>SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE</code></p>
+
+<p>The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for <code>open</code> method.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if successful, <code>NO</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/open.html">sqlite3_open_v2()</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/open">- open</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/close">- close</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/rekey:" title="rekey:"></a>
+	<h3 class="subsubtitle method-title">rekey:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Reset encryption key</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)rekey:(NSString *)<em>key</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>key</em></dt>
+			<dd><p>The key to be used.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if success, <code>NO</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<div class="warning"><p><strong>Warning:</strong> You need to have purchased the sqlite encryption extensions for this method to work.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://www.sqlite-encrypt.com/develop-guide.htm">http://www.sqlite-encrypt.com/develop-guide.htm</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/rekeyWithData:" title="rekeyWithData:"></a>
+	<h3 class="subsubtitle method-title">rekeyWithData:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Reset encryption key using <code>keyData</code>.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)rekeyWithData:(NSData *)<em>keyData</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>keyData</em></dt>
+			<dd><p>The <code>NSData</code> to be used.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if success, <code>NO</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<div class="warning"><p><strong>Warning:</strong> You need to have purchased the sqlite encryption extensions for this method to work.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://www.sqlite-encrypt.com/develop-guide.htm">http://www.sqlite-encrypt.com/develop-guide.htm</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/releaseSavePointWithName:error:" title="releaseSavePointWithName:error:"></a>
+	<h3 class="subsubtitle method-title">releaseSavePointWithName:error:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Release save point</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)releaseSavePointWithName:(NSString *)<em>name</em> error:(NSError **)<em>outErr</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>name</em></dt>
+			<dd><p>Name of save point.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>outErr</em></dt>
+			<dd><p>A <code>NSError</code> object to receive any error object (if any).</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/startSavePointWithName:error:">- startSavePointWithName:error:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/rollbackToSavePointWithName:error:">- rollbackToSavePointWithName:error:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/rollback" title="rollback"></a>
+	<h3 class="subsubtitle method-title">rollback</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Rollback a transaction</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)rollback</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Rollback a transaction that was initiated with either <a href="#//api/name/beginTransaction"><code>beginTransaction</code></a> or with <a href="#//api/name/beginDeferredTransaction"><code>beginDeferredTransaction</code></a>.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/beginTransaction">- beginTransaction</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/beginDeferredTransaction">- beginDeferredTransaction</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/commit">- commit</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/inTransaction">- inTransaction</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/rollbackToSavePointWithName:error:" title="rollbackToSavePointWithName:error:"></a>
+	<h3 class="subsubtitle method-title">rollbackToSavePointWithName:error:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Roll back to save point</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)rollbackToSavePointWithName:(NSString *)<em>name</em> error:(NSError **)<em>outErr</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>name</em></dt>
+			<dd><p>Name of save point.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>outErr</em></dt>
+			<dd><p>A <code>NSError</code> object to receive any error object (if any).</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/startSavePointWithName:error:">- startSavePointWithName:error:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/releaseSavePointWithName:error:">- releaseSavePointWithName:error:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setDateFormat:" title="setDateFormat:"></a>
+	<h3 class="subsubtitle method-title">setDateFormat:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set to a date formatter to use string dates with sqlite instead of the default UNIX timestamps.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)setDateFormat:(NSDateFormatter *)<em>format</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>format</em></dt>
+			<dd><p>Set to nil to use UNIX timestamps. Defaults to nil. Should be set using a formatter generated using FMDatabase::storeableDateFormat.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<div class="warning"><p><strong>Warning:</strong> Note there is no direct getter for the <code>NSDateFormatter</code>, and you should not use the formatter you pass to FMDB for other purposes, as <code>NSDateFormatter</code> is not thread-safe.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/hasDateFormatter">- hasDateFormatter</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/setDateFormat:">- setDateFormat:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/dateFromString:">- dateFromString:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/stringFromDate:">- stringFromDate:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/storeableDateFormat:">+ storeableDateFormat:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setKey:" title="setKey:"></a>
+	<h3 class="subsubtitle method-title">setKey:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set encryption key.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)setKey:(NSString *)<em>key</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>key</em></dt>
+			<dd><p>The key to be used.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if success, <code>NO</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<div class="warning"><p><strong>Warning:</strong> You need to have purchased the sqlite encryption extensions for this method to work.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://www.sqlite-encrypt.com/develop-guide.htm">http://www.sqlite-encrypt.com/develop-guide.htm</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setKeyWithData:" title="setKeyWithData:"></a>
+	<h3 class="subsubtitle method-title">setKeyWithData:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set encryption key using <code>keyData</code>.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)setKeyWithData:(NSData *)<em>keyData</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>keyData</em></dt>
+			<dd><p>The <code>NSData</code> to be used.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if success, <code>NO</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<div class="warning"><p><strong>Warning:</strong> You need to have purchased the sqlite encryption extensions for this method to work.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="http://www.sqlite-encrypt.com/develop-guide.htm">http://www.sqlite-encrypt.com/develop-guide.htm</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setShouldCacheStatements:" title="setShouldCacheStatements:"></a>
+	<h3 class="subsubtitle method-title">setShouldCacheStatements:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set whether should cache statements or not</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)setShouldCacheStatements:(BOOL)<em>value</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>value</em></dt>
+			<dd><p><code>YES</code> if should cache statements; <code>NO</code> if not.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/shouldCacheStatements" title="shouldCacheStatements"></a>
+	<h3 class="subsubtitle method-title">shouldCacheStatements</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Return whether should cache statements or not</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)shouldCacheStatements</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if should cache statements; <code>NO</code> if not.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sqliteHandle" title="sqliteHandle"></a>
+	<h3 class="subsubtitle method-title">sqliteHandle</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The underlying SQLite handle</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (sqlite3 *)sqliteHandle</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The <code>sqlite3</code> pointer.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/startSavePointWithName:error:" title="startSavePointWithName:error:"></a>
+	<h3 class="subsubtitle method-title">startSavePointWithName:error:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Start save point</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)startSavePointWithName:(NSString *)<em>name</em> error:(NSError **)<em>outErr</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>name</em></dt>
+			<dd><p>Name of save point.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>outErr</em></dt>
+			<dd><p>A <code>NSError</code> object to receive any error object (if any).</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/releaseSavePointWithName:error:">- releaseSavePointWithName:error:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/rollbackToSavePointWithName:error:">- rollbackToSavePointWithName:error:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/stringFromDate:" title="stringFromDate:"></a>
+	<h3 class="subsubtitle method-title">stringFromDate:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Convert the supplied NSDate to NSString, using the current database formatter.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)stringFromDate:(NSDate *)<em>date</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>date</em></dt>
+			<dd><p><code>NSDate</code> of date to convert to <code>NSString</code>.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>nil</code> if no formatter is set.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/hasDateFormatter">- hasDateFormatter</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/setDateFormat:">- setDateFormat:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/dateFromString:">- dateFromString:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/stringFromDate:">- stringFromDate:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/storeableDateFormat:">+ storeableDateFormat:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/update:withErrorAndBindings:" title="update:withErrorAndBindings:"></a>
+	<h3 class="subsubtitle method-title">update:withErrorAndBindings:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Execute update statement</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)update:(NSString *)<em>sql</em> withErrorAndBindings:(NSError **)<em>outErr</em>, <em>...</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>sql</em></dt>
+			<dd><p>The SQL to be performed, with optional <code>?</code> placeholders.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>outErr</em></dt>
+			<dd><p>A reference to the <code>NSError</code> pointer to be updated with an auto released <code>NSError</code> object if an error if an error occurs. If <code>nil</code>, no <code>NSError</code> object will be returned.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>...</em></dt>
+			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> upon success; <code>NO</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabase.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 ccgus. All rights reserved. (Last updated: 2013-06-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
+		</script>
+	</body>
+</html>
