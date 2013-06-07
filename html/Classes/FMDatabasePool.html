@@ -1,0 +1,869 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>FMDatabasePool Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.1 (build 858)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">FMDB </a></h1>
+				<a id="developerHome" href="../index.html">ccgus</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">FMDatabasePool Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/databasePoolWithPath:">&nbsp;&nbsp;&nbsp;&nbsp;+ databasePoolWithPath:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/countOfCheckedInDatabases">&nbsp;&nbsp;&nbsp;&nbsp;- countOfCheckedInDatabases</option>
+	
+	<option value="//api/name/countOfCheckedOutDatabases">&nbsp;&nbsp;&nbsp;&nbsp;- countOfCheckedOutDatabases</option>
+	
+	<option value="//api/name/countOfOpenDatabases">&nbsp;&nbsp;&nbsp;&nbsp;- countOfOpenDatabases</option>
+	
+	<option value="//api/name/inDatabase:">&nbsp;&nbsp;&nbsp;&nbsp;- inDatabase:</option>
+	
+	<option value="//api/name/inDeferredTransaction:">&nbsp;&nbsp;&nbsp;&nbsp;- inDeferredTransaction:</option>
+	
+	<option value="//api/name/inSavePoint:">&nbsp;&nbsp;&nbsp;&nbsp;- inSavePoint:</option>
+	
+	<option value="//api/name/inTransaction:">&nbsp;&nbsp;&nbsp;&nbsp;- inTransaction:</option>
+	
+	<option value="//api/name/initWithPath:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithPath:</option>
+	
+	<option value="//api/name/releaseAllDatabases">&nbsp;&nbsp;&nbsp;&nbsp;- releaseAllDatabases</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Initialization">Initialization</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Keeping track of checked in/out databases">Keeping track of checked in/out databases</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Perform database operations in pool">Perform database operations in pool</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/databasePoolWithPath:">databasePoolWithPath:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/countOfCheckedInDatabases">countOfCheckedInDatabases</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/countOfCheckedOutDatabases">countOfCheckedOutDatabases</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/countOfOpenDatabases">countOfOpenDatabases</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/inDatabase:">inDatabase:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/inDeferredTransaction:">inDeferredTransaction:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/inSavePoint:">inSavePoint:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/inTransaction:">inTransaction:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithPath:">initWithPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/releaseAllDatabases">releaseAllDatabases</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="FMDatabasePool Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">FMDatabasePool Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">FMDatabasePool.h<br />FMDatabasePool.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>Pool of <a href="../Classes/FMDatabase.html"><code>FMDatabase</code></a> objects.</p>
+
+<h3>See also</h3>
+
+<ul>
+<li><a href="../Classes/FMDatabaseQueue.html"><code>FMDatabaseQueue</code></a></li>
+<li><a href="../Classes/FMDatabase.html"><code>FMDatabase</code></a></li>
+</ul>
+<div class="warning"><p><strong>Warning:</strong> Before using <code>FMDatabasePool</code>, please consider using <a href="../Classes/FMDatabaseQueue.html"><code>FMDatabaseQueue</code></a> instead.</p>
+
+<p>If you really really really know what you&rsquo;re doing and <code>FMDatabasePool</code> is what
+you really really need (ie, you&rsquo;re using a read only database), OK you can use
+it.  But just be careful not to deadlock!</p>
+
+<p>For an example on deadlocking, search for:
+<code>ONLY_USE_THE_POOL_IF_YOU_ARE_DOING_READS_OTHERWISE_YOULL_DEADLOCK_USE_FMDATABASEQUEUE_INSTEAD</code>
+in the main.m file.</p></div>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						<a title="Initialization" name="task_Initialization"></a>
+						<h3 class="subsubtitle task-title">Initialization</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/databasePoolWithPath:">+&nbsp;databasePoolWithPath:</a></code>
+		<span class="tooltip"><p>Create pool using path.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithPath:">&ndash;&nbsp;initWithPath:</a></code>
+		<span class="tooltip"><p>Create pool using path.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Keeping track of checked in/out databases" name="task_Keeping track of checked in/out databases"></a>
+						<h3 class="subsubtitle task-title">Keeping track of checked in/out databases</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/countOfCheckedInDatabases">&ndash;&nbsp;countOfCheckedInDatabases</a></code>
+		<span class="tooltip"><p>Number of checked-in databases in pool</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/countOfCheckedOutDatabases">&ndash;&nbsp;countOfCheckedOutDatabases</a></code>
+		<span class="tooltip"><p>Number of checked-out databases in pool</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/countOfOpenDatabases">&ndash;&nbsp;countOfOpenDatabases</a></code>
+		<span class="tooltip"><p>Total number of databases in pool</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/releaseAllDatabases">&ndash;&nbsp;releaseAllDatabases</a></code>
+		<span class="tooltip"><p>Release all databases in pool</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Perform database operations in pool" name="task_Perform database operations in pool"></a>
+						<h3 class="subsubtitle task-title">Perform database operations in pool</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/inDatabase:">&ndash;&nbsp;inDatabase:</a></code>
+		<span class="tooltip"><p>Synchronously perform database operations in pool.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/inTransaction:">&ndash;&nbsp;inTransaction:</a></code>
+		<span class="tooltip"><p>Synchronously perform database operations in pool using transaction.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/inDeferredTransaction:">&ndash;&nbsp;inDeferredTransaction:</a></code>
+		<span class="tooltip"><p>Synchronously perform database operations in pool using deferred transaction.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/inSavePoint:">&ndash;&nbsp;inSavePoint:</a></code>
+		<span class="tooltip"><p>Synchronously perform database operations in pool using save point.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/databasePoolWithPath:" title="databasePoolWithPath:"></a>
+	<h3 class="subsubtitle method-title">databasePoolWithPath:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Create pool using path.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (id)databasePoolWithPath:(NSString *)<em>aPath</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>aPath</em></dt>
+			<dd><p>The file path of the database.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The <code>FMDatabasePool</code> object. <code>nil</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/countOfCheckedInDatabases" title="countOfCheckedInDatabases"></a>
+	<h3 class="subsubtitle method-title">countOfCheckedInDatabases</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Number of checked-in databases in pool</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSUInteger)countOfCheckedInDatabases</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Number of databases</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/countOfCheckedOutDatabases" title="countOfCheckedOutDatabases"></a>
+	<h3 class="subsubtitle method-title">countOfCheckedOutDatabases</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Number of checked-out databases in pool</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSUInteger)countOfCheckedOutDatabases</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Number of databases</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/countOfOpenDatabases" title="countOfOpenDatabases"></a>
+	<h3 class="subsubtitle method-title">countOfOpenDatabases</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Total number of databases in pool</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSUInteger)countOfOpenDatabases</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Number of databases</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/inDatabase:" title="inDatabase:"></a>
+	<h3 class="subsubtitle method-title">inDatabase:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Synchronously perform database operations in pool.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)inDatabase:(void ( ^ ) ( FMDatabase *db ))<em>block</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>block</em></dt>
+			<dd><p>The code to be run on the <code>FMDatabasePool</code> pool.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/inDeferredTransaction:" title="inDeferredTransaction:"></a>
+	<h3 class="subsubtitle method-title">inDeferredTransaction:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Synchronously perform database operations in pool using deferred transaction.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)inDeferredTransaction:(void ( ^ ) ( FMDatabase *db , BOOL *rollback ))<em>block</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>block</em></dt>
+			<dd><p>The code to be run on the <code>FMDatabasePool</code> pool.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/inSavePoint:" title="inSavePoint:"></a>
+	<h3 class="subsubtitle method-title">inSavePoint:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Synchronously perform database operations in pool using save point.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSError *)inSavePoint:(void ( ^ ) ( FMDatabase *db , BOOL *rollback ))<em>block</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>block</em></dt>
+			<dd><p>The code to be run on the <code>FMDatabasePool</code> pool.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<div class="warning"><p><strong>Warning:</strong> You can not nest these, since calling it will pull another database out of the pool and you&rsquo;ll get a deadlock. If you need to nest, use <a href="../Classes/FMDatabase.html#//api/name/startSavePointWithName:error:"><code>[FMDatabase startSavePointWithName:error:]</code></a> instead.</p></div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/inTransaction:" title="inTransaction:"></a>
+	<h3 class="subsubtitle method-title">inTransaction:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Synchronously perform database operations in pool using transaction.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)inTransaction:(void ( ^ ) ( FMDatabase *db , BOOL *rollback ))<em>block</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>block</em></dt>
+			<dd><p>The code to be run on the <code>FMDatabasePool</code> pool.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithPath:" title="initWithPath:"></a>
+	<h3 class="subsubtitle method-title">initWithPath:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Create pool using path.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (id)initWithPath:(NSString *)<em>aPath</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>aPath</em></dt>
+			<dd><p>The file path of the database.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The <code>FMDatabasePool</code> object. <code>nil</code> on error.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/releaseAllDatabases" title="releaseAllDatabases"></a>
+	<h3 class="subsubtitle method-title">releaseAllDatabases</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Release all databases in pool</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)releaseAllDatabases</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabasePool.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 ccgus. All rights reserved. (Last updated: 2013-06-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
+		</script>
+	</body>
+</html>
