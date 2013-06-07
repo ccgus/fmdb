@@ -12,7 +12,7 @@ If you would like to contribute some code- awesome!  I just ask that you make it
 
         - If you want online help integrated right into Xcode, you can issue the command:
 
-            appledoc --project-name FMDB --project-company ccgus --explicit-crossref --merge-categories --install-docset --output ../Documentation .
+             appledoc --project-name FMDB --project-company ccgus --explicit-crossref --merge-categories --install-docset --output ../Documentation .
 
 2013.05.24
     Merged in Chris Wright's date format additions to FMDatabase.
