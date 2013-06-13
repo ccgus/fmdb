@@ -16,7 +16,7 @@
 @synthesize checkedOut=_checkedOut;
 @synthesize traceExecution=_traceExecution;
 
-+ (id)databaseWithPath:(NSString*)aPath {
++ (instancetype)databaseWithPath:(NSString*)aPath {
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
 }
 
@@ -29,7 +29,7 @@
     return sqlite3_threadsafe() != 0;
 }
 
-- (id)initWithPath:(NSString*)aPath {
+- (instancetype)initWithPath:(NSString*)aPath {
     
     assert(sqlite3_threadsafe()); // whoa there big boy- gotta make sure sqlite it happy with what we're going to do.
     
