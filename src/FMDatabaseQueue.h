@@ -80,7 +80,7 @@
  @return The `FMDatabaseQueue` object. `nil` on error.
  */
 
-+ (id)databaseQueueWithPath:(NSString*)aPath;
++ (instancetype)databaseQueueWithPath:(NSString*)aPath;
 
 /** Create queue using path.
 
@@ -89,7 +89,7 @@
  @return The `FMDatabaseQueue` object. `nil` on error.
  */
 
-- (id)initWithPath:(NSString*)aPath;
+- (instancetype)initWithPath:(NSString*)aPath;
 
 /** Close database used by queue. */
 
