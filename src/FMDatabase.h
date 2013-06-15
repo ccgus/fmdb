@@ -45,6 +45,9 @@
 	#endif
 #endif
 
+#if !__has_feature(objc_instancetype)
+    #define instancetype id
+#endif
 
 /** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
  
