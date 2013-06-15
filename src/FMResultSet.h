@@ -60,7 +60,7 @@
  @return A `FMResultSet` on success; `nil` on failure
  */
 
-+ (id)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB;
++ (instancetype)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB;
 
 /** Close result set */
 

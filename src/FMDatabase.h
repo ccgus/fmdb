@@ -149,7 +149,7 @@
 
  */
 
-+ (id)databaseWithPath:(NSString*)inPath;
++ (instancetype)databaseWithPath:(NSString*)inPath;
 
 /** Initialize a `FMDatabase` object.
  
@@ -177,7 +177,7 @@
 
  */
 
-- (id)initWithPath:(NSString*)inPath;
+- (instancetype)initWithPath:(NSString*)inPath;
 
 
 ///-----------------------------------

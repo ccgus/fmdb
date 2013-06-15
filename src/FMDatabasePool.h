@@ -57,7 +57,7 @@
  @return The `FMDatabasePool` object. `nil` on error.
  */
 
-+ (id)databasePoolWithPath:(NSString*)aPath;
++ (instancetype)databasePoolWithPath:(NSString*)aPath;
 
 /** Create pool using path.
 
@@ -66,7 +66,7 @@
  @return The `FMDatabasePool` object. `nil` on error.
  */
 
-- (id)initWithPath:(NSString*)aPath;
+- (instancetype)initWithPath:(NSString*)aPath;
 
 ///------------------------------------------------
 /// @name Keeping track of checked in/out databases
