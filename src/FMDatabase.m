@@ -199,6 +199,8 @@
 }
 
 - (void)setCachedStatement:(FMStatement*)statement forQuery:(NSString*)query {
+    if (query == nil)
+        return;
     
     query = [query copy]; // in case we got handed in a mutable string...
     
