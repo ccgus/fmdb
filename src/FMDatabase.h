@@ -292,7 +292,7 @@
  @warning This should be used with great care. Generally, you should use `<executeUpdate:>` (with `?` placeholders) rather than this method.
  */
 
-- (BOOL)executeUpdateWithFormat:(NSString *)format, ...;
+- (BOOL)executeUpdateWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
 /** Execute update statement
 
@@ -384,7 +384,7 @@
 
  */
 
-- (FMResultSet *)executeQueryWithFormat:(NSString*)format, ...;
+- (FMResultSet *)executeQueryWithFormat:(NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
 
 /** Execute select statement
 
