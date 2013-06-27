@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2013.06.26
+    Added `NS_FORMAT_FUNCTION` qualifier to `executeQueryWithFormat` and `executeUpdateWithFormat`. These methods take format strings and variable number of arguments and you will now receive compiler warnings if the types of your parameters dont match the format string.
+
 2013.06.04
     Merged in Robert Ryan's comments in .h header files. These comments hopefully make the .h more readable, but just as importantly, can be parsed by [`appledoc`](http://gentlebytes.com/appledoc/) to create HTML documentation or Xcode docsets. <https://github.com/ccgus/fmdb/pull/150>
 
@@ -12,7 +15,7 @@ If you would like to contribute some code- awesome!  I just ask that you make it
 
         - If you want online help integrated right into Xcode, you can issue the command:
 
-            appledoc --project-name FMDB --project-company ccgus --explicit-crossref --merge-categories --install-docset --output ../Documentation .
+             appledoc --project-name FMDB --project-company ccgus --explicit-crossref --merge-categories --install-docset --output ../Documentation .
 
 2013.05.24
     Merged in Chris Wright's date format additions to FMDatabase.
