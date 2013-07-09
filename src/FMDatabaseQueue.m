@@ -11,7 +11,7 @@
 
 /*
  
- Note: we call [self retain]; before using dispatch_sync, just incase 
+ Note: we call [self retain]; before using dispatch_sync, just in case
  FMDatabaseQueue is released on another thread and we're in the middle of doing
  something in dispatch_sync
  
@@ -101,7 +101,7 @@
         block(db);
         
         if ([db hasOpenResultSets]) {
-            NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
+            NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]\n%@", [NSThread callStackSymbols]);
         }
     });
     
