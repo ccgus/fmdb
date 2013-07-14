@@ -16,7 +16,12 @@
  something in dispatch_sync
  
  */
- 
+
+@interface FMDatabaseQueue () {
+    void *_dbQueueTag;
+}
+@end
+
 @implementation FMDatabaseQueue
 
 @synthesize path = _path;
@@ -47,7 +52,9 @@
         
         _path = FMDBReturnRetained(aPath);
         
+        _dbQueueTag = &_dbQueueTag;
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
+        dispatch_queue_set_specific(_queue, _dbQueueTag, _dbQueueTag, NULL);
     }
     
     return self;
@@ -69,12 +76,19 @@
 
 - (void)close {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+    
+    dispatch_block_t internalBlock =  ^{
         [_db close];
         FMDBRelease(_db);
         _db = 0x00;
-    });
+        
     FMDBRelease(self);
+    };
+    
+    if (dispatch_get_specific(_dbQueueTag))
+ 	internalBlock();
+	else
+		dispatch_sync(_queue, internalBlock);
 }
 
 - (FMDatabase*)database {
@@ -95,24 +109,28 @@
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
     FMDBRetain(self);
     
-    dispatch_sync(_queue, ^() {
-        
+    dispatch_block_t internalBlock =  ^{
         FMDatabase *db = [self database];
         block(db);
         
         if ([db hasOpenResultSets]) {
             NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
         }
-    });
     
     FMDBRelease(self);
+    };
+
+    if (dispatch_get_specific(_dbQueueTag))
+		internalBlock();
+	else
+		dispatch_sync(_queue, internalBlock);
 }
 
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
         
+    dispatch_block_t internalBlock =  ^{    
         BOOL shouldRollback = NO;
         
         if (useDeferred) {
@@ -130,9 +148,14 @@
         else {
             [[self database] commit];
         }
-    });
     
     FMDBRelease(self);
+    };
+    
+    if (dispatch_get_specific(_dbQueueTag))
+		internalBlock();
+	else
+		dispatch_sync(_queue, internalBlock);
 }
 
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
@@ -149,7 +172,8 @@
     static unsigned long savePointIdx = 0;
     __block NSError *err = 0x00;
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+
+    dispatch_block_t internalBlock =  ^{
         
         NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
         
@@ -167,8 +191,15 @@
             }
             
         }
-    });
+        
     FMDBRelease(self);
+    };
+
+    if (dispatch_get_specific(_dbQueueTag))
+        internalBlock();
+	else
+		dispatch_sync(_queue, internalBlock);
+    
     return err;
 }
 #endif
