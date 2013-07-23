@@ -7,6 +7,7 @@ Pod::Spec.new do |s|
   s.author   = { 'August Mueller' => 'gus@flyingmeat.com' }
   s.source   = { :git => 'https://github.com/ccgus/fmdb.git' }
 
-  s.source_files = FileList['src/FM*.{h,m}'].exclude(/fmdb\.m/)
+  s.source_files = 'src/FM*.{h,m}'
+  s.exclude_files = 'src/fmdb\.m'
   s.library = 'sqlite3'
 end
