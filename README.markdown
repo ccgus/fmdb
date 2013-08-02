@@ -1,6 +1,8 @@
 # FMDB
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
+Also please see the [FMDB Class Reference](http://ccgus.github.io/fmdb/html/index.html).
+
 ## The FMDB Mailing List:
 http://groups.google.com/group/fmdb
 
