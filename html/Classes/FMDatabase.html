@@ -1884,7 +1884,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>...</em></dt>
-			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement.</p></dd>
+			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement. These should be Objective-C objects (e.g. <code>NSString</code>, <code>NSNumber</code>, etc.), not fundamental C data types (e.g. <code>int</code>, <code>char *</code>, etc.).</p></dd>
 		</dl>
 		
 	</div>
@@ -1905,6 +1905,8 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		<p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
 
 <p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p>
+
+<p>This method employs <a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a> for any optional value parameters. This  properly escapes any characters that need escape sequences (e.g. quotation marks), which eliminates simple SQL errors as well as protects against SQL injection attacks. This method natively handles <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects. All other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p>
 	</div>
 	
 	
@@ -1918,6 +1920,8 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			<li><code><p><a href="../Classes/FMResultSet.html">FMResultSet</a></p></code></li>
 			
 			<li><code><p><a href="../Classes/FMResultSet.html#//api/name/next"><code>FMResultSet next</code></a></p></code></li>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a></p></code></li>
 			
 		</ul>
 	</div>
@@ -2126,7 +2130,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		<h4 class="method-subtitle">Discussion</h4>
 		<p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
 
-<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p><div class="warning"><p><strong>Warning:</strong> This should be used with great care. Generally, you should use <a href="#//api/name/executeQuery:"><code>executeQuery:</code></a> (with <code>?</code> placeholders) rather than this method.</p></div>
+<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p><div class="warning"><p><strong>Warning:</strong> This should be used with great care. Generally, instead of this method, you should use <a href="#//api/name/executeQuery:"><code>executeQuery:</code></a> (with <code>?</code> placeholders in the SQL), which properly escapes quotation marks encountered inside the values (minimizing errors and protecting against SQL injection attack) and handles a wider variety of data types. See <a href="#//api/name/executeQuery:"><code>executeQuery:</code></a> for more information.</p></div>
 	</div>
 	
 	
@@ -2136,6 +2140,8 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	<div class="method-subsection see-also-section">
 		<h4 class="method-subtitle">See Also</h4>
 		<ul>
+			
+			<li><code><p><a href="#//api/name/executeQuery:">- executeQuery:</a></p></code></li>
 			
 			<li><code><p><a href="../Classes/FMResultSet.html">FMResultSet</a></p></code></li>
 			
@@ -2180,7 +2186,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>...</em></dt>
-			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement.</p></dd>
+			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement. These should be Objective-C objects (e.g. <code>NSString</code>, <code>NSNumber</code>, etc.), not fundamental C data types (e.g. <code>int</code>, <code>char *</code>, etc.).</p></dd>
 		</dl>
 		
 	</div>
@@ -2196,9 +2202,29 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	
 	
 	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This method employs <a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a> for any optional value parameters. This  properly escapes any characters that need escape sequences (e.g. quotation marks), which eliminates simple SQL errors as well as protects against SQL injection attacks. This method natively handles <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects. All other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p>
+	</div>
 	
 	
 	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a></p></code></li>
+			
+		</ul>
+	</div>
 	
 	
 	
@@ -2261,6 +2287,19 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	
 	
 	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+			
+		</ul>
+	</div>
+	
 	
 	
 	<div class="method-subsection declared-in-section">
@@ -2322,6 +2361,19 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	
 	
 	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+			
+		</ul>
+	</div>
+	
 	
 	
 	<div class="method-subsection declared-in-section">
@@ -2376,12 +2428,27 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>Any sort of SQL statement which is not a <code>SELECT</code> statement qualifies as an update.  This includes <code>CREATE</code>, <code>UPDATE</code>, <code>INSERT</code>, <code>ALTER</code>, <code>COMMIT</code>, <code>BEGIN</code>, <code>DETACH</code>, <code>DELETE</code>, <code>DROP</code>, <code>END</code>, <code>EXPLAIN</code>, <code>VACUUM</code>, and <code>REPLACE</code> statements (plus many more).  Basically, if your SQL statement does not begin with <code>SELECT</code>, it is an update statement.</p><div class="warning"><p><strong>Warning:</strong> This should be used with great care. Generally, you should use <a href="#//api/name/executeUpdate:"><code>executeUpdate:</code></a> (with <code>?</code> placeholders) rather than this method.</p></div>
+		<p>Any sort of SQL statement which is not a <code>SELECT</code> statement qualifies as an update.  This includes <code>CREATE</code>, <code>UPDATE</code>, <code>INSERT</code>, <code>ALTER</code>, <code>COMMIT</code>, <code>BEGIN</code>, <code>DETACH</code>, <code>DELETE</code>, <code>DROP</code>, <code>END</code>, <code>EXPLAIN</code>, <code>VACUUM</code>, and <code>REPLACE</code> statements (plus many more).  Basically, if your SQL statement does not begin with <code>SELECT</code>, it is an update statement.</p><div class="warning"><p><strong>Warning:</strong> This should be used with great care. Generally, instead of this method, you should use <a href="#//api/name/executeUpdate:"><code>executeUpdate:</code></a> (with <code>?</code> placeholders in the SQL), which properly escapes quotation marks encountered inside the values (minimizing errors and protecting against SQL injection attack) and handles a wider variety of data types. See <a href="#//api/name/executeUpdate:"><code>executeUpdate:</code></a> for more information.</p></div>
 	</div>
 	
 	
 	
 	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/executeUpdate:">- executeUpdate:</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+			
+		</ul>
+	</div>
 	
 	
 	
@@ -4071,7 +4138,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>...</em></dt>
-			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement.</p></dd>
+			<dd><p>Optional parameters to bind to <code>?</code> placeholders in the SQL statement. These should be Objective-C objects (e.g. <code>NSString</code>, <code>NSNumber</code>, etc.), not fundamental C data types (e.g. <code>int</code>, <code>char *</code>, etc.).</p></dd>
 		</dl>
 		
 	</div>
@@ -4087,9 +4154,29 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	
 	
 	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This method employs <a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a> for any optional value parameters. This  properly escapes any characters that need escape sequences (e.g. quotation marks), which eliminates simple SQL errors as well as protects against SQL injection attacks. This method natively handles <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects. All other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p>
+	</div>
 	
 	
 	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+			
+			<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+			
+			<li><code><p><a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a></p></code></li>
+			
+		</ul>
+	</div>
 	
 	
 	
@@ -4114,7 +4201,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 ccgus. All rights reserved. (Last updated: 2013-08-02)</span><br />
+						<p><span class="copyright">&copy; 2013 ccgus. All rights reserved. (Last updated: 2013-08-06)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
 						
