@@ -79,8 +79,8 @@ You must always invoke `-[FMResultSet next]` before attempting to access the val
 - `dateForColumn:`
 - `dataForColumn:`
 - `dataNoCopyForColumn:`
-- `UTF8StringForColumnIndex:`
-- `objectForColumn:`
+- `UTF8StringForColumnName:`
+- `objectForColumnName:`
 
 Each of these methods also has a `{type}ForColumnIndex:` variant that is used to retrieve the data based on the position of the column in the results, as opposed to the column's name.
 

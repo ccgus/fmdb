@@ -279,7 +279,7 @@
 }
 
 - (NSString *)stringFromDate:(NSDate *)date {
-        return [_dateFormat stringFromDate:date];
+    return [_dateFormat stringFromDate:date];
 }
 
 
