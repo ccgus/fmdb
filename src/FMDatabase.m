@@ -279,7 +279,7 @@
 }
 
 - (NSString *)stringFromDate:(NSDate *)date {
-        return [_dateFormat stringFromDate:date];
+    return [_dateFormat stringFromDate:date];
 }
 
 
@@ -704,7 +704,7 @@
         statement = [[FMStatement alloc] init];
         [statement setStatement:pStmt];
         
-        if (_shouldCacheStatements) {
+        if (_shouldCacheStatements && sql) {
             [self setCachedStatement:statement forQuery:sql];
         }
     }
