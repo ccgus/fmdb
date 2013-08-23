@@ -745,6 +745,116 @@
 }
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
+
+    // Basic support for binding `?` to an NSArray, NSSet, NSOrderedSet arguments:
+    //
+    // Replace the `?` characters bound to such arguments with a comma-separated
+    // list of question marks, `?,?,...`, with as many parameters as there are
+    // in the enumerable, and flatten the arguments array.
+    //
+    // Caveat 1: we do not process queries containing `?` characters that are not
+    // parameters (such as question marks embedded in literal strings). We only
+    // process queries if and only if there is the same number of question marks
+    // and arguments.
+    //
+    // Caveat 2: we do not process queries containing `?NNN` parameters.
+    
+    // enumerableIndexSet contain indexes of enumerable arguments
+    
+    Class NSOrderedSetClass = NSClassFromString(@"NSOrderedSet");   // NSOrderedSet class may not exist yet.
+    NSMutableIndexSet *enumerableIndexSet = [NSMutableIndexSet indexSet];
+    NSUInteger argumentsCount = arguments.count;
+    for (NSUInteger i = 0; i < argumentsCount; ++i) {
+        id argument = [arguments objectAtIndex:i];
+        if ([argument isKindOfClass:[NSArray class]]) {
+            [enumerableIndexSet addIndex:i];
+        }
+        else if ([argument isKindOfClass:[NSSet class]]) {
+            [enumerableIndexSet addIndex:i];
+        }
+        else if (NSOrderedSetClass && [argument isKindOfClass:NSOrderedSetClass]) {
+            [enumerableIndexSet addIndex:i];
+        }
+    }
+    
+    if (enumerableIndexSet.count > 0) {
+        
+        // We have enumerable argument(s).
+        // Now check that we have as many question marks as we have arguments.
+        
+        NSArray *SQLChunks = [sql componentsSeparatedByString:@"?"];
+        NSUInteger SQLChunkCount = SQLChunks.count;
+        
+        if (SQLChunkCount == argumentsCount + 1) {
+            
+            // We have as many `?` as we have arguments.
+            // Now check that none of them are `?NNN` positioned parameters:
+            
+            BOOL queryContainsPositionedParameters = NO;
+            for (NSUInteger i = 1; i < SQLChunkCount; ++i) {
+                NSString *SQLChunk = [SQLChunks objectAtIndex:i];
+                unichar characterFollowingQuestionMark = [SQLChunk characterAtIndex:0];
+                if (characterFollowingQuestionMark >= '0' && characterFollowingQuestionMark <= '9') {
+                    queryContainsPositionedParameters = YES;
+                    break;
+                }
+            }
+            
+            
+            if (!queryContainsPositionedParameters) {
+                
+                // OK, let's process the query
+                
+                NSMutableArray *rewrittenArguments = [NSMutableArray array];                // flat arguments
+                NSMutableString *rewrittenSQL = [[SQLChunks objectAtIndex:0] mutableCopy];  // query with expanded `?,?,...`
+                NSEnumerator *SQLChunkEnumerator = [SQLChunks objectEnumerator];
+                [SQLChunkEnumerator nextObject];
+                
+                for (NSUInteger i = 0; i < argumentsCount; ++i) {
+                    id argument = [arguments objectAtIndex:i];
+                    
+                    if ([enumerableIndexSet containsIndex:i]) {
+                        
+                        // enumerable argument
+                        
+                        BOOL initial = YES;
+                        for (id object in argument) {
+                            if (initial) {
+                                [rewrittenSQL appendString:@"?"];
+                            } else {
+                                [rewrittenSQL appendString:@",?"];
+                            }
+                            [rewrittenArguments addObject:object];
+                            initial = NO;
+                        }
+                    }
+                    else {
+                        
+                        // non-enumerable argument
+                        
+                        [rewrittenSQL appendString:@"?"];
+                        [rewrittenArguments addObject:argument];
+                    }
+                    
+                    [rewrittenSQL appendString:[SQLChunkEnumerator nextObject]];
+                }
+                
+                sql = rewrittenSQL;
+                arguments = rewrittenArguments;
+            }
+            else {
+                // We do not support `?NNN` positioned parameters.
+                // Leave SQL and arguments untouched, but emit a warning, because the user will be bitten.
+                NSLog(@"%@ warning: NSArray arguments could not be bound, because the query contains a `?NNN` parameter.", self);
+            }
+        }
+        else {
+            // We do not have as many `?` as we have arguments: we don't know which ones are bound to arrays :-(
+            // Leave SQL and arguments untouched, but emit a warning, because the user will be bitten.
+            NSLog(@"%@ warning: NSArray arguments could not be bound. You may flatten arguments, and provide as many matching `?` in the query.", self);
+        }
+    }
+    
     return [self executeQuery:sql withArgumentsInArray:arguments orDictionary:nil orVAList:nil];
 }
 
