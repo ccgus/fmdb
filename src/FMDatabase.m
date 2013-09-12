@@ -6,6 +6,7 @@
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
+- (BOOL)expandCollectionArgumentsInSQL:(NSString *)sql withArgumentsInArray:(NSArray *)arguments intoSQL:(NSString * FMDBAutoreleasing *)outExpandedSQL arguments:(NSArray * FMDBAutoreleasing *)outExpandedArguments error:(NSError * FMDBAutoreleasing *)outError;
 @end
 
 @implementation FMDatabase
@@ -745,17 +746,22 @@
 }
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments {
+    
+    // Expand `?` bound to arrays & sets
     NSString *expandedSQL = nil;
     NSArray *expandedArguments = nil;
     NSError *error;
-    if (![self expandSQL:sql argumentsInArray:arguments expandedSQL:&expandedSQL expandedArguments:&expandedArguments error:&error]) {
+    
+    if ([self expandCollectionArgumentsInSQL:sql withArgumentsInArray:arguments intoSQL:&expandedSQL arguments:&expandedArguments error:&error]) {
+        sql = expandedSQL;
+        arguments = expandedArguments;
+    }
+    else {
         // Log expansion errors, and process raw input
         NSLog(@"warning: %@", error.localizedDescription);
-        expandedSQL = sql;
-        expandedArguments = arguments;
     }
     
-    return [self executeQuery:expandedSQL withArgumentsInArray:expandedArguments orDictionary:nil orVAList:nil];
+    return [self executeQuery:sql withArgumentsInArray:arguments orDictionary:nil orVAList:nil];
 }
 
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
@@ -990,14 +996,19 @@
 }
 
 - (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments {
+    
+    // Expand `?` bound to arrays & sets
     NSString *expandedSQL = nil;
     NSArray *expandedArguments = nil;
     NSError *error;
-    if (![self expandSQL:sql argumentsInArray:arguments expandedSQL:&expandedSQL expandedArguments:&expandedArguments error:&error]) {
+    
+    if ([self expandCollectionArgumentsInSQL:sql withArgumentsInArray:arguments intoSQL:&expandedSQL arguments:&expandedArguments error:&error]) {
+        sql = expandedSQL;
+        arguments = expandedArguments;
+    }
+    else {
         // Log expansion errors, and process raw input
         NSLog(@"warning: %@", error.localizedDescription);
-        expandedSQL = sql;
-        expandedArguments = arguments;
     }
     
     return [self executeUpdate:expandedSQL error:nil withArgumentsInArray:expandedArguments orDictionary:nil orVAList:nil];
@@ -1195,7 +1206,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 #endif
 }
 
-- (BOOL)expandSQL:(NSString *)sql argumentsInArray:(NSArray *)arguments expandedSQL:(NSString * FMDBAutoreleasing *)outExpandedSQL expandedArguments:(NSArray * FMDBAutoreleasing *)outExpandedArguments error:(NSError * FMDBAutoreleasing *)outError;
+- (BOOL)expandCollectionArgumentsInSQL:(NSString *)sql withArgumentsInArray:(NSArray *)arguments intoSQL:(NSString * FMDBAutoreleasing *)outExpandedSQL arguments:(NSArray * FMDBAutoreleasing *)outExpandedArguments error:(NSError * FMDBAutoreleasing *)outError
 {
     // Basic support for binding `?` to an NSArray, NSSet, NSOrderedSet arguments:
     //
