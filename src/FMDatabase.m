@@ -6,7 +6,7 @@
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
-- (BOOL)expandCollectionArgumentsInSQL:(NSString *)sql withArgumentsInArray:(NSArray *)arguments intoSQL:(NSString * FMDBAutoreleasing *)outExpandedSQL arguments:(NSArray * FMDBAutoreleasing *)outExpandedArguments error:(NSError * FMDBAutoreleasing *)outError;
+- (BOOL)expandCollectionArgumentsInSQL:(NSString *)sql withArgumentsInArray:(NSArray *)arguments intoSQL:(NSString **)outExpandedSQL arguments:(NSArray **)outExpandedArguments error:(NSError **)outError;
 @end
 
 @implementation FMDatabase
@@ -1206,7 +1206,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 #endif
 }
 
-- (BOOL)expandCollectionArgumentsInSQL:(NSString *)sql withArgumentsInArray:(NSArray *)arguments intoSQL:(NSString * FMDBAutoreleasing *)outExpandedSQL arguments:(NSArray * FMDBAutoreleasing *)outExpandedArguments error:(NSError * FMDBAutoreleasing *)outError
+- (BOOL)expandCollectionArgumentsInSQL:(NSString *)sql withArgumentsInArray:(NSArray *)arguments intoSQL:(NSString **)outExpandedSQL arguments:(NSArray **)outExpandedArguments error:(NSError **)outError
 {
     // Basic support for binding `?` to an NSArray, NSSet, NSOrderedSet arguments:
     //
