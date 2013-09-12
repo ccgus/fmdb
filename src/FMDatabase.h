@@ -13,6 +13,8 @@
 
     #define FMDBRelease(__v) ([__v release]);
 
+    #define FMDBAutoreleasing
+
 	#define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
 #else
     // -fobjc-arc
@@ -23,6 +25,8 @@
     #define FMDBReturnRetained(__v) (__v)
 
     #define FMDBRelease(__v)
+
+    #define FMDBAutoreleasing __autoreleasing
 
 	#if TARGET_OS_IPHONE
 		// Compiling for iOS
