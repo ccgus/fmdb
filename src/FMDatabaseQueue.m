@@ -143,8 +143,8 @@ static const void * const FMDatabaseQueueGCDKey = &FMDatabaseQueueGCDKey;
         
         FMDatabase *db = [self database];
         block(db);
-        
-        if ([db hasOpenResultSets]) {
+      
+        if (isWritter && [db hasOpenResultSets]) {
             NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
         }
       

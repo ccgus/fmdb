@@ -93,6 +93,7 @@
     NSMutableSet        *_openFunctions;
 
     NSDateFormatter     *_dateFormat;
+    NSLock              *_lock;
 }
 
 ///-----------------
@@ -125,7 +126,7 @@
 
 /** Allow the database to execute query on multiple thread at the same time */
 
-@property (atomic, assign) BOOL allowsMultiThread;
+@property (nonatomic, assign) BOOL allowsMultiThread;
 
 ///---------------------
 /// @name Initialization

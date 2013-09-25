@@ -74,6 +74,18 @@
     return _db;
 }
 
+- (void)setAllowsMultiThread:(BOOL)allowsMultiThread {
+    if (self->_allowsMultiThread != allowsMultiThread) {
+        self->_allowsMultiThread = allowsMultiThread;
+        if (self->_allowsMultiThread) {
+            _lock = [[NSLock alloc] init];
+        } else {
+            [_lock unlock];
+            FMDBRelease(_lock);
+        }
+    }
+}
+
 - (const char*)sqlitePath {
     
     if (!_databasePath) {
@@ -176,7 +188,8 @@
 }
 
 - (void)closeOpenResultSets {
-    
+  
+    [_lock lock];
     //Copy the set so we don't get mutation errors
     NSSet *openSetCopy = FMDBReturnAutoreleased([_openResultSets copy]);
     for (NSValue *rsInWrappedInATastyValueMeal in openSetCopy) {
@@ -187,12 +200,14 @@
         
         [_openResultSets removeObject:rsInWrappedInATastyValueMeal];
     }
+    [_lock unlock];
 }
 
 - (void)resultSetDidClose:(FMResultSet *)resultSet {
     NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
-    
+    [_lock lock];
     [_openResultSets removeObject:setValue];
+    [_lock unlock];
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
@@ -715,7 +730,9 @@
     [rs setQuery:sql];
     
     NSValue *openResultSet = [NSValue valueWithNonretainedObject:rs];
+    [_lock lock];
     [_openResultSets addObject:openResultSet];
+    [_lock unlock];
     
     [statement setUseCount:[statement useCount] + 1];
     
