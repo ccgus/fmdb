@@ -49,7 +49,7 @@
         [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:4]];
     }];
 
- `FMDatabaseQueue` will run the blocks on a serialized queue (hence the name of the class).  So if you call `FMDatabaseQueue`'s methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
+ `FMDatabaseQueue` will run the blocks on a concurrent queue (hence the name of the class) in a fasion of `Multiple Readers, Single Writer`.  All Readers blocks will run concurrently but Writer blocks will block other blocks in the queue (barrier block).
 
  ### See also
 
@@ -57,9 +57,14 @@
 
  @warning Do not instantiate a single `<FMDatabase>` object and use it across multiple threads. Use `FMDatabaseQueue` instead.
  
- @warning The calls to `FMDatabaseQueue`'s methods are blocking.  So even though you are passing along blocks, they will **not** be run on another thread.
+ @warning The calls to `FMDatabaseQueue`'s default methods are blocking.  So even though you are passing along blocks, they will **not** be run on another thread.  By the way, we provide the asynchronous methods too.
 
  */
+
+typedef void(^FMDatabaseOperationBlock)(FMDatabase *db);
+typedef void(^FMDatabaseTransactionBlock)(FMDatabase *db, BOOL *rollback);
+typedef void(^FMDatabaseCompletionBlock)(BOOL success, NSError *error);
+                                           
 
 @interface FMDatabaseQueue : NSObject {
     NSString            *_path;
@@ -68,6 +73,7 @@
 }
 
 @property (atomic, retain) NSString *path;
+@property (nonatomic, readonly, strong) FMDatabase *database;
 
 ///----------------------------------------------------
 /// @name Initialization, opening, and closing of queue
@@ -104,21 +110,146 @@
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 
-- (void)inDatabase:(void (^)(FMDatabase *db))block;
+- (void)inDatabase:(FMDatabaseOperationBlock)block;
 
 /** Synchronously perform database operations on queue, using transactions.
 
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 
-- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inTransaction:(FMDatabaseTransactionBlock)block;
 
 /** Synchronously perform database operations on queue, using deferred transactions.
 
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 
-- (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inDeferredTransaction:(FMDatabaseTransactionBlock)block;
+
+
+/** Synchronously perform reader database operations on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+- (void)performReaderOperation:(FMDatabaseOperationBlock)block;
+
+
+/** Synchronously perform writer database operations on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+- (void)performWriterOperation:(FMDatabaseOperationBlock)block;
+
+
+/** Synchronously perform reader database transactions on queue.
+ 
+ @param error If the transactions cannot be init, commit of rollback, upon return contains an instance of NSError that describes the problem.
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ @return `YES` on success; `NO` on failure.
+ */
+- (BOOL)performReaderTransactionWithError:(NSError * __autoreleasing *)error
+                               usingBlock:(FMDatabaseTransactionBlock)block;
+
+
+/** Synchronously perform writer database transactions on queue.
+ 
+ @param error If the transactions cannot be init, commit of rollback, upon return contains an instance of NSError that describes the problem.
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ @return `YES` on success; `NO` on failure.
+ */
+- (BOOL)performWriterTransactionWithError:(NSError * __autoreleasing *)error
+                               usingBlock:(FMDatabaseTransactionBlock)block;
+
+
+/** Synchronously perform deferred reader database transactions on queue.
+ 
+ @param error If the transactions cannot be init, commit of rollback, upon return contains an instance of NSError that describes the problem.
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ @return `YES` on success; `NO` on failure.
+ */
+- (BOOL)performReaderDeferredTransactionWithError:(NSError * __autoreleasing *)error
+                                       usingBlock:(FMDatabaseTransactionBlock)block;
+
+
+/** Synchronously perform deferred writer database transactions on queue.
+ 
+ @param error If the transactions cannot be init, commit of rollback, upon return contains an instance of NSError that describes the problem.
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ @return `YES` on success; `NO` on failure.
+ */
+- (BOOL)performWriterDeferredTransactionWithError:(NSError * __autoreleasing *)error
+                                       usingBlock:(FMDatabaseTransactionBlock)block;
+
+
+/** Asynchronously perform reader database transaction on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+- (void)performAsynchronouslyReaderOperation:(FMDatabaseOperationBlock)block;
+
+
+/** Asynchronously perform writer database transaction on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+- (void)performAsynchronouslyWriterOperation:(FMDatabaseOperationBlock)block;
+
+
+/** Asynchronously perform reader database deferred transaction on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+- (void)performAsynchronouslyReaderDeferredTransaction:(FMDatabaseTransactionBlock)block;
+
+
+/** Asynchronously perform writer database deferred transaction on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+- (void)performAsynchronouslyWriterDeferredTransaction:(FMDatabaseTransactionBlock)block;
+
+
+/** Asynchronously perform reader database transactions on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ @param completion The completion hanlder block to be run when the transaction block is completed.  The block parameters are as follows:
+   @param success Boolean indicates that the transaction operation is succes or not.
+   @param error Error describe the transaction operation problem, if any.
+ */
+- (void)performAsynchronouslyReaderTransaction:(FMDatabaseTransactionBlock)block
+                                    completion:(FMDatabaseCompletionBlock)completion;
+
+/** Asynchronously perform writer database transactions on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ @param completion The completion hanlder block to be run when the transaction block is completed.  The block parameters are as follows:
+ @param success Boolean indicates that the transaction operation is succes or not.
+ @param error Error describe the transaction operation problem, if any.
+ */
+- (void)performAsynchronouslyWriterTransaction:(FMDatabaseTransactionBlock)block
+                                    completion:(FMDatabaseCompletionBlock)completion;
+
+/** Asynchronously perform reader database deferred transactions on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ @param completion The completion hanlder block to be run when the transaction block is completed.  The block parameters are as follows:
+ @param success Boolean indicates that the transaction operation is succes or not.
+ @param error Error describe the transaction operation problem, if any.
+ */
+- (void)performAsynchronouslyReaderDeferredTransaction:(FMDatabaseTransactionBlock)block
+                                            completion:(FMDatabaseCompletionBlock)completion;
+
+/** Asynchronously perform writer database deferred transactions on queue.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ @param completion The completion hanlder block to be run when the transaction block is completed.  The block parameters are as follows:
+ @param success Boolean indicates that the transaction operation is succes or not.
+ @param error Error describe the transaction operation problem, if any.
+ */
+- (void)performAsynchronouslyWriterDeferredTransaction:(FMDatabaseTransactionBlock)block
+                                            completion:(FMDatabaseCompletionBlock)completion;
+
+
 
 ///-----------------------------------------------
 /// @name Dispatching database operations to queue

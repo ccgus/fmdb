@@ -15,6 +15,7 @@
 @synthesize busyRetryTimeout=_busyRetryTimeout;
 @synthesize checkedOut=_checkedOut;
 @synthesize traceExecution=_traceExecution;
+@synthesize allowsMultiThread = _allowsMultiThread;
 
 + (instancetype)databaseWithPath:(NSString*)aPath {
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
@@ -569,7 +570,7 @@
         return 0x00;
     }
     
-    if (_isExecutingStatement) {
+    if (!_allowsMultiThread && _isExecutingStatement) {
         [self warnInUse];
         return 0x00;
     }
@@ -758,7 +759,7 @@
         return NO;
     }
     
-    if (_isExecutingStatement) {
+    if (!_allowsMultiThread && _isExecutingStatement) {
         [self warnInUse];
         return NO;
     }

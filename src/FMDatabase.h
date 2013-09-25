@@ -85,6 +85,7 @@
     BOOL                _shouldCacheStatements;
     BOOL                _isExecutingStatement;
     BOOL                _inTransaction;
+    BOOL                _allowsMultiThread;
     int                 _busyRetryTimeout;
     
     NSMutableDictionary *_cachedStatements;
@@ -121,6 +122,10 @@
 /** Dictionary of cached statements */
 
 @property (atomic, retain) NSMutableDictionary *cachedStatements;
+
+/** Allow the database to execute query on multiple thread at the same time */
+
+@property (atomic, assign) BOOL allowsMultiThread;
 
 ///---------------------
 /// @name Initialization
