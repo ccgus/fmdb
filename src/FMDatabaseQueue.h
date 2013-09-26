@@ -142,16 +142,6 @@ typedef void(^FMDatabaseCompletionBlock)(BOOL success, NSError *error);
 - (void)performWriterOperation:(FMDatabaseOperationBlock)block;
 
 
-/** Synchronously perform reader database transactions on queue.
- 
- @param error If the transactions cannot be init, commit of rollback, upon return contains an instance of NSError that describes the problem.
- @param block The code to be run on the queue of `FMDatabaseQueue`
- @return `YES` on success; `NO` on failure.
- */
-- (BOOL)performReaderTransactionWithError:(NSError * __autoreleasing *)error
-                               usingBlock:(FMDatabaseTransactionBlock)block;
-
-
 /** Synchronously perform writer database transactions on queue.
  
  @param error If the transactions cannot be init, commit of rollback, upon return contains an instance of NSError that describes the problem.
@@ -160,16 +150,6 @@ typedef void(^FMDatabaseCompletionBlock)(BOOL success, NSError *error);
  */
 - (BOOL)performWriterTransactionWithError:(NSError * __autoreleasing *)error
                                usingBlock:(FMDatabaseTransactionBlock)block;
-
-
-/** Synchronously perform deferred reader database transactions on queue.
- 
- @param error If the transactions cannot be init, commit of rollback, upon return contains an instance of NSError that describes the problem.
- @param block The code to be run on the queue of `FMDatabaseQueue`
- @return `YES` on success; `NO` on failure.
- */
-- (BOOL)performReaderDeferredTransactionWithError:(NSError * __autoreleasing *)error
-                                       usingBlock:(FMDatabaseTransactionBlock)block;
 
 
 /** Synchronously perform deferred writer database transactions on queue.
@@ -182,25 +162,12 @@ typedef void(^FMDatabaseCompletionBlock)(BOOL success, NSError *error);
                                        usingBlock:(FMDatabaseTransactionBlock)block;
 
 
-/** Asynchronously perform reader database transaction on queue.
- 
- @param block The code to be run on the queue of `FMDatabaseQueue`
- */
-- (void)performAsynchronouslyReaderOperation:(FMDatabaseOperationBlock)block;
-
-
 /** Asynchronously perform writer database transaction on queue.
  
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 - (void)performAsynchronouslyWriterOperation:(FMDatabaseOperationBlock)block;
 
-
-/** Asynchronously perform reader database deferred transaction on queue.
- 
- @param block The code to be run on the queue of `FMDatabaseQueue`
- */
-- (void)performAsynchronouslyReaderDeferredTransaction:(FMDatabaseTransactionBlock)block;
 
 
 /** Asynchronously perform writer database deferred transaction on queue.
@@ -209,16 +176,6 @@ typedef void(^FMDatabaseCompletionBlock)(BOOL success, NSError *error);
  */
 - (void)performAsynchronouslyWriterDeferredTransaction:(FMDatabaseTransactionBlock)block;
 
-
-/** Asynchronously perform reader database transactions on queue.
- 
- @param block The code to be run on the queue of `FMDatabaseQueue`
- @param completion The completion hanlder block to be run when the transaction block is completed.  The block parameters are as follows:
-   @param success Boolean indicates that the transaction operation is succes or not.
-   @param error Error describe the transaction operation problem, if any.
- */
-- (void)performAsynchronouslyReaderTransaction:(FMDatabaseTransactionBlock)block
-                                    completion:(FMDatabaseCompletionBlock)completion;
 
 /** Asynchronously perform writer database transactions on queue.
  
@@ -230,15 +187,6 @@ typedef void(^FMDatabaseCompletionBlock)(BOOL success, NSError *error);
 - (void)performAsynchronouslyWriterTransaction:(FMDatabaseTransactionBlock)block
                                     completion:(FMDatabaseCompletionBlock)completion;
 
-/** Asynchronously perform reader database deferred transactions on queue.
- 
- @param block The code to be run on the queue of `FMDatabaseQueue`
- @param completion The completion hanlder block to be run when the transaction block is completed.  The block parameters are as follows:
- @param success Boolean indicates that the transaction operation is succes or not.
- @param error Error describe the transaction operation problem, if any.
- */
-- (void)performAsynchronouslyReaderDeferredTransaction:(FMDatabaseTransactionBlock)block
-                                            completion:(FMDatabaseCompletionBlock)completion;
 
 /** Asynchronously perform writer database deferred transactions on queue.
  

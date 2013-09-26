@@ -1454,7 +1454,7 @@ void testConcurrentQueue() {
             if (nby % 2 == 1) {
                 [NSThread sleepForTimeInterval:.1];
                 
-                [queue performReaderTransactionWithError:NULL usingBlock:^(FMDatabase *adb, BOOL *rollback) {
+                [queue performReaderOperation:^(FMDatabase *adb) {
                     NSLog(@"Starting query  %ld", nby);
                     
                     FMResultSet *rsl = [adb executeQuery:@"select * from qfoo where foo like 'h%'"];

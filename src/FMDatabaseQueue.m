@@ -179,16 +179,8 @@ static const void * const FMDatabaseQueueGCDKey = &FMDatabaseQueueGCDKey;
     [self performWriterTransaction:block];
 }
 
-- (void)performReaderTransaction:(FMDatabaseTransactionBlock)block {
-    [self performReaderTransactionWithError:NULL usingBlock:block];
-}
-
 - (void)performWriterTransaction:(FMDatabaseTransactionBlock)block {
     [self performWriterTransactionWithError:NULL usingBlock:block];
-}
-
-- (void)performReaderDeferredTransaction:(FMDatabaseTransactionBlock)block {
-    [self performReaderDeferredTransactionWithError:NULL usingBlock:block];
 }
 
 - (void)performWriterDeferredTransaction:(FMDatabaseTransactionBlock)block {
@@ -203,29 +195,11 @@ static const void * const FMDatabaseQueueGCDKey = &FMDatabaseQueueGCDKey;
                                              usingBlock:block];
 }
 
-- (BOOL)performReaderTransactionWithError:(NSError * __autoreleasing *)error usingBlock:(FMDatabaseTransactionBlock)block {
-    return [self performDatabaseTransactionWithDeffered:NO
-                                      isWriterOperation:NO
-                                                  error:error
-                                             usingBlock:block];
-}
-
 - (BOOL)performWriterDeferredTransactionWithError:(NSError * __autoreleasing *)error usingBlock:(FMDatabaseTransactionBlock)block {
     return [self performDatabaseTransactionWithDeffered:YES
                                       isWriterOperation:YES
                                                   error:error
                                              usingBlock:block];
-}
-
-- (BOOL)performReaderDeferredTransactionWithError:(NSError * __autoreleasing *)error usingBlock:(FMDatabaseTransactionBlock)block {
-    return [self performDatabaseTransactionWithDeffered:YES
-                                      isWriterOperation:NO
-                                                  error:error
-                                             usingBlock:block];
-}
-
-- (void)performAsynchronouslyReaderDeferredTransaction:(FMDatabaseTransactionBlock)block {
-    [self performAsynchronouslyReaderDeferredTransaction:block completion:NULL];
 }
 
 - (void)performAsynchronouslyWriterDeferredTransaction:(FMDatabaseTransactionBlock)block {
@@ -239,23 +213,9 @@ static const void * const FMDatabaseQueueGCDKey = &FMDatabaseQueueGCDKey;
                                                     completion:completion];
 }
 
-- (void)performAsynchronouslyReaderTransaction:(FMDatabaseTransactionBlock)block completion:(FMDatabaseCompletionBlock)completion {
-    [self performDatabaseTransactionAsynchronouslyWithDeffered:NO
-                                             isWriterOperation:NO
-                                                   transaction:block
-                                                    completion:completion];
-}
-
 - (void)performAsynchronouslyWriterDeferredTransaction:(FMDatabaseTransactionBlock)block completion:(FMDatabaseCompletionBlock)completion {
     [self performDatabaseTransactionAsynchronouslyWithDeffered:YES
                                              isWriterOperation:YES
-                                                   transaction:block
-                                                    completion:completion];
-}
-
-- (void)performAsynchronouslyReaderDeferredTransaction:(FMDatabaseTransactionBlock)block completion:(FMDatabaseCompletionBlock)completion {
-    [self performDatabaseTransactionAsynchronouslyWithDeffered:YES
-                                             isWriterOperation:NO
                                                    transaction:block
                                                     completion:completion];
 }
