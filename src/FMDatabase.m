@@ -60,6 +60,7 @@
     FMDBRelease(_dateFormat);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
+    FMDBRelease(_lock);
     
 #if ! __has_feature(objc_arc)
     [super dealloc];
@@ -82,6 +83,7 @@
         } else {
             [_lock unlock];
             FMDBRelease(_lock);
+            _lock = nil;
         }
     }
 }
