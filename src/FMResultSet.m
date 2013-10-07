@@ -35,6 +35,9 @@
     FMDBRelease(_columnNameToIndexMap);
     _columnNameToIndexMap = nil;
     
+    free(_columnnames);
+    _columnnames=NULL;
+    
 #if ! __has_feature(objc_arc)
     [super dealloc];
 #endif
@@ -57,13 +60,14 @@
 
 - (NSMutableDictionary *)columnNameToIndexMap {
     if (!_columnNameToIndexMap) {
-        int columnCount = sqlite3_column_count([_statement statement]);
+        columnCount = sqlite3_column_count([_statement statement]);
         _columnNameToIndexMap = [[NSMutableDictionary alloc] initWithCapacity:(NSUInteger)columnCount];
         int columnIdx = 0;
         for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
             [_columnNameToIndexMap setObject:[NSNumber numberWithInt:columnIdx]
                                       forKey:[[NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)] lowercaseString]];
         }
+        _columnnames=calloc( columnCount, sizeof *_columnnames);
     }
     return _columnNameToIndexMap;
 }
@@ -206,12 +210,24 @@
 }
 
 - (int)columnIndexForName:(NSString*)columnName {
-    columnName = [columnName lowercaseString];
     
-    NSNumber *n = [[self columnNameToIndexMap] objectForKey:columnName];
+    if ( _columnnames) {
+        for (int i=0;i<columnCount;i++) {
+            if ( _columnnames[i]==columnName) {
+                return i;
+            }
+        }
+    }
+
+    NSString *lowerCaseColumnName = [columnName lowercaseString];
+    NSNumber *n = [[self columnNameToIndexMap] objectForKey:lowerCaseColumnName];
     
     if (n) {
-        return [n intValue];
+        int nn=[n intValue];
+        if ( nn < columnCount && nn >= 0 ) {
+            _columnnames[nn]=columnName;
+        }
+        return nn;
     }
     
     NSLog(@"Warning: I could not find the column named '%@'.", columnName);
