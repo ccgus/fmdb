@@ -29,6 +29,8 @@
     
     NSString            *_query;
     NSMutableDictionary *_columnNameToIndexMap;
+    id                  *_columnnames;
+    int                 columnCount;
 }
 
 ///-----------------

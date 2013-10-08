@@ -1,6 +1,11 @@
 # FMDB
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
+## Why this fork?
+
+I made a performance improvemnt, columnIndexForName: is significantly faster for common usage.
+(One of my very large fetches got 100% faster, 50% less time).
+
 ## The FMDB Mailing List:
 http://groups.google.com/group/fmdb
 
