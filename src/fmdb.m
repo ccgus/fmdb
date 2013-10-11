@@ -8,12 +8,13 @@
 
 void testPool(NSString *dbPath);
 void testDateFormat();
+void testStatementCaching();
 void FMDBReportABugFunction();
 
 int main (int argc, const char * argv[]) {
     
 @autoreleasepool {
-    
+
     FMDBReportABugFunction();
     
     NSString *dbPath = @"/tmp/tmp.db";
@@ -1050,6 +1051,9 @@ int main (int argc, const char * argv[]) {
         
     }];
     
+    // let's test statement caching:
+    testStatementCaching();
+    
     
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     
@@ -1402,6 +1406,48 @@ void testDateFormat() {
     [db close];
 }
 
+/*
+ Test statement caching
+ This test checks the fixes that address https://github.com/ccgus/fmdb/issues/6
+ */
+
+void testStatementCaching() {
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:nil]; // use in-memory DB
+    [db open];
+
+    [db executeUpdate:@"DROP TABLE IF EXISTS testStatementCaching"];
+    [db executeUpdate:@"CREATE TABLE testStatementCaching ( value INTEGER )"];
+    [db executeUpdate:@"INSERT INTO testStatementCaching( value ) VALUES (1)"];
+    [db executeUpdate:@"INSERT INTO testStatementCaching( value ) VALUES (1)"];
+    [db executeUpdate:@"INSERT INTO testStatementCaching( value ) VALUES (2)"];
+    
+    [db setShouldCacheStatements: YES];
+    
+    // two iterations.
+    //  the first time through no statements will be from the cache.
+    //  the second time through all statements come from the cache.
+    for ( int i = 1 ; i <= 2 ; i++ )
+    {
+        FMResultSet* rs1 = [db executeQuery: @"SELECT rowid, * FROM testStatementCaching WHERE value = ?", @1]; // results in 2 rows...
+        FMDBQuickCheck( [rs1 next] );
+        
+        // confirm that we're seeing the benefits of caching.
+        FMDBQuickCheck( rs1.statement.useCount == i );
+        
+        FMResultSet* rs2 = [db executeQuery: @"SELECT rowid, * FROM testStatementCaching WHERE value = ?", @2]; // results in 1 row
+        FMDBQuickCheck( [rs2 next] );
+        FMDBQuickCheck( rs2.statement.useCount == i );
+        
+        // This is the primary check - with the old implementation of statement caching, rs2 would have rejiggered the (cached) statement used by rs1, making this test fail to return the 2nd row in rs1.
+        FMDBQuickCheck( [rs1 next] );
+        
+        [rs1 close];
+        [rs2 close];
+    }
+        
+    [db close];
+}
 
 /*
  What is this function for?  Think of it as a template which a developer can use

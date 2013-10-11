@@ -163,8 +163,8 @@
 
 - (void)clearCachedStatements {
     
-    for (FMStatement *cachedStmt in [_cachedStatements objectEnumerator]) {
-        [cachedStmt close];
+    for (NSMutableSet* statements in [_cachedStatements objectEnumerator]) {
+        [statements makeObjectsPerformSelector: @selector( close ) ];
     }
     
     [_cachedStatements removeAllObjects];
@@ -195,16 +195,33 @@
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
-    return [_cachedStatements objectForKey:query];
+    
+    NSMutableSet* statements = _cachedStatements[query];
+    
+    return [[statements objectsPassingTest:^BOOL(FMStatement* statement, BOOL *stop) {
+        
+        *stop = statement.ownerResultSet == nil;
+        return *stop;
+        
+    }] anyObject];
 }
 
 - (void)setCachedStatement:(FMStatement*)statement forQuery:(NSString*)query {
-    
+
     query = [query copy]; // in case we got handed in a mutable string...
-    
     [statement setQuery:query];
+
+    NSMutableSet* statements = _cachedStatements[query];
+    if ( statements == nil )
+    {
+        statements = [NSMutableSet setWithObject: statement];
+    }
+    else
+    {
+        [statements addObject: statement];
+    }
     
-    [_cachedStatements setObject:statement forKey:query];
+    [_cachedStatements setObject:statements forKey:query];
     
     FMDBRelease(query);
 }
@@ -1197,6 +1214,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 @synthesize statement=_statement;
 @synthesize query=_query;
 @synthesize useCount=_useCount;
+@synthesize ownerResultSet=_ownerResultSet;
 
 - (void)finalize {
     [self close];
@@ -1216,12 +1234,14 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
         sqlite3_finalize(_statement);
         _statement = 0x00;
     }
+    _ownerResultSet = nil;
 }
 
 - (void)reset {
     if (_statement) {
         sqlite3_reset(_statement);
     }
+    _ownerResultSet = nil;
 }
 
 - (NSString*)description {
