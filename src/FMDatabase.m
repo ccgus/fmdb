@@ -15,6 +15,7 @@
 @synthesize busyRetryTimeout=_busyRetryTimeout;
 @synthesize checkedOut=_checkedOut;
 @synthesize traceExecution=_traceExecution;
+@synthesize allowsMultiThread = _allowsMultiThread;
 
 + (instancetype)databaseWithPath:(NSString*)aPath {
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
@@ -59,6 +60,7 @@
     FMDBRelease(_dateFormat);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
+    FMDBRelease(_lock);
     
 #if ! __has_feature(objc_arc)
     [super dealloc];
@@ -71,6 +73,19 @@
 
 - (sqlite3*)sqliteHandle {
     return _db;
+}
+
+- (void)setAllowsMultiThread:(BOOL)allowsMultiThread {
+    if (self->_allowsMultiThread != allowsMultiThread) {
+        self->_allowsMultiThread = allowsMultiThread;
+        if (self->_allowsMultiThread) {
+            _lock = [[NSLock alloc] init];
+        } else {
+            [_lock unlock];
+            FMDBRelease(_lock);
+            _lock = nil;
+        }
+    }
 }
 
 - (const char*)sqlitePath {
@@ -175,7 +190,8 @@
 }
 
 - (void)closeOpenResultSets {
-    
+  
+    [_lock lock];
     //Copy the set so we don't get mutation errors
     NSSet *openSetCopy = FMDBReturnAutoreleased([_openResultSets copy]);
     for (NSValue *rsInWrappedInATastyValueMeal in openSetCopy) {
@@ -186,12 +202,14 @@
         
         [_openResultSets removeObject:rsInWrappedInATastyValueMeal];
     }
+    [_lock unlock];
 }
 
 - (void)resultSetDidClose:(FMResultSet *)resultSet {
     NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
-    
+    [_lock lock];
     [_openResultSets removeObject:setValue];
+    [_lock unlock];
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
@@ -569,7 +587,7 @@
         return 0x00;
     }
     
-    if (_isExecutingStatement) {
+    if (!_allowsMultiThread && _isExecutingStatement) {
         [self warnInUse];
         return 0x00;
     }
@@ -714,7 +732,9 @@
     [rs setQuery:sql];
     
     NSValue *openResultSet = [NSValue valueWithNonretainedObject:rs];
+    [_lock lock];
     [_openResultSets addObject:openResultSet];
+    [_lock unlock];
     
     [statement setUseCount:[statement useCount] + 1];
     
@@ -758,7 +778,7 @@
         return NO;
     }
     
-    if (_isExecutingStatement) {
+    if (!_allowsMultiThread && _isExecutingStatement) {
         [self warnInUse];
         return NO;
     }

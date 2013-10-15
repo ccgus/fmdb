@@ -8,6 +8,7 @@
 
 void testPool(NSString *dbPath);
 void testDateFormat();
+void testConcurrentQueue();
 void FMDBReportABugFunction();
 
 int main (int argc, const char * argv[]) {
@@ -1050,6 +1051,7 @@ int main (int argc, const char * argv[]) {
         
     }];
     
+    testConcurrentQueue();
     
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     
@@ -1401,6 +1403,166 @@ void testDateFormat() {
     
     [db close];
 }
+
+void testConcurrentQueue() {
+    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:nil];
+    
+    FMDBQuickCheck(queue);
+    
+    {
+        [queue performWriterOperation:^(FMDatabase *adb) {
+            
+            
+            
+            [adb executeUpdate:@"create table qfoo (foo text)"];
+            [adb executeUpdate:@"insert into qfoo values ('hi')"];
+            [adb executeUpdate:@"insert into qfoo values ('hello')"];
+            [adb executeUpdate:@"insert into qfoo values ('not')"];
+            
+            
+            
+            int count = 0;
+            FMResultSet *rsl = [adb executeQuery:@"select * from qfoo where foo like 'h%'"];
+            while ([rsl next]) {
+                count++;
+            }
+            
+            FMDBQuickCheck(count == 2);
+            
+            count = 0;
+            rsl = [adb executeQuery:@"select * from qfoo where foo like ?", @"h%"];
+            while ([rsl next]) {
+                count++;
+            }
+            
+            FMDBQuickCheck(count == 2);
+        }];
+        
+    }
+    
+    
+    {
+        // You should see pairs of numbers show up in stdout for this stuff:
+        size_t ops = 16;
+        
+        dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_suspend(dqueue);
+        
+        dispatch_apply(ops, dqueue, ^(size_t nby) {
+            
+            // just mix things up a bit for demonstration purposes.
+            if (nby % 2 == 1) {
+                [NSThread sleepForTimeInterval:.1];
+                
+                [queue performReaderOperation:^(FMDatabase *adb) {
+                    NSLog(@"Starting query  %ld", nby);
+                    
+                    FMResultSet *rsl = [adb executeQuery:@"select * from qfoo where foo like 'h%'"];
+                    while ([rsl next]) {
+                        NSString *result = [rsl stringForColumnIndex:0];
+                        NSLog(@"%@", result);
+                        ;// whatever.
+                    }
+                    
+                    NSLog(@"Ending query    %ld", nby);
+                }];
+                
+            }
+            
+            if (nby % 3 == 1) {
+                [NSThread sleepForTimeInterval:.1];
+            }
+            
+            [queue performWriterTransactionWithError:NULL usingBlock:^(FMDatabase *adb, BOOL *rollback) {
+                NSLog(@"Starting update %ld", nby);
+                [adb executeUpdate:@"insert into qfoo values ('1')"];
+                [adb executeUpdate:@"insert into qfoo values ('2')"];
+                [adb executeUpdate:@"insert into qfoo values ('3')"];
+                NSLog(@"Ending update   %ld", nby);
+            }];
+        });
+        
+        [queue performWriterOperation:^(FMDatabase *adb) {
+            FMDBQuickCheck([adb executeUpdate:@"insert into qfoo values ('1')"]);
+        }];
+        
+        dispatch_resume(dqueue);
+    }
+    
+    {
+        
+        
+        [queue performWriterOperation:^(FMDatabase *adb) {
+            [adb executeUpdate:@"create table colNameTest (a, b, c, d)"];
+            FMDBQuickCheck([adb executeUpdate:@"insert into colNameTest values (1, 2, 3, 4)"]);
+            
+            FMResultSet *ars = [adb executeQuery:@"select * from colNameTest"];
+            
+            NSDictionary *d = [ars columnNameToIndexMap];
+            FMDBQuickCheck([d count] == 4);
+            
+            FMDBQuickCheck([[d objectForKey:@"a"] intValue] == 0);
+            FMDBQuickCheck([[d objectForKey:@"b"] intValue] == 1);
+            FMDBQuickCheck([[d objectForKey:@"c"] intValue] == 2);
+            FMDBQuickCheck([[d objectForKey:@"d"] intValue] == 3);
+            
+            [ars close];
+            
+        }];
+        
+    }
+    
+    
+    {
+        [queue performWriterOperation:^(FMDatabase *adb) {
+            [adb executeUpdate:@"create table transtest (a integer)"];
+            FMDBQuickCheck([adb executeUpdate:@"insert into transtest values (1)"]);
+            FMDBQuickCheck([adb executeUpdate:@"insert into transtest values (2)"]);
+            
+            int rowCount = 0;
+            FMResultSet *ars = [adb executeQuery:@"select * from transtest"];
+            while ([ars next]) {
+                rowCount++;
+            }
+            
+            FMDBQuickCheck(rowCount == 2);
+        }];
+        
+        
+        
+        [queue performWriterTransactionWithError:NULL usingBlock:^(FMDatabase *adb, BOOL *rollback) {
+            // Test for Re-Entrancy.
+            [queue performWriterOperation:^(FMDatabase *db) {
+                FMDBQuickCheck([adb executeUpdate:@"insert into transtest values (3)"]);
+                
+                if (YES) {
+                    // uh oh!, something went wrong (not really, this is just a test
+                    *rollback = YES;
+                    return;
+                }
+                
+                FMDBQuickCheck([adb executeUpdate:@"insert into transtest values (4)"]);
+                
+            }];
+        }];
+        
+        [queue performReaderOperation:^(FMDatabase *adb) {
+            
+            int rowCount = 0;
+            FMResultSet *ars = [adb executeQuery:@"select * from transtest"];
+            while ([ars next]) {
+                rowCount++;
+            }
+            
+            FMDBQuickCheck(![adb hasOpenResultSets]);
+            
+            NSLog(@"after rollback, rowCount is %d (should be 2)", rowCount);
+            
+            FMDBQuickCheck(rowCount == 2);
+        }];
+    }
+}
+
 
 
 /*
