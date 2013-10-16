@@ -3,7 +3,10 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
-2013.10.26
+2013.10.16
+    Added methods that expose va_list arguments.  Thanks to Ibrahim Ennafaa for the patch.
+    
+2013.09.26
     Logs errors is now turned on by default.  It's easy to turn off, and if you're seeing errors then you should probably fix those.
 
 2013.06.26
