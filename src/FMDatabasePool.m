@@ -229,11 +229,10 @@
     block(db, &shouldRollback);
     
     if (shouldRollback) {
+        // We need to rollback and release this savepoint to remove it
         [db rollbackToSavePointWithName:name error:&err];
     }
-    else {
-        [db releaseSavePointWithName:name error:&err];
-    }
+    [db releaseSavePointWithName:name error:&err];
     
     [self pushDatabaseBackInPool:db];
     

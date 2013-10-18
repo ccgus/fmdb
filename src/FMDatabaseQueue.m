@@ -160,11 +160,10 @@
             block([self database], &shouldRollback);
             
             if (shouldRollback) {
+                // We need to rollback and release this savepoint to remove it
                 [[self database] rollbackToSavePointWithName:name error:&err];
             }
-            else {
-                [[self database] releaseSavePointWithName:name error:&err];
-            }
+            [[self database] releaseSavePointWithName:name error:&err];
             
         }
     });
