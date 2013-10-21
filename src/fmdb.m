@@ -889,8 +889,32 @@ int main (int argc, const char * argv[]) {
         }];
         
     }
+	
+	FMDatabaseQueue *queue2 = [FMDatabaseQueue databaseQueueWithPath:dbPath flags:SQLITE_OPEN_READONLY];
     
-    
+    FMDBQuickCheck(queue2);
+    {
+        [queue2 inDatabase:^(FMDatabase *db2) {
+            FMResultSet *rs1 = [db2 executeQuery:@"SELECT * FROM test"];
+            FMDBQuickCheck(rs1 != nil);
+            [rs1 close];
+            
+            BOOL ok = [db2 executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+            FMDBQuickCheck(!ok);
+        }];
+        
+        [queue2 close];
+        
+        [queue2 inDatabase:^(FMDatabase *db2) {
+            FMResultSet *rs1 = [db2 executeQuery:@"SELECT * FROM test"];
+            FMDBQuickCheck(rs1 != nil);
+            [rs1 close];
+            
+            BOOL ok = [db2 executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+            FMDBQuickCheck(!ok);
+        }];
+    }
+	
     {
         // You should see pairs of numbers show up in stdout for this stuff:
         size_t ops = 16;
