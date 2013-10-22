@@ -5,6 +5,7 @@ If you would like to contribute some code- awesome!  I just ask that you make it
 
 2013.10.21
     Fixed a problem where having statement caching turned on would cause issues when trying to use two result sets with the same query but different binding parameters.  Thanks to Nick Hodapp for the original patch.
+    Fixed a problem where save points weren't being created with the correct names, and were not cleaned up properly.  Thanks to Graham Dennis for the patches.
 
 2013.10.16
     Added methods that expose va_list arguments.  Thanks to Ibrahim Ennafaa for the patch.
