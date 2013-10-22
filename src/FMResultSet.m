@@ -18,6 +18,9 @@
     [rs setStatement:statement];
     [rs setParentDB:aDB];
     
+    NSParameterAssert( statement.ownerResultSet == nil );
+    [statement setOwnerResultSet: rs]; // weak reference
+    
     return FMDBReturnAutoreleased(rs);
 }
 

@@ -943,6 +943,12 @@
     sqlite3_stmt *_statement;
     NSString *_query;
     long _useCount;
+    
+#if __has_feature(objc_arc_weak)
+    __weak FMResultSet* _ownerResultSet;
+#else
+    FMResultSet* _ownerResultSet;
+#endif
 }
 
 ///-----------------
@@ -964,6 +970,14 @@
 
 @property (atomic, assign) sqlite3_stmt *statement;
 
+
+//** back reference to owning result-set  */
+
+#if __has_feature(objc_arc_weak)
+@property (atomic, weak) FMResultSet* ownerResultSet;
+#else
+@property (atomic, assign) FMResultSet* ownerResultSet;
+#endif
 
 ///----------------------------
 /// @name Closing and Resetting
