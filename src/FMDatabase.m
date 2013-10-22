@@ -1147,11 +1147,10 @@ static NSString *FMEscapeSavePointName(NSString *savepointName) {
     block(&shouldRollback);
     
     if (shouldRollback) {
+        // We need to rollback and release this savepoint to remove it
         [self rollbackToSavePointWithName:name error:&err];
     }
-    else {
-        [self releaseSavePointWithName:name error:&err];
-    }
+    [self releaseSavePointWithName:name error:&err];
     
     return err;
 }
