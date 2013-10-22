@@ -1081,11 +1081,18 @@
 
 #if SQLITE_VERSION_NUMBER >= 3007000
 
+static NSString *FMEscapeSavePointName(NSString *savepointName)
+{
+    return [savepointName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
+}
+
 - (BOOL)startSavePointWithName:(NSString*)name error:(NSError**)outErr {
     
     NSParameterAssert(name);
     
-    if (![self executeUpdate:@"savepoint '?';", name]) {
+    NSString *sql = [NSString stringWithFormat:@"savepoint '%@';", FMEscapeSavePointName(name)];
+    
+    if (![self executeUpdate:sql]) {
 
         if (outErr) {
             *outErr = [self lastError];
@@ -1101,7 +1108,8 @@
     
     NSParameterAssert(name);
     
-    BOOL worked = [self executeUpdate:@"release savepoint '?';", name];
+    NSString *sql = [NSString stringWithFormat:@"release savepoint '%@';", FMEscapeSavePointName(name)];
+    BOOL worked = [self executeUpdate:sql];
     
     if (!worked && outErr) {
         *outErr = [self lastError];
@@ -1114,7 +1122,8 @@
     
     NSParameterAssert(name);
     
-    BOOL worked = [self executeUpdate:@"rollback transaction to savepoint '?';", name];
+    NSString *sql = [NSString stringWithFormat:@"rollback transaction to savepoint '%@';", FMEscapeSavePointName(name)];
+    BOOL worked = [self executeUpdate:sql];
     
     if (!worked && outErr) {
         *outErr = [self lastError];
