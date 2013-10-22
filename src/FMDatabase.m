@@ -1081,8 +1081,7 @@
 
 #if SQLITE_VERSION_NUMBER >= 3007000
 
-static NSString *FMEscapeSavePointName(NSString *savepointName)
-{
+static NSString *FMEscapeSavePointName(NSString *savepointName) {
     return [savepointName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
 }
 
