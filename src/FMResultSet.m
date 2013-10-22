@@ -18,6 +18,9 @@
     [rs setStatement:statement];
     [rs setParentDB:aDB];
     
+    NSParameterAssert(![statement inUse]);
+    [statement setInUse:YES]; // weak reference
+    
     return FMDBReturnAutoreleased(rs);
 }
 

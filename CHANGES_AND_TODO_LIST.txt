@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2013.10.21
+    Fixed a problem where having statement caching turned on would cause issues when trying to use two result sets with the same query but different binding parameters.  Thanks to Nick Hodapp for the original patch.
+
 2013.10.16
     Added methods that expose va_list arguments.  Thanks to Ibrahim Ennafaa for the patch.
     
