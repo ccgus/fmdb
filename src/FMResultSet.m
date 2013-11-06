@@ -167,7 +167,7 @@
                     NSLog(@"Unexpected result from sqlite3_reset (%d) rs", rc);
                 }
             }
-            usleep(20);
+            usleep(FMDatabaseSQLiteBusyMicrosecondsTimeout);
             
             if ([_parentDB busyRetryTimeout] && (numberOfRetries++ > [_parentDB busyRetryTimeout])) {
                 

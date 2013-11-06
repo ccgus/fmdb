@@ -134,7 +134,7 @@
         if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
             
             retry = YES;
-            usleep(20);
+            usleep(FMDatabaseSQLiteBusyMicrosecondsTimeout);
             
             if (_busyRetryTimeout && (numberOfRetries++ > _busyRetryTimeout)) {
                 NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -615,7 +615,7 @@
             
             if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
                 retry = YES;
-                usleep(20);
+                usleep(FMDatabaseSQLiteBusyMicrosecondsTimeout);
                 
                 if (_busyRetryTimeout && (numberOfRetries++ > _busyRetryTimeout)) {
                     NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
@@ -807,7 +807,7 @@
             rc      = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
             if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
                 retry = YES;
-                usleep(20);
+                usleep(FMDatabaseSQLiteBusyMicrosecondsTimeout);
                 
                 if (_busyRetryTimeout && (numberOfRetries++ > _busyRetryTimeout)) {
                     NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
@@ -930,7 +930,7 @@
                     NSLog(@"Unexpected result from sqlite3_reset (%d) eu", rc);
                 }
             }
-            usleep(20);
+            usleep(FMDatabaseSQLiteBusyMicrosecondsTimeout);
             
             if (_busyRetryTimeout && (numberOfRetries++ > _busyRetryTimeout)) {
                 NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);

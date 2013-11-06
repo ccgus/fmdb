@@ -353,6 +353,8 @@ int main (int argc, const char * argv[]) {
     
     NSLog(@"Testing the busy timeout");
     
+    NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
+    
     BOOL success = [db executeUpdate:@"insert into t1 values (5)"];
     
     if (success) {
@@ -375,7 +377,9 @@ int main (int argc, const char * argv[]) {
         NSLog(@"Hurray, we can insert again!");
     }
     
+    NSTimeInterval end = [NSDate timeIntervalSinceReferenceDate] - startTime;
     
+    NSLog(@"Took %f seconds for the timeout.", end);
     
     // test some nullness.
     [db executeUpdate:@"create table t2 (a integer, b integer)"];
