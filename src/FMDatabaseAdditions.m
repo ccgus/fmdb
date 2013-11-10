@@ -180,32 +180,19 @@ return ret;
 
 #pragma clang diagnostic pop
 
+
 - (BOOL)validateSQL:(NSString*)sql error:(NSError**)error {
     sqlite3_stmt *pStmt = NULL;
     BOOL validationSucceeded = YES;
-    BOOL keepTrying = YES;
-    int numberOfRetries = 0;
     
-    while (keepTrying == YES) {
-        keepTrying = NO;
-        int rc = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
-        if (rc == SQLITE_BUSY || rc == SQLITE_LOCKED) {
-            keepTrying = YES;
-            usleep(FMDatabaseSQLiteBusyMicrosecondsTimeout);
-            
-            if (_busyRetryTimeout && (numberOfRetries++ > _busyRetryTimeout)) {
-                NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [self databasePath]);
-                NSLog(@"Database busy");
-            }          
-        } 
-        else if (rc != SQLITE_OK) {
-            validationSucceeded = NO;
-            if (error) {
-                *error = [NSError errorWithDomain:NSCocoaErrorDomain 
-                                             code:[self lastErrorCode]
-                                         userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage] 
-                                                                              forKey:NSLocalizedDescriptionKey]];
-            }
+    int rc = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
+    if (rc != SQLITE_OK) {
+        validationSucceeded = NO;
+        if (error) {
+            *error = [NSError errorWithDomain:NSCocoaErrorDomain
+                                         code:[self lastErrorCode]
+                                     userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage]
+                                                                          forKey:NSLocalizedDescriptionKey]];
         }
     }
     

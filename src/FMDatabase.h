@@ -87,7 +87,7 @@
     BOOL                _shouldCacheStatements;
     BOOL                _isExecutingStatement;
     BOOL                _inTransaction;
-    int                 _busyRetryTimeout;
+    NSTimeInterval      _busyTimeout;
     
     NSMutableDictionary *_cachedStatements;
     NSMutableSet        *_openResultSets;
@@ -110,7 +110,7 @@
 
 /** Busy retry timeout */
 
-@property (atomic, assign) int busyRetryTimeout;
+@property (atomic, assign) NSTimeInterval busyTimeout;
 
 /** Crash on errors */
 
