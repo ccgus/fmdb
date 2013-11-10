@@ -40,6 +40,7 @@
     return q;
 }
 
+
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
     
     self = [super init];
@@ -74,6 +75,11 @@
     return [self initWithPath:aPath flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
 }
 
+- (instancetype)init {
+    return [self initWithPath:nil];
+}
+
+    
 - (void)dealloc {
     
     FMDBRelease(_db);
