@@ -27,6 +27,10 @@
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
 }
 
+- (instancetype)init {
+    return [self initWithPath:nil];
+}
+
 - (instancetype)initWithPath:(NSString*)aPath {
     
     self = [super init];
