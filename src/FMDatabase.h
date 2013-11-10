@@ -49,8 +49,6 @@
     #define instancetype id
 #endif
 
-#define FMDatabaseSQLiteBusyMicrosecondsTimeout 20
-
 /** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
  
  ### Usage
