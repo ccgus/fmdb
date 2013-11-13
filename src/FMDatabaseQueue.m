@@ -20,6 +20,7 @@
 @implementation FMDatabaseQueue
 
 @synthesize path = _path;
+@synthesize openFlags = _openFlags;
 
 + (instancetype)databaseQueueWithPath:(NSString*)aPath {
     
@@ -30,7 +31,17 @@
     return q;
 }
 
-- (instancetype)initWithPath:(NSString*)aPath {
++ (instancetype)databaseQueueWithPath:(NSString*)aPath flags:(int)openFlags {
+    
+    FMDatabaseQueue *q = [[self alloc] initWithPath:aPath flags:openFlags];
+    
+    FMDBAutorelease(q);
+    
+    return q;
+}
+
+
+- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
     
     self = [super init];
     
@@ -39,7 +50,11 @@
         _db = [FMDatabase databaseWithPath:aPath];
         FMDBRetain(_db);
         
+#if SQLITE_VERSION_NUMBER >= 3005000
+        if (![_db openWithFlags:openFlags]) {
+#else
         if (![_db open]) {
+#endif
             NSLog(@"Could not create database queue for path %@", aPath);
             FMDBRelease(self);
             return 0x00;
@@ -48,11 +63,23 @@
         _path = FMDBReturnRetained(aPath);
         
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
+        _openFlags = openFlags;
     }
     
     return self;
 }
 
+- (instancetype)initWithPath:(NSString*)aPath {
+    
+    // default flags for sqlite3_open
+    return [self initWithPath:aPath flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
+}
+
+- (instancetype)init {
+    return [self initWithPath:nil];
+}
+
+    
 - (void)dealloc {
     
     FMDBRelease(_db);
@@ -81,7 +108,11 @@
     if (!_db) {
         _db = FMDBReturnRetained([FMDatabase databaseWithPath:_path]);
         
-        if (![_db open]) {
+#if SQLITE_VERSION_NUMBER >= 3005000
+        if (![_db openWithFlags:_openFlags]) {
+#else
+			if (![db open])
+#endif
             NSLog(@"FMDatabaseQueue could not reopen database for path %@", _path);
             FMDBRelease(_db);
             _db  = 0x00;
@@ -160,11 +191,10 @@
             block([self database], &shouldRollback);
             
             if (shouldRollback) {
+                // We need to rollback and release this savepoint to remove it
                 [[self database] rollbackToSavePointWithName:name error:&err];
             }
-            else {
-                [[self database] releaseSavePointWithName:name error:&err];
-            }
+            [[self database] releaseSavePointWithName:name error:&err];
             
         }
     });

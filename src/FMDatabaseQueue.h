@@ -65,9 +65,11 @@
     NSString            *_path;
     dispatch_queue_t    _queue;
     FMDatabase          *_db;
+    int                 _openFlags;
 }
 
 @property (atomic, retain) NSString *path;
+@property (atomic) int openFlags;
 
 ///----------------------------------------------------
 /// @name Initialization, opening, and closing of queue
@@ -82,6 +84,15 @@
 
 + (instancetype)databaseQueueWithPath:(NSString*)aPath;
 
+/** Create queue using path and specified flags.
+ 
+ @param aPath The file path of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ 
+ @return The `FMDatabaseQueue` object. `nil` on error.
+ */
++ (instancetype)databaseQueueWithPath:(NSString*)aPath flags:(int)openFlags;
+
 /** Create queue using path.
 
  @param aPath The file path of the database.
@@ -90,6 +101,16 @@
  */
 
 - (instancetype)initWithPath:(NSString*)aPath;
+
+/** Create queue using path and specified flags.
+ 
+ @param aPath The file path of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ 
+ @return The `FMDatabaseQueue` object. `nil` on error.
+ */
+
+- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags;
 
 /** Close database used by queue. */
 

@@ -9,6 +9,17 @@ http://www.sqlite.org/faq.html
 
 Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: http://www.sqlite.org/docs.html
 
+## CocoaPods
+
+FMDB can be installed using [CocoaPods](http://cocoapods.org/).
+
+```
+pod 'FMDB'
+# pod 'FMDB/SQLCipher'   # If using FMDB with SQLCipher
+```
+
+**If using FMDB with [SQLCipher](http://sqlcipher.net/) you must use the FMDB/SQLCipher subspec. The FMDB/SQLCipher subspec declares SQLCipher as a dependency, allowing FMDB to be compiled with the `-DSQLITE_HAS_CODEC` flag.**
+
 ## FMDB Class Reference:
 http://ccgus.github.io/fmdb/html/index.html
 

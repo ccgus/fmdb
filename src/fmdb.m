@@ -9,6 +9,7 @@
 void testPool(NSString *dbPath);
 void testDateFormat();
 void FMDBReportABugFunction();
+void testStatementCaching();
 
 int main (int argc, const char * argv[]) {
     
@@ -155,10 +156,10 @@ int main (int argc, const char * argv[]) {
     rs = [db executeQuery:@"select rowid, a, b, c from test"];
     while ([rs next]) {
         
-        FMDBQuickCheck([rs[0] isEqualTo:rs[@"rowid"]]);
-        FMDBQuickCheck([rs[1] isEqualTo:rs[@"a"]]);
-        FMDBQuickCheck([rs[2] isEqualTo:rs[@"b"]]);
-        FMDBQuickCheck([rs[3] isEqualTo:rs[@"c"]]);
+        FMDBQuickCheck([rs[0] isEqual:rs[@"rowid"]]);
+        FMDBQuickCheck([rs[1] isEqual:rs[@"a"]]);
+        FMDBQuickCheck([rs[2] isEqual:rs[@"b"]]);
+        FMDBQuickCheck([rs[3] isEqual:rs[@"c"]]);
     }
     [rs close];
     
@@ -352,6 +353,8 @@ int main (int argc, const char * argv[]) {
     
     NSLog(@"Testing the busy timeout");
     
+    NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
+    
     BOOL success = [db executeUpdate:@"insert into t1 values (5)"];
     
     if (success) {
@@ -374,7 +377,9 @@ int main (int argc, const char * argv[]) {
         NSLog(@"Hurray, we can insert again!");
     }
     
+    NSTimeInterval end = [NSDate timeIntervalSinceReferenceDate] - startTime;
     
+    NSLog(@"Took %f seconds for the timeout.", end);
     
     // test some nullness.
     [db executeUpdate:@"create table t2 (a integer, b integer)"];
@@ -889,8 +894,32 @@ int main (int argc, const char * argv[]) {
         }];
         
     }
+	
+	FMDatabaseQueue *queue2 = [FMDatabaseQueue databaseQueueWithPath:dbPath flags:SQLITE_OPEN_READONLY];
     
-    
+    FMDBQuickCheck(queue2);
+    {
+        [queue2 inDatabase:^(FMDatabase *db2) {
+            FMResultSet *rs1 = [db2 executeQuery:@"SELECT * FROM test"];
+            FMDBQuickCheck(rs1 != nil);
+            [rs1 close];
+            
+            BOOL ok = [db2 executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+            FMDBQuickCheck(!ok);
+        }];
+        
+        [queue2 close];
+        
+        [queue2 inDatabase:^(FMDatabase *db2) {
+            FMResultSet *rs1 = [db2 executeQuery:@"SELECT * FROM test"];
+            FMDBQuickCheck(rs1 != nil);
+            [rs1 close];
+            
+            BOOL ok = [db2 executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+            FMDBQuickCheck(!ok);
+        }];
+    }
+	
     {
         // You should see pairs of numbers show up in stdout for this stuff:
         size_t ops = 16;
@@ -1043,10 +1072,7 @@ int main (int argc, const char * argv[]) {
         }
         FMDBQuickCheck(rowCount == 2);
         
-        
-        
-        
-        
+        testStatementCaching();
         
     }];
     
@@ -1058,6 +1084,48 @@ int main (int argc, const char * argv[]) {
     
     
     return 0;
+}
+/*
+ Test statement caching
+ This test checks the fixes that address https://github.com/ccgus/fmdb/issues/6
+ */
+
+void testStatementCaching() {
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:nil]; // use in-memory DB
+    [db open];
+    
+    [db executeUpdate:@"DROP TABLE IF EXISTS testStatementCaching"];
+    [db executeUpdate:@"CREATE TABLE testStatementCaching ( value INTEGER )"];
+    [db executeUpdate:@"INSERT INTO testStatementCaching( value ) VALUES (1)"];
+    [db executeUpdate:@"INSERT INTO testStatementCaching( value ) VALUES (1)"];
+    [db executeUpdate:@"INSERT INTO testStatementCaching( value ) VALUES (2)"];
+    
+    [db setShouldCacheStatements:YES];
+    
+    // two iterations.
+    //  the first time through no statements will be from the cache.
+    //  the second time through all statements come from the cache.
+    for (int i = 1; i <= 2; i++ ) {
+        
+        FMResultSet* rs1 = [db executeQuery: @"SELECT rowid, * FROM testStatementCaching WHERE value = ?", @1]; // results in 2 rows...
+        FMDBQuickCheck([rs1 next]);
+        
+        // confirm that we're seeing the benefits of caching.
+        FMDBQuickCheck([[rs1 statement] useCount] == i);
+        
+        FMResultSet* rs2 = [db executeQuery:@"SELECT rowid, * FROM testStatementCaching WHERE value = ?", @2]; // results in 1 row
+        FMDBQuickCheck([rs2 next]);
+        FMDBQuickCheck([[rs2 statement] useCount] == i);
+        
+        // This is the primary check - with the old implementation of statement caching, rs2 would have rejiggered the (cached) statement used by rs1, making this test fail to return the 2nd row in rs1.
+        FMDBQuickCheck([rs1 next]);
+        
+        [rs1 close];
+        [rs2 close];
+    }
+    
+    [db close];
 }
 
 /*
