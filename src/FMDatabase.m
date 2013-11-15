@@ -213,19 +213,23 @@
 
 - (void)setCachedStatement:(FMStatement*)statement forQuery:(NSString*)query {
     
-    query = [query copy]; // in case we got handed in a mutable string...
-    [statement setQuery:query];
-    
-    NSMutableSet* statements = [_cachedStatements objectForKey:query];
-    if (!statements) {
-        statements = [NSMutableSet set];
+    if (query != nil) {
+        
+        query = [query copy]; // in case we got handed in a mutable string...
+        [statement setQuery:query];
+        
+        NSMutableSet* statements = [_cachedStatements objectForKey:query];
+        if (!statements) {
+            statements = [NSMutableSet set];
+        }
+        
+        [statements addObject:statement];
+        
+        [_cachedStatements setObject:statements forKey:query];
+        
+        FMDBRelease(query);
+        
     }
-    
-    [statements addObject:statement];
-    
-    [_cachedStatements setObject:statements forKey:query];
-    
-    FMDBRelease(query);
 }
 
 - (BOOL)rekey:(NSString*)key {
