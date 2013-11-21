@@ -1377,6 +1377,20 @@ void testPool(NSString *dbPath) {
         NSLog(@"Number of open databases after crazy gcd stuff: %ld", [dbPool countOfOpenDatabases]);
     }
     
+	FMDatabasePool *dbPool2 = [FMDatabasePool databasePoolWithPath:dbPath flags:SQLITE_OPEN_READONLY];
+    
+    FMDBQuickCheck(dbPool2);
+    {
+        [dbPool2 inDatabase:^(FMDatabase *db2) {
+            FMResultSet *rs1 = [db2 executeQuery:@"SELECT * FROM test"];
+            FMDBQuickCheck(rs1 != nil);
+            [rs1 close];
+            
+            BOOL ok = [db2 executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+            FMDBQuickCheck(!ok);
+        }];
+    }
+    
     
     // if you want to see a deadlock, just uncomment this line and run:
     //#define ONLY_USE_THE_POOL_IF_YOU_ARE_DOING_READS_OTHERWISE_YOULL_DEADLOCK_USE_FMDATABASEQUEUE_INSTEAD 1
