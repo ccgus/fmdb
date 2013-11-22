@@ -40,11 +40,13 @@
     __unsafe_unretained id _delegate;
     
     NSUInteger          _maximumNumberOfDatabasesToCreate;
+    int                 _openFlags;
 }
 
 @property (atomic, retain) NSString *path;
 @property (atomic, assign) id delegate;
 @property (atomic, assign) NSUInteger maximumNumberOfDatabasesToCreate;
+@property (atomic, readonly) int openFlags;
 
 ///---------------------
 /// @name Initialization
@@ -59,6 +61,16 @@
 
 + (instancetype)databasePoolWithPath:(NSString*)aPath;
 
+/** Create pool using path and specified flags
+
+  @param aPath The file path of the database.
+  @param openFlags Flags passed to the openWithFlags method of the database
+
+ @return The `FMDatabasePool` object. `nil` on error.
+ */
+
++ (instancetype)databasePoolWithPath:(NSString*)aPath flags:(int)openFlags;
+
 /** Create pool using path.
 
  @param aPath The file path of the database.
@@ -67,6 +79,16 @@
  */
 
 - (instancetype)initWithPath:(NSString*)aPath;
+
+/** Create pool using path and specified flags.
+
+ @param aPath The file path of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+
+ @return The `FMDatabasePool` object. `nil` on error.
+ */
+
+- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags;
 
 ///------------------------------------------------
 /// @name Keeping track of checked in/out databases

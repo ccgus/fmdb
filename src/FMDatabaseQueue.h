@@ -69,7 +69,7 @@
 }
 
 @property (atomic, retain) NSString *path;
-@property (atomic) int openFlags;
+@property (atomic, readonly) int openFlags;
 
 ///----------------------------------------------------
 /// @name Initialization, opening, and closing of queue

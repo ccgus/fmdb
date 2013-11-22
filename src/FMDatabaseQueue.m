@@ -111,7 +111,7 @@
 #if SQLITE_VERSION_NUMBER >= 3005000
         if (![_db openWithFlags:_openFlags]) {
 #else
-			if (![db open])
+        if (![db open]) {
 #endif
             NSLog(@"FMDatabaseQueue could not reopen database for path %@", _path);
             FMDBRelease(_db);
