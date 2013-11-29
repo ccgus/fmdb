@@ -803,17 +803,13 @@
     
     uint32_t rAppID = [db applicationID];
     
-    NSLog(@"rAppID: %d", rAppID);
-    
-    FMDBQuickCheck(rAppID == appID);
+    XCTAssertEqual(rAppID, appID);
     
     [db setApplicationIDString:@"acrn"];
     
     NSString *s = [db applicationIDString];
     
-    NSLog(@"s: '%@'", s);
-    
-    FMDBQuickCheck([s isEqualToString:@"acrn"]);
+    XCTAssertEqualObjects(s, @"acrn");
 }
 #endif
 
