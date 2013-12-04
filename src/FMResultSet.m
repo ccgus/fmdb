@@ -131,7 +131,10 @@
             
             NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)];
             id objectValue = [self objectForColumnIndex:columnIdx];
-            [dict setObject:objectValue forKey:columnName];
+            if (dict[columnName] != nil)
+                NSLog(@"Warning: Result set has multiple columns named %@. Using the value of the first column.", columnName);
+            else
+                [dict setObject:objectValue forKey:columnName];
         }
         
         return dict;
