@@ -40,6 +40,10 @@
     return q;
 }
 
++ (Class)databaseClass
+{
+    return [FMDatabase class];
+}
 
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
     
@@ -47,7 +51,7 @@
     
     if (self != nil) {
         
-        _db = [FMDatabase databaseWithPath:aPath];
+        _db = [[[self class] databaseClass] databaseWithPath:aPath];
         FMDBRetain(_db);
         
 #if SQLITE_VERSION_NUMBER >= 3005000
