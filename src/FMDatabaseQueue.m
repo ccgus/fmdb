@@ -40,8 +40,7 @@
     return q;
 }
 
-+ (Class)databaseClass
-{
++ (Class)databaseClass {
     return [FMDatabase class];
 }
 
