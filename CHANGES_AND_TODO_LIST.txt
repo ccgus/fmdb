@@ -3,6 +3,12 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2013.12.10
+    Lots of little updates - new test targets, ARC simplification, and open flags to FMDatabaseQueue (thanks Graham Dennis), FMDatabaseQueue now has + (Class)databaseClass; which can return a new subclass of FMDatabase for custom stuff (thanks Timur Islamgulov),
+    
+    ## IMPORTANT##
+    int busyRetryTimeout has been change to NSTimeInterval busyTimeout in FMDatabase.  Instead of using it's homegrown "try again every so often if it's locked", we use sqlite's built in support for this.  Why wasn't FMDatabase using it before?  Because Gus didn't know about it.  Thanks to Jens Alfke for pointing this out and providing some code to work with.
+
 2013.10.21
     Fixed a problem where having statement caching turned on would cause issues when trying to use two result sets with the same query but different binding parameters.  Thanks to Nick Hodapp for the original patch.
     Fixed a problem where save points weren't being created with the correct names, and were not cleaned up properly.  Thanks to Graham Dennis for the patches.
