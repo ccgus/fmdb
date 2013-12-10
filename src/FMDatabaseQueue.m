@@ -40,6 +40,9 @@
     return q;
 }
 
++ (Class)databaseClass {
+    return [FMDatabase class];
+}
 
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
     
@@ -47,7 +50,7 @@
     
     if (self != nil) {
         
-        _db = [FMDatabase databaseWithPath:aPath];
+        _db = [[[self class] databaseClass] databaseWithPath:aPath];
         FMDBRetain(_db);
         
 #if SQLITE_VERSION_NUMBER >= 3005000
@@ -111,7 +114,7 @@
 #if SQLITE_VERSION_NUMBER >= 3005000
         if (![_db openWithFlags:_openFlags]) {
 #else
-			if (![db open])
+        if (![db open]) {
 #endif
             NSLog(@"FMDatabaseQueue could not reopen database for path %@", _path);
             FMDBRelease(_db);

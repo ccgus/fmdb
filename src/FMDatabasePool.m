@@ -21,17 +21,18 @@
 @synthesize path=_path;
 @synthesize delegate=_delegate;
 @synthesize maximumNumberOfDatabasesToCreate=_maximumNumberOfDatabasesToCreate;
+@synthesize openFlags=_openFlags;
 
 
 + (instancetype)databasePoolWithPath:(NSString*)aPath {
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
 }
 
-- (instancetype)init {
-    return [self initWithPath:nil];
++ (instancetype)databasePoolWithPath:(NSString*)aPath flags:(int)openFlags {
+    return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath flags:openFlags]);
 }
 
-- (instancetype)initWithPath:(NSString*)aPath {
+- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
     
     self = [super init];
     
@@ -40,10 +41,22 @@
         _lockQueue          = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
         _databaseInPool     = FMDBReturnRetained([NSMutableArray array]);
         _databaseOutPool    = FMDBReturnRetained([NSMutableArray array]);
+        _openFlags          = openFlags;
     }
     
     return self;
 }
+
+- (instancetype)initWithPath:(NSString*)aPath
+{
+    // default flags for sqlite3_open
+    return [self initWithPath:aPath flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
+}
+
+- (instancetype)init {
+    return [self initWithPath:nil];
+}
+
 
 - (void)dealloc {
     
@@ -110,7 +123,11 @@
         }
         
         //This ensures that the db is opened before returning
+#if SQLITE_VERSION_NUMBER >= 3005000
+        if ([db openWithFlags:_openFlags]) {
+#else
         if ([db open]) {
+#endif
             if ([_delegate respondsToSelector:@selector(databasePool:shouldAddDatabaseToPool:)] && ![_delegate databasePool:self shouldAddDatabaseToPool:db]) {
                 [db close];
                 db = 0x00;
