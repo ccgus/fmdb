@@ -161,7 +161,13 @@
 
 @interface NSObject (FMDatabasePoolDelegate)
 
+/** Asks the delegate whether database should be added to the pool. */
+
 - (BOOL)databasePool:(FMDatabasePool*)pool shouldAddDatabaseToPool:(FMDatabase*)database;
+
+/** Tells the delegate that database was added to the pool. */
+
+- (void)databasePool:(FMDatabasePool*)pool didAddDatabase:(FMDatabase*)database;
 
 @end
 
