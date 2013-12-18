@@ -100,6 +100,7 @@
 - (FMDatabase*)db {
     
     __block FMDatabase *db;
+    __block BOOL shouldNotifyDelegate = NO;
     
     [self executeLocked:^() {
         db = [_databaseInPool lastObject];
@@ -120,6 +121,7 @@
             }
             
             db = [FMDatabase databaseWithPath:_path];
+            shouldNotifyDelegate = YES;
         }
         
         //This ensures that the db is opened before returning
@@ -136,6 +138,9 @@
                 //It should not get added in the pool twice if lastObject was found
                 if (![_databaseOutPool containsObject:db]) {
                     [_databaseOutPool addObject:db];
+                    
+                    if ([_delegate respondsToSelector:@selector(databasePool:didAddDatabase:)] && shouldNotifyDelegate)
+                        [_delegate databasePool:self didAddDatabase:db];
                 }
             }
         }
