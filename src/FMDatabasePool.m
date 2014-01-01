@@ -100,10 +100,12 @@
 - (FMDatabase*)db {
     
     __block FMDatabase *db;
-    __block BOOL shouldNotifyDelegate = NO;
+    
     
     [self executeLocked:^() {
         db = [_databaseInPool lastObject];
+        
+        BOOL shouldNotifyDelegate = NO;
         
         if (db) {
             [_databaseOutPool addObject:db];
@@ -139,8 +141,9 @@
                 if (![_databaseOutPool containsObject:db]) {
                     [_databaseOutPool addObject:db];
                     
-                    if ([_delegate respondsToSelector:@selector(databasePool:didAddDatabase:)] && shouldNotifyDelegate)
+                    if (shouldNotifyDelegate && [_delegate respondsToSelector:@selector(databasePool:didAddDatabase:)]) {
                         [_delegate databasePool:self didAddDatabase:db];
+                    }
                 }
             }
         }
