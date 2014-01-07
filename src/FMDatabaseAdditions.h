@@ -217,12 +217,14 @@
 
 - (void)setApplicationID:(uint32_t)appID;
 
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
 /** Retrieve application ID string
 
  @return The `NSString` value of the application ID.
 
  @see setApplicationIDString:
  */
+
 
 - (NSString*)applicationIDString;
 
@@ -234,6 +236,8 @@
  */
 
 - (void)setApplicationIDString:(NSString*)string;
+#endif
+
 #endif
 
 
