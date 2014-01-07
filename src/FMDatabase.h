@@ -691,6 +691,11 @@
 - (NSError*)lastError;
 
 
+// description forthcoming
+- (void)setRetryTimeout:(NSTimeInterval)timeout;
+- (NSTimeInterval)retryTimeout;
+
+
 #if SQLITE_VERSION_NUMBER >= 3007000
 
 ///------------------

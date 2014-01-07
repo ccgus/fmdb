@@ -176,7 +176,7 @@
     [self.db executeUpdate:@"create table t1 (a integer)"];
     [self.db executeUpdate:@"insert into t1 values (?)", [NSNumber numberWithInt:5]];
     
-    [self.db setBusyRetryTimeout:50];
+    [self.db setRetryTimeout:2];
     
     FMDatabase *newDB = [FMDatabase databaseWithPath:self.databasePath];
     [newDB open];
@@ -209,6 +209,25 @@
         XCTAssertNil([d objectForKey:@"arowname"], @"arowname should be nil");
         XCTAssertNotNil([d objectForKey:@"bRowName"], @"bRowName should be non-nil");
         XCTAssertNil([d objectForKey:@"browname"], @"browname should be nil");
+    }
+    
+    [rs close];
+    XCTAssertFalse([self.db hasOpenResultSets], @"Shouldn't have any open result sets");
+    XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
+}
+
+- (void)testBoolInsert
+{
+    [self.db executeUpdate:@"create table btest (aRowName integer)"];
+    [self.db executeUpdate:@"insert into btest (aRowName) values (?)", [NSNumber numberWithBool:12]];
+    
+    XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
+    
+    FMResultSet *rs = [self.db executeQuery:@"select * from btest"];
+    while ([rs next]) {
+        
+        XCTAssertTrue([rs boolForColumnIndex:0], @"first column should be true.");
+        XCTAssertTrue([rs intForColumnIndex:0] == 1, @"first column should be equal to 1 - it was %d.", [rs intForColumnIndex:0]);
     }
     
     [rs close];
