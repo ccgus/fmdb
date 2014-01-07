@@ -459,11 +459,29 @@
         if (strcmp([obj objCType], @encode(BOOL)) == 0) {
             sqlite3_bind_int(pStmt, idx, ([obj boolValue] ? 1 : 0));
         }
+        else if (strcmp([obj objCType], @encode(char)) == 0) {
+            sqlite3_bind_int(pStmt, idx, [obj charValue]);
+        }
+        else if (strcmp([obj objCType], @encode(unsigned char)) == 0) {
+            sqlite3_bind_int(pStmt, idx, [obj unsignedCharValue]);
+        }
+        else if (strcmp([obj objCType], @encode(short)) == 0) {
+            sqlite3_bind_int(pStmt, idx, [obj shortValue]);
+        }
+        else if (strcmp([obj objCType], @encode(unsigned short)) == 0) {
+            sqlite3_bind_int(pStmt, idx, [obj unsignedShortValue]);
+        }
         else if (strcmp([obj objCType], @encode(int)) == 0) {
-            sqlite3_bind_int64(pStmt, idx, [obj longValue]);
+            sqlite3_bind_int(pStmt, idx, [obj intValue]);
+        }
+        else if (strcmp([obj objCType], @encode(unsigned int)) == 0) {
+            sqlite3_bind_int64(pStmt, idx, (long long)[obj unsignedIntValue]);
         }
         else if (strcmp([obj objCType], @encode(long)) == 0) {
             sqlite3_bind_int64(pStmt, idx, [obj longValue]);
+        }
+        else if (strcmp([obj objCType], @encode(unsigned long)) == 0) {
+            sqlite3_bind_int64(pStmt, idx, (long long)[obj unsignedLongValue]);
         }
         else if (strcmp([obj objCType], @encode(long long)) == 0) {
             sqlite3_bind_int64(pStmt, idx, [obj longLongValue]);
