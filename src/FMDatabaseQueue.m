@@ -54,10 +54,11 @@
         FMDBRetain(_db);
         
 #if SQLITE_VERSION_NUMBER >= 3005000
-        if (![_db openWithFlags:openFlags]) {
+        BOOL success = [_db openWithFlags:openFlags];
 #else
-        if (![_db open]) {
+        BOOL success = [_db open];
 #endif
+        if (!success) {
             NSLog(@"Could not create database queue for path %@", aPath);
             FMDBRelease(self);
             return 0x00;
@@ -112,10 +113,11 @@
         _db = FMDBReturnRetained([FMDatabase databaseWithPath:_path]);
         
 #if SQLITE_VERSION_NUMBER >= 3005000
-        if (![_db openWithFlags:_openFlags]) {
+        BOOL success = [_db openWithFlags:_openFlags];
 #else
-        if (![db open]) {
+        BOOL success = [db open];
 #endif
+        if (!success) {
             NSLog(@"FMDatabaseQueue could not reopen database for path %@", _path);
             FMDBRelease(_db);
             _db  = 0x00;
