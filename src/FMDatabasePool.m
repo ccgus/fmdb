@@ -128,10 +128,11 @@
         
         //This ensures that the db is opened before returning
 #if SQLITE_VERSION_NUMBER >= 3005000
-        if ([db openWithFlags:_openFlags]) {
+        BOOL success = [db openWithFlags:_openFlags];
 #else
-        if ([db open]) {
+        BOOL success = [db open];
 #endif
+        if (success) {
             if ([_delegate respondsToSelector:@selector(databasePool:shouldAddDatabaseToPool:)] && ![_delegate databasePool:self shouldAddDatabaseToPool:db]) {
                 [db close];
                 db = 0x00;
