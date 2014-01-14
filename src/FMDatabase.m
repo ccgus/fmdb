@@ -1030,6 +1030,30 @@
     return [self executeUpdate:sql withArgumentsInArray:arguments];
 }
 
+
+
+- (BOOL)executeBatchUpdate:(NSString*)sql error:(NSError**)error
+{
+    char* errorOutput;
+    
+    sqlite3_exec(_db, "BEGIN;", NULL, NULL, &errorOutput);
+    int responseCode = sqlite3_exec(_db, [sql UTF8String], NULL, NULL, &errorOutput);
+    sqlite3_exec(_db, "COMMIT;", NULL, NULL, &errorOutput);
+    
+    if (errorOutput != nil)
+    {
+        *error = [NSError errorWithDomain:[NSString stringWithUTF8String:errorOutput]
+                                     code:responseCode
+                                 userInfo:nil];
+        
+        sqlite3_free(errorOutput);
+        return false;
+    }
+    
+    return true;
+}
+
+
 - (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... {
     va_list args;
     va_start(args, outErr);

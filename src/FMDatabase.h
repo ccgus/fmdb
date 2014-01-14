@@ -341,6 +341,9 @@
 // Documentation forthcoming.
 - (BOOL)executeUpdate:(NSString*)sql withVAList: (va_list)args;
 
+// Documentation forthcoming.
+- (BOOL)executeBatchUpdate:(NSString*)sql error:(NSError**)error;
+
 
 /** Last insert rowid
  
