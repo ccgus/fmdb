@@ -351,7 +351,7 @@
     
 #ifndef NS_BLOCK_ASSERTIONS
     if (_crashOnErrors) {
-        NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
+        NSAssert(false, @"The FMDatabase %@ is currently in use.", self);
         abort();
     }
 #endif
@@ -365,7 +365,7 @@
         
     #ifndef NS_BLOCK_ASSERTIONS
         if (_crashOnErrors) {
-            NSAssert1(false, @"The FMDatabase %@ is not open.", self);
+            NSAssert(false, @"The FMDatabase %@ is not open.", self);
             abort();
         }
     #endif
@@ -661,18 +661,16 @@
         rc      = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
         
         if (SQLITE_OK != rc) {
-            
-            if (_logsErrors) {
-                NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
-                NSLog(@"DB Query: %@", sql);
-                NSLog(@"DB Path: %@", _databasePath);
-#ifndef NS_BLOCK_ASSERTIONS
-                if (_crashOnErrors) {
-                    abort();
-                    NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
-                }
-#endif
-            }
+			if (_logsErrors) {
+				NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
+				NSLog(@"DB Query: %@", sql);
+				NSLog(@"DB Path: %@", _databasePath);
+			}
+			
+			if (_crashOnErrors) {
+				NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
+				abort();
+			}
             
             sqlite3_finalize(pStmt);
             _isExecutingStatement = NO;
@@ -834,18 +832,16 @@
         rc = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
         
         if (SQLITE_OK != rc) {
-            
             if (_logsErrors) {
                 NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                 NSLog(@"DB Query: %@", sql);
                 NSLog(@"DB Path: %@", _databasePath);
-#ifndef NS_BLOCK_ASSERTIONS
-                if (_crashOnErrors) {
-                    abort();
-                    NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
-                }
-#endif
-            }
+			}
+			
+			if (_crashOnErrors) {
+                NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
+                abort();
+			}
             
             sqlite3_finalize(pStmt);
             
@@ -956,7 +952,7 @@
     }
     
     if (rc == SQLITE_ROW) {
-        NSAssert1(NO, @"A executeUpdate is being called with a query string '%@'", sql);
+        NSAssert(NO, @"A executeUpdate is being called with a query string '%@'", sql);
     }
     
     if (_shouldCacheStatements && !cachedStmt) {
