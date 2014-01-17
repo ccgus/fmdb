@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2014.01.17
+    It's never been safe to reentrantly call -[FMDatabaseQueue inDatabase:], as it would block.  Which can be kind of annoying - so now FMDB will crash instead (thanks to Mike Ash for the patch).
+
 2013.12.10
     Lots of little updates - new test targets, ARC simplification, and open flags to FMDatabaseQueue (thanks Graham Dennis), FMDatabaseQueue now has + (Class)databaseClass; which can return a new subclass of FMDatabase for custom stuff (thanks Timur Islamgulov),
     
