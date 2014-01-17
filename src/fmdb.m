@@ -894,8 +894,8 @@ int main (int argc, const char * argv[]) {
         }];
         
     }
-	
-	FMDatabaseQueue *queue2 = [FMDatabaseQueue databaseQueueWithPath:dbPath flags:SQLITE_OPEN_READONLY];
+    
+    FMDatabaseQueue *queue2 = [FMDatabaseQueue databaseQueueWithPath:dbPath flags:SQLITE_OPEN_READONLY];
     
     FMDBQuickCheck(queue2);
     {
@@ -919,7 +919,7 @@ int main (int argc, const char * argv[]) {
             FMDBQuickCheck(!ok);
         }];
     }
-	
+    
     {
         // You should see pairs of numbers show up in stdout for this stuff:
         size_t ops = 16;
@@ -1377,7 +1377,7 @@ void testPool(NSString *dbPath) {
         NSLog(@"Number of open databases after crazy gcd stuff: %ld", [dbPool countOfOpenDatabases]);
     }
     
-	FMDatabasePool *dbPool2 = [FMDatabasePool databasePoolWithPath:dbPath flags:SQLITE_OPEN_READONLY];
+    FMDatabasePool *dbPool2 = [FMDatabasePool databasePoolWithPath:dbPath flags:SQLITE_OPEN_READONLY];
     
     FMDBQuickCheck(dbPool2);
     {

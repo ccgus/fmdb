@@ -13,7 +13,7 @@
 
     #define FMDBRelease(__v) ([__v release]);
 
-	#define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
+    #define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
 #else
     // -fobjc-arc
     #define FMDBAutorelease(__v)

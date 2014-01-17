@@ -661,16 +661,16 @@
         rc      = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
         
         if (SQLITE_OK != rc) {
-			if (_logsErrors) {
-				NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
-				NSLog(@"DB Query: %@", sql);
-				NSLog(@"DB Path: %@", _databasePath);
-			}
-			
-			if (_crashOnErrors) {
-				NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
-				abort();
-			}
+            if (_logsErrors) {
+                NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
+                NSLog(@"DB Query: %@", sql);
+                NSLog(@"DB Path: %@", _databasePath);
+            }
+            
+            if (_crashOnErrors) {
+                NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
+                abort();
+            }
             
             sqlite3_finalize(pStmt);
             _isExecutingStatement = NO;
@@ -716,10 +716,10 @@
             else if (args) {
                 obj = va_arg(args, id);
             }
-			else {
-				//We ran out of arguments
-				break;
-			}
+            else {
+                //We ran out of arguments
+                break;
+            }
             
             if (_traceExecution) {
                 if ([obj isKindOfClass:[NSData class]]) {
@@ -836,12 +836,12 @@
                 NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                 NSLog(@"DB Query: %@", sql);
                 NSLog(@"DB Path: %@", _databasePath);
-			}
-			
-			if (_crashOnErrors) {
+            }
+            
+            if (_crashOnErrors) {
                 NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                 abort();
-			}
+            }
             
             sqlite3_finalize(pStmt);
             
@@ -893,10 +893,10 @@
             else if (args) {
                 obj = va_arg(args, id);
             }
-			else {
-				//We ran out of arguments
-				break;
-			}
+            else {
+                //We ran out of arguments
+                break;
+            }
             
             if (_traceExecution) {
                 if ([obj isKindOfClass:[NSData class]]) {
