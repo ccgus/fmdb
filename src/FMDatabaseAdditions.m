@@ -171,6 +171,26 @@ return ret;
 
 #endif
 
+- (uint32_t)userVersion {
+    uint32_t r = 0;
+    
+    FMResultSet *rs = [self executeQuery:@"pragma user_version"];
+    
+    if ([rs next]) {
+        r = (uint32_t)[rs longLongIntForColumnIndex:0];
+    }
+    
+    [rs close];
+    return r;
+}
+
+- (void)setUserVersion:(uint32_t)version {
+    NSString *query = [NSString stringWithFormat:@"PRAGMA user_version=%d", version];
+    FMResultSet *rs = [self executeQuery:query];
+    [rs next];
+    [rs close];
+}
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
