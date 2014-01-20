@@ -36,7 +36,10 @@
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     
-    self.pool = [FMDatabasePool databasePoolWithPath:self.databasePath];
+    [self setPool:[FMDatabasePool databasePoolWithPath:self.databasePath]];
+    
+    [[self pool] setDelegate:self];
+    
 }
 
 - (void)tearDown
@@ -247,6 +250,14 @@
     });
     
     XCTAssert([self.pool countOfOpenDatabases] < 64, @"There should be significantly less than 64 databases after that stress test");
+}
+
+
+- (BOOL)databasePool:(FMDatabasePool*)pool shouldAddDatabaseToPool:(FMDatabase*)database {
+    [database setRetryTimeout:.1];
+    [database setCrashOnErrors:YES];
+    #pragma message "FIXME: Gus - we need to check for a SQLITE_BUSY when we call sqlite3_step.  sqlite will sleep for the retry amount - BUT, it won't just try the step again.  We'll have to put the old loops back in.  testReadWriteStressTest shows this mistake."
+    return YES;
 }
 
 - (void)testReadWriteStressTest

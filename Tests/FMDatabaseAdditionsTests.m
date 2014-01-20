@@ -94,4 +94,11 @@
     XCTAssertFalse([self.db columnExists:@"c" inTableWithName:@"nulltest"]);
 }
 
+- (void)testUserVersion {
+    
+    [[self db] setUserVersion:12];
+    
+    XCTAssertTrue([[self db] userVersion] == 12);
+}
+
 @end

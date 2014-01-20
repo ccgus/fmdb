@@ -91,8 +91,8 @@
 
 - (void)testPragmaJournalMode
 {
-    FMResultSet *ps = [self.db executeQuery:@"PRAGMA journal_mode=delete"];
-    XCTAssertFalse([self.db hadError], @"PRAGMA should have succeeded");
+    FMResultSet *ps = [self.db executeQuery:@"pragma journal_mode=delete"];
+    XCTAssertFalse([self.db hadError], @"pragma should have succeeded");
     XCTAssertNotNil(ps, @"Result set should be non-nil");
     XCTAssertTrue([ps next], @"Result set should have a next result");
     [ps close];
@@ -101,7 +101,7 @@
 - (void)testPragmaPageSize
 {
     [self.db executeUpdate:@"PRAGMA page_size=2048"];
-    XCTAssertFalse([self.db hadError], @"PRAGMA should have succeeded");
+    XCTAssertFalse([self.db hadError], @"pragma should have succeeded");
 }
 
 - (void)testVacuum
@@ -670,7 +670,7 @@
 
 - (void)testPragmaDatabaseList
 {
-    FMResultSet *rs = [self.db executeQuery:@"PRAGMA database_list"];
+    FMResultSet *rs = [self.db executeQuery:@"pragma database_list"];
     int counter = 0;
     while ([rs next]) {
         counter++;

@@ -90,7 +90,7 @@ return ret;
 - (FMResultSet*)getTableSchema:(NSString*)tableName {
     
     //result colums: cid[INTEGER], name,type [STRING], notnull[INTEGER], dflt_value[],pk[INTEGER]
-    FMResultSet *rs = [self executeQuery:[NSString stringWithFormat: @"PRAGMA table_info('%@')", tableName]];
+    FMResultSet *rs = [self executeQuery:[NSString stringWithFormat: @"pragma table_info('%@')", tableName]];
     
     return rs;
 }
@@ -137,7 +137,7 @@ return ret;
 }
 
 - (void)setApplicationID:(uint32_t)appID {
-    NSString *query = [NSString stringWithFormat:@"PRAGMA application_id=%d", appID];
+    NSString *query = [NSString stringWithFormat:@"pragma application_id=%d", appID];
     FMResultSet *rs = [self executeQuery:query];
     [rs next];
     [rs close];
@@ -185,7 +185,7 @@ return ret;
 }
 
 - (void)setUserVersion:(uint32_t)version {
-    NSString *query = [NSString stringWithFormat:@"PRAGMA user_version=%d", version];
+    NSString *query = [NSString stringWithFormat:@"pragma user_version = %d", version];
     FMResultSet *rs = [self executeQuery:query];
     [rs next];
     [rs close];
