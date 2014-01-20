@@ -242,5 +242,26 @@
 
 #endif
 
+///-----------------------------------
+/// @name user version identifier tasks
+///-----------------------------------
+
+/** Retrieve user version
+ 
+ @return The `uint32_t` numeric value of the user version.
+ 
+ @see setUserVersion:
+ */
+
+- (uint32_t)userVersion;
+
+/** Set the user-version
+ 
+ @param appID The `uint32_t` numeric value of the user version.
+ 
+ @see userVersion
+ */
+
+- (void)setUserVersion:(uint32_t)version;
 
 @end
