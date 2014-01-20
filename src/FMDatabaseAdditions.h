@@ -264,11 +264,4 @@
 
 - (void)setUserVersion:(uint32_t)version;
 
-/** Retrieve user version string
- 
- @return The `NSString` value of the user version.
- 
- @see setUserVersionString:
- */
-
 @end
