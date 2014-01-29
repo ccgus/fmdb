@@ -9,6 +9,45 @@
 #import <XCTest/XCTest.h>
 #import "FMDatabaseAdditions.h"
 
+@interface TestMigrator : NSObject<FMDatabaseMigrator>
+
+@end
+
+@implementation TestMigrator
+
+-(NSString *)sqlForInitialSchema
+{
+    return @"CREATE TABLE migration_test\
+    (\
+    id INTEGER,\
+    name VARCHAR(255)\
+    )";
+}
+
+- (NSString *)sqlForSchemaUpgradeFromVersion:(uint32_t)from toVersion:(uint32_t)to
+{
+    if (from < to) { // forward migration
+        if (from == 1 && to == 2) {
+            return @"ALTER TABLE migration_test ADD COLUMN description VARCHAR(255)";
+        }
+    } else { // backward migration
+        if (from == 2 && to == 1) {
+            return @"ALTER TABLE migration_test RENAME TO migration_test_tmp;\
+            CREATE TABLE migration_test\
+            (\
+            id INTEGER,\
+            name VARCHAR(255)\
+            );\
+            INSERT INTO migration_test(id,name) (SELECT id,name FROM migration_test_tmp);\
+            DROP TABLE migration_test_tmp;";
+        }
+    }
+
+    return @"unknown migration version";
+}
+
+@end
+
 @interface FMDatabaseAdditionsTests : FMDBTempDBTests
 
 @end
@@ -99,6 +138,22 @@
     [[self db] setUserVersion:12];
     
     XCTAssertTrue([[self db] userVersion] == 12);
+}
+
+- (void)testSchemaMigration {
+    TestMigrator* migrator = [[TestMigrator alloc] init];
+
+    [self.db performMigrationToVersion:1 withMigrator:migrator];
+
+    XCTAssertTrue([self.db tableExists:@"migration_test"]);
+
+    [self.db performMigrationToVersion:2 withMigrator:migrator];
+
+    XCTAssertTrue([self.db columnExists:@"description" inTableWithName:@"migration_test"]);
+
+    [self.db performMigrationToVersion:1 withMigrator:migrator];
+
+    XCTAssertFalse([self.db columnExists:@"description" inTableWithName:@"migration_test"]);
 }
 
 @end
