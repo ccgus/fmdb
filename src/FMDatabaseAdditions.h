@@ -10,6 +10,32 @@
 #import "FMDatabase.h"
 
 
+/** Protocol for database migrations.
+
+ */
+
+@protocol FMDatabaseMigrator <NSObject>
+
+/** Return SQL query for initial migration (tables creation)
+
+ @return `NSString` with SQL code.
+ */
+
+- (NSString*)sqlForInitialSchema;
+
+/** Return SQL query for migration
+
+ @param from The starting migration version.
+ @param toVersion The ending migration version.
+
+ @return `NSString` with SQL code.
+ */
+
+- (NSString*)sqlForSchemaUpgradeFromVersion:(uint32_t)from toVersion:(uint32_t)to;
+
+@end
+
+
 /** Category of additions for `<FMDatabase>` class.
  
  ### See also
@@ -126,6 +152,18 @@
  
  @see [SQLite File Format](http://www.sqlite.org/fileformat.html)
  */
+
+/** Migrate database to specific version.
+
+ @param toVersion The migration version. Must be >= 1 (1 -> initial migration version).
+
+ @param migrator The migrator object which return SQL code for migrations.
+
+ @return `YES` if migration was successful; `NO` otherwise..
+
+ */
+
+- (BOOL)performMigration:(uint32_t)toVersion withMigrator:(NSObject<FMDatabaseMigrator>*)migrator;
 
 - (FMResultSet*)getSchema;
 

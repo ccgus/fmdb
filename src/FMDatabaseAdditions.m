@@ -72,6 +72,43 @@ return ret;
     return returnBool;
 }
 
+- (BOOL)performMigration:(uint32_t)toVersion withMigrator:(NSObject<FMDatabaseMigrator>*)migrator {
+    uint32_t currentVersion = [self userVersion];
+    NSString* tempSql = nil;
+
+    if (currentVersion == 0) {
+        if ([self executeUpdate:[migrator sqlForInitialSchema]] == NO) {
+            return NO;
+        }
+
+        [self setUserVersion:currentVersion = 1];
+    }
+
+    if (currentVersion < toVersion) { // forward migration
+        while (currentVersion < toVersion) {
+            tempSql = [migrator sqlForSchemaUpgradeFromVersion:currentVersion toVersion:currentVersion + 1];
+
+            if ([self executeUpdate:tempSql] == NO) {
+                return NO;
+            }
+
+            [self setUserVersion:++currentVersion];
+        }
+    } else {
+        while (currentVersion > toVersion) { // backward migration
+            tempSql = [migrator sqlForSchemaUpgradeFromVersion:currentVersion toVersion:currentVersion - 1];
+
+            if ([self executeUpdate:tempSql] == NO) {
+                return NO;
+            }
+
+            [self setUserVersion:--currentVersion];
+        }
+    }
+
+    return YES;
+}
+
 /*
  get table with list of tables: result colums: type[STRING], name[STRING],tbl_name[STRING],rootpage[INTEGER],sql[STRING]
  check if table exist in database  (patch from OZLB)
