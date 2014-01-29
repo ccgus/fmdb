@@ -143,15 +143,15 @@
 - (void)testSchemaMigration {
     TestMigrator* migrator = [[TestMigrator alloc] init];
 
-    [self.db performMigration:1 withMigrator:migrator];
+    [self.db performMigrationToVersion:1 withMigrator:migrator];
 
     XCTAssertTrue([self.db tableExists:@"migration_test"]);
 
-    [self.db performMigration:2 withMigrator:migrator];
+    [self.db performMigrationToVersion:2 withMigrator:migrator];
 
     XCTAssertTrue([self.db columnExists:@"description" inTableWithName:@"migration_test"]);
 
-    [self.db performMigration:1 withMigrator:migrator];
+    [self.db performMigrationToVersion:1 withMigrator:migrator];
 
     XCTAssertFalse([self.db columnExists:@"description" inTableWithName:@"migration_test"]);
 }

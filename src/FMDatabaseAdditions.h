@@ -163,7 +163,7 @@
 
  */
 
-- (BOOL)performMigration:(uint32_t)toVersion withMigrator:(NSObject<FMDatabaseMigrator>*)migrator;
+- (BOOL)performMigrationToVersion:(uint32_t)toVersion withMigrator:(NSObject<FMDatabaseMigrator>*)migrator;
 
 - (FMResultSet*)getSchema;
 

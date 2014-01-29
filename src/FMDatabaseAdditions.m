@@ -72,7 +72,7 @@ return ret;
     return returnBool;
 }
 
-- (BOOL)performMigration:(uint32_t)toVersion withMigrator:(NSObject<FMDatabaseMigrator>*)migrator {
+- (BOOL)performMigrationToVersion:(uint32_t)toVersion withMigrator:(NSObject<FMDatabaseMigrator>*)migrator {
     uint32_t currentVersion = [self userVersion];
     NSString* tempSql = nil;
 
