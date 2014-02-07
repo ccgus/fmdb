@@ -1,0 +1,5 @@
+language: objective-c
+xcode_project: fmdb.xcodeproj
+xcode_scheme: Tests
+before_install:
+    - mkdir -p "fmdb.xcodeproj/xcshareddata/xcschemes" && cp Tests/Schemes/*.xcscheme "fmdb.xcodeproj/xcshareddata/xcschemes/"

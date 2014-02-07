@@ -21,17 +21,18 @@
 @synthesize path=_path;
 @synthesize delegate=_delegate;
 @synthesize maximumNumberOfDatabasesToCreate=_maximumNumberOfDatabasesToCreate;
+@synthesize openFlags=_openFlags;
 
 
 + (instancetype)databasePoolWithPath:(NSString*)aPath {
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
 }
 
-- (instancetype)init {
-    return [self initWithPath:nil];
++ (instancetype)databasePoolWithPath:(NSString*)aPath flags:(int)openFlags {
+    return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath flags:openFlags]);
 }
 
-- (instancetype)initWithPath:(NSString*)aPath {
+- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
     
     self = [super init];
     
@@ -40,10 +41,22 @@
         _lockQueue          = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
         _databaseInPool     = FMDBReturnRetained([NSMutableArray array]);
         _databaseOutPool    = FMDBReturnRetained([NSMutableArray array]);
+        _openFlags          = openFlags;
     }
     
     return self;
 }
+
+- (instancetype)initWithPath:(NSString*)aPath
+{
+    // default flags for sqlite3_open
+    return [self initWithPath:aPath flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
+}
+
+- (instancetype)init {
+    return [self initWithPath:nil];
+}
+
 
 - (void)dealloc {
     
@@ -88,8 +101,11 @@
     
     __block FMDatabase *db;
     
+    
     [self executeLocked:^() {
         db = [_databaseInPool lastObject];
+        
+        BOOL shouldNotifyDelegate = NO;
         
         if (db) {
             [_databaseOutPool addObject:db];
@@ -107,10 +123,16 @@
             }
             
             db = [FMDatabase databaseWithPath:_path];
+            shouldNotifyDelegate = YES;
         }
         
         //This ensures that the db is opened before returning
-        if ([db open]) {
+#if SQLITE_VERSION_NUMBER >= 3005000
+        BOOL success = [db openWithFlags:_openFlags];
+#else
+        BOOL success = [db open];
+#endif
+        if (success) {
             if ([_delegate respondsToSelector:@selector(databasePool:shouldAddDatabaseToPool:)] && ![_delegate databasePool:self shouldAddDatabaseToPool:db]) {
                 [db close];
                 db = 0x00;
@@ -119,6 +141,10 @@
                 //It should not get added in the pool twice if lastObject was found
                 if (![_databaseOutPool containsObject:db]) {
                     [_databaseOutPool addObject:db];
+                    
+                    if (shouldNotifyDelegate && [_delegate respondsToSelector:@selector(databasePool:didAddDatabase:)]) {
+                        [_delegate databasePool:self didAddDatabase:db];
+                    }
                 }
             }
         }

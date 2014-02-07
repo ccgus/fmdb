@@ -73,14 +73,14 @@ int main (int argc, const char * argv[]) {
     
     
     // how do we do pragmas?  Like so:
-    FMResultSet *ps = [db executeQuery:@"PRAGMA journal_mode=delete"];
+    FMResultSet *ps = [db executeQuery:@"pragma journal_mode=delete"];
     FMDBQuickCheck(![db hadError]);
     FMDBQuickCheck(ps);
     FMDBQuickCheck([ps next]);
     [ps close];
     
     // oh, but some pragmas require updates?
-    [db executeUpdate:@"PRAGMA page_size=2048"];
+    [db executeUpdate:@"pragma page_size=2048"];
     FMDBQuickCheck(![db hadError]);
     
     // what about a vacuum?
@@ -343,7 +343,7 @@ int main (int argc, const char * argv[]) {
     
     // test the busy rety timeout schtuff.
     
-    [db setBusyRetryTimeout:500];
+    [db setBusyTimeout:5];
     
     FMDatabase *newDb = [FMDatabase databaseWithPath:dbPath];
     [newDb open];
@@ -824,7 +824,7 @@ int main (int argc, const char * argv[]) {
     }
     
     // just for fun.
-    rs = [db executeQuery:@"PRAGMA database_list"];
+    rs = [db executeQuery:@"pragma database_list"];
     while ([rs next]) {
         NSString *file = [rs stringForColumn:@"file"];
         NSLog(@"database_list: %@", file);
@@ -894,8 +894,8 @@ int main (int argc, const char * argv[]) {
         }];
         
     }
-	
-	FMDatabaseQueue *queue2 = [FMDatabaseQueue databaseQueueWithPath:dbPath flags:SQLITE_OPEN_READONLY];
+    
+    FMDatabaseQueue *queue2 = [FMDatabaseQueue databaseQueueWithPath:dbPath flags:SQLITE_OPEN_READONLY];
     
     FMDBQuickCheck(queue2);
     {
@@ -919,7 +919,7 @@ int main (int argc, const char * argv[]) {
             FMDBQuickCheck(!ok);
         }];
     }
-	
+    
     {
         // You should see pairs of numbers show up in stdout for this stuff:
         size_t ops = 16;
@@ -1375,6 +1375,20 @@ void testPool(NSString *dbPath) {
         });
         
         NSLog(@"Number of open databases after crazy gcd stuff: %ld", [dbPool countOfOpenDatabases]);
+    }
+    
+    FMDatabasePool *dbPool2 = [FMDatabasePool databasePoolWithPath:dbPath flags:SQLITE_OPEN_READONLY];
+    
+    FMDBQuickCheck(dbPool2);
+    {
+        [dbPool2 inDatabase:^(FMDatabase *db2) {
+            FMResultSet *rs1 = [db2 executeQuery:@"SELECT * FROM test"];
+            FMDBQuickCheck(rs1 != nil);
+            [rs1 close];
+            
+            BOOL ok = [db2 executeUpdate:@"insert into easy values (?)", [NSNumber numberWithInt:3]];
+            FMDBQuickCheck(!ok);
+        }];
     }
     
     

@@ -16,6 +16,13 @@
  something in dispatch_sync
  
  */
+
+/**
+ * A key used to associate the FMDatabaseQueue object with the dispatch_queue_t it uses.
+ * This in turn is used for deadlock detection by seeing if inDatabase: is called on
+ * the queue's dispatch queue, which should not happen and causes a deadlock.
+ */
+static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey;
  
 @implementation FMDatabaseQueue
 
@@ -40,6 +47,9 @@
     return q;
 }
 
++ (Class)databaseClass {
+    return [FMDatabase class];
+}
 
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
     
@@ -47,14 +57,15 @@
     
     if (self != nil) {
         
-        _db = [FMDatabase databaseWithPath:aPath];
+        _db = [[[self class] databaseClass] databaseWithPath:aPath];
         FMDBRetain(_db);
         
 #if SQLITE_VERSION_NUMBER >= 3005000
-        if (![_db openWithFlags:openFlags]) {
+        BOOL success = [_db openWithFlags:openFlags];
 #else
-        if (![_db open]) {
+        BOOL success = [_db open];
 #endif
+        if (!success) {
             NSLog(@"Could not create database queue for path %@", aPath);
             FMDBRelease(self);
             return 0x00;
@@ -63,6 +74,7 @@
         _path = FMDBReturnRetained(aPath);
         
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
+        dispatch_queue_set_specific(_queue, kDispatchQueueSpecificKey, (__bridge void *)self, NULL);
         _openFlags = openFlags;
     }
     
@@ -109,10 +121,11 @@
         _db = FMDBReturnRetained([FMDatabase databaseWithPath:_path]);
         
 #if SQLITE_VERSION_NUMBER >= 3005000
-        if (![_db openWithFlags:_openFlags]) {
+        BOOL success = [_db openWithFlags:_openFlags];
 #else
-			if (![db open])
+        BOOL success = [db open];
 #endif
+        if (!success) {
             NSLog(@"FMDatabaseQueue could not reopen database for path %@", _path);
             FMDBRelease(_db);
             _db  = 0x00;
@@ -124,6 +137,11 @@
 }
 
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
+    /* Get the currently executing queue (which should probably be nil, but in theory could be another DB queue
+     * and then check it against self to make sure we're not about to deadlock. */
+    FMDatabaseQueue *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueSpecificKey);
+    assert(currentSyncQueue != self && "inDatabase: was called reentrantly on the same queue, which would lead to a deadlock");
+    
     FMDBRetain(self);
     
     dispatch_sync(_queue, ^() {
@@ -133,6 +151,14 @@
         
         if ([db hasOpenResultSets]) {
             NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
+            
+#ifdef DEBUG
+            NSSet *openSetCopy = FMDBReturnAutoreleased([[db valueForKey:@"_openResultSets"] copy]);
+            for (NSValue *rsInWrappedInATastyValueMeal in openSetCopy) {
+                FMResultSet *rs = (FMResultSet *)[rsInWrappedInATastyValueMeal pointerValue];
+                NSLog(@"query: '%@'", [rs query]);
+            }
+#endif
         }
     });
     
