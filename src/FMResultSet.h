@@ -437,6 +437,15 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
  @warning **Deprecated**: Please use `<resultDictionary>` instead.  Also, beware that `<resultDictionary>` is case sensitive! 
  */
 
+/** Returns a Array conains dictionarys. Each of dictionary is a row result mapped to case sensitive keys of the column names.
+ 
+ @returns `NSArray` of all the row results.
+ 
+ @warning The keys to the dictionary are case sensitive of the column names.
+ */
+
+- (NSArray*)resultArray;
+
 - (NSDictionary*)resultDict  __attribute__ ((deprecated));
 
 ///-----------------------------
