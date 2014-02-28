@@ -74,7 +74,8 @@
     BOOL                _shouldCacheStatements;
     BOOL                _isExecutingStatement;
     BOOL                _inTransaction;
-    NSTimeInterval      _busyTimeout;
+    NSTimeInterval      _maxBusyRetryTimeInterval;
+    NSTimeInterval      _startBusyRetryTime;
     
     NSMutableDictionary *_cachedStatements;
     NSMutableSet        *_openResultSets;
@@ -94,10 +95,6 @@
 /** Whether checked out or not */
 
 @property (atomic, assign) BOOL checkedOut;
-
-/** Busy retry timeout */
-
-@property (atomic, assign) NSTimeInterval busyTimeout;
 
 /** Crash on errors */
 
@@ -692,8 +689,8 @@
 
 
 // description forthcoming
-- (void)setRetryTimeout:(NSTimeInterval)timeout;
-- (NSTimeInterval)retryTimeout;
+- (void)setMaxBusyRetryTimeInterval:(NSTimeInterval)timeoutInSeconds;
+- (NSTimeInterval)maxBusyRetryTimeInterval;
 
 
 #if SQLITE_VERSION_NUMBER >= 3007000

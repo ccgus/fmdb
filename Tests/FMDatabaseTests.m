@@ -176,7 +176,7 @@
     [self.db executeUpdate:@"create table t1 (a integer)"];
     [self.db executeUpdate:@"insert into t1 values (?)", [NSNumber numberWithInt:5]];
     
-    [self.db setRetryTimeout:2];
+    [self.db setMaxBusyRetryTimeInterval:2];
     
     FMDatabase *newDB = [FMDatabase databaseWithPath:self.databasePath];
     [newDB open];
