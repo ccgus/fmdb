@@ -366,7 +366,7 @@
     }
     
     if (returnValue == nil) {
-        returnValue = [NSNull null];
+        returnValue = @"";
     }
     
     return returnValue;
