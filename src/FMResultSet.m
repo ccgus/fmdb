@@ -144,6 +144,14 @@
 }
 
 
+- (NSArray*)resultArray {
+    NSMutableArray *resultsArray = [NSMutableArray arrayWithCapacity:100];
+    while ([self next]) {
+        NSDictionary *dict = [self resultDictionary];
+        [resultsArray addObject:dict];
+    }
+    return [resultsArray count] == 0 ? nil : resultsArray;
+}
 
 
 - (BOOL)next {
@@ -358,7 +366,7 @@
     }
     
     if (returnValue == nil) {
-        returnValue = [NSNull null];
+        returnValue = @"";
     }
     
     return returnValue;
