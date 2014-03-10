@@ -1,8 +1,10 @@
+/* main.m
+ *
+ * Sample code to illustrate some of the basic FMDB classes and run them through their paces for illustrative purposes.
+ */
+
 #import <Foundation/Foundation.h>
-#import "FMDatabase.h"
-#import "FMDatabaseAdditions.h"
-#import "FMDatabasePool.h"
-#import "FMDatabaseQueue.h"
+#import "FMDB.h"
 
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
