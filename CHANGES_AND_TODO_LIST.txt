@@ -3,6 +3,13 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2014.03.08
+    A few administrative changes:
+
+        - Move FMDB source files into three subdirectories, either src/fmdb, src/sample, or src/extras.
+        - Renamed fmdb.m to main.m and moved it into src/sample so that it's clear its a sample and it won't be included in project for those users who manually drag fmdb source into their projects.
+        - Created FMDB.m for those users who would prefer to do a single #import and get all of the key headers. 
+
 2014.01.17
     It's never been safe to reentrantly call -[FMDatabaseQueue inDatabase:], as it would block.  Which can be kind of annoying - so now FMDB will crash instead (thanks to Mike Ash for the patch).
 
