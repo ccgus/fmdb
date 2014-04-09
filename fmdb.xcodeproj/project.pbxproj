@@ -196,7 +196,6 @@
 			children = (
 				8314AF3018CD737D00EC0E25 /* fmdb */,
 				CC7CE42518F5C02E00938264 /* optional extras */,
-				CC7CE42918F5C05800938264 /* FMStatementSplitter */,
 				8314AF3118CD739500EC0E25 /* sample */,
 			);
 			name = Source;
@@ -295,6 +294,7 @@
 		CC7CE42518F5C02E00938264 /* optional extras */ = {
 			isa = PBXGroup;
 			children = (
+				CC7CE42918F5C05800938264 /* FMStatementSplitter */,
 				CC7CE42618F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.h */,
 				CC7CE42718F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.m */,
 			);
