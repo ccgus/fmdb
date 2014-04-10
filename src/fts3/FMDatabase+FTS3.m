@@ -9,33 +9,35 @@
 #import "FMDatabase+FTS3.h"
 #import "fts3_tokenizer.h"
 
-/* I know this is an evil global, but I'm not sure an app needs multiple tokenizers anyway...*/
-static id<FMTokenizerDelegate> __unsafe_unretained g_delegate = nil;
+/* I know this is an evil global, but we need to be able to map names to implementations. */
+static NSMapTable *g_delegateMap = nil;
 
 /*
  ** Class derived from sqlite3_tokenizer
  */
-struct FMDBTokenizer
+typedef struct FMDBTokenizer
 {
     sqlite3_tokenizer base;
-};
+    id<FMTokenizerDelegate> __unsafe_unretained delegate;
+} FMDBTokenizer;
 
 /*
  ** Create a new tokenizer instance.
  */
 static int FMDBTokenizerCreate(int argc, const char * const *argv, sqlite3_tokenizer **ppTokenizer)
 {
-    struct FMDBTokenizer *t;
+    NSCParameterAssert(argc > 0);   // Check that the name of the tokenizer is set in CREATE VIRTUAL TABLE
     
-    t = (struct FMDBTokenizer *) sqlite3_malloc(sizeof(*t));
+    FMDBTokenizer *tokenizer = (FMDBTokenizer *) sqlite3_malloc(sizeof(FMDBTokenizer));
     
-    if ( t==NULL ) {
+    if (tokenizer == NULL) {
         return SQLITE_NOMEM;
     }
     
-    memset(t, 0, sizeof(*t));
-    *ppTokenizer = &t->base;
+    memset(tokenizer, 0, sizeof(*tokenizer));
+    tokenizer->delegate = [g_delegateMap objectForKey:[NSString stringWithUTF8String:argv[0]]];
     
+    *ppTokenizer = &tokenizer->base;
     return SQLITE_OK;
 }
 
@@ -58,6 +60,7 @@ static int FMDBTokenizerOpen(sqlite3_tokenizer *pTokenizer,         /* The token
                              const char *pInput, int nBytes,        /* String to be tokenized */
                              sqlite3_tokenizer_cursor **ppCursor)   /* OUT: Tokenization cursor */
 {
+    FMDBTokenizer *tokenizer = (FMDBTokenizer *)pTokenizer;
     FMTokenizerCursor *cursor = (FMTokenizerCursor *)sqlite3_malloc(sizeof(FMTokenizerCursor));
     
     if (cursor == NULL) {
@@ -73,7 +76,7 @@ static int FMDBTokenizerOpen(sqlite3_tokenizer *pTokenizer,         /* The token
     cursor->userObject = NULL;
     cursor->tempBuffer = NULL;
         
-    [g_delegate openTokenizerCursor:cursor];
+    [tokenizer->delegate openTokenizerCursor:cursor];
 
     *ppCursor = (sqlite3_tokenizer_cursor *)cursor;
     return SQLITE_OK;
@@ -86,8 +89,9 @@ static int FMDBTokenizerOpen(sqlite3_tokenizer *pTokenizer,         /* The token
 static int FMDBTokenizerClose(sqlite3_tokenizer_cursor *pCursor)
 {
     FMTokenizerCursor *cursor = (FMTokenizerCursor *)pCursor;
+    FMDBTokenizer *tokenizer = (FMDBTokenizer *)cursor->tokenizer;
     
-    [g_delegate closeTokenizerCursor:cursor];
+    [tokenizer->delegate closeTokenizerCursor:cursor];
     
     if (cursor->userObject) {
         CFRelease(cursor->userObject);
@@ -116,8 +120,9 @@ static int FMDBTokenizerNext(sqlite3_tokenizer_cursor *pCursor,  /* Cursor retur
                              int *piPosition)                    /* OUT: Position integer of token */
 {
     FMTokenizerCursor *cursor = (FMTokenizerCursor *)pCursor;
+    FMDBTokenizer *tokenizer = (FMDBTokenizer *)cursor->tokenizer;
     
-    if ([g_delegate nextTokenForCursor:cursor]) {
+    if ([tokenizer->delegate nextTokenForCursor:cursor]) {
         return SQLITE_DONE;
     }
     
@@ -160,23 +165,30 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
 
 @implementation FMDatabase (FTS3)
 
-- (BOOL)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withName:(NSString *)name
++ (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withName:(NSString *)name
 {
     NSParameterAssert(tokenizer);
-
-    if (g_delegate == tokenizer) {
-        return YES;
-    }
+    NSParameterAssert([name length]);
     
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        g_delegateMap = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsCopyIn
+                                              valueOptions:NSPointerFunctionsWeakMemory];
+    });
+    
+    [g_delegateMap setObject:tokenizer forKey:name];
+}
+
+- (BOOL)installTokenizerModule
+{
     const sqlite3_tokenizer_module *module = &FMDBTokenizerModule;
     NSData *tokenizerData = [NSData dataWithBytes:&module  length:sizeof(module)];
     
-    FMResultSet *results = [self executeQuery:@"SELECT fts3_tokenizer(?, ?)", name, tokenizerData];
+    FMResultSet *results = [self executeQuery:@"SELECT fts3_tokenizer('fmdb', ?)", tokenizerData];
     
     if ([results next]) {
         [results close];
-        g_delegate = tokenizer;
-        
         return YES;
     }
     

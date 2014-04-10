@@ -10,9 +10,21 @@
 
 @protocol FMTokenizerDelegate;
 
+/**
+  This category provides methods to access the FTS3 extensions in SQLite.
+ */
 @interface FMDatabase (FTS3)
 
-- (BOOL)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withName:(NSString *)name;
+/**
+ Register a delgate implementation in the global table. The name should be used
+ as a parameter when creating the table.
+ */
++ (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withName:(NSString *)name;
+
+/**
+ Calls the `fts3_tokenizer()` function on this database, installing the "fmdb" tokenizer module.
+ */
+- (BOOL)installTokenizerModule;
 
 @end
 
