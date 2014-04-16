@@ -5,6 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FMDB.h"
+#import "FMSQLStatementSplitter.h"
 
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
@@ -1078,6 +1079,40 @@ int main (int argc, const char * argv[]) {
         
     }];
     
+    //Example for splitting batch statement
+    {
+        NSArray *batchStringArray = @[@"insert into ftest values ('hello;');",
+                                      @"insert into ftest values ('hi;');",
+                                      @"insert into ftest values ('not h!\\\\');",
+                                      @"insert into ftest values ('definitely not h!')"];
+        NSMutableString *batchStatement = [NSMutableString string];
+        for (NSString *str in batchStringArray)
+        {
+            [batchStatement appendString:str];
+        }
+        NSArray *statements = [[FMSQLStatementSplitter sharedInstance] statementsFromBatchSqlStatement:batchStatement];
+        NSLog(@"Number of sqlitted statements is %lu (should be %lu)", (unsigned long)statements.count, (unsigned long)batchStringArray.count);
+        
+        if (statements.count == batchStringArray.count)
+        {
+            for (NSUInteger splittedIndex = 0; splittedIndex < statements.count; splittedIndex++)
+            {
+                NSString *originalStatement = batchStringArray[splittedIndex];
+                NSString *splittedStatement = ((FMSplittedStatement *)statements[splittedIndex]).statementString;
+                if (![originalStatement isEqualToString:splittedStatement])
+                {
+                    NSLog(@"Splitter failed! Original batch string is %@", batchStatement);
+                }
+            }
+        }
+        
+        [queue inDatabase:^(FMDatabase *adb) {
+            for (FMSplittedStatement *sqlittedStatement in statements)
+            {
+                [adb executeUpdate:sqlittedStatement.statementString];
+            }
+        }];
+    }
     
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     

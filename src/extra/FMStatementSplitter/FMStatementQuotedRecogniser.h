@@ -91,40 +91,40 @@
  *
  * @see endQuote
  */
-@property (readwrite,copy) NSString *startQuote;
+@property (readwrite,nonatomic,copy) NSString *startQuote;
 
 /**
  * Determines the string used to indicate the end of the quoted literal.
  *
  * @see startQuote
  */
-@property (readwrite,copy) NSString *endQuote;
+@property (readwrite,nonatomic,copy) NSString *endQuote;
 
 /**
  * Determines the string used to indicate an escaped character in the quoted literal.
  */
-@property (readwrite,copy) NSString *escapeSequence;
+@property (readwrite,nonatomic,copy) NSString *escapeSequence;
 
 /**
  * If `YES`, quoted string will contains `escapeSequence`.
  * If `NO`, quoted string will not contains `escapeSequence`.
  * Default is `NO`.
  */
-@property (nonatomic, assign) BOOL shouldQuoteEscapeSequence;
+@property (nonatomic,assign) BOOL shouldQuoteEscapeSequence;
 
 /**
  * Determines how much of the input string to consume when an escaped literal is found, and what to replace it with.
  */
-@property (readwrite,copy) NSString *(^escapeReplacer)(NSString *tokenStream, NSUInteger *quotePosition);
+@property (readwrite,nonatomic,copy) NSString *(^escapeReplacer)(NSString *tokenStream, NSUInteger *quotePosition);
 
 /**
  * Determines the maximum length of the quoted literal not including quotes.  To indicate the literal can be any length specify NSNotFound.
  */
-@property (readwrite,assign) NSUInteger maximumLength;
+@property (readwrite,nonatomic,assign) NSUInteger maximumLength;
 
 /**
  * Determines the name of the token produced.
  */
-@property (readwrite,copy) NSString *name;
+@property (readwrite,nonatomic,copy) NSString *name;
 
 @end

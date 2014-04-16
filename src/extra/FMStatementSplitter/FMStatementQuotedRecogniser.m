@@ -54,49 +54,6 @@
     return self;
 }
 
-#define CPQuotedRecogniserStartQuoteKey     @"Q.s"
-#define CPQuotedRecogniserEndQuoteKey       @"Q.e"
-#define CPQuotedRecogniserEscapeSequenceKey @"Q.es"
-#define CPQuotedRecogniserMaximumLengthKey  @"Q.m"
-#define CPQuotedRecogniserNameKey           @"Q.n"
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super init];
-    
-    if (nil != self)
-    {
-        [self setStartQuote:[aDecoder decodeObjectForKey:CPQuotedRecogniserStartQuoteKey]];
-        [self setEndQuote:[aDecoder decodeObjectForKey:CPQuotedRecogniserEndQuoteKey]];
-        [self setEscapeSequence:[aDecoder decodeObjectForKey:CPQuotedRecogniserEscapeSequenceKey]];
-        @try
-        {
-            [self setMaximumLength:[aDecoder decodeIntegerForKey:CPQuotedRecogniserMaximumLengthKey]];
-        }
-        @catch (NSException *exception)
-        {
-            NSLog(@"Warning, value for maximum length too long for this platform, allowing infinite lengths");
-            [self setMaximumLength:NSNotFound];
-        }
-        [self setName:[aDecoder decodeObjectForKey:CPQuotedRecogniserNameKey]];
-    }
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    if (nil != [self escapeReplacer])
-    {
-        NSLog(@"Warning: encoding CPQuoteRecogniser with an escapeReplacer set.  This will not be recreated when decoded.");
-    }
-    [aCoder encodeObject:[self startQuote]     forKey:CPQuotedRecogniserStartQuoteKey];
-    [aCoder encodeObject:[self endQuote]       forKey:CPQuotedRecogniserEndQuoteKey];
-    [aCoder encodeObject:[self escapeSequence] forKey:CPQuotedRecogniserEscapeSequenceKey];
-    [aCoder encodeInteger:[self maximumLength] forKey:CPQuotedRecogniserMaximumLengthKey];
-    [aCoder encodeObject:[self name]           forKey:CPQuotedRecogniserNameKey];
-}
-
 - (NSRange)recogniseRangeWithScanner:(NSScanner *)scanner currentTokenPosition:(NSUInteger *)tokenPosition
 {
     NSString *(^er)(NSString *tokenStream, NSUInteger *quotePosition) = [self escapeReplacer];
@@ -104,12 +61,12 @@
     NSUInteger endQuoteLength = [self.endQuote length];
     NSString *tokenString = [scanner string];
 
-    long inputLength = [tokenString length];
+    NSUInteger inputLength = [tokenString length];
     NSUInteger rangeLength = [FMStatementQuotedRecogniser minWithLeftParam:inputLength - *tokenPosition
                                                                 rightParam:startQuoteLength + endQuoteLength + self.maximumLength];
-    CFRange searchRange = CFRangeMake(*tokenPosition, rangeLength);
+    CFRange searchRange = CFRangeMake((CFIndex)*tokenPosition, (CFIndex)rangeLength);
     CFRange range;
-    BOOL matched = CFStringFindWithOptions((CFStringRef)tokenString, (CFStringRef)self.startQuote, searchRange, kCFCompareAnchored, &range);
+    Boolean matched = CFStringFindWithOptions((CFStringRef)tokenString, (CFStringRef)self.startQuote, searchRange, kCFCompareAnchored, &range);
     
     CFMutableStringRef outputString = CFStringCreateMutable(kCFAllocatorDefault, 0);
     
@@ -120,22 +77,22 @@
         
         CFRange endRange;
         CFRange escapeRange;
-        BOOL matchedEndSequence = CFStringFindWithOptions((CFStringRef)tokenString, (CFStringRef)self.endQuote, searchRange, 0L, &endRange);
-        BOOL matchedEscapeSequence = nil == self.escapeSequence ? NO : CFStringFindWithOptions((CFStringRef)tokenString, (CFStringRef)self.escapeSequence, searchRange, 0L, &escapeRange);
+        Boolean matchedEndSequence = CFStringFindWithOptions((CFStringRef)tokenString, (CFStringRef)self.endQuote, searchRange, 0L, &endRange);
+        Boolean matchedEscapeSequence = nil == self.escapeSequence ? NO : CFStringFindWithOptions((CFStringRef)tokenString, (CFStringRef)self.escapeSequence, searchRange, 0L, &escapeRange);
         
-        while (matchedEndSequence && searchRange.location < inputLength)
+        while (matchedEndSequence && (NSUInteger)searchRange.location < inputLength)
         {
             if (!matchedEscapeSequence || endRange.location < escapeRange.location)//End quote is not escaped by escape sequence.
             {
                 NSUInteger resultRangeBegin = *tokenPosition;
-                *tokenPosition = endRange.location + endRange.length;
+                *tokenPosition = (NSUInteger)(endRange.location + endRange.length);
                 NSUInteger resultRangeLength = *tokenPosition - resultRangeBegin;
                 CFRelease(outputString);
                 return NSMakeRange(resultRangeBegin, resultRangeLength);
             }
             else//End quote is escaped by escape sequence
             {
-                NSUInteger quotedPosition = escapeRange.location + escapeRange.length;
+                NSUInteger quotedPosition = (NSUInteger)(escapeRange.location + escapeRange.length);
                 CFRange subStrRange = CFRangeMake(searchRange.location,
                                                   escapeRange.location + (self.shouldQuoteEscapeSequence ? escapeRange.length : 0) - searchRange.location);
                 CFStringRef substr = CFStringCreateWithSubstring(kCFAllocatorDefault, (CFStringRef)tokenString, subStrRange);
@@ -158,8 +115,8 @@
                     CFRelease(substr);
                     quotedPosition += 1;
                 }
-                searchRange.length   = searchRange.location + searchRange.length - quotedPosition;
-                searchRange.location = quotedPosition;
+                searchRange.length   = searchRange.location + searchRange.length - (CFIndex)quotedPosition;
+                searchRange.location = (CFIndex)quotedPosition;
                 
                 if (endRange.location < searchRange.location)
                 {

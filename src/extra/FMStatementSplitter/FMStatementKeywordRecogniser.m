@@ -98,11 +98,11 @@
         NSUInteger remainingChars = [[scanner string] length] - *tokenPosition;
         if (remainingChars >= kwLength)
         {
-            if (CFStringFindWithOptions((CFStringRef)[scanner string], (CFStringRef)keyword, CFRangeMake(*tokenPosition, kwLength), kCFCompareAnchored | kCFCompareCaseInsensitive, NULL))
+            if (CFStringFindWithOptions((CFStringRef)[scanner string], (CFStringRef)keyword, CFRangeMake((CFIndex)*tokenPosition, (CFIndex)kwLength), kCFCompareAnchored | kCFCompareCaseInsensitive, NULL))
             {
                 if (remainingChars == kwLength ||
                     nil == self.invalidFollowingCharacters ||
-                    !CFStringFindCharacterFromSet((CFStringRef)[scanner string], (CFCharacterSetRef)self.invalidFollowingCharacters, CFRangeMake(*tokenPosition + kwLength, 1), kCFCompareAnchored, NULL))
+                    !CFStringFindCharacterFromSet((CFStringRef)[scanner string], (CFCharacterSetRef)self.invalidFollowingCharacters, CFRangeMake((CFIndex)(*tokenPosition + kwLength), 1), kCFCompareAnchored, NULL))
                 {
                     NSRange result = NSMakeRange(*tokenPosition, kwLength);
                     *tokenPosition = *tokenPosition + kwLength;
