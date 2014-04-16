@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol FMStatementTokenRecogniser <NSObject, NSCoding>
+@protocol FMStatementTokenRecogniser <NSObject>
 
 @required
 - (NSRange)recogniseRangeWithScanner:(NSScanner *)scanner currentTokenPosition:(NSUInteger *)tokenPosition;
