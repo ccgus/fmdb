@@ -109,6 +109,24 @@ When you have finished executing queries and updates on the database, you should
 
 `FMDatabase` can begin and commit a transaction by invoking one of the appropriate methods or executing a begin/end transaction statement.
 
+### Split Batch Statement
+
+`FMSQLStatementSplitter` can split batch sql statement into several separated statements, then `[FMDatabase executeUpdate:]` or other methods can be used to execute each separated statement:
+
+```
+NSString *batchStatement = @"insert into ftest values ('hello;');"
+                           @"insert into ftest values ('hi;');"
+                           @"insert into ftest values ('not h!\\\\');"
+                           @"insert into ftest values ('definitely not h!')";
+NSArray *statements = [[FMSQLStatementSplitter sharedInstance] statementsFromBatchSqlStatement:batchStatement];
+[queue inDatabase:^(FMDatabase *adb) {
+    for (FMSplittedStatement *sqlittedStatement in statements)
+    {
+        [adb executeUpdate:sqlittedStatement.statementString];
+    }
+}];
+```
+
 ### Data Sanitization
 
 When providing a SQL statement to FMDB, you should not attempt to "sanitize" any values before insertion.  Instead, you should use the standard SQLite binding syntax:
