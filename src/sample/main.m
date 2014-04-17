@@ -243,7 +243,7 @@ int main (int argc, const char * argv[]) {
                          "insert into test2 (y) values ('YYY');"
                          "insert into test3 (z) values ('ZZZ');";
 
-        FMDBQuickCheck(db, [db executeBulkSQL:sql]);
+        FMDBQuickCheck([db executeBulkSQL:sql]);
     }
 
     {
@@ -251,7 +251,7 @@ int main (int argc, const char * argv[]) {
                          "select count(*) as count from test2;"
                          "select count(*) as count from test3;";
 
-        FMDBQuickCheck(db, [db executeBulkSQL:sql block:^int(NSDictionary *dictionary) {
+        FMDBQuickCheck([db executeBulkSQL:sql block:^int(NSDictionary *dictionary) {
             NSInteger count = [dictionary[@"count"] integerValue];
             if (count == 0) {
                 NSLog(@"executeBulkSQL: error: was expecting non-zero number of records; dictionary = %@", dictionary);
@@ -267,7 +267,7 @@ int main (int argc, const char * argv[]) {
                          "drop table test2;"
                          "drop table test3;";
 
-        FMDBQuickCheck(db, [db executeBulkSQL:sql]);
+        FMDBQuickCheck([db executeBulkSQL:sql]);
     }
 
 
