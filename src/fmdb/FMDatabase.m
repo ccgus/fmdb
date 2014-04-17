@@ -3,7 +3,7 @@
 #import <objc/runtime.h>
 
 
-static ExecuteBulkSQLCallbackBlock execCallbackBlock;
+static FMDBExecuteBulkSQLCallbackBlock execCallbackBlock;
 
 
 @interface FMDatabase ()
@@ -1095,7 +1095,7 @@ int executeBulkSQLCallback(void *userInfo, int columns, char **values, char**nam
     return [self executeBulkSQL:sql block:nil];
 }
 
-- (BOOL)executeBulkSQL:(NSString *)sql block:(ExecuteBulkSQLCallbackBlock)block
+- (BOOL)executeBulkSQL:(NSString *)sql block:(FMDBExecuteBulkSQLCallbackBlock)block
 {
     int rc;
 

@@ -39,7 +39,7 @@
 #endif
 
 
-typedef int(^ExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
+typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
 
 
 /** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
@@ -399,7 +399,7 @@ typedef int(^ExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
 
  */
 
-- (BOOL)executeBulkSQL:(NSString *)sql block:(ExecuteBulkSQLCallbackBlock)block;
+- (BOOL)executeBulkSQL:(NSString *)sql block:(FMDBExecuteBulkSQLCallbackBlock)block;
 
 /** Last insert rowid
  
