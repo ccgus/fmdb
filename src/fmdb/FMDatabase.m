@@ -2,10 +2,15 @@
 #import "unistd.h"
 #import <objc/runtime.h>
 
+
+static ExecuteBulkSQLCallbackBlock execCallbackBlock;
+
+
 @interface FMDatabase ()
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
+
 @end
 
 @implementation FMDatabase
@@ -45,6 +50,7 @@
         _logsErrors                 = YES;
         _crashOnErrors              = NO;
         _maxBusyRetryTimeInterval   = 2;
+        execCallbackBlock           = nil;
     }
     
     return self;
@@ -1058,6 +1064,59 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     va_end(args);
     
     return [self executeUpdate:sql withArgumentsInArray:arguments];
+}
+
+int executeBulkSQLCallback(void *userInfo, int columns, char **values, char**names)
+{
+    if (!execCallbackBlock) {
+        return 0;
+    }
+
+    NSString *key;
+    id        value;
+
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:columns];
+    for (NSInteger i = 0; i < columns; i++) {
+        key = [NSString stringWithUTF8String:names[i]];
+
+        if (values[i] == NULL)
+            value = [NSNull null];
+        else
+            value = [NSString stringWithUTF8String:values[i]];
+
+        [dictionary setObject:value forKey:key];
+    }
+
+    return execCallbackBlock(dictionary);
+}
+
+- (BOOL)executeBulkSQL:(NSString *)sql
+{
+    return [self executeBulkSQL:sql block:nil];
+}
+
+- (BOOL)executeBulkSQL:(NSString *)sql block:(ExecuteBulkSQLCallbackBlock)block
+{
+    int rc;
+
+    if (execCallbackBlock) {
+        if (_logsErrors) {
+            NSLog(@"Currently already executing sqlite3_exec");
+        }
+        return NO;
+    }
+
+    execCallbackBlock = block;
+
+    if (execCallbackBlock) {
+        rc = sqlite3_exec(self.sqliteHandle, [sql UTF8String], executeBulkSQLCallback, NULL, NULL);
+    } else {
+        rc = sqlite3_exec(self.sqliteHandle, [sql UTF8String], NULL, NULL, NULL);
+    }
+
+    execCallbackBlock = nil;
+
+    return (rc == SQLITE_OK);
 }
 
 - (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... {
