@@ -1242,7 +1242,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 int FMDBSQLiteExecCallBackFunction(void *theBlockAsVoid, int columnCount, char **columnValues, char **columnNames);
 int FMDBSQLiteExecCallBackFunction(void *theBlockAsVoid, int columnCount, char **columnValues, char **columnNames) {
     
-    void (^callbackBlock)(int columnCount, char **columnValues, char **columnNames, BOOL *stop) = theBlockAsVoid;
+    void (^callbackBlock)(int columnCount, char **columnValues, char **columnNames, BOOL *stop) = (__bridge void (^)(int, char **, char **, BOOL *))(theBlockAsVoid);
     
     if (callbackBlock) {
         BOOL shouldStop = NO;
@@ -1261,7 +1261,7 @@ int FMDBSQLiteExecCallBackFunction(void *theBlockAsVoid, int columnCount, char *
     
     char *errmsg = nil;
     
-    int errorCode = sqlite3_exec([self sqliteHandle], [sql UTF8String], &FMDBSQLiteExecCallBackFunction, callbackBlock, &errmsg);
+    int errorCode = sqlite3_exec([self sqliteHandle], [sql UTF8String], &FMDBSQLiteExecCallBackFunction, (__bridge void *)(callbackBlock), &errmsg);
     
     
     if (errmsg) {
