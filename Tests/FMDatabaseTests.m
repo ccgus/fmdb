@@ -833,4 +833,36 @@
 #endif
 
 
+- (void)testBatch {
+    
+    NSString *sql = @"create table exectest (foo text);\n"
+                    @"insert into exectest values ('hello')\n;"
+                    @"insert into exectest values ('hi');\n"
+                    @"insert into exectest values ('not h!');\n"
+                    @"insert into exectest values ('definitely not h!');\n"
+                    @"select * from exectest where foo like 'h%';";
+    
+    __block int callbackRowCount = 0;
+    
+    int errorCode = [[self db] executeBatch:sql withRowResultBlock:^(int columnCount, char **columnValues, char **columnNames, BOOL *stop) {
+        
+        NSLog(@"Inserted %d columns for row %d", columnCount, callbackRowCount);
+        
+        callbackRowCount++;
+    }];
+    
+    XCTAssert(callbackRowCount == 2, @"Wrong number of rows inserted (got %d)!", callbackRowCount);
+    XCTAssert(errorCode == SQLITE_OK, @"Got an error back from executeBatch: %d", errorCode);
+    
+    int selectRowCount = 0;
+    FMResultSet *rs = [[self db] executeQuery:@"select * from exectest"];
+    while ([rs next]) {
+        selectRowCount++;
+    }
+    
+    XCTAssert(selectRowCount == 4, @"Wrong number of rows queried!");
+    
+}
+
+
 @end

@@ -1239,6 +1239,42 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 #endif
 }
 
+int FMDBSQLiteExecCallBackFunction(void *theBlockAsVoid, int columnCount, char **columnValues, char **columnNames);
+int FMDBSQLiteExecCallBackFunction(void *theBlockAsVoid, int columnCount, char **columnValues, char **columnNames) {
+    
+    void (^callbackBlock)(int columnCount, char **columnValues, char **columnNames, BOOL *stop) = theBlockAsVoid;
+    
+    if (callbackBlock) {
+        BOOL shouldStop = NO;
+        callbackBlock(columnCount, columnValues, columnNames, &shouldStop);
+        
+        if (shouldStop) {
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+
+- (int)executeBatch:(NSString*)sql withRowResultBlock:(void (^)(int columnCount, char **columnValues, char **columnNames, BOOL *stop))callbackBlock {
+    
+    
+    char *errmsg = nil;
+    
+    int errorCode = sqlite3_exec([self sqliteHandle], [sql UTF8String], &FMDBSQLiteExecCallBackFunction, callbackBlock, &errmsg);
+    
+    
+    if (errmsg) {
+        NSLog(@"Error inserting batch: %s", errmsg);
+        errorCode = [self lastErrorCode];
+        sqlite3_free(errmsg);
+    }
+    
+    return errorCode;
+}
+
+
+
 @end
 
 

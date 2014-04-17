@@ -916,6 +916,9 @@
 
 - (NSString *)stringFromDate:(NSDate *)date;
 
+
+- (int)executeBatch:(NSString*)sql withRowResultBlock:(void (^)(int columnCount, char **columnValues, char **columnNames, BOOL *stop))callbackBlock;
+
 @end
 
 
