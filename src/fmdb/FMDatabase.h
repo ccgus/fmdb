@@ -354,6 +354,8 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
 
  The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
 
+ @param sql The SQL to be performed, with optional `?` placeholders.
+
  @param args A `va_list` of arguments.
 
  @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
@@ -373,7 +375,7 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  
  @return      `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
- @see executeBulkSQL:userInfo:block:
+ @see executeBulkSQL:block:
  @see [sqlite3_exec()](http://sqlite.org/c3ref/exec.html)
 
  */
@@ -407,6 +409,8 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  
  This routine returns the rowid of the most recent successful `INSERT` into the database from the database connection in the first argument. As of SQLite version 3.7.7, this routines records the last insert rowid of both ordinary tables and virtual tables. If no successful `INSERT`s have ever occurred on that database connection, zero is returned.
  
+ @return The rowid of the last inserted row.
+ 
  @see [sqlite3_last_insert_rowid()](http://sqlite.org/c3ref/last_insert_rowid.html)
 
  */
@@ -416,6 +420,8 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
 /** The number of rows changed by prior SQL statement.
  
  This function returns the number of database rows that were changed or inserted or deleted by the most recently completed SQL statement on the database connection specified by the first parameter. Only changes that are directly specified by the INSERT, UPDATE, or DELETE statement are counted.
+ 
+ @return The number of rows changed by prior SQL statement.
  
  @see [sqlite3_changes()](http://sqlite.org/c3ref/changes.html)
  
@@ -700,7 +706,7 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  
  Returns the English-language text that describes the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.
 
- @returns `NSString` of the last error message.
+ @return `NSString` of the last error message.
  
  @see [sqlite3_errmsg()](http://sqlite.org/c3ref/errcode.html)
  @see lastErrorCode
@@ -714,7 +720,7 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  
  Returns the numeric result code or extended result code for the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.
 
- @returns Integer value of the last error code.
+ @return Integer value of the last error code.
 
  @see [sqlite3_errcode()](http://sqlite.org/c3ref/errcode.html)
  @see lastErrorMessage
@@ -806,7 +812,7 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
 
  @param block Block of code to perform from within save point.
  
- @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ @return The NSError corresponding to the error, if any. If no error, returns `nil`.
 
  @see startSavePointWithName:error:
  @see releaseSavePointWithName:error:
@@ -824,7 +830,7 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
 
 /** Test to see if the library is threadsafe
 
- @return Zero if and only if SQLite was compiled with mutexing code omitted due to the SQLITE_THREADSAFE compile-time option being set to 0.
+ @return `NO` if and only if SQLite was compiled with mutexing code omitted due to the SQLITE_THREADSAFE compile-time option being set to 0.
 
  @see [sqlite3_threadsafe()](http://sqlite.org/c3ref/threadsafe.html)
  */
@@ -832,6 +838,8 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
 + (BOOL)isSQLiteThreadSafe;
 
 /** Run-time library version numbers
+ 
+ @return The sqlite library version string.
  
  @see [sqlite3_libversion()](http://sqlite.org/c3ref/libversion.html)
  */
@@ -950,7 +958,7 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  
  @param s `NSString` to convert to `NSDate`.
  
- @return `nil` if no formatter is set.
+ @return The `NSDate` object; or `nil` if no formatter is set.
  
  @see hasDateFormatter
  @see setDateFormat:
@@ -965,7 +973,7 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  
  @param date `NSDate` of date to convert to `NSString`.
 
- @return `nil` if no formatter is set.
+ @return The `NSString` representation of the date; `nil` if no formatter is set.
  
  @see hasDateFormatter
  @see setDateFormat:
@@ -1015,6 +1023,8 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  */
 
 @property (atomic, assign) sqlite3_stmt *statement;
+
+/** Indication of whether the statement is in use */
 
 @property (atomic, assign) BOOL inUse;
 
