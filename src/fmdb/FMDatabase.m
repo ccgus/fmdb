@@ -183,10 +183,14 @@ static FMDBExecuteBulkSQLCallbackBlock execCallbackBlock;
 #pragma mark Busy handler routines
 
 // NOTE: appledoc seems to choke on this function for some reason;
-//       so when generating documentation, you might want to temporarily
-//       comment out this function. It's a known bug that it has problems
-//       with C functions within a class implementation, but for some
-//       reason, only this C function causes problems; the rest don't!
+//       so when generating documentation, you might want to ignore the
+//       .m files so that it only documents the public interfaces outlined
+//       in the .h files.
+//
+//       This is a known appledoc bug that it has problems with C functions
+//       within a class implementation, but for some reason, only this
+//       C function causes problems; the rest don't. Anyway, ignoring the .m
+//       files with appledoc will prevent this problem from occurring.
 
 static int FMDBDatabaseBusyHandler(void *f, int count) {
     FMDatabase *self = (__bridge FMDatabase*)f;
