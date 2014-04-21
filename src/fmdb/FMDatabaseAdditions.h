@@ -257,7 +257,7 @@
 
 /** Set the user-version
  
- @param appID The `uint32_t` numeric value of the user version.
+ @param version The `uint32_t` numeric value of the user version.
  
  @see userVersion
  */

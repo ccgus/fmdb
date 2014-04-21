@@ -818,19 +818,54 @@
 {
     uint32_t appID = NSHFSTypeCodeFromFileType(NSFileTypeForHFSTypeCode('fmdb'));
     
-    [db setApplicationID:appID];
+    [self.db setApplicationID:appID];
     
-    uint32_t rAppID = [db applicationID];
+    uint32_t rAppID = [self.db applicationID];
     
     XCTAssertEqual(rAppID, appID);
     
-    [db setApplicationIDString:@"acrn"];
+    [self.db setApplicationIDString:@"acrn"];
     
-    NSString *s = [db applicationIDString];
+    NSString *s = [self.db applicationIDString];
     
     XCTAssertEqualObjects(s, @"acrn");
 }
 #endif
 
+- (void)testBulkSQL
+{
+    BOOL success;
+
+    NSString *sql = @"create table bulktest1 (id integer primary key autoincrement, x text);"
+                     "create table bulktest2 (id integer primary key autoincrement, y text);"
+                     "create table bulktest3 (id integer primary key autoincrement, z text);"
+                     "insert into bulktest1 (x) values ('XXX');"
+                     "insert into bulktest2 (y) values ('YYY');"
+                     "insert into bulktest3 (z) values ('ZZZ');";
+
+    success = [self.db executeBulkSQL:sql];
+
+    XCTAssertTrue(success, @"bulk create");
+
+    sql = @"select count(*) as count from bulktest1;"
+           "select count(*) as count from bulktest2;"
+           "select count(*) as count from bulktest3;";
+
+    success = [self.db executeBulkSQL:sql block:^int(NSDictionary *dictionary) {
+        NSInteger count = [dictionary[@"count"] integerValue];
+        XCTAssertEqual(count, 1, @"expected one record for dictionary %@", dictionary);
+        return 0;
+    }];
+
+    XCTAssertTrue(success, @"bulk select");
+
+    sql = @"drop table bulktest1;"
+           "drop table bulktest2;"
+           "drop table bulktest3;";
+
+    success = [self.db executeBulkSQL:sql];
+
+    XCTAssertTrue(success, @"bulk drop");
+}
 
 @end
