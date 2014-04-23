@@ -66,6 +66,38 @@
     return _databasePath;
 }
 
++ (NSString*)FMDBUserVersion {
+    return @"2.3";
+}
+
+// returns 0x0230 for version 2.3.  This makes it super easy to do things like:
+// /* need to make sure to do X with FMDB version 2.3 or later */
+// if ([FMDatabase FMDBVersion] >= 0x0230) { … }
+
++ (SInt32)FMDBVersion {
+    
+    // we go through these hoops so that we only have to change the version number in a single spot.
+    static dispatch_once_t once;
+    static SInt32 FMDBVersionVal = 0;
+    
+    dispatch_once(&once, ^{
+        NSString *prodVersion = [self FMDBUserVersion];
+        
+        if ([[prodVersion componentsSeparatedByString:@"."] count] < 3) {
+            prodVersion = [prodVersion stringByAppendingString:@".0"];
+        }
+        
+        NSString *junk = [prodVersion stringByReplacingOccurrencesOfString:@"." withString:@""];
+        
+        char *e = nil;
+        FMDBVersionVal = (int) strtoul([junk UTF8String], &e, 16);
+        
+    });
+    
+
+    return FMDBVersionVal;
+}
+
 #pragma mark SQLite information
 
 + (NSString*)sqliteLibVersion {

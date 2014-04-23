@@ -855,6 +855,11 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 + (NSString*)sqliteLibVersion;
 
 
++ (NSString*)FMDBUserVersion;
+
++ (SInt32)FMDBVersion;
+
+
 ///------------------------
 /// @name Make SQL function
 ///------------------------
