@@ -843,7 +843,7 @@
                      "insert into bulktest2 (y) values ('YYY');"
                      "insert into bulktest3 (z) values ('ZZZ');";
 
-    success = [self.db executeBulkSQL:sql];
+    success = [self.db executeStatements:sql];
 
     XCTAssertTrue(success, @"bulk create");
 
@@ -851,7 +851,7 @@
            "select count(*) as count from bulktest2;"
            "select count(*) as count from bulktest3;";
 
-    success = [self.db executeBulkSQL:sql block:^int(NSDictionary *dictionary) {
+    success = [self.db executeStatements:sql withResultBlock:^int(NSDictionary *dictionary) {
         NSInteger count = [dictionary[@"count"] integerValue];
         XCTAssertEqual(count, 1, @"expected one record for dictionary %@", dictionary);
         return 0;
@@ -863,7 +863,7 @@
            "drop table bulktest2;"
            "drop table bulktest3;";
 
-    success = [self.db executeBulkSQL:sql];
+    success = [self.db executeStatements:sql];
 
     XCTAssertTrue(success, @"bulk drop");
 }

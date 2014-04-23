@@ -1113,11 +1113,11 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     return execCallbackBlock(dictionary);
 }
 
-- (BOOL)executeBulkSQL:(NSString *)sql {
-    return [self executeBulkSQL:sql block:nil];
+- (BOOL)executeStatements:(NSString *)sql {
+    return [self executeStatements:sql withResultBlock:nil];
 }
 
-- (BOOL)executeBulkSQL:(NSString *)sql block:(FMDBExecuteBulkSQLCallbackBlock)block {
+- (BOOL)executeStatements:(NSString *)sql withResultBlock:(FMDBExecuteStatementsCallbackBlock)block {
     
     int rc;
     char *errmsg = nil;

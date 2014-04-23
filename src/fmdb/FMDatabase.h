@@ -39,7 +39,7 @@
 #endif
 
 
-typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
+typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary);
 
 
 /** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
@@ -384,12 +384,12 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  
  @return      `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
- @see executeBulkSQL:block:
+ @see executeStatements:withResultBlock:
  @see [sqlite3_exec()](http://sqlite.org/c3ref/exec.html)
 
  */
 
-- (BOOL)executeBulkSQL:(NSString *)sql;
+- (BOOL)executeStatements:(NSString *)sql;
 
 /** Execute multiple SQL statements with callback handler
  
@@ -404,12 +404,12 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  @return          `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`,
                   `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
  
- @see executeBulkSQL:
+ @see executeStatements:
  @see [sqlite3_exec()](http://sqlite.org/c3ref/exec.html)
 
  */
 
-- (BOOL)executeBulkSQL:(NSString *)sql block:(FMDBExecuteBulkSQLCallbackBlock)block;
+- (BOOL)executeStatements:(NSString *)sql withResultBlock:(FMDBExecuteStatementsCallbackBlock)block;
 
 /** Last insert rowid
  
