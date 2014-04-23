@@ -2,9 +2,6 @@
 #import "unistd.h"
 #import <objc/runtime.h>
 
-
-static FMDBExecuteBulkSQLCallbackBlock execCallbackBlock;
-
 @interface FMDatabase ()
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
@@ -42,7 +39,6 @@ static FMDBExecuteBulkSQLCallbackBlock execCallbackBlock;
         _logsErrors                 = YES;
         _crashOnErrors              = NO;
         _maxBusyRetryTimeInterval   = 2;
-        execCallbackBlock           = nil;
     }
     
     return self;
@@ -1096,55 +1092,42 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     return [self executeUpdate:sql withArgumentsInArray:arguments];
 }
 
-int FMDBExecuteBulkSQLCallback(void *userInfo, int columns, char **values, char**names)
-{
-    if (!execCallbackBlock) {
-        return 0;
+
+int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values, char **names); // shhh clang.
+int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values, char **names) {
+    
+    if (!theBlockAsVoid) {
+        return SQLITE_OK;
     }
-
-    NSString *key;
-    id        value;
-
+    
+    int (^execCallbackBlock)(NSDictionary *resultsDictionary) = (__bridge int (^)(NSDictionary *__strong))(theBlockAsVoid);
+    
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:columns];
+    
     for (NSInteger i = 0; i < columns; i++) {
-        key = [NSString stringWithUTF8String:names[i]];
-
-        if (values[i] == NULL)
-            value = [NSNull null];
-        else
-            value = [NSString stringWithUTF8String:values[i]];
-
+        NSString *key = [NSString stringWithUTF8String:names[i]];
+        id value = values[i] ? [NSString stringWithUTF8String:values[i]] : [NSNull null];
         [dictionary setObject:value forKey:key];
     }
-
+    
     return execCallbackBlock(dictionary);
 }
 
-- (BOOL)executeBulkSQL:(NSString *)sql
-{
+- (BOOL)executeBulkSQL:(NSString *)sql {
     return [self executeBulkSQL:sql block:nil];
 }
 
-- (BOOL)executeBulkSQL:(NSString *)sql block:(FMDBExecuteBulkSQLCallbackBlock)block
-{
+- (BOOL)executeBulkSQL:(NSString *)sql block:(FMDBExecuteBulkSQLCallbackBlock)block {
+    
     int rc;
-
-    if (execCallbackBlock) {
-        if (_logsErrors) {
-            NSLog(@"Currently already executing sqlite3_exec");
-        }
-        return NO;
+    char *errmsg = nil;
+    
+    rc = sqlite3_exec([self sqliteHandle], [sql UTF8String], block ? FMDBExecuteBulkSQLCallback : nil, (__bridge void *)(block), &errmsg);
+    
+    if (errmsg && [self logsErrors]) {
+        NSLog(@"Error inserting batch: %s", errmsg);
+        sqlite3_free(errmsg);
     }
-
-    execCallbackBlock = block;
-
-    if (execCallbackBlock) {
-        rc = sqlite3_exec(self.sqliteHandle, [sql UTF8String], FMDBExecuteBulkSQLCallback, NULL, NULL);
-    } else {
-        rc = sqlite3_exec(self.sqliteHandle, [sql UTF8String], NULL, NULL, NULL);
-    }
-
-    execCallbackBlock = nil;
 
     return (rc == SQLITE_OK);
 }
