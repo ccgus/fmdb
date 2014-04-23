@@ -265,7 +265,16 @@ typedef int(^FMDBExecuteBulkSQLCallbackBlock)(NSDictionary *resultsDictionary);
  @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
  */
 
-- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
+- (BOOL)executeUpdate:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
+
+/** Execute single update statement
+ 
+ @see executeUpdate:withErrorAndBindings:
+ 
+ @warning **Deprecated**: Please use `<executeUpdate:withErrorAndBindings>` instead.
+ */
+
+- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... __attribute__ ((deprecated));
 
 /** Execute single update statement
 

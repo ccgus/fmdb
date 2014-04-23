@@ -84,7 +84,7 @@
 - (void)testFailOnBadStatementWithError
 {
     NSError *error = nil;
-    XCTAssertFalse([self.db update:@"blah blah blah" withErrorAndBindings:&error], @"Invalid statement should fail");
+    XCTAssertFalse([self.db executeUpdate:@"blah blah blah" withErrorAndBindings:&error], @"Invalid statement should fail");
     XCTAssertNotNil(error, @"Should have a non-nil NSError");
     XCTAssertEqual([error code], (NSInteger)SQLITE_ERROR, @"Error should be SQLITE_ERROR");
 }
@@ -599,7 +599,7 @@
     XCTAssertTrue([self.db executeUpdate:@"create table t5 (a text, b int, c blob, d text, e text)"]);
     
     NSError *err = nil;
-    BOOL result = [self.db update:@"insert into t5 values (?, ?, ?, ?, ?)" withErrorAndBindings:&err, @"text", [NSNumber numberWithInt:42], @"BLOB", @"d", [NSNumber numberWithInt:0]];
+    BOOL result = [self.db executeUpdate:@"insert into t5 values (?, ?, ?, ?, ?)" withErrorAndBindings:&err, @"text", [NSNumber numberWithInt:42], @"BLOB", @"d", [NSNumber numberWithInt:0]];
     XCTAssertTrue(result);
 }
 

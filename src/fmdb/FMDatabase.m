@@ -1132,6 +1132,20 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     return (rc == SQLITE_OK);
 }
 
+- (BOOL)executeUpdate:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... {
+    
+    va_list args;
+    va_start(args, outErr);
+    
+    BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    
+    va_end(args);
+    return result;
+}
+
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... {
     va_list args;
     va_start(args, outErr);
@@ -1141,6 +1155,8 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     va_end(args);
     return result;
 }
+
+#pragma clang diagnostic pop
 
 #pragma mark Transactions
 
