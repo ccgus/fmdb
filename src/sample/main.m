@@ -232,13 +232,50 @@ int main (int argc, const char * argv[]) {
     }
     
 #endif
-    
-    
-    
-    
+
+    // -------------------------------------------------------------------------------
+    // executeBulkSQL tests.
+
+    {
+        NSString *sql = @"create table if not exists test1 (id integer primary key autoincrement, x text);"
+                         "create table if not exists test2 (id integer primary key autoincrement, y text);"
+                         "create table if not exists test3 (id integer primary key autoincrement, z text);"
+                         "insert into test1 (x) values ('XXX');"
+                         "insert into test2 (y) values ('YYY');"
+                         "insert into test3 (z) values ('ZZZ');";
+
+        FMDBQuickCheck([db executeBulkSQL:sql]);
+    }
+
+    {
+        NSString *sql = @"select count(*) as count from test1;"
+                         "select count(*) as count from test2;"
+                         "select count(*) as count from test3;";
+
+        FMDBQuickCheck([db executeBulkSQL:sql block:^int(NSDictionary *dictionary) {
+            NSInteger count = [dictionary[@"count"] integerValue];
+            if (count == 0) {
+                NSLog(@"executeBulkSQL: error: was expecting non-zero number of records; dictionary = %@", dictionary);
+            } else {
+                NSLog(@"executeBulkSQL: everything ok: dictionary = %@", dictionary);
+            }
+            return 0;
+        }]);
+    }
+
+    {
+        NSString *sql = @"drop table test1;"
+                         "drop table test2;"
+                         "drop table test3;";
+
+        FMDBQuickCheck([db executeBulkSQL:sql]);
+    }
+
+
     {
         // -------------------------------------------------------------------------------
         // Named parameters count test.
+
         FMDBQuickCheck([db executeUpdate:@"create table namedparamcounttest (a text, b text, c integer, d double)"]);
         NSMutableDictionary *dictionaryArgs = [NSMutableDictionary dictionary];
         [dictionaryArgs setObject:@"Text1" forKey:@"a"];

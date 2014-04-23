@@ -68,7 +68,12 @@
     int                 _openFlags;
 }
 
+/** Path of database */
+
 @property (atomic, retain) NSString *path;
+
+/** Open flags */
+
 @property (atomic, readonly) int openFlags;
 
 ///----------------------------------------------------

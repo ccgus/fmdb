@@ -2,10 +2,14 @@
 #import "unistd.h"
 #import <objc/runtime.h>
 
+
+static FMDBExecuteBulkSQLCallbackBlock execCallbackBlock;
+
 @interface FMDatabase ()
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
+
 @end
 
 @implementation FMDatabase
@@ -15,17 +19,10 @@
 @synthesize checkedOut=_checkedOut;
 @synthesize traceExecution=_traceExecution;
 
+#pragma mark FMDatabase instantiation and deallocation
+
 + (instancetype)databaseWithPath:(NSString*)aPath {
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
-}
-
-+ (NSString*)sqliteLibVersion {
-    return [NSString stringWithFormat:@"%s", sqlite3_libversion()];
-}
-
-+ (BOOL)isSQLiteThreadSafe {
-    // make sure to read the sqlite headers on this guy!
-    return sqlite3_threadsafe() != 0;
 }
 
 - (instancetype)init {
@@ -45,6 +42,7 @@
         _logsErrors                 = YES;
         _crashOnErrors              = NO;
         _maxBusyRetryTimeInterval   = 2;
+        execCallbackBlock           = nil;
     }
     
     return self;
@@ -72,6 +70,17 @@
     return _databasePath;
 }
 
+#pragma mark SQLite information
+
++ (NSString*)sqliteLibVersion {
+    return [NSString stringWithFormat:@"%s", sqlite3_libversion()];
+}
+
++ (BOOL)isSQLiteThreadSafe {
+    // make sure to read the sqlite headers on this guy!
+    return sqlite3_threadsafe() != 0;
+}
+
 - (sqlite3*)sqliteHandle {
     return _db;
 }
@@ -89,6 +98,8 @@
     return [_databasePath fileSystemRepresentation];
     
 }
+
+#pragma mark Open and close database
 
 - (BOOL)open {
     if (_db) {
@@ -169,9 +180,19 @@
     return YES;
 }
 
+#pragma mark Busy handler routines
 
-static int FMDatabaseBusyHandler(void *f, int count) {
-    
+// NOTE: appledoc seems to choke on this function for some reason;
+//       so when generating documentation, you might want to ignore the
+//       .m files so that it only documents the public interfaces outlined
+//       in the .h files.
+//
+//       This is a known appledoc bug that it has problems with C functions
+//       within a class implementation, but for some reason, only this
+//       C function causes problems; the rest don't. Anyway, ignoring the .m
+//       files with appledoc will prevent this problem from occurring.
+
+static int FMDBDatabaseBusyHandler(void *f, int count) {
     FMDatabase *self = (__bridge FMDatabase*)f;
     
     if (count == 0) {
@@ -198,7 +219,7 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     }
     
     if (timeout > 0) {
-        sqlite3_busy_handler(_db, &FMDatabaseBusyHandler, (__bridge void *)(self));
+        sqlite3_busy_handler(_db, &FMDBDatabaseBusyHandler, (__bridge void *)(self));
     }
     else {
         // turn it off otherwise
@@ -225,17 +246,7 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     NSLog(@"FMDB: setBusyRetryTimeout does nothing, please use setRetryTimeout:");
 }
 
-
-
-
-- (void)clearCachedStatements {
-    
-    for (NSMutableSet *statements in [_cachedStatements objectEnumerator]) {
-        [statements makeObjectsPerformSelector:@selector(close)];
-    }
-    
-    [_cachedStatements removeAllObjects];
-}
+#pragma mark Result set functions
 
 - (BOOL)hasOpenResultSets {
     return [_openResultSets count] > 0;
@@ -259,6 +270,17 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
     
     [_openResultSets removeObject:setValue];
+}
+
+#pragma mark Cached statements
+
+- (void)clearCachedStatements {
+    
+    for (NSMutableSet *statements in [_cachedStatements objectEnumerator]) {
+        [statements makeObjectsPerformSelector:@selector(close)];
+    }
+    
+    [_cachedStatements removeAllObjects];
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
@@ -290,6 +312,8 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     
     FMDBRelease(query);
 }
+
+#pragma mark Key routines
 
 - (BOOL)rekey:(NSString*)key {
     NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
@@ -336,6 +360,8 @@ static int FMDatabaseBusyHandler(void *f, int count) {
 #endif
 }
 
+#pragma mark Date routines
+
 + (NSDateFormatter *)storeableDateFormat:(NSString *)format {
     
     NSDateFormatter *result = FMDBReturnAutoreleased([[NSDateFormatter alloc] init]);
@@ -363,6 +389,7 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     return [_dateFormat stringFromDate:date];
 }
 
+#pragma mark State of database
 
 - (BOOL)goodConnection {
     
@@ -410,6 +437,8 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     return YES;
 }
 
+#pragma mark Error routines
+
 - (NSString*)lastErrorMessage {
     return [NSString stringWithUTF8String:sqlite3_errmsg(_db)];
 }
@@ -424,7 +453,6 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     return sqlite3_errcode(_db);
 }
 
-
 - (NSError*)errorWithMessage:(NSString*)message {
     NSDictionary* errorMessage = [NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey];
     
@@ -434,6 +462,8 @@ static int FMDatabaseBusyHandler(void *f, int count) {
 - (NSError*)lastError {
    return [self errorWithMessage:[self lastErrorMessage]];
 }
+
+#pragma mark Update information routines
 
 - (sqlite_int64)lastInsertRowId {
     
@@ -465,6 +495,8 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     
     return ret;
 }
+
+#pragma mark SQL manipulation
 
 - (void)bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt*)pStmt {
     
@@ -658,6 +690,8 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     }
 }
 
+#pragma mark Execute queries
+
 - (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments {
     return [self executeQuery:sql withArgumentsInArray:nil orDictionary:arguments orVAList:nil];
 }
@@ -834,6 +868,8 @@ static int FMDatabaseBusyHandler(void *f, int count) {
 - (FMResultSet *)executeQuery:(NSString*)sql withVAList:(va_list)args {
     return [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:args];
 }
+
+#pragma mark Execute updates
 
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
@@ -1060,6 +1096,59 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     return [self executeUpdate:sql withArgumentsInArray:arguments];
 }
 
+int FMDBExecuteBulkSQLCallback(void *userInfo, int columns, char **values, char**names)
+{
+    if (!execCallbackBlock) {
+        return 0;
+    }
+
+    NSString *key;
+    id        value;
+
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:columns];
+    for (NSInteger i = 0; i < columns; i++) {
+        key = [NSString stringWithUTF8String:names[i]];
+
+        if (values[i] == NULL)
+            value = [NSNull null];
+        else
+            value = [NSString stringWithUTF8String:values[i]];
+
+        [dictionary setObject:value forKey:key];
+    }
+
+    return execCallbackBlock(dictionary);
+}
+
+- (BOOL)executeBulkSQL:(NSString *)sql
+{
+    return [self executeBulkSQL:sql block:nil];
+}
+
+- (BOOL)executeBulkSQL:(NSString *)sql block:(FMDBExecuteBulkSQLCallbackBlock)block
+{
+    int rc;
+
+    if (execCallbackBlock) {
+        if (_logsErrors) {
+            NSLog(@"Currently already executing sqlite3_exec");
+        }
+        return NO;
+    }
+
+    execCallbackBlock = block;
+
+    if (execCallbackBlock) {
+        rc = sqlite3_exec(self.sqliteHandle, [sql UTF8String], FMDBExecuteBulkSQLCallback, NULL, NULL);
+    } else {
+        rc = sqlite3_exec(self.sqliteHandle, [sql UTF8String], NULL, NULL, NULL);
+    }
+
+    execCallbackBlock = nil;
+
+    return (rc == SQLITE_OK);
+}
+
 - (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... {
     va_list args;
     va_start(args, outErr);
@@ -1069,6 +1158,8 @@ static int FMDatabaseBusyHandler(void *f, int count) {
     va_end(args);
     return result;
 }
+
+#pragma mark Transactions
 
 - (BOOL)rollback {
     BOOL b = [self executeUpdate:@"rollback transaction"];
@@ -1116,7 +1207,7 @@ static int FMDatabaseBusyHandler(void *f, int count) {
 
 #if SQLITE_VERSION_NUMBER >= 3007000
 
-static NSString *FMEscapeSavePointName(NSString *savepointName) {
+static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     return [savepointName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
 }
 
@@ -1124,7 +1215,7 @@ static NSString *FMEscapeSavePointName(NSString *savepointName) {
     
     NSParameterAssert(name);
     
-    NSString *sql = [NSString stringWithFormat:@"savepoint '%@';", FMEscapeSavePointName(name)];
+    NSString *sql = [NSString stringWithFormat:@"savepoint '%@';", FMDBEscapeSavePointName(name)];
     
     if (![self executeUpdate:sql]) {
 
@@ -1142,7 +1233,7 @@ static NSString *FMEscapeSavePointName(NSString *savepointName) {
     
     NSParameterAssert(name);
     
-    NSString *sql = [NSString stringWithFormat:@"release savepoint '%@';", FMEscapeSavePointName(name)];
+    NSString *sql = [NSString stringWithFormat:@"release savepoint '%@';", FMDBEscapeSavePointName(name)];
     BOOL worked = [self executeUpdate:sql];
     
     if (!worked && outErr) {
@@ -1156,7 +1247,7 @@ static NSString *FMEscapeSavePointName(NSString *savepointName) {
     
     NSParameterAssert(name);
     
-    NSString *sql = [NSString stringWithFormat:@"rollback transaction to savepoint '%@';", FMEscapeSavePointName(name)];
+    NSString *sql = [NSString stringWithFormat:@"rollback transaction to savepoint '%@';", FMDBEscapeSavePointName(name)];
     BOOL worked = [self executeUpdate:sql];
     
     if (!worked && outErr) {
@@ -1192,6 +1283,7 @@ static NSString *FMEscapeSavePointName(NSString *savepointName) {
 
 #endif
 
+#pragma mark Cache statements
 
 - (BOOL)shouldCacheStatements {
     return _shouldCacheStatements;
@@ -1210,7 +1302,8 @@ static NSString *FMEscapeSavePointName(NSString *savepointName) {
     }
 }
 
-void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3_value **argv);
+#pragma mark Callback function
+
 void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3_value **argv) {
 #if ! __has_feature(objc_arc)
     void (^block)(sqlite3_context *context, int argc, sqlite3_value **argv) = (id)sqlite3_user_data(context);
