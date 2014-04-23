@@ -1,7 +1,5 @@
-# FMDB
+# FMDB v2.3
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
-
-[![Build Status](https://travis-ci.org/ccgus/fmdb.png?branch=master)](https://travis-ci.org/ccgus/fmdb)
 
 ## The FMDB Mailing List:
 http://groups.google.com/group/fmdb
@@ -109,22 +107,30 @@ When you have finished executing queries and updates on the database, you should
 
 `FMDatabase` can begin and commit a transaction by invoking one of the appropriate methods or executing a begin/end transaction statement.
 
-### Split Batch Statement
+### Multiple Statements and Batch Stuff
 
-`FMSQLStatementSplitter` can split batch sql statement into several separated statements, then `[FMDatabase executeUpdate:]` or other methods can be used to execute each separated statement:
+You can use `FMDatabase`'s executeStatements:withResultBlock: to do multiple statements in a string:
 
 ```
-NSString *batchStatement = @"insert into ftest values ('hello;');"
-                           @"insert into ftest values ('hi;');"
-                           @"insert into ftest values ('not h!\\\\');"
-                           @"insert into ftest values ('definitely not h!')";
-NSArray *statements = [[FMSQLStatementSplitter sharedInstance] statementsFromBatchSqlStatement:batchStatement];
-[queue inDatabase:^(FMDatabase *adb) {
-    for (FMSplittedStatement *sqlittedStatement in statements)
-    {
-        [adb executeUpdate:sqlittedStatement.statementString];
-    }
+NSString *sql = @"create table bulktest1 (id integer primary key autoincrement, x text);"
+                 "create table bulktest2 (id integer primary key autoincrement, y text);"
+                 "create table bulktest3 (id integer primary key autoincrement, z text);"
+                 "insert into bulktest1 (x) values ('XXX');"
+                 "insert into bulktest2 (y) values ('YYY');"
+                 "insert into bulktest3 (z) values ('ZZZ');";
+
+success = [db executeStatements:sql];
+
+sql = @"select count(*) as count from bulktest1;"
+       "select count(*) as count from bulktest2;"
+       "select count(*) as count from bulktest3;";
+
+success = [self.db executeStatements:sql withResultBlock:^int(NSDictionary *dictionary) {
+    NSInteger count = [dictionary[@"count"] integerValue];
+    XCTAssertEqual(count, 1, @"expected one record for dictionary %@", dictionary);
+    return 0;
 }];
+
 ```
 
 ### Data Sanitization
