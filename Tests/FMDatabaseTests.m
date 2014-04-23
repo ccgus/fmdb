@@ -832,7 +832,7 @@
 }
 #endif
 
-- (void)testBulkSQL
+- (void)testExecuteStatements
 {
     BOOL success;
 
