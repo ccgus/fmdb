@@ -169,6 +169,8 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     FMDBRetain(self);
 
+    __block NSException *toThrow = nil;
+
     dispatch_sync(_queue, ^() {
 
         BOOL shouldRollback = NO;
@@ -187,7 +189,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         } @catch(NSException* exception) {
 
             shouldRollback = YES;
-            @throw exception;
+            toThrow = exception;
 
         } @finally {
 
@@ -200,6 +202,10 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         }
 
     });
+
+    if (toThrow) {
+        @throw toThrow;
+    }
 
     FMDBRelease(self);
 }
@@ -216,7 +222,10 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
     
     static unsigned long savePointIdx = 0;
+
     __block NSError *err = 0x00;
+    __block NSException *toThrow = nil;
+
     FMDBRetain(self);
     dispatch_sync(_queue, ^() { 
         
@@ -231,6 +240,9 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
                 block([self database], &shouldRollback);
             }
 
+        } @catch(NSException *exception) {
+            toThrow = exception;
+            shouldRollback = YES;
         } @finally {
 
             if (started) {
@@ -247,6 +259,11 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         }
 
     });
+
+    if (toThrow) {
+        @throw toThrow;
+    }
+
     FMDBRelease(self);
     return err;
 }
