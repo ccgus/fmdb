@@ -168,27 +168,39 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
-        
+
+    dispatch_sync(_queue, ^() {
+
         BOOL shouldRollback = NO;
-        
-        if (useDeferred) {
-            [[self database] beginDeferredTransaction];
+
+        @try {
+
+            if (useDeferred) {
+                [[self database] beginDeferredTransaction];
+            }
+            else {
+                [[self database] beginTransaction];
+            }
+
+            block([self database], &shouldRollback);
+
+        } @catch(NSException* exception) {
+
+            shouldRollback = YES;
+            @throw exception;
+
+        } @finally {
+
+            if (shouldRollback) {
+                [[self database] rollback];
+            } else {
+                [[self database] commit];
+            }
+
         }
-        else {
-            [[self database] beginTransaction];
-        }
-        
-        block([self database], &shouldRollback);
-        
-        if (shouldRollback) {
-            [[self database] rollback];
-        }
-        else {
-            [[self database] commit];
-        }
+
     });
-    
+
     FMDBRelease(self);
 }
 
@@ -209,20 +221,31 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     dispatch_sync(_queue, ^() { 
         
         NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
-        
+
+        BOOL started = NO;
         BOOL shouldRollback = NO;
-        
-        if ([[self database] startSavePointWithName:name error:&err]) {
-            
-            block([self database], &shouldRollback);
-            
-            if (shouldRollback) {
-                // We need to rollback and release this savepoint to remove it
-                [[self database] rollbackToSavePointWithName:name error:&err];
+
+        @try {
+
+            if ((started = [[self database] startSavePointWithName:name error:&err])) {
+                block([self database], &shouldRollback);
             }
-            [[self database] releaseSavePointWithName:name error:&err];
-            
+
+        } @finally {
+
+            if (started) {
+
+                if (shouldRollback) {
+                    // We need to rollback and release this savepoint to remove it
+                    [[self database] rollbackToSavePointWithName:name error:&err];
+                }
+
+                [[self database] releaseSavePointWithName:name error:&err];
+
+            }
+
         }
+
     });
     FMDBRelease(self);
     return err;
