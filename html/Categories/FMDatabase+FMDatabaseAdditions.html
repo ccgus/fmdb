@@ -72,9 +72,13 @@
 	
 	<option value="//api/name/setApplicationIDString:">&nbsp;&nbsp;&nbsp;&nbsp;- setApplicationIDString:</option>
 	
+	<option value="//api/name/setUserVersion:">&nbsp;&nbsp;&nbsp;&nbsp;- setUserVersion:</option>
+	
 	<option value="//api/name/stringForQuery:">&nbsp;&nbsp;&nbsp;&nbsp;- stringForQuery:</option>
 	
 	<option value="//api/name/tableExists:">&nbsp;&nbsp;&nbsp;&nbsp;- tableExists:</option>
+	
+	<option value="//api/name/userVersion">&nbsp;&nbsp;&nbsp;&nbsp;- userVersion</option>
 	
 	<option value="//api/name/validateSQL:error:">&nbsp;&nbsp;&nbsp;&nbsp;- validateSQL:error:</option>
 	
@@ -93,12 +97,6 @@
 
 
 <li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Return results of SQL to variable">Return results of SQL to variable</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Schema related operations">Schema related operations</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Application identifier tasks">Application identifier tasks</a></span></li>
 	
 </ul></li>
 
@@ -140,9 +138,13 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setApplicationIDString:">setApplicationIDString:</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setUserVersion:">setUserVersion:</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stringForQuery:">stringForQuery:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/tableExists:">tableExists:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userVersion">userVersion</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateSQL:error:">validateSQL:error:</a></span></li>
 	
@@ -199,11 +201,18 @@
 						<h2 class="subtitle subtitle-tasks">Tasks</h2>
 						
 						
-						<a title="Return results of SQL to variable" name="task_Return results of SQL to variable"></a>
-						<h3 class="subsubtitle task-title">Return results of SQL to variable</h3>
+						
+						
 
 						<ul class="task-list">
 							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/stringForQuery:">&ndash;&nbsp;stringForQuery:</a></code>
+		<span class="tooltip"><p>Return <code>NSString</code> value for query</p></span>
+	</span>
+	
+	
+</li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/intForQuery:">&ndash;&nbsp;intForQuery:</a></code>
 		<span class="tooltip"><p>Return <code>int</code> value for query</p></span>
@@ -233,13 +242,6 @@
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/stringForQuery:">&ndash;&nbsp;stringForQuery:</a></code>
-		<span class="tooltip"><p>Return <code>NSString</code> value for query</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
 		<code><a href="#//api/name/dataForQuery:">&ndash;&nbsp;dataForQuery:</a></code>
 		<span class="tooltip"><p>Return <code>NSData</code> value for query</p></span>
 	</span>
@@ -252,15 +254,7 @@
 	</span>
 	
 	
-</li>
-						</ul>
-						
-						
-						<a title="Schema related operations" name="task_Schema related operations"></a>
-						<h3 class="subsubtitle task-title">Schema related operations</h3>
-
-						<ul class="task-list">
-							<li>
+</li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/tableExists:">&ndash;&nbsp;tableExists:</a></code>
 		<span class="tooltip"><p>Does table exist in database?</p></span>
@@ -290,28 +284,6 @@
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/columnExists:columnName:">&ndash;&nbsp;columnExists:columnName:</a></code>
-		<span class="tooltip"><p>Test to see if particular column exists for particular table in database</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/validateSQL:error:">&ndash;&nbsp;validateSQL:error:</a></code>
-		<span class="tooltip"><p>Validate SQL statement</p></span>
-	</span>
-	
-	
-</li>
-						</ul>
-						
-						
-						<a title="Application identifier tasks" name="task_Application identifier tasks"></a>
-						<h3 class="subsubtitle task-title">Application identifier tasks</h3>
-
-						<ul class="task-list">
-							<li>
-	<span class="tooltip">
 		<code><a href="#//api/name/applicationID">&ndash;&nbsp;applicationID</a></code>
 		<span class="tooltip"><p>Retrieve application ID</p></span>
 	</span>
@@ -335,6 +307,34 @@
 	<span class="tooltip">
 		<code><a href="#//api/name/setApplicationIDString:">&ndash;&nbsp;setApplicationIDString:</a></code>
 		<span class="tooltip"><p>Set the application ID string</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userVersion">&ndash;&nbsp;userVersion</a></code>
+		<span class="tooltip"><p>Retrieve user version</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setUserVersion:">&ndash;&nbsp;setUserVersion:</a></code>
+		<span class="tooltip"><p>Set the user-version</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/columnExists:columnName:">&ndash;&nbsp;columnExists:columnName:</a></code>
+		<span class="tooltip"><p>Test to see if particular column exists for particular table in database</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateSQL:error:">&ndash;&nbsp;validateSQL:error:</a></code>
+		<span class="tooltip"><p>Validate SQL statement</p></span>
 	</span>
 	
 	
@@ -1172,6 +1172,61 @@
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/setUserVersion:" title="setUserVersion:"></a>
+	<h3 class="subsubtitle method-title">setUserVersion:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set the user-version</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)setUserVersion:(uint32_t)<em>version</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>version</em></dt>
+			<dd><p>The <code>uint32_t</code> numeric value of the user version.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/userVersion">- userVersion</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabaseAdditions.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/stringForQuery:" title="stringForQuery:"></a>
 	<h3 class="subsubtitle method-title">stringForQuery:</h3>
 	
@@ -1279,6 +1334,56 @@
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/userVersion" title="userVersion"></a>
+	<h3 class="subsubtitle method-title">userVersion</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Retrieve user version</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (uint32_t)userVersion</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The <code>uint32_t</code> numeric value of the user version.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection see-also-section">
+		<h4 class="method-subtitle">See Also</h4>
+		<ul>
+			
+			<li><code><p><a href="#//api/name/setUserVersion:">- setUserVersion:</a></p></code></li>
+			
+		</ul>
+	</div>
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">FMDatabaseAdditions.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/validateSQL:error:" title="validateSQL:error:"></a>
 	<h3 class="subsubtitle method-title">validateSQL:error:</h3>
 	
@@ -1352,7 +1457,7 @@
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 ccgus. All rights reserved. (Last updated: 2013-08-06)</span><br />
+						<p><span class="copyright">&copy; 2014 ccgus. All rights reserved. (Last updated: 2014-05-03)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
 						
