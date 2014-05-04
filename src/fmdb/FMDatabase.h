@@ -397,9 +397,9 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @param sql       The SQL to be performed.
  @param block     A block that will be called for any result sets returned by any SQL statements. 
-                  Note, if you supply this block, it must return integer value, zero upon success (this would be a good opertunity to use SQLITE_OK),
+                  Note, if you supply this block, it must return integer value, zero upon success (this would be a good opportunity to use SQLITE_OK),
                   non-zero value upon failure (which will stop the bulk execution of the SQL).  If a statement returns values, the block will be called with the results from the query in NSDictionary *resultsDictionary.
-                  This may be `nil` if you don't care to recive any results.
+                  This may be `nil` if you don't care to receive any results.
 
  @return          `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`,
                   `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
