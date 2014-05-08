@@ -33,4 +33,6 @@ Pod::Spec.new do |s|
     ss.dependency 'FMDB/common'
     ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC' }
   end
+  
+  s.requires_arc = true
 end
