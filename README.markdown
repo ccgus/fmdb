@@ -9,6 +9,9 @@ http://www.sqlite.org/faq.html
 
 Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: http://www.sqlite.org/docs.html
 
+## Contributing
+Do you have an awesome idea that deserves to be in FMDB?  You might consider pinging ccgus first to make sure he hasn't already ruled it out for some reason.  Otherwise pull requests are great, and make sure you stick to the local coding conventions.  However, please be patient and if you haven't heard anything from ccgus for a week or more, you might want to send a note asking what's up.
+
 ## CocoaPods
 
 FMDB can be installed using [CocoaPods](http://cocoapods.org/).
@@ -229,6 +232,10 @@ The history and changes are availbe on its [GitHub page](https://github.com/ccgu
 ## Contributors
 
 The contributors to FMDB are contained in the "Contributors.txt" file.
+
+## Quick notes on FMDB's coding style
+
+Spaces, not tabs.  Square brackets, not dot notation.  Look at what FMDB already does with curly brackets and such, and stick to that style.  
 
 ## Reporting bugs
 
