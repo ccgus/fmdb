@@ -314,7 +314,9 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see lastErrorMessage
  
  @warning This should be used with great care. Generally, instead of this method, you should use `<executeUpdate:>` (with `?` placeholders in the SQL), which properly escapes quotation marks encountered inside the values (minimizing errors and protecting against SQL injection attack) and handles a wider variety of data types. See `<executeUpdate:>` for more information. 
- */
+
+ @warning Effective FMDB 2.4, the behavior of this method has changed. This now conforms to traditional `stringWithFormat` formatting rules. You now have to make sure you include the quotation marks when using `executeUpdateWithFormat`. Thus `[db executeUpdateWithFormat:@"INSERT INTO test (name) VALUES ('%@')", @"fred"];`. The previous incarnation did not require the quotes when using this method. You should use `executeUpdate` with `?` placeholders in the SQL if you want to avoid the traditional errors resulting from needing to escape quotes in your SQL.
+*/
 
 - (BOOL)executeUpdateWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
@@ -481,6 +483,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @warning This should be used with great care. Generally, instead of this method, you should use `<executeQuery:>` (with `?` placeholders in the SQL), which properly escapes quotation marks encountered inside the values (minimizing errors and protecting against SQL injection attack) and handles a wider variety of data types. See `<executeQuery:>` for more information.
 
+ @warning Effective FMDB 2.4, the behavior of this method has changed. This now conforms to traditional `stringWithFormat` formatting rules. You now have to make sure you include the quotation marks when using `executeUpdateWithFormat`. Thus `[db executeUpdateWithFormat:@"SELECT * FROM test WHERE name = '%@'", @"fred"];`. The previous incarnation did not require the quotes when using this method. You should use `executeQuery` with `?` placeholders in the SQL if you want to avoid the traditional errors resulting from needing to escape quotes in your SQL.
  */
 
 - (FMResultSet *)executeQueryWithFormat:(NSString*)format, ... NS_FORMAT_FUNCTION(1,2);

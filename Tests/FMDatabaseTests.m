@@ -532,9 +532,11 @@
 - (void)testFormatStringParsing
 {
     XCTAssertTrue([self.db executeUpdate:@"create table t5 (a text, b int, c blob, d text, e text)"]);
-    [self.db executeUpdateWithFormat:@"insert into t5 values (%s, %d, %@, %c, %lld)", "text", 42, @"BLOB", 'd', 12345678901234ll];
+    BOOL success = [self.db executeUpdateWithFormat:@"insert into t5 values ('%s', %d, '%@', '%c', %lld)", "text", 42, @"BLOB", 'd', 12345678901234ll];
+
+    XCTAssert(success, @"Insert failed: %@", [self.db lastErrorMessage]);
     
-    FMResultSet *rs = [self.db executeQueryWithFormat:@"select * from t5 where a = %s and a = %@ and b = %d", "text", @"text", 42];
+    FMResultSet *rs = [self.db executeQueryWithFormat:@"select * from t5 where a = '%s' and a = '%@' and b = %d", "text", @"text", 42];
     XCTAssertNotNil(rs);
     
     XCTAssertTrue([rs next]);
@@ -553,14 +555,14 @@
     XCTAssertTrue([self.db executeUpdate:@"create table t55 (a text, b int, c float)"]);
     short testShort = -4;
     float testFloat = 5.5;
-    [self.db executeUpdateWithFormat:@"insert into t55 values (%c, %hi, %g)", 'a', testShort, testFloat];
+    [self.db executeUpdateWithFormat:@"insert into t55 values ('%c', %hi, %g)", 'a', testShort, testFloat];
     
     unsigned short testUShort = 6;
-    [self.db executeUpdateWithFormat:@"insert into t55 values (%c, %hu, %g)", 'a', testUShort, testFloat];
+    [self.db executeUpdateWithFormat:@"insert into t55 values ('%c', %hu, %g)", 'a', testUShort, testFloat];
     
     
-    FMResultSet *rs = [self.db executeQueryWithFormat:@"select * from t55 where a = %s order by 2", "a"];
-    XCTAssertNotNil(rs);
+    FMResultSet *rs = [self.db executeQueryWithFormat:@"select * from t55 where a = '%s' order by 2", "a"];
+    XCTAssertNotNil(rs, @"executeQueryWithFormat failed: %@", [self.db lastErrorMessage]);
     
     XCTAssertTrue([rs next]);
     
@@ -870,6 +872,57 @@
     success = [self.db executeStatements:sql];
 
     XCTAssertTrue(success, @"bulk drop");
+}
+
+- (void)testExecuteWithFormatPragma
+{
+    // Using placeholders with PRAGMA statements fail. With old `executeUpdateWithFormat`, the following statement
+    // would fail. Fixed `executedUpdateWithFormat` to conform to standard `stringWithFormat` syntax, and the following
+    // statement will succeed.
+
+    BOOL success;
+
+    success = [self.db executeUpdateWithFormat:@"PRAGMA ENCODING ='%@'", @"UTF-8"];
+
+    XCTAssert(success, @"pragma encoding failed because of it does not support ? placeholder: %@", [self.db lastErrorMessage]);
+}
+
+- (void)testExecuteWithFormatDynamicSQL
+{
+    // Using placeholders with PRAGMA statements fail. With old `executeUpdateWithFormat`, the following statement
+    // would fail. Fixed `executedUpdateWithFormat` to conform to standard `stringWithFormat` syntax, and the following
+    // statement will succeed.
+
+    BOOL success;
+
+    success = [self.db executeUpdate:@"CREATE TABLE customer (firstname TEXT, lastname TEXT)"];
+    XCTAssert(success, @"Unable to create table: %@", [self.db lastErrorMessage]);
+
+    success = [self.db executeUpdate:@"INSERT INTO customer (firstname, lastname) VALUES (?, ?)", @"Rob", @"Ryan"];
+    XCTAssert(success, @"Unable to insert data: %@", [self.db lastErrorMessage]);
+
+    FMResultSet *rs;
+    NSString *fieldName;
+    NSString *tableName;
+
+    tableName = @"customer";
+    fieldName = @"firstname";
+    rs = [self.db executeQueryWithFormat:@"SELECT COUNT(*) FROM %@ WHERE %@ = 'Ryan'", tableName, fieldName];
+    XCTAssert(rs, @"executeUpdateWithFormat failed: %@", [self.db lastErrorMessage]);
+    if ([rs next]) {
+        NSInteger count = [rs intForColumnIndex:0];
+        XCTAssertEqual(count, 0, @"We should get zero hits");
+    }
+    [rs close];
+
+    fieldName = @"lastname";
+    rs = [self.db executeQueryWithFormat:@"SELECT COUNT(*) FROM %@ WHERE %@ = 'Ryan'", tableName, fieldName];
+    XCTAssert(rs, @"executeUpdateWithFormat failed: %@", [self.db lastErrorMessage]);
+    if ([rs next]) {
+        NSInteger count = [rs intForColumnIndex:0];
+        XCTAssertEqual(count, 1, @"We should get one match");
+    }
+    [rs close];
 }
 
 @end
