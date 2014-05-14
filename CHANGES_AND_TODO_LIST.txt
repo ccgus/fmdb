@@ -3,6 +3,11 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2014.05.13
+    Replaced `executeQueryWithFormat` and `executeUpdateWithFormat` methods with renditions that more faithfully conform to the printf-style formatter provided by `NSString` methods `stringWithFormat` and `initWithFormat`. Notably, when using character or string parameters, you must ensure that you correctly quote the values in the SQL format string. The old rendition of these methods would quote these for you, as appropriate.
+    
+    The reason this change is important, is that the `executeQueryWithFormat` and `executeUpdateWithFormat` methods now let you dynamically replace field names or column names in your SQL. Furthermore, you can now use these methods in situations where the `?` placeholders were not permitted (e.g. `PRAGMA` statements).
+
 2014.04.23
     New executeStatements: method, which will take a single UTF-8 string with multiple statements in it.  This is great for batch updates.  There is also a executeStatements:withResultBlock: version which takes a callback block which will be used for any statements which return rows in the bulk statement.  Thanks to Rob Ryan for contributing code for this.
 
