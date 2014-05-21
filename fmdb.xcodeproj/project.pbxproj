@@ -30,6 +30,7 @@
 		CC47A010148581E9002CCDAB /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CC47A00E148581E9002CCDAB /* FMDatabaseQueue.m */; };
 		CC47A011148581E9002CCDAB /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CC47A00E148581E9002CCDAB /* FMDatabaseQueue.m */; };
 		CC50F2CD0DF9183600E4AAAE /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC50F2CB0DF9183600E4AAAE /* FMDatabaseAdditions.m */; };
+		CC7CE42818F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7CE42718F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.m */; };
 		CC9E4EB913B31188005F9210 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9E4EB813B31188005F9210 /* FMDatabasePool.m */; };
 		CC9E4EBA13B31188005F9210 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = CC9E4EB713B31188005F9210 /* FMDatabasePool.h */; };
 		CC9E4EBB13B31188005F9210 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9E4EB813B31188005F9210 /* FMDatabasePool.m */; };
@@ -104,6 +105,8 @@
 		CC47A00E148581E9002CCDAB /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = src/fmdb/FMDatabaseQueue.m; sourceTree = SOURCE_ROOT; };
 		CC50F2CB0DF9183600E4AAAE /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = src/fmdb/FMDatabaseAdditions.m; sourceTree = SOURCE_ROOT; };
 		CC50F2CC0DF9183600E4AAAE /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = SOURCE_ROOT; };
+		CC7CE42618F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMDatabase+InMemoryOnDiskIO.h"; path = "src/extra/FMDatabase+InMemoryOnDiskIO.h"; sourceTree = "<group>"; };
+		CC7CE42718F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMDatabase+InMemoryOnDiskIO.m"; path = "src/extra/FMDatabase+InMemoryOnDiskIO.m"; sourceTree = "<group>"; };
 		CC8C138A0E3135C400FBE1E7 /* CHANGES_AND_TODO_LIST.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES_AND_TODO_LIST.txt; sourceTree = "<group>"; };
 		CC8C138B0E3135C400FBE1E7 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		CC8C138C0E3135C400FBE1E7 /* CONTRIBUTORS.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CONTRIBUTORS.txt; sourceTree = "<group>"; };
@@ -182,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				8314AF3018CD737D00EC0E25 /* fmdb */,
+				CC7CE42518F5C02E00938264 /* optional extras */,
 				8314AF3118CD739500EC0E25 /* sample */,
 			);
 			name = Source;
@@ -275,6 +279,15 @@
 				C6859EA3029092ED04C91782 /* fmdb.1 */,
 			);
 			name = Documentation;
+			sourceTree = "<group>";
+		};
+		CC7CE42518F5C02E00938264 /* optional extras */ = {
+			isa = PBXGroup;
+			children = (
+				CC7CE42618F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.h */,
+				CC7CE42718F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.m */,
+			);
+			name = "optional extras";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,6 +446,7 @@
 				CCC24EC20A13E34D00A6D3E3 /* FMDatabase.m in Sources */,
 				CCC24EC50A13E34D00A6D3E3 /* main.m in Sources */,
 				CCC24EC70A13E34D00A6D3E3 /* FMResultSet.m in Sources */,
+				CC7CE42818F5C04600938264 /* FMDatabase+InMemoryOnDiskIO.m in Sources */,
 				CC50F2CD0DF9183600E4AAAE /* FMDatabaseAdditions.m in Sources */,
 				CC9E4EB913B31188005F9210 /* FMDatabasePool.m in Sources */,
 				CC47A010148581E9002CCDAB /* FMDatabaseQueue.m in Sources */,

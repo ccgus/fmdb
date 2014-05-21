@@ -56,7 +56,7 @@ int main (int argc, const char * argv[]) {
     }
     
     NSError *err = 0x00;
-    FMDBQuickCheck(![db update:@"blah blah blah" withErrorAndBindings:&err]);
+    FMDBQuickCheck(![db executeUpdate:@"blah blah blah" withErrorAndBindings:&err]);
     FMDBQuickCheck(err != nil);
     FMDBQuickCheck([err code] == SQLITE_ERROR);
     NSLog(@"err: '%@'", err);
@@ -231,13 +231,12 @@ int main (int argc, const char * argv[]) {
     }
     
 #endif
-    
-    
-    
-    
+
+
     {
         // -------------------------------------------------------------------------------
         // Named parameters count test.
+
         FMDBQuickCheck([db executeUpdate:@"create table namedparamcounttest (a text, b text, c integer, d double)"]);
         NSMutableDictionary *dictionaryArgs = [NSMutableDictionary dictionary];
         [dictionaryArgs setObject:@"Text1" forKey:@"a"];
@@ -345,7 +344,7 @@ int main (int argc, const char * argv[]) {
     
     // test the busy rety timeout schtuff.
     
-    [db setBusyTimeout:5];
+    [db setMaxBusyRetryTimeInterval:5];
     
     FMDatabase *newDb = [FMDatabase databaseWithPath:dbPath];
     [newDb open];
@@ -753,7 +752,7 @@ int main (int argc, const char * argv[]) {
     
     
     {
-        FMDBQuickCheck(([db update:@"insert into t5 values (?, ?, ?, ?, ?)" withErrorAndBindings:&err, @"text", [NSNumber numberWithInt:42], @"BLOB", @"d", [NSNumber numberWithInt:0]]));
+        FMDBQuickCheck(([db executeUpdate:@"insert into t5 values (?, ?, ?, ?, ?)" withErrorAndBindings:&err, @"text", [NSNumber numberWithInt:42], @"BLOB", @"d", [NSNumber numberWithInt:0]]));
         
     }
     
@@ -1077,7 +1076,6 @@ int main (int argc, const char * argv[]) {
         testStatementCaching();
         
     }];
-    
     
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     

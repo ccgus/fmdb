@@ -3,6 +3,15 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2014.04.23
+    New executeStatements: method, which will take a single UTF-8 string with multiple statements in it.  This is great for batch updates.  There is also a executeStatements:withResultBlock: version which takes a callback block which will be used for any statements which return rows in the bulk statement.  Thanks to Rob Ryan for contributing code for this.
+
+    Deprecated update:withErrorAndBindings: in favor of executeUpdate:withErrorAndBindings:
+
+2014.04.09
+    Added back in busy handler code after a brief hiatus (check out the 2013.12.10 notes).  But now doing so with sqlite3_busy_handler instead of while loops in the various execution places.
+    Added some new optional classes that will help with doing batch updates  - check out FMSQLStatementSplitter.h for more info.  Thanks to Julius Scott for the patches.
+
 2014.03.08
     A few administrative changes:
 
@@ -37,11 +46,11 @@ If you would like to contribute some code- awesome!  I just ask that you make it
 
         - To build that HTML documentation, once you've installed `appledoc`, you issue the command:
 
-             appledoc --project-name FMDB --project-company ccgus --explicit-crossref --no-merge-categories --output ../Documentation .
+             appledoc --project-name FMDB --project-company ccgus --explicit-crossref --no-merge-categories --output ../Documentation --ignore *.m .
 
         - If you want online help integrated right into Xcode, you can issue the command:
 
-             appledoc --project-name FMDB --project-company ccgus --explicit-crossref --merge-categories --install-docset --output ../Documentation .
+             appledoc --project-name FMDB --project-company ccgus --explicit-crossref --merge-categories --install-docset --output --ignore *.m ../Documentation .
 
 2013.05.24
     Merged in Chris Wright's date format additions to FMDatabase.
