@@ -2137,7 +2137,17 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		<h4 class="method-subtitle">Discussion</h4>
 		<p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
 
-<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p><div class="warning"><p><strong>Warning:</strong> This should be used with great care. Generally, instead of this method, you should use <a href="#//api/name/executeQuery:"><code>executeQuery:</code></a> (with <code>?</code> placeholders in the SQL), which properly escapes quotation marks encountered inside the values (minimizing errors and protecting against SQL injection attack) and handles a wider variety of data types. See <a href="#//api/name/executeQuery:"><code>executeQuery:</code></a> for more information.</p></div>
+<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p><div class="note"><p><strong>Note:</strong> This method does not technically perform a traditional printf-style replacement. What this method actually does is replace the printf-style percent sequences with a SQLite <code>?</code> placeholder, and then bind values to that placeholder. Thus the following command</p>
+
+<pre><code>[db executeQueryWithFormat:@"SELECT * FROM test WHERE name=%@", @"Gus"];
+</code></pre>
+
+<p>is actually replacing the <code>%@</code> with <code>?</code> placeholder, and then performing something equivalent to <code>executeQuery:</code></p>
+
+<pre><code>[db executeQuery:@"SELECT * FROM test WHERE name=?", @"Gus"];
+</code></pre>
+
+<p>There are two reasons why this distinction is important. First, the printf-style escape sequences can only be used where it is permissible to use a SQLite <code>?</code> placeholder. You can use it only for values in SQL statements, but not for table names or column names or any other non-value context. This method also cannot be used in conjunction with <code>pragma</code> statements and the like. Second, note the lack of quotation marks in the SQL. The <code>WHERE</code> clause was <em>not</em> <code>WHERE name='%@'</code> (like you might have to do if you built a SQL statement using <code>NSString</code> method <code>stringWithFormat</code>), but rather simply <code>WHERE name=%@</code>.</p></div>
 	</div>
 	
 	
@@ -2743,7 +2753,17 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>This method executes a single SQL update statement (i.e. any SQL that does not return results, such as <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code>. This method employs <a href="http://sqlite.org/c3ref/prepare.html"><code>sqlite3_prepare_v2</code></a> and <a href="http://sqlite.org/c3ref/step.html"><code>sqlite_step</code></a> to perform the update. Unlike the other <code>executeUpdate</code> methods, this uses printf-style formatters (e.g. <code>%s</code>, <code>%d</code>, etc.) to build the SQL. Do not use <code>?</code> placeholders in the SQL if you use this method.</p><div class="warning"><p><strong>Warning:</strong> This should be used with great care. Generally, instead of this method, you should use <a href="#//api/name/executeUpdate:"><code>executeUpdate:</code></a> (with <code>?</code> placeholders in the SQL), which properly escapes quotation marks encountered inside the values (minimizing errors and protecting against SQL injection attack) and handles a wider variety of data types. See <a href="#//api/name/executeUpdate:"><code>executeUpdate:</code></a> for more information.</p></div>
+		<p>This method executes a single SQL update statement (i.e. any SQL that does not return results, such as <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code>. This method employs <a href="http://sqlite.org/c3ref/prepare.html"><code>sqlite3_prepare_v2</code></a> and <a href="http://sqlite.org/c3ref/step.html"><code>sqlite_step</code></a> to perform the update. Unlike the other <code>executeUpdate</code> methods, this uses printf-style formatters (e.g. <code>%s</code>, <code>%d</code>, etc.) to build the SQL. Do not use <code>?</code> placeholders in the SQL if you use this method.</p><div class="note"><p><strong>Note:</strong> This method does not technically perform a traditional printf-style replacement. What this method actually does is replace the printf-style percent sequences with a SQLite <code>?</code> placeholder, and then bind values to that placeholder. Thus the following command</p>
+
+<pre><code>[db executeUpdateWithFormat:@"INSERT INTO test (name) VALUES (%@)", @"Gus"];
+</code></pre>
+
+<p>is actually replacing the <code>%@</code> with <code>?</code> placeholder, and then performing something equivalent to <a href="#//api/name/executeUpdate:"><code>executeUpdate:</code></a></p>
+
+<pre><code>[db executeUpdate:@"INSERT INTO test (name) VALUES (?)", @"Gus"];
+</code></pre>
+
+<p>There are two reasons why this distinction is important. First, the printf-style escape sequences can only be used where it is permissible to use a SQLite <code>?</code> placeholder. You can use it only for values in SQL statements, but not for table names or column names or any other non-value context. This method also cannot be used in conjunction with <code>pragma</code> statements and the like. Second, note the lack of quotation marks in the SQL. The <code>VALUES</code> clause was <em>not</em> <code>VALUES ('%@')</code> (like you might have to do if you built a SQL statement using <code>NSString</code> method <code>stringWithFormat</code>), but rather simply <code>VALUES (%@)</code>.</p></div>
 	</div>
 	
 	
@@ -4490,7 +4510,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2014 ccgus. All rights reserved. (Last updated: 2014-05-03)</span><br />
+						<p><span class="copyright">&copy; 2014 ccgus. All rights reserved. (Last updated: 2014-05-25)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
 						
