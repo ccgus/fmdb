@@ -9,6 +9,12 @@
 #import "FMDatabase+FTS3.h"
 #import "fts3_tokenizer.h"
 
+NSString *const kFTSCommandOptimize = @"optimize";
+NSString *const kFTSCommandRebuild  = @"rebuild";
+NSString *const kFTSCommandIntegrityCheck = @"integrity-check";
+NSString *const kFTSCommandMerge = @"merge=%u,%u";
+NSString *const kFTSCommandAutoMerge = @"automerge=%u";
+
 /* I know this is an evil global, but we need to be able to map names to implementations. */
 static NSMapTable *g_delegateMap = nil;
 
@@ -193,6 +199,13 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
     }
     
     return NO;
+}
+
+- (BOOL)issueCommand:(NSString *)command forTable:(NSString *)tableName
+{
+    NSString *sql = [NSString stringWithFormat:@"INSERT INTO %1$@(%1$@) VALUES (?)", tableName];
+    
+    return [self executeUpdate:sql, command];
 }
 
 @end

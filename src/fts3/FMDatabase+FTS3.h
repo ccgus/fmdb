@@ -8,6 +8,15 @@
 
 #import "FMDatabase.h"
 
+/**
+ Names of commands that can be issued against an FTS table.
+ */
+extern NSString *const kFTSCommandOptimize;        // "optimize"
+extern NSString *const kFTSCommandRebuild;         // "rebuild"
+extern NSString *const kFTSCommandIntegrityCheck;  // "integrity-check"
+extern NSString *const kFTSCommandMerge;           // "merge=%u,%u"
+extern NSString *const kFTSCommandAutoMerge;       // "automerge=%u"
+
 @protocol FMTokenizerDelegate;
 
 /**
@@ -25,6 +34,11 @@
  Calls the `fts3_tokenizer()` function on this database, installing the "fmdb" tokenizer module.
  */
 - (BOOL)installTokenizerModule;
+
+/**
+ Runs a "special command" for FTS3/FTS4 tables.
+ */
+- (BOOL)issueCommand:(NSString *)command forTable:(NSString *)tableName;
 
 @end
 
