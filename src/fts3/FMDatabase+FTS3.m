@@ -209,3 +209,21 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
 }
 
 @end
+
+#pragma mark
+
+@implementation FMResultSet (FTS3)
+
+- (FMTextOffsets)offsetsForColumnIndex:(int)columnIdx
+{
+    // The offsets() value is a space separated string of 4 integers
+    uint32_t offsetInts[4];
+    const char *rawOffsets = (const char *)sqlite3_column_text([_statement statement], columnIdx);
+    
+    sscanf(rawOffsets, "%u %u %u %u", &offsetInts[0], &offsetInts[1], &offsetInts[2], &offsetInts[3]);
+    
+    FMTextOffsets offsets = { offsetInts[0], offsetInts[1], NSMakeRange(offsetInts[2], offsetInts[3]) };
+    return offsets;
+}
+
+@end

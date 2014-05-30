@@ -65,3 +65,30 @@ typedef struct FMTokenizerCursor
 - (void)closeTokenizerCursor:(FMTokenizerCursor *)cursor;
 
 @end
+
+#pragma mark
+
+struct FMTextOffsets
+{
+    uint32_t columnNumber;
+    uint32_t termNumber;
+    NSRange  matchRange;    // NOTE: This range is in bytes, not characters!
+};
+typedef struct FMTextOffsets FMTextOffsets;
+
+/**
+ A category that adds support for the encoded data returned by FTS3 functions.
+ */
+@interface FMResultSet (FTS3)
+
+/**
+ Returns a structure containing values from the `offsets()` function. Make sure the column index corresponds
+ to the column index in the SQL query.
+ 
+ @param columnIdx Zero-based index for column.
+ 
+ @return `FMTextOffsets` structure.
+ */
+- (FMTextOffsets)offsetsForColumnIndex:(int)columnIdx;
+
+@end
