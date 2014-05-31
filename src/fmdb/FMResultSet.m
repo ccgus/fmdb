@@ -293,7 +293,7 @@
     
     NSMutableData *data = [NSMutableData dataWithLength:(NSUInteger)dataSize];
     
-    memcpy([data mutableBytes], sqlite3_column_blob([_statement statement], columnIdx), dataSize);
+    memcpy([data mutableBytes], sqlite3_column_blob([_statement statement], columnIdx), (size_t)dataSize);
     
     return data;
 }
