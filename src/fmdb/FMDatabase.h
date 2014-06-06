@@ -40,7 +40,7 @@
 
 
 typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary);
-
+typedef void(^FMDBDidOpenDatabaseCallbackBlock)(FMDatabase *db);
 
 /** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
  
@@ -111,6 +111,13 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 /** Dictionary of cached statements */
 
 @property (atomic, retain) NSMutableDictionary *cachedStatements;
+
+/** 
+ * Called when database did open.
+ * You can do some additional work in it, e.g. install a custom collation to db
+ */
+
+@property (readwrite, copy) FMDBDidOpenDatabaseCallbackBlock didOpenCallback;
 
 ///---------------------
 /// @name Initialization

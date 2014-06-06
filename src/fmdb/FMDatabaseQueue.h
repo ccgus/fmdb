@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"
+#import "FMDatabase.h"
 
 @class FMDatabase;
 
@@ -98,6 +99,18 @@
  */
 + (instancetype)databaseQueueWithPath:(NSString*)aPath flags:(int)openFlags;
 
+/** Create queue using path, specified flags and did open callback block.
+ 
+ @param aPath The file path of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ @param didOpenCallback callback block when database did open
+
+ @return The `FMDatabaseQueue` object. `nil` on error.
+ */
++ (instancetype)databaseQueueWithPath:(NSString*)aPath
+                                flags:(int)openFlags
+                      didOpenCallback:(FMDBDidOpenDatabaseCallbackBlock)didOpenCallback;
+
 /** Create queue using path.
 
  @param aPath The file path of the database.
@@ -116,6 +129,19 @@
  */
 
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags;
+
+/** Create queue using path, specified flags and did open callback block.
+ 
+ @param aPath The file path of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ @param didOpenCallback callback block when database did open
+ 
+ @return The `FMDatabaseQueue` object. `nil` on error.
+ */
+
+- (instancetype)initWithPath:(NSString*)aPath
+                       flags:(int)openFlags
+             didOpenCallback:(FMDBDidOpenDatabaseCallbackBlock)didOpenCallback;
 
 /** Returns the Class of 'FMDatabase' subclass, that will be used to instantiate database object.
  
