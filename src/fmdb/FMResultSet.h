@@ -402,6 +402,27 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 
 - (NSData*)dataNoCopyForColumnIndex:(int)columnIdx NS_RETURNS_NOT_RETAINED;
 
+/** Result set `NSUUID` value for column.
+ 
+ This is useful when storing unique identifier like GUID/UUID which usually used as primary key.
+ 
+ @param columnName `NSString` value of the name of the column.
+ 
+ @return `NSUUID` value of the result set's column.
+ 
+ */
+
+- (NSUUID*)uuidForColumn:(NSString*)columnName;
+
+/** Result set `NSUUID` value for column.
+ 
+ @param columnIdx Zero-based index for column.
+ 
+ @return `NSUUID` value of the result set's column.
+ */
+
+- (NSUUID*)uuidForColumnIndex:(int)columnIdx;
+
 /** Is the column `NULL`?
  
  @param columnIdx Zero-based index for column.

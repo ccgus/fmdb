@@ -797,7 +797,10 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             
             if (namedIdx > 0) {
                 // Standard binding from here.
-                [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+                id obj = [dictionaryArgs objectForKey:dictionaryKey];
+                if ([obj isKindOfClass:[NSUUID class]])
+                    obj = [[((NSUUID*)obj) UUIDString] lowercaseString];
+                [self bindObject:obj toColumn:namedIdx inStatement:pStmt];
                 // increment the binding count, so our check below works out
                 idx++;
             }
@@ -812,9 +815,13 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             
             if (arrayArgs && idx < (int)[arrayArgs count]) {
                 obj = [arrayArgs objectAtIndex:(NSUInteger)idx];
+                if ([obj isKindOfClass:[NSUUID class]])
+                    obj = [[((NSUUID*)obj) UUIDString] lowercaseString];
             }
             else if (args) {
                 obj = va_arg(args, id);
+                if ([obj isKindOfClass:[NSUUID class]])
+                    obj = [[((NSUUID*)obj) UUIDString] lowercaseString];
             }
             else {
                 //We ran out of arguments
@@ -978,7 +985,10 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             
             if (namedIdx > 0) {
                 // Standard binding from here.
-                [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
+                id obj = [dictionaryArgs objectForKey:dictionaryKey];
+                if ([obj isKindOfClass:[NSUUID class]])
+                    obj = [[((NSUUID*)obj) UUIDString] lowercaseString];
+                [self bindObject:obj toColumn:namedIdx inStatement:pStmt];
                 
                 // increment the binding count, so our check below works out
                 idx++;
@@ -994,9 +1004,13 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             
             if (arrayArgs && idx < (int)[arrayArgs count]) {
                 obj = [arrayArgs objectAtIndex:(NSUInteger)idx];
+                if ([obj isKindOfClass:[NSUUID class]])
+                    obj = [[((NSUUID*)obj) UUIDString] lowercaseString];
             }
             else if (args) {
                 obj = va_arg(args, id);
+                if ([obj isKindOfClass:[NSUUID class]])
+                    obj = [[((NSUUID*)obj) UUIDString] lowercaseString];
             }
             else {
                 //We ran out of arguments
