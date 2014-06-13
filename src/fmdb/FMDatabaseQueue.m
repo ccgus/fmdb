@@ -17,13 +17,6 @@
  
  */
 
-/*
- * A key used to associate the FMDatabaseQueue object with the dispatch_queue_t it uses.
- * This in turn is used for deadlock detection by seeing if inDatabase: is called on
- * the queue's dispatch queue, which should not happen and causes a deadlock.
- */
-static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey;
- 
 @implementation FMDatabaseQueue
 
 @synthesize path = _path;
@@ -74,7 +67,6 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         _path = FMDBReturnRetained(aPath);
         
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
-        dispatch_queue_set_specific(_queue, kDispatchQueueSpecificKey, (__bridge void *)self, NULL);
         _openFlags = openFlags;
     }
     
@@ -139,8 +131,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
     /* Get the currently executing queue (which should probably be nil, but in theory could be another DB queue
      * and then check it against self to make sure we're not about to deadlock. */
-    FMDatabaseQueue *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueSpecificKey);
-    assert(currentSyncQueue != self && "inDatabase: was called reentrantly on the same queue, which would lead to a deadlock");
+    assert(dispatch_get_current_queue() != _queue && "inDatabase: was called reentrantly on the same queue, which would lead to a deadlock");
     
     FMDBRetain(self);
     
