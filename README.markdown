@@ -264,7 +264,7 @@ Figure out where the bug is, fix it, and send a patch in or bring that up on the
 
 The support channels for FMDB are the mailing list (see above), filing a bug here, or maybe on Stack Overflow.  So that is to say, support is provided by the community and on a voluntary basis.
 
-FMDB development is overseen by Gus Mueller of Flying Meat.  If FMDB been helpful to you, consider purchasing an app from FM or tell all your friends about it.
+FMDB development is overseen by Gus Mueller of Flying Meat.  If FMDB been helpful to you, consider purchasing an app from FM or telling all your friends about it.
 
 ## License
 
