@@ -313,7 +313,15 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see lastErrorCode
  @see lastErrorMessage
  
- @warning This should be used with great care. Generally, instead of this method, you should use `<executeUpdate:>` (with `?` placeholders in the SQL), which properly escapes quotation marks encountered inside the values (minimizing errors and protecting against SQL injection attack) and handles a wider variety of data types. See `<executeUpdate:>` for more information. 
+ @note This method does not technically perform a traditional printf-style replacement. What this method actually does is replace the printf-style percent sequences with a SQLite `?` placeholder, and then bind values to that placeholder. Thus the following command
+
+    [db executeUpdateWithFormat:@"INSERT INTO test (name) VALUES (%@)", @"Gus"];
+
+ is actually replacing the `%@` with `?` placeholder, and then performing something equivalent to `<executeUpdate:>`
+
+    [db executeUpdate:@"INSERT INTO test (name) VALUES (?)", @"Gus"];
+
+ There are two reasons why this distinction is important. First, the printf-style escape sequences can only be used where it is permissible to use a SQLite `?` placeholder. You can use it only for values in SQL statements, but not for table names or column names or any other non-value context. This method also cannot be used in conjunction with `pragma` statements and the like. Second, note the lack of quotation marks in the SQL. The `VALUES` clause was _not_ `VALUES ('%@')` (like you might have to do if you built a SQL statement using `NSString` method `stringWithFormat`), but rather simply `VALUES (%@)`.
  */
 
 - (BOOL)executeUpdateWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
@@ -479,7 +487,15 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see FMResultSet
  @see [`FMResultSet next`](<[FMResultSet next]>)
 
- @warning This should be used with great care. Generally, instead of this method, you should use `<executeQuery:>` (with `?` placeholders in the SQL), which properly escapes quotation marks encountered inside the values (minimizing errors and protecting against SQL injection attack) and handles a wider variety of data types. See `<executeQuery:>` for more information.
+ @note This method does not technically perform a traditional printf-style replacement. What this method actually does is replace the printf-style percent sequences with a SQLite `?` placeholder, and then bind values to that placeholder. Thus the following command
+ 
+    [db executeQueryWithFormat:@"SELECT * FROM test WHERE name=%@", @"Gus"];
+ 
+ is actually replacing the `%@` with `?` placeholder, and then performing something equivalent to `<executeQuery:>`
+ 
+    [db executeQuery:@"SELECT * FROM test WHERE name=?", @"Gus"];
+ 
+ There are two reasons why this distinction is important. First, the printf-style escape sequences can only be used where it is permissible to use a SQLite `?` placeholder. You can use it only for values in SQL statements, but not for table names or column names or any other non-value context. This method also cannot be used in conjunction with `pragma` statements and the like. Second, note the lack of quotation marks in the SQL. The `WHERE` clause was _not_ `WHERE name='%@'` (like you might have to do if you built a SQL statement using `NSString` method `stringWithFormat`), but rather simply `WHERE name=%@`.
 
  */
 

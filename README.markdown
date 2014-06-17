@@ -233,6 +233,11 @@ The history and changes are availbe on its [GitHub page](https://github.com/ccgu
 
 The contributors to FMDB are contained in the "Contributors.txt" file.
 
+## Additional projects using FMDB, which might be interesting to the discerning developer.
+
+ * FMDBMigrationManager, A SQLite schema migration management system for FMDB: https://github.com/layerhq/FMDBMigrationManager
+ * FCModel, An alternative to Core Data for people who like having direct SQL access: https://github.com/marcoarment/FCModel
+
 ## Quick notes on FMDB's coding style
 
 Spaces, not tabs.  Square brackets, not dot notation.  Look at what FMDB already does with curly brackets and such, and stick to that style.  
@@ -254,6 +259,12 @@ Then you can bring it up on the FMDB mailing list by showing your nice and compa
 **Optional:**
 
 Figure out where the bug is, fix it, and send a patch in or bring that up on the mailing list.  Make sure all the other tests run after your modifications.
+
+## Support
+
+The support channels for FMDB are the mailing list (see above), filing a bug here, or maybe on Stack Overflow.  So that is to say, support is provided by the community and on a voluntary basis.
+
+FMDB development is overseen by Gus Mueller of Flying Meat.  If FMDB been helpful to you, consider purchasing an app from FM or telling all your friends about it.
 
 ## License
 
