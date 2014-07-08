@@ -73,14 +73,19 @@ static int FMDBTokenizerOpen(sqlite3_tokenizer *pTokenizer,         /* The token
         return SQLITE_NOMEM;
     }
     
-    nBytes = (nBytes < 0) ? (int) strlen(pInput) : nBytes;
-    cursor->inputString = CFStringCreateWithBytesNoCopy(NULL, (const UInt8 *)pInput, nBytes,
-                                                        kCFStringEncodingUTF8, false, kCFAllocatorNull);
+    if (pInput == NULL || pInput[0] == '\0') {
+        cursor->inputString = CFRetain(CFSTR(""));
+    } else {
+        nBytes = (nBytes < 0) ? (int) strlen(pInput) : nBytes;
+        cursor->inputString = CFStringCreateWithBytesNoCopy(NULL, (const UInt8 *)pInput, nBytes,
+                                                            kCFStringEncodingUTF8, false, kCFAllocatorNull);
+    }
+    
     cursor->currentRange = CFRangeMake(0, 0);
     cursor->tokenIndex = 0;
     cursor->tokenString = NULL;
     cursor->userObject = NULL;
-    cursor->tempBuffer = NULL;
+    cursor->outputBuf[0] = '\0';
         
     [tokenizer->delegate openTokenizerCursor:cursor];
 
@@ -107,7 +112,6 @@ static int FMDBTokenizerClose(sqlite3_tokenizer_cursor *pCursor)
     }
     
     CFRelease(cursor->inputString);
-    sqlite3_free(cursor->tempBuffer);
     sqlite3_free(cursor);
     
     return SQLITE_OK;
@@ -132,20 +136,14 @@ static int FMDBTokenizerNext(sqlite3_tokenizer_cursor *pCursor,  /* Cursor retur
         return SQLITE_DONE;
     }
     
-    const char *strToken = CFStringGetCStringPtr(cursor->tokenString, kCFStringEncodingUTF8);
+    CFRange range = CFRangeMake(0, CFStringGetLength(cursor->tokenString));
+    CFIndex usedBytes = 0;
     
-    if (strToken == NULL) {
-        // Need to allocate some of our own memory for this.
-        if (cursor->tempBuffer == NULL) {
-            cursor->tempBuffer = sqlite3_malloc(128);   //TODO: fix hard-coded constant
-        }
-
-        CFStringGetCString(cursor->tokenString, cursor->tempBuffer, 128, kCFStringEncodingUTF8);
-        strToken = cursor->tempBuffer;
-    }
+    CFStringGetBytes(cursor->tokenString, range, kCFStringEncodingUTF8, '?', false,
+                     cursor->outputBuf, sizeof(cursor->outputBuf), &usedBytes);
     
-    *pzToken = strToken;
-    *pnBytes = (int) strlen(strToken);
+    *pzToken = (char *) cursor->outputBuf;
+    *pnBytes = usedBytes;
     *piStartOffset = (int) cursor->currentRange.location;
     *piEndOffset = (int) (cursor->currentRange.location + cursor->currentRange.length);
     *piPosition = cursor->tokenIndex++;
