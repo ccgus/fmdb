@@ -143,7 +143,7 @@ static int FMDBTokenizerNext(sqlite3_tokenizer_cursor *pCursor,  /* Cursor retur
                      cursor->outputBuf, sizeof(cursor->outputBuf), &usedBytes);
     
     *pzToken = (char *) cursor->outputBuf;
-    *pnBytes = usedBytes;
+    *pnBytes = (int) usedBytes;
     *piStartOffset = (int) cursor->currentRange.location;
     *piEndOffset = (int) (cursor->currentRange.location + cursor->currentRange.length);
     *piPosition = cursor->tokenIndex++;

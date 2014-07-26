@@ -78,6 +78,8 @@
     id<FMTokenizerDelegate> m_baseTokenizer;
 }
 
+@synthesize words = m_words;
+
 + (instancetype)tokenizerWithFileURL:(NSURL *)wordFileURL
                        baseTokenizer:(id<FMTokenizerDelegate>)tokenizer
                                error:(NSError *__autoreleasing *)error
@@ -98,7 +100,7 @@
     NSParameterAssert(tokenizer);
     
     if ((self = [super init])) {
-        _words = [words copy];
+        m_words = [words copy];
         m_baseTokenizer = tokenizer;
     }
     return self;
@@ -112,6 +114,11 @@
 - (BOOL)nextTokenForCursor:(FMTokenizerCursor *)cursor
 {
     BOOL done = [m_baseTokenizer nextTokenForCursor:cursor];
+    
+    // Don't use stop words for prefix queries since it's fine for the prefix to be in the stop list
+    if (CFStringHasSuffix(cursor->inputString, CFSTR("*"))) {
+        return done;
+    }
     
     while (!done && [self.words containsObject:(__bridge id)(cursor->tokenString)]) {
         done = [m_baseTokenizer nextTokenForCursor:cursor];
