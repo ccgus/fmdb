@@ -872,4 +872,30 @@
     XCTAssertTrue(success, @"bulk drop");
 }
 
+- (void)testCharAndBoolTypes
+{
+    XCTAssertTrue([self.db executeUpdate:@"create table charBoolTest (a, b, c)"]);
+
+    BOOL success = [self.db executeUpdate:@"insert into charBoolTest values (?, ?, ?)", @YES, @NO, @('x')];
+    XCTAssertTrue(success, @"Unable to insert values");
+
+    FMResultSet *rs = [self.db executeQuery:@"select * from charBoolTest"];
+    XCTAssertNotNil(rs);
+
+    XCTAssertTrue([rs next], @"Did not return row");
+
+    XCTAssertEqual([rs boolForColumn:@"a"], true, @"Column a was not true");
+    XCTAssertEqualObjects([rs objectForColumnName:@"a"], @YES, @"Column a was not true");
+
+    XCTAssertEqual([rs boolForColumn:@"b"], false, @"Column b was not false");
+    XCTAssertEqualObjects([rs objectForColumnName:@"b"], @NO, @"Column b was not true");
+
+    XCTAssertEqual([rs intForColumn:@"c"], 'x', @"Column c was not 'x'");
+
+    [rs close];
+
+    XCTAssertTrue([self.db executeUpdate:@"drop table charBoolTest"], @"Did not drop table");
+
+}
+
 @end
