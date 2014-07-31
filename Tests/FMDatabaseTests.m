@@ -884,13 +884,14 @@
 
     XCTAssertTrue([rs next], @"Did not return row");
 
-    XCTAssertEqual([rs boolForColumn:@"a"], true, @"Column a was not true");
-    XCTAssertEqualObjects([rs objectForColumnName:@"a"], @YES, @"Column a was not true");
+    XCTAssertEqual([rs boolForColumn:@"a"], true);
+    XCTAssertEqualObjects([rs objectForColumnName:@"a"], @YES);
 
-    XCTAssertEqual([rs boolForColumn:@"b"], false, @"Column b was not false");
-    XCTAssertEqualObjects([rs objectForColumnName:@"b"], @NO, @"Column b was not true");
+    XCTAssertEqual([rs boolForColumn:@"b"], false);
+    XCTAssertEqualObjects([rs objectForColumnName:@"b"], @NO);
 
-    XCTAssertEqual([rs intForColumn:@"c"], 'x', @"Column c was not 'x'");
+    XCTAssertEqual([rs intForColumn:@"c"], 'x');
+    XCTAssertEqualObjects([rs objectForColumnName:@"c"], @('x'));
 
     [rs close];
 
