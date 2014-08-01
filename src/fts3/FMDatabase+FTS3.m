@@ -215,12 +215,27 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
 - (FMTextOffsets)offsetsForColumnIndex:(int)columnIdx
 {
     // The offsets() value is a space separated string of 4 integers
-    uint32_t offsetInts[4];
+    int offsetInts[64], numInts;
     const char *rawOffsets = (const char *)sqlite3_column_text([_statement statement], columnIdx);
     
-    sscanf(rawOffsets, "%u %u %u %u", &offsetInts[0], &offsetInts[1], &offsetInts[2], &offsetInts[3]);
+    NSScanner *scanner = [NSScanner scannerWithString:[NSString stringWithUTF8String:rawOffsets]];
+    
+    for (numInts = 0; numInts < 64; ++numInts) {
+        if (![scanner scanInt:&offsetInts[numInts]]) {
+            break;
+        }
+    }
     
     FMTextOffsets offsets = { offsetInts[0], offsetInts[1], NSMakeRange(offsetInts[2], offsetInts[3]) };
+    
+    // Quick hack to make hit highlighting work for 2-word terms
+    if (numInts > 4 && (offsetInts[0] == offsetInts[4])) {
+        int nextWord = offsetInts[2] + offsetInts[3] + 1;   // 1 for a space
+        
+        if (offsetInts[2+4] == nextWord) {
+            offsets.matchRange = NSMakeRange(offsetInts[2], offsetInts[3] + 1 + offsetInts[3+4]);
+        }
+    }
     return offsets;
 }
 
