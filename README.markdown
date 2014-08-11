@@ -1,4 +1,5 @@
-[![Dependency Status](https://www.versioneye.com/objective-c/fmdb/2.3/badge.svg)](https://www.versioneye.com/objective-c/fmdb/2.3)
+[![Dependency Status](https://www.versioneye.com/objective-c/fmdb/2.3/badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/2.3)
+[![Reference Status](https://www.versioneye.com/objective-c/fmdb/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/references)
 
 # FMDB v2.3
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
