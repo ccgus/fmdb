@@ -254,9 +254,8 @@
 
 
 - (BOOL)databasePool:(FMDatabasePool*)pool shouldAddDatabaseToPool:(FMDatabase*)database {
-    [database setRetryTimeout:.1];
+    [database setMaxBusyRetryTimeInterval:10];
     // [database setCrashOnErrors:YES];
-    #pragma message "FIXME: Gus - we need to check for a SQLITE_BUSY when we call sqlite3_step.  sqlite will sleep for the retry amount - BUT, it won't just try the step again.  We'll have to put the old loops back in.  testReadWriteStressTest shows this mistake.  Maybe add a private method to FMDatabase that does the stepping and loop for us, and replace sqlite3_step with that?"
     return YES;
 }
 

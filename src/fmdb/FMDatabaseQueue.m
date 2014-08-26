@@ -17,7 +17,7 @@
  
  */
 
-/**
+/*
  * A key used to associate the FMDatabaseQueue object with the dispatch_queue_t it uses.
  * This in turn is used for deadlock detection by seeing if inDatabase: is called on
  * the queue's dispatch queue, which should not happen and causes a deadlock.
@@ -108,10 +108,10 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 
 - (void)close {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
-        [_db close];
+    dispatch_sync(_queue, ^() {
+        [self->_db close];
         FMDBRelease(_db);
-        _db = 0x00;
+        self->_db = 0x00;
     });
     FMDBRelease(self);
 }
@@ -152,7 +152,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         if ([db hasOpenResultSets]) {
             NSLog(@"Warning: there is at least one open result set around after performing [FMDatabaseQueue inDatabase:]");
             
-#ifdef DEBUG
+#if defined(DEBUG) && DEBUG
             NSSet *openSetCopy = FMDBReturnAutoreleased([[db valueForKey:@"_openResultSets"] copy]);
             for (NSValue *rsInWrappedInATastyValueMeal in openSetCopy) {
                 FMResultSet *rs = (FMResultSet *)[rsInWrappedInATastyValueMeal pointerValue];

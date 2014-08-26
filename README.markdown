@@ -1,7 +1,5 @@
-# FMDB
+# FMDB v2.3
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
-
-[![Build Status](https://travis-ci.org/ccgus/fmdb.png?branch=master)](https://travis-ci.org/ccgus/fmdb)
 
 ## The FMDB Mailing List:
 http://groups.google.com/group/fmdb
@@ -11,7 +9,13 @@ http://www.sqlite.org/faq.html
 
 Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: http://www.sqlite.org/docs.html
 
+## Contributing
+Do you have an awesome idea that deserves to be in FMDB?  You might consider pinging ccgus first to make sure he hasn't already ruled it out for some reason.  Otherwise pull requests are great, and make sure you stick to the local coding conventions.  However, please be patient and if you haven't heard anything from ccgus for a week or more, you might want to send a note asking what's up.
+
 ## CocoaPods
+
+[![Dependency Status](https://www.versioneye.com/objective-c/fmdb/2.3/badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/2.3)
+[![Reference Status](https://www.versioneye.com/objective-c/fmdb/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/references)
 
 FMDB can be installed using [CocoaPods](http://cocoapods.org/).
 
@@ -108,6 +112,32 @@ When you have finished executing queries and updates on the database, you should
 ### Transactions
 
 `FMDatabase` can begin and commit a transaction by invoking one of the appropriate methods or executing a begin/end transaction statement.
+
+### Multiple Statements and Batch Stuff
+
+You can use `FMDatabase`'s executeStatements:withResultBlock: to do multiple statements in a string:
+
+```
+NSString *sql = @"create table bulktest1 (id integer primary key autoincrement, x text);"
+                 "create table bulktest2 (id integer primary key autoincrement, y text);"
+                 "create table bulktest3 (id integer primary key autoincrement, z text);"
+                 "insert into bulktest1 (x) values ('XXX');"
+                 "insert into bulktest2 (y) values ('YYY');"
+                 "insert into bulktest3 (z) values ('ZZZ');";
+
+success = [db executeStatements:sql];
+
+sql = @"select count(*) as count from bulktest1;"
+       "select count(*) as count from bulktest2;"
+       "select count(*) as count from bulktest3;";
+
+success = [self.db executeStatements:sql withResultBlock:^int(NSDictionary *dictionary) {
+    NSInteger count = [dictionary[@"count"] integerValue];
+    XCTAssertEqual(count, 1, @"expected one record for dictionary %@", dictionary);
+    return 0;
+}];
+
+```
 
 ### Data Sanitization
 
@@ -206,6 +236,15 @@ The history and changes are availbe on its [GitHub page](https://github.com/ccgu
 
 The contributors to FMDB are contained in the "Contributors.txt" file.
 
+## Additional projects using FMDB, which might be interesting to the discerning developer.
+
+ * FMDBMigrationManager, A SQLite schema migration management system for FMDB: https://github.com/layerhq/FMDBMigrationManager
+ * FCModel, An alternative to Core Data for people who like having direct SQL access: https://github.com/marcoarment/FCModel
+
+## Quick notes on FMDB's coding style
+
+Spaces, not tabs.  Square brackets, not dot notation.  Look at what FMDB already does with curly brackets and such, and stick to that style.  
+
 ## Reporting bugs
 
 Reduce your bug down to the smallest amount of code possible.  You want to make it super easy for the developers to see and reproduce your bug.  If it helps, pretend that the person who can fix your bug is active on shipping 3 major products, works on a handful of open source projects, has a newborn baby, and is generally very very busy.
@@ -223,6 +262,12 @@ Then you can bring it up on the FMDB mailing list by showing your nice and compa
 **Optional:**
 
 Figure out where the bug is, fix it, and send a patch in or bring that up on the mailing list.  Make sure all the other tests run after your modifications.
+
+## Support
+
+The support channels for FMDB are the mailing list (see above), filing a bug here, or maybe on Stack Overflow.  So that is to say, support is provided by the community and on a voluntary basis.
+
+FMDB development is overseen by Gus Mueller of Flying Meat.  If FMDB been helpful to you, consider purchasing an app from FM or telling all your friends about it.
 
 ## License
 
