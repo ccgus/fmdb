@@ -43,6 +43,10 @@ static int FMDBTokenizerCreate(int argc, const char * const *argv, sqlite3_token
     memset(tokenizer, 0, sizeof(*tokenizer));
     tokenizer->delegate = [g_delegateMap objectForKey:[NSString stringWithUTF8String:argv[0]]];
     
+    if (!tokenizer->delegate) {
+        return SQLITE_ERROR;
+    }
+    
     *ppTokenizer = &tokenizer->base;
     return SQLITE_OK;
 }
@@ -136,16 +140,22 @@ static int FMDBTokenizerNext(sqlite3_tokenizer_cursor *pCursor,  /* Cursor retur
         return SQLITE_DONE;
     }
     
-    CFRange range = CFRangeMake(0, CFStringGetLength(cursor->tokenString));
-    CFIndex usedBytes = 0;
+    // The range from the tokenizer is in UTF-16 positions, we need give UTF-8 positions to SQLite.
+    CFIndex usedBytes1, usedBytes2;
+    CFRange range1 = CFRangeMake(0, cursor->currentRange.location);
+    CFRange range2 = CFRangeMake(0, cursor->currentRange.length);
     
-    CFStringGetBytes(cursor->tokenString, range, kCFStringEncodingUTF8, '?', false,
-                     cursor->outputBuf, sizeof(cursor->outputBuf), &usedBytes);
+    // This will tell us how many UTF-8 bytes there are before the start of the token
+    CFStringGetBytes(cursor->inputString, range1, kCFStringEncodingUTF8, '?', false,
+                     NULL, 0, &usedBytes1);
+    
+    CFStringGetBytes(cursor->tokenString, range2, kCFStringEncodingUTF8, '?', false,
+                     cursor->outputBuf, sizeof(cursor->outputBuf), &usedBytes2);
     
     *pzToken = (char *) cursor->outputBuf;
-    *pnBytes = (int) usedBytes;
-    *piStartOffset = (int) cursor->currentRange.location;
-    *piEndOffset = (int) (cursor->currentRange.location + cursor->currentRange.length);
+    *pnBytes = (int) usedBytes2;
+    *piStartOffset = (int) usedBytes1;
+    *piEndOffset = (int) (usedBytes1 + usedBytes2);
     *piPosition = cursor->tokenIndex++;
     
     return SQLITE_OK;
@@ -210,33 +220,43 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
 
 #pragma mark
 
+@implementation FMTextOffsets
+{
+    NSString *_rawOffsets;
+}
+
+- (instancetype)initWithDBOffsets:(const char *)rawOffsets
+{
+    if ((self = [super init])) {
+        _rawOffsets = [NSString stringWithUTF8String:rawOffsets];
+    }
+    return self;
+}
+
+- (void)enumerateWithBlock:(void (^)(NSInteger, NSInteger, NSRange))block
+{
+    const char *rawOffsets = [_rawOffsets UTF8String];
+    uint32_t offsetInt[4];
+    int charsRead = 0;
+
+    while (sscanf(rawOffsets, "%u %u %u %u%n",
+                  &offsetInt[0], &offsetInt[1], &offsetInt[2], &offsetInt[3], &charsRead) == 4) {
+
+        block(offsetInt[0], offsetInt[1], NSMakeRange(offsetInt[2], offsetInt[3]));
+        rawOffsets += charsRead;
+    }
+}
+
+@end
+
 @implementation FMResultSet (FTS3)
 
-- (FMTextOffsets)offsetsForColumnIndex:(int)columnIdx
+- (FMTextOffsets *)offsetsForColumnIndex:(int)columnIdx
 {
-    // The offsets() value is a space separated string of 4 integers
-    int offsetInts[64], numInts;
+    // The offsets() value is a space separated groups of 4 integers
     const char *rawOffsets = (const char *)sqlite3_column_text([_statement statement], columnIdx);
     
-    NSScanner *scanner = [NSScanner scannerWithString:[NSString stringWithUTF8String:rawOffsets]];
-    
-    for (numInts = 0; numInts < 64; ++numInts) {
-        if (![scanner scanInt:&offsetInts[numInts]]) {
-            break;
-        }
-    }
-    
-    FMTextOffsets offsets = { offsetInts[0], offsetInts[1], NSMakeRange(offsetInts[2], offsetInts[3]) };
-    
-    // Quick hack to make hit highlighting work for 2-word terms
-    if (numInts > 4 && (offsetInts[0] == offsetInts[4])) {
-        int nextWord = offsetInts[2] + offsetInts[3] + 1;   // 1 for a space
-        
-        if (offsetInts[2+4] == nextWord) {
-            offsets.matchRange = NSMakeRange(offsetInts[2], offsetInts[3] + 1 + offsetInts[3+4]);
-        }
-    }
-    return offsets;
+    return [[FMTextOffsets alloc] initWithDBOffsets:rawOffsets];
 }
 
 @end

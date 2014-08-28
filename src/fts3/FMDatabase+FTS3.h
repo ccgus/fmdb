@@ -68,13 +68,21 @@ typedef struct FMTokenizerCursor
 
 #pragma mark
 
-struct FMTextOffsets
-{
-    uint32_t columnNumber;
-    uint32_t termNumber;
-    NSRange  matchRange;    // NOTE: This range is in bytes, not characters!
-};
-typedef struct FMTextOffsets FMTextOffsets;
+/**
+ The container of offset information.
+ */
+@interface FMTextOffsets : NSObject
+
+- (instancetype)initWithDBOffsets:(const char *)offsets;
+
+/**
+ Enumerate each set of offsets in the result. The column number can be turned into a column name
+ using `[FMResultSet columnNameForIndex:]`. The `matchRange` is in UTF-8 byte positions, so it must be 
+ modified to use with `NSString` data.
+ */
+- (void)enumerateWithBlock:(void (^)(NSInteger columnNumber, NSInteger termNumber, NSRange matchRange))block;
+
+@end
 
 /**
  A category that adds support for the encoded data returned by FTS3 functions.
@@ -89,6 +97,6 @@ typedef struct FMTextOffsets FMTextOffsets;
  
  @return `FMTextOffsets` structure.
  */
-- (FMTextOffsets)offsetsForColumnIndex:(int)columnIdx;
+- (FMTextOffsets *)offsetsForColumnIndex:(int)columnIdx;
 
 @end
