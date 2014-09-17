@@ -15,8 +15,15 @@ Pod::Spec.new do |s|
     ss.exclude_files = 'src/fmdb.m'
   end
 
-  # use a builtin version of sqlite3
+  # use the built-in library version of sqlite3
   s.subspec 'standard' do |ss|
+    ss.library = 'sqlite3'
+    ss.dependency 'FMDB/common'
+  end
+
+  # use the built-in library version of sqlite3 with custom FTS tokenizer source files
+  s.subspec 'FTS' do |ss|
+    ss.source_files = 'src/extra/fts3/*.{h,m}'
     ss.library = 'sqlite3'
     ss.dependency 'FMDB/common'
   end
@@ -28,9 +35,9 @@ Pod::Spec.new do |s|
   end
 
   # use a custom built version of sqlite3 with FTS4 enabled and FTS4 unicode61 tokenizer support
-  s.subspec 'fts' do |ss|
+  s.subspec 'standalone+FTS' do |ss|
     ss.source_files = 'src/extra/fts3/*.{h,m}'
-    ss.dependency 'FMDB/common'
+    ss.dependency 'FMDB/standalone'
     ss.dependency 'sqlite3/unicode61'
   end
 
