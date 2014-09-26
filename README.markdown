@@ -14,6 +14,9 @@ Do you have an awesome idea that deserves to be in FMDB?  You might consider pin
 
 ## CocoaPods
 
+[![Dependency Status](https://www.versioneye.com/objective-c/fmdb/2.3/badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/2.3)
+[![Reference Status](https://www.versioneye.com/objective-c/fmdb/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/references)
+
 FMDB can be installed using [CocoaPods](http://cocoapods.org/).
 
 ```
