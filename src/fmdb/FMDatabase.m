@@ -34,7 +34,7 @@
     
     if (self) {
         _databasePath               = [aPath copy];
-        _openResultSets             = [[NSMutableSet alloc] init];
+        _openResultSets             = [NSHashTable weakObjectsHashTable];
         _db                         = nil;
         _logsErrors                 = YES;
         _crashOnErrors              = NO;
@@ -283,21 +283,13 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 - (void)closeOpenResultSets {
     
     //Copy the set so we don't get mutation errors
-    NSSet *openSetCopy = FMDBReturnAutoreleased([_openResultSets copy]);
-    for (NSValue *rsInWrappedInATastyValueMeal in openSetCopy) {
-        FMResultSet *rs = (FMResultSet *)[rsInWrappedInATastyValueMeal pointerValue];
-        
+    NSHashTable *openSetCopy = FMDBReturnAutoreleased([_openResultSets copy]);
+    for (FMResultSet *rs in openSetCopy) {
         [rs setParentDB:nil];
         [rs close];
         
-        [_openResultSets removeObject:rsInWrappedInATastyValueMeal];
+        [_openResultSets removeObject:rs];
     }
-}
-
-- (void)resultSetDidClose:(FMResultSet *)resultSet {
-    NSValue *setValue = [NSValue valueWithNonretainedObject:resultSet];
-    
-    [_openResultSets removeObject:setValue];
 }
 
 #pragma mark Cached statements
@@ -858,8 +850,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     rs = [FMResultSet resultSetWithStatement:statement usingParentDatabase:self];
     [rs setQuery:sql];
     
-    NSValue *openResultSet = [NSValue valueWithNonretainedObject:rs];
-    [_openResultSets addObject:openResultSet];
+    [_openResultSets addObject:rs];
     
     [statement setUseCount:[statement useCount] + 1];
     

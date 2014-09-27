@@ -2,11 +2,6 @@
 #import "FMDatabase.h"
 #import "unistd.h"
 
-@interface FMDatabase ()
-- (void)resultSetDidClose:(FMResultSet *)resultSet;
-@end
-
-
 @implementation FMResultSet
 @synthesize query=_query;
 @synthesize statement=_statement;
@@ -47,10 +42,6 @@
     [_statement reset];
     FMDBRelease(_statement);
     _statement = nil;
-    
-    // we don't need this anymore... (i think)
-    //[_parentDB setInUse:NO];
-    [_parentDB resultSetDidClose:self];
     _parentDB = nil;
 }
 
