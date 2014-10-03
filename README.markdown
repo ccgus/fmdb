@@ -139,7 +139,6 @@ success = [self.db executeStatements:sql withResultBlock:^int(NSDictionary *dict
     XCTAssertEqual(count, 1, @"expected one record for dictionary %@", dictionary);
     return 0;
 }];
-
 ```
 
 ### Data Sanitization
