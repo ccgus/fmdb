@@ -230,6 +230,62 @@ FMDatabaseQueue will run the blocks on a serialized queue (hence the name of the
 
 You can do this!  For an example, look for "makeFunctionNamed:" in main.m
 
+## Swift
+
+You can use FMDB in Swift projects too.
+
+To do this, you must:
+
+1. Copy the FMDB `.m` and `.h` files into your project.
+
+2. If prompted to create a "bridging header", you should do so. If not prompted and if you don't already have a bridging header, add one.
+
+ For more information on bridging headers, see [Swift and Objective-C in the Same Project](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-XID_76).
+
+3. In your briding header, add a line that says:
+
+        #import "FMDB.h"
+
+4. Optionally, copy the `FMDatabaseVariadic.swift` from the "src/extra/Swift Extensions" folder into your project. This allows you to use `executeUpdate` and `executeQuery` with variadic parameters, rather than the `withArgumentsInArray` rendition.
+
+If you do the above, you can then write Swift code that uses FMDatabase. For example:
+
+    let documentsFolder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+    let path = documentsFolder.stringByAppendingPathComponent("test.sqlite")
+
+    let database = FMDatabase(path: path)
+
+    if !database.open() {
+        println("Unable to open database")
+        return
+    }
+
+    if !database.executeUpdate("create table test(x text, y text, z text)", withArgumentsInArray: nil) {
+        println("create table failed: \(database.lastErrorMessage())")
+    }
+
+    if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["a", "b", "c"]) {
+        println("insert 1 table failed: \(database.lastErrorMessage())")
+    }
+
+    if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["e", "f", "g"]) {
+        println("insert 2 table failed: \(database.lastErrorMessage())")
+    }
+
+    if let rs = database.executeQuery("select x, y, z from test", withArgumentsInArray: nil) {
+        while rs.next() {
+            let x = rs.stringForColumn("x")
+            let y = rs.stringForColumn("y")
+            let z = rs.stringForColumn("z")
+            println("x = \(x); y = \(y); z = \(z)")
+        }
+    } else {
+        println("select failed: \(database.lastErrorMessage())")
+    }
+
+    database.close()
+
+
 ## History
 
 The history and changes are availbe on its [GitHub page](https://github.com/ccgus/fmdb) and are summarized in the "CHANGES_AND_TODO_LIST.txt" file.
