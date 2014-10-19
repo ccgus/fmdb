@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2013.10.19
+    Added a 'nextWithError:' to FMResultSet.  Thanks to Roshan Muralidharan for the patch.
+
 2014.09.10
     New classes for exposing SQLite's FTS features.  Thanks to Andrew Goodale for the code.
 
