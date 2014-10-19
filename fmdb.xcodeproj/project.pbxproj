@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3354379C19E71096005661F3 /* FMResultSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354379B19E71096005661F3 /* FMResultSetTests.m */; };
 		621721B21892BFE30006691F /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC24EBB0A13E34D00A6D3E3 /* FMDatabase.m */; };
 		621721B31892BFE30006691F /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC24EC00A13E34D00A6D3E3 /* FMResultSet.m */; };
 		621721B41892BFE30006691F /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CC47A00E148581E9002CCDAB /* FMDatabaseQueue.m */; };
@@ -88,6 +89,7 @@
 /* Begin PBXFileReference section */
 		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32A70AAB03705E1F00C91783 /* fmdb_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fmdb_Prefix.pch; path = src/sample/fmdb_Prefix.pch; sourceTree = SOURCE_ROOT; };
+		3354379B19E71096005661F3 /* FMResultSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSetTests.m; sourceTree = "<group>"; };
 		6290CBB5188FE836009790F8 /* libFMDB-IOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libFMDB-IOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6290CBB6188FE836009790F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6290CBC6188FE837009790F8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -293,6 +295,7 @@
 		BF5D041A18416BB2008C5AA9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				3354379B19E71096005661F3 /* FMResultSetTests.m */,
 				BF940F5A18417D490001E077 /* FMDBTempDBTests.h */,
 				BF940F5B18417D490001E077 /* FMDBTempDBTests.m */,
 				BF5D042018416BB2008C5AA9 /* FMDatabaseTests.m */,
@@ -506,6 +509,7 @@
 				CCA66A3019C0CB1900EFDAC1 /* FMTokenizers.m in Sources */,
 				BF940F5C18417D490001E077 /* FMDBTempDBTests.m in Sources */,
 				BF940F5E18417DEA0001E077 /* FMDatabaseAdditionsTests.m in Sources */,
+				3354379C19E71096005661F3 /* FMResultSetTests.m in Sources */,
 				BF5D042118416BB2008C5AA9 /* FMDatabaseTests.m in Sources */,
 				67CB1E3019AD27D000A3CA7F /* FMDatabaseFTS3Tests.m in Sources */,
 				BFE55E131841C9A000CB3A63 /* FMDatabasePoolTests.m in Sources */,
