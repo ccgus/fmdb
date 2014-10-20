@@ -330,3 +330,7 @@ FMDB development is overseen by Gus Mueller of Flying Meat.  If FMDB been helpfu
 ## License
 
 The license for FMDB is contained in the "License.txt" file.
+
+If you happen to come across either Gus Mueller or Rob Ryan in a bar, you might consider purchasing a drink of their choosing if FMDB has been useful to you.
+
+(The drink is for them of course, shame on you for trying to keep it.)
