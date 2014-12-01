@@ -1,4 +1,4 @@
-# FMDB v2.3
+# FMDB v2.4
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
 ## The FMDB Mailing List:
@@ -21,7 +21,10 @@ FMDB can be installed using [CocoaPods](http://cocoapods.org/).
 
 ```
 pod 'FMDB'
-# pod 'FMDB/SQLCipher'   # If using FMDB with SQLCipher
+# pod 'FMDB/FTS'   # FMDB with FTS
+# pod 'FMDB/standalone'   # FMDB with latest SQLite amalgamation source
+# pod 'FMDB/standalone/FTS'   # FMDB with latest SQLite amalgamation source and FTS
+# pod 'FMDB/SQLCipher'   # FMDB with SQLCipher
 ```
 
 **If using FMDB with [SQLCipher](http://sqlcipher.net/) you must use the FMDB/SQLCipher subspec. The FMDB/SQLCipher subspec declares SQLCipher as a dependency, allowing FMDB to be compiled with the `-DSQLITE_HAS_CODEC` flag.**
@@ -49,7 +52,7 @@ An `FMDatabase` is created with a path to a SQLite database file.  This path can
 (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: http://www.sqlite.org/inmemorydb.html)
 
 	FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
-	
+
 ### Opening
 
 Before you can interact with the database, it must be opened.  Opening fails if there are insufficient resources or permissions to open and/or create the database.
@@ -58,7 +61,7 @@ Before you can interact with the database, it must be opened.  Opening fails if 
 		[db release];
 		return;
 	}
-	
+
 ### Executing Updates
 
 Any sort of SQL statement which is not a `SELECT` statement qualifies as an update.  This includes `CREATE`, `UPDATE`, `INSERT`, `ALTER`, `COMMIT`, `BEGIN`, `DETACH`, `DELETE`, `DROP`, `END`, `EXPLAIN`, `VACUUM`, and `REPLACE` statements (plus many more).  Basically, if your SQL statement does not begin with `SELECT`, it is an update statement.
@@ -69,7 +72,7 @@ Executing updates returns a single value, a `BOOL`.  A return value of `YES` mea
 
 A `SELECT` statement is a query and is executed via one of the `-executeQuery...` methods.
 
-Executing queries returns an `FMResultSet` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the `-lastErrorMessage` and `-lastErrorCode` methods to determine why a query failed.
+Executing queries returns an `FMResultSet` object if successful, and `nil` upon failure.  You should use the `-lastErrorMessage` and `-lastErrorCode` methods to determine why a query failed.
 
 In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" from one record to the other.  With FMDB, the easiest way to do that is like this:
 
@@ -77,14 +80,14 @@ In order to iterate through the results of your query, you use a `while()` loop.
 	while ([s next]) {
 		//retrieve values for each record
 	}
-	
+
 You must always invoke `-[FMResultSet next]` before attempting to access the values returned in a query, even if you're only expecting one:
 
 	FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM myTable"];
 	if ([s next]) {
 		int totalCount = [s intForColumnIndex:0];
 	}
-	
+
 `FMResultSet` has many methods to retrieve data in an appropriate format:
 
 - `intForColumn:`
@@ -108,7 +111,7 @@ Typically, there's no need to `-close` an `FMResultSet` yourself, since that hap
 When you have finished executing queries and updates on the database, you should `-close` the `FMDatabase` connection so that SQLite will relinquish any resources it has acquired during the course of its operation.
 
 	[db close];
-	
+
 ### Transactions
 
 `FMDatabase` can begin and commit a transaction by invoking one of the appropriate methods or executing a begin/end transaction statement.
@@ -136,7 +139,6 @@ success = [self.db executeStatements:sql withResultBlock:^int(NSDictionary *dict
     XCTAssertEqual(count, 1, @"expected one record for dictionary %@", dictionary);
     return 0;
 }];
-
 ```
 
 ### Data Sanitization
@@ -144,13 +146,13 @@ success = [self.db executeStatements:sql withResultBlock:^int(NSDictionary *dict
 When providing a SQL statement to FMDB, you should not attempt to "sanitize" any values before insertion.  Instead, you should use the standard SQLite binding syntax:
 
 	INSERT INTO myTable VALUES (?, ?, ?)
-	
+
 The `?` character is recognized by SQLite as a placeholder for a value to be inserted.  The execution methods all accept a variable number of arguments (or a representation of those arguments, such as an `NSArray`, `NSDictionary`, or a `va_list`), which are properly escaped for you.
 
 Alternatively, you may use named parameters syntax:
 
     INSERT INTO myTable VALUES (:id, :name, :value)
-    
+
 The parameters *must* start with a colon. SQLite itself supports other characters, but internally the Dictionary keys are prefixed with a colon, do **not** include the colon in your dictionary keys.
 
     NSDictionary *argsDict = [NSDictionary dictionaryWithObjectsAndKeys:@"My Name", @"name", nil];
@@ -159,23 +161,23 @@ The parameters *must* start with a colon. SQLite itself supports other character
 Thus, you SHOULD NOT do this (or anything like this):
 
 	[db executeUpdate:[NSString stringWithFormat:@"INSERT INTO myTable VALUES (%@)", @"this has \" lots of ' bizarre \" quotes '"]];
-	
+
 Instead, you SHOULD do:
 
 	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", @"this has \" lots of ' bizarre \" quotes '"];
-	
+
 All arguments provided to the `-executeUpdate:` method (or any of the variants that accept a `va_list` as a parameter) must be objects.  The following will not work (and will result in a crash):
 
 	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", 42];
-	
+
 The proper way to insert a number is to box it in an `NSNumber` object:
 
 	[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:42]];
-	
+
 Alternatively, you can use the `-execute*WithFormat:` variant to use `NSString`-style substitution:
 
 	[db executeUpdateWithFormat:@"INSERT INTO myTable VALUES (%d)", 42];
-	
+
 Internally, the `-execute*WithFormat:` methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
 
 
@@ -197,7 +199,7 @@ Then use it like so:
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
-		
+
 		FMResultSet *rs = [db executeQuery:@"select * from foo"];
         while ([rs next]) {
             …
@@ -210,7 +212,7 @@ An easy way to wrap things up in a transaction can be done like this:
         [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
 		[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
-		
+
 		if (whoopsSomethingWrongHappened) {
 		    *rollback = YES;
 		    return;
@@ -228,6 +230,62 @@ FMDatabaseQueue will run the blocks on a serialized queue (hence the name of the
 
 You can do this!  For an example, look for "makeFunctionNamed:" in main.m
 
+## Swift
+
+You can use FMDB in Swift projects too.
+
+To do this, you must:
+
+1. Copy the FMDB `.m` and `.h` files into your project.
+
+2. If prompted to create a "bridging header", you should do so. If not prompted and if you don't already have a bridging header, add one.
+
+ For more information on bridging headers, see [Swift and Objective-C in the Same Project](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-XID_76).
+
+3. In your briding header, add a line that says:
+
+        #import "FMDB.h"
+
+4. Optionally, copy the `FMDatabaseVariadic.swift` from the "src/extra/Swift Extensions" folder into your project. This allows you to use `executeUpdate` and `executeQuery` with variadic parameters, rather than the `withArgumentsInArray` rendition.
+
+If you do the above, you can then write Swift code that uses FMDatabase. For example:
+
+    let documentsFolder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+    let path = documentsFolder.stringByAppendingPathComponent("test.sqlite")
+
+    let database = FMDatabase(path: path)
+
+    if !database.open() {
+        println("Unable to open database")
+        return
+    }
+
+    if !database.executeUpdate("create table test(x text, y text, z text)", withArgumentsInArray: nil) {
+        println("create table failed: \(database.lastErrorMessage())")
+    }
+
+    if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["a", "b", "c"]) {
+        println("insert 1 table failed: \(database.lastErrorMessage())")
+    }
+
+    if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["e", "f", "g"]) {
+        println("insert 2 table failed: \(database.lastErrorMessage())")
+    }
+
+    if let rs = database.executeQuery("select x, y, z from test", withArgumentsInArray: nil) {
+        while rs.next() {
+            let x = rs.stringForColumn("x")
+            let y = rs.stringForColumn("y")
+            let z = rs.stringForColumn("z")
+            println("x = \(x); y = \(y); z = \(z)")
+        }
+    } else {
+        println("select failed: \(database.lastErrorMessage())")
+    }
+
+    database.close()
+
+
 ## History
 
 The history and changes are availbe on its [GitHub page](https://github.com/ccgus/fmdb) and are summarized in the "CHANGES_AND_TODO_LIST.txt" file.
@@ -243,7 +301,7 @@ The contributors to FMDB are contained in the "Contributors.txt" file.
 
 ## Quick notes on FMDB's coding style
 
-Spaces, not tabs.  Square brackets, not dot notation.  Look at what FMDB already does with curly brackets and such, and stick to that style.  
+Spaces, not tabs.  Square brackets, not dot notation.  Look at what FMDB already does with curly brackets and such, and stick to that style.
 
 ## Reporting bugs
 
@@ -256,7 +314,7 @@ And we've even added a template function to main.m (FMDBReportABugFunction) in t
 	* Setup your table(s) in the code.
 	* Make your query or update(s).
 	* Add some assertions which demonstrate the bug.
-	
+
 Then you can bring it up on the FMDB mailing list by showing your nice and compact FMDBReportABugFunction, or you can report the bug via the github FMDB bug reporter.
 
 **Optional:**
@@ -272,3 +330,7 @@ FMDB development is overseen by Gus Mueller of Flying Meat.  If FMDB been helpfu
 ## License
 
 The license for FMDB is contained in the "License.txt" file.
+
+If you happen to come across either Gus Mueller or Rob Ryan in a bar, you might consider purchasing a drink of their choosing if FMDB has been useful to you.
+
+(The drink is for them of course, shame on you for trying to keep it.)
