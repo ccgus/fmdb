@@ -116,6 +116,11 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     FMDBRelease(self);
 }
 
+- (void)interrupt
+{
+    [[self database] interrupt];
+}
+
 - (FMDatabase*)database {
     if (!_db) {
         _db = FMDBReturnRetained([FMDatabase databaseWithPath:_path]);

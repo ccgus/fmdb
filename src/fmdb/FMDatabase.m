@@ -1039,6 +1039,12 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     if (SQLITE_DONE == rc) {
         // all is well, let's return.
     }
+    else if (SQLITE_INTERRUPT == rc) {
+        if (_logsErrors) {
+            NSLog(@"Error calling sqlite3_step. Query was interrupted (%d: %s) SQLITE_INTERRUPT", rc, sqlite3_errmsg(_db));
+            NSLog(@"DB Query: %@", sql);
+        }
+    }
     else if (SQLITE_ERROR == rc) {
         if (_logsErrors) {
             NSLog(@"Error calling sqlite3_step (%d: %s) SQLITE_ERROR", rc, sqlite3_errmsg(_db));
@@ -1245,6 +1251,15 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
 
 - (BOOL)inTransaction {
     return _inTransaction;
+}
+
+- (BOOL)interrupt
+{
+    if (_db) {
+        sqlite3_interrupt([self sqliteHandle]);
+        return YES;
+    }
+    return NO;
 }
 
 #if SQLITE_VERSION_NUMBER >= 3007000
