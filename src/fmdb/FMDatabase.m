@@ -166,6 +166,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     }
     
     int err = sqlite3_open([self sqlitePath], &_db );
+    sqlite3_create_function(_db, "distance", 4, SQLITE_UTF8, NULL, &distanceFunc, NULL, NULL);
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
@@ -187,6 +188,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     }
 
     int err = sqlite3_open_v2([self sqlitePath], &_db, flags, NULL /* Name of VFS module to use */);
+    sqlite3_create_function(_db, "distance", 4, SQLITE_UTF8, NULL, &distanceFunc, NULL, NULL);
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
