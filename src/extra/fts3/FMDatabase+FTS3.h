@@ -25,15 +25,25 @@ extern NSString *const kFTSCommandAutoMerge;       // "automerge=%u"
 @interface FMDatabase (FTS3)
 
 /**
- Register a delgate implementation in the global table. The name should be used
- as a parameter when creating the table.
+ Register a delegate implementation in the global table. This should be used when using a single tokenizer.
  */
-+ (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withName:(NSString *)name;
++ (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer;
 
 /**
- Calls the `fts3_tokenizer()` function on this database, installing the "fmdb" tokenizer module.
+ Register a delegate implementation in the global table. The key should be used
+ as a parameter when creating the table.
+ */
++ (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withKey:(NSString *)key;
+
+/**
+ Calls the `fts3_tokenizer()` function on this database, installing tokenizer module with the 'fmdb' name.
  */
 - (BOOL)installTokenizerModule;
+
+/**
+ Calls the `fts3_tokenizer()` function on this database, installing the tokenizer module with specified name.
+ */
+- (BOOL)installTokenizerModuleWithName:(NSString *)name;
 
 /**
  Runs a "special command" for FTS3/FTS4 tables.

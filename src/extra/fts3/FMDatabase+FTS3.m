@@ -18,6 +18,8 @@ NSString *const kFTSCommandAutoMerge = @"automerge=%u";
 /* I know this is an evil global, but we need to be able to map names to implementations. */
 static NSMapTable *g_delegateMap = nil;
 
+static NSString *kDefaultTokenizerDelegateKey = @"DefaultTokenizerDelegateKey";
+
 /*
  ** Class derived from sqlite3_tokenizer
  */
@@ -32,8 +34,6 @@ typedef struct FMDBTokenizer
  */
 static int FMDBTokenizerCreate(int argc, const char * const *argv, sqlite3_tokenizer **ppTokenizer)
 {
-    NSCParameterAssert(argc > 0);   // Check that the name of the tokenizer is set in CREATE VIRTUAL TABLE
-    
     FMDBTokenizer *tokenizer = (FMDBTokenizer *) sqlite3_malloc(sizeof(FMDBTokenizer));
     
     if (tokenizer == NULL) {
@@ -41,7 +41,13 @@ static int FMDBTokenizerCreate(int argc, const char * const *argv, sqlite3_token
     }
     
     memset(tokenizer, 0, sizeof(*tokenizer));
-    tokenizer->delegate = [g_delegateMap objectForKey:[NSString stringWithUTF8String:argv[0]]];
+
+    NSString *key = kDefaultTokenizerDelegateKey;
+    if (argc > 0) {
+        key = [NSString stringWithUTF8String:argv[0]];
+    }
+    
+    tokenizer->delegate = [g_delegateMap objectForKey:key];
     
     if (!tokenizer->delegate) {
         return SQLITE_ERROR;
@@ -179,10 +185,10 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
 
 @implementation FMDatabase (FTS3)
 
-+ (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withName:(NSString *)name
++ (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withKey:(NSString *)key
 {
     NSParameterAssert(tokenizer);
-    NSParameterAssert([name length]);
+    NSParameterAssert([key length]);
     
     static dispatch_once_t onceToken;
 
@@ -191,15 +197,20 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
                                               valueOptions:NSPointerFunctionsWeakMemory];
     });
     
-    [g_delegateMap setObject:tokenizer forKey:name];
+    [g_delegateMap setObject:tokenizer forKey:key];
 }
 
-- (BOOL)installTokenizerModule
++ (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer
+{
+    [self registerTokenizer:tokenizer withKey:kDefaultTokenizerDelegateKey];
+}
+
+- (BOOL)installTokenizerModuleWithName:(NSString *)name
 {
     const sqlite3_tokenizer_module *module = &FMDBTokenizerModule;
     NSData *tokenizerData = [NSData dataWithBytes:&module  length:sizeof(module)];
     
-    FMResultSet *results = [self executeQuery:@"SELECT fts3_tokenizer('fmdb', ?)", tokenizerData];
+    FMResultSet *results = [self executeQuery:@"SELECT fts3_tokenizer(?, ?)", name, tokenizerData];
     
     if ([results next]) {
         [results close];
@@ -207,6 +218,11 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
     }
     
     return NO;
+}
+
+- (BOOL)installTokenizerModule
+{
+    return [self installTokenizerModuleWithName:@"fmdb"];
 }
 
 - (BOOL)issueCommand:(NSString *)command forTable:(NSString *)tableName
