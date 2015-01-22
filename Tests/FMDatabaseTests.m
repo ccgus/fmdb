@@ -834,7 +834,7 @@
 #endif
 
 - (void)testVersionNumber {
-    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0230); // this is going to break everytime we bump it.
+    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0240); // this is going to break everytime we bump it.
 }
 
 - (void)testExecuteStatements
