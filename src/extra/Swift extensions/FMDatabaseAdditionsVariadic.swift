@@ -20,7 +20,10 @@ extension FMDatabase {
         
         if let rs = executeQuery(sql, withArgumentsInArray: values) {
             if rs.next() {
-                result = completionHandler(rs)
+                let obj = rs.objectForColumnIndex(0) as NSObject
+                if !(obj is NSNull) {
+                    result = completionHandler(rs)
+                }
             }
             rs.close()
         }
