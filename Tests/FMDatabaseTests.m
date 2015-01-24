@@ -812,26 +812,6 @@
 
 }
 
-
-#if SQLITE_VERSION_NUMBER >= 3007017
-- (void)testApplicationID
-{
-    uint32_t appID = NSHFSTypeCodeFromFileType(NSFileTypeForHFSTypeCode('fmdb'));
-    
-    [self.db setApplicationID:appID];
-    
-    uint32_t rAppID = [self.db applicationID];
-    
-    XCTAssertEqual(rAppID, appID);
-    
-    [self.db setApplicationIDString:@"acrn"];
-    
-    NSString *s = [self.db applicationIDString];
-    
-    XCTAssertEqualObjects(s, @"acrn");
-}
-#endif
-
 - (void)testVersionNumber {
     XCTAssertTrue([FMDatabase FMDBVersion] == 0x0230); // this is going to break everytime we bump it.
 }
