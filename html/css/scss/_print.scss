@@ -1,0 +1,42 @@
+@media print {
+	body {
+		background: #fff;
+		padding: 8px;
+	}
+
+	header {
+		position: static;
+		background: #fff;
+		color: #000;
+	}
+
+	aside {
+		display: none;
+	}
+
+	.container {
+		max-width: none;
+		padding: 0;
+	}
+
+	article {
+		margin-top: 0;
+
+		#content {
+			border: 0;
+			background: #fff;
+			padding: 15px 0 0 0;
+
+			.title {
+				margin-top: 0;
+				padding-top: 0;
+			}
+		}
+	}
+
+	.method-info {
+		&, & .pointy-thing {
+			background: #fff;
+		}
+	}
+}

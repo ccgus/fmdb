@@ -1,290 +1,187 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
-		<title>FMResultSet Class Reference</title>
-		<meta id="xcode-display" name="xcode-display" content="render"/>
-		<meta name="viewport" content="width=550" />
-		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
-		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
-		<meta name="generator" content="appledoc 2.1 (build 858)" />
-	</head>
-	<body>
-		<header id="top_header">
-			<div id="library" class="hideInXcode">
-				<h1><a id="libraryTitle" href="../index.html">FMDB </a></h1>
-				<a id="developerHome" href="../index.html">ccgus</a>
-			</div>
+<head>
+	<meta charset="utf-8">
+
+	<title>FMResultSet Class Reference</title>
+
+	<link rel="stylesheet" href="../css/style.css">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
+	<meta name="generator" content="appledoc 2.2.1 (build 1333)">
+</head>
+<body class="appledoc">
+	<header>
+		<div class="container" class="hide-in-xcode">
 			
-			<div id="title" role="banner">
-				<h1 class="hideInXcode">FMResultSet Class Reference</h1>
-			</div>
-			<ul id="headerButtons" role="toolbar">
-				<li id="toc_button">
-					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
-				</li>
-				<li id="jumpto_button" role="navigation">
-					<select id="jumpTo">
+			<h1 id="library-title">
+				<a href="../index.html">FMDB </a>
+			</h1>
+
+			<p id="developer-home">
+				<a href="../index.html">ccgus</a>
+			</p>
+			
+		</div>
+	</header>
+
+	<aside>
+		<div class="container">
+			<nav>
+				<ul id="header-buttons" role="toolbar">
+					<li><a href="../index.html">Index</a></li>
+<li><a href="../hierarchy.html">Hierarchy</a></li>
+
+					<li id="on-this-page" role="navigation">
+						<label>
+							On This Page
+
+							<div class="chevron">
+								<div class="chevy chevron-left"></div>
+								<div class="chevy chevron-right"></div>
+							</div>
+
+							<select id="jump-to">
 	<option value="top">Jump To&#133;</option>
 	
 	<option value="overview">Overview</option>
 	
-	
+
 	
 	
 	<option value="tasks">Tasks</option>
 	
 	
+
 	
 	
+	<optgroup label="Properties">
+		
+		<option value="//api/name/query">query</option>
+		
+		<option value="//api/name/statement">statement</option>
+		
+	</optgroup>
 	
-	<option value="properties">Properties</option>
+
 	
-	<option value="//api/name/query">&nbsp;&nbsp;&nbsp;&nbsp;query</option>
+	<optgroup label="Class Methods">
+		
+		<option value="//api/name/resultSetWithStatement:usingParentDatabase:">+ resultSetWithStatement:usingParentDatabase:</option>
+		
+	</optgroup>
 	
-	<option value="//api/name/statement">&nbsp;&nbsp;&nbsp;&nbsp;statement</option>
+
 	
-	
-	
-	
-	<option value="class_methods">Class Methods</option>
-	
-	<option value="//api/name/resultSetWithStatement:usingParentDatabase:">&nbsp;&nbsp;&nbsp;&nbsp;+ resultSetWithStatement:usingParentDatabase:</option>
-	
-	
-	
-	
-	<option value="instance_methods">Instance Methods</option>
-	
-	<option value="//api/name/UTF8StringForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- UTF8StringForColumnIndex:</option>
-	
-	<option value="//api/name/UTF8StringForColumnName:">&nbsp;&nbsp;&nbsp;&nbsp;- UTF8StringForColumnName:</option>
-	
-	<option value="//api/name/boolForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- boolForColumn:</option>
-	
-	<option value="//api/name/boolForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- boolForColumnIndex:</option>
-	
-	<option value="//api/name/close">&nbsp;&nbsp;&nbsp;&nbsp;- close</option>
-	
-	<option value="//api/name/columnCount">&nbsp;&nbsp;&nbsp;&nbsp;- columnCount</option>
-	
-	<option value="//api/name/columnIndexForName:">&nbsp;&nbsp;&nbsp;&nbsp;- columnIndexForName:</option>
-	
-	<option value="//api/name/columnIndexIsNull:">&nbsp;&nbsp;&nbsp;&nbsp;- columnIndexIsNull:</option>
-	
-	<option value="//api/name/columnIsNull:">&nbsp;&nbsp;&nbsp;&nbsp;- columnIsNull:</option>
-	
-	<option value="//api/name/columnNameForIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- columnNameForIndex:</option>
-	
-	<option value="//api/name/columnNameToIndexMap">&nbsp;&nbsp;&nbsp;&nbsp;- columnNameToIndexMap</option>
-	
-	<option value="//api/name/dataForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- dataForColumn:</option>
-	
-	<option value="//api/name/dataForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- dataForColumnIndex:</option>
-	
-	<option value="//api/name/dataNoCopyForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- dataNoCopyForColumn:</option>
-	
-	<option value="//api/name/dataNoCopyForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- dataNoCopyForColumnIndex:</option>
-	
-	<option value="//api/name/dateForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- dateForColumn:</option>
-	
-	<option value="//api/name/dateForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- dateForColumnIndex:</option>
-	
-	<option value="//api/name/doubleForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- doubleForColumn:</option>
-	
-	<option value="//api/name/doubleForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- doubleForColumnIndex:</option>
-	
-	<option value="//api/name/hasAnotherRow">&nbsp;&nbsp;&nbsp;&nbsp;- hasAnotherRow</option>
-	
-	<option value="//api/name/intForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- intForColumn:</option>
-	
-	<option value="//api/name/intForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- intForColumnIndex:</option>
-	
-	<option value="//api/name/kvcMagic:">&nbsp;&nbsp;&nbsp;&nbsp;- kvcMagic:</option>
-	
-	<option value="//api/name/longForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- longForColumn:</option>
-	
-	<option value="//api/name/longForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- longForColumnIndex:</option>
-	
-	<option value="//api/name/longLongIntForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- longLongIntForColumn:</option>
-	
-	<option value="//api/name/longLongIntForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- longLongIntForColumnIndex:</option>
-	
-	<option value="//api/name/next">&nbsp;&nbsp;&nbsp;&nbsp;- next</option>
-	
-	<option value="//api/name/objectAtIndexedSubscript:">&nbsp;&nbsp;&nbsp;&nbsp;- objectAtIndexedSubscript:</option>
-	
-	<option value="//api/name/objectForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- objectForColumnIndex:</option>
-	
-	<option value="//api/name/objectForColumnName:">&nbsp;&nbsp;&nbsp;&nbsp;- objectForColumnName:</option>
-	
-	<option value="//api/name/objectForKeyedSubscript:">&nbsp;&nbsp;&nbsp;&nbsp;- objectForKeyedSubscript:</option>
-	
-	<option value="//api/name/resultDict">&nbsp;&nbsp;&nbsp;&nbsp;- resultDict</option>
-	
-	<option value="//api/name/resultDictionary">&nbsp;&nbsp;&nbsp;&nbsp;- resultDictionary</option>
-	
-	<option value="//api/name/stringForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- stringForColumn:</option>
-	
-	<option value="//api/name/stringForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- stringForColumnIndex:</option>
-	
-	<option value="//api/name/unsignedLongLongIntForColumn:">&nbsp;&nbsp;&nbsp;&nbsp;- unsignedLongLongIntForColumn:</option>
-	
-	<option value="//api/name/unsignedLongLongIntForColumnIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- unsignedLongLongIntForColumnIndex:</option>
-	
+	<optgroup label="Instance Methods">
+		
+		<option value="//api/name/UTF8StringForColumnIndex:">- UTF8StringForColumnIndex:</option>
+		
+		<option value="//api/name/UTF8StringForColumnName:">- UTF8StringForColumnName:</option>
+		
+		<option value="//api/name/boolForColumn:">- boolForColumn:</option>
+		
+		<option value="//api/name/boolForColumnIndex:">- boolForColumnIndex:</option>
+		
+		<option value="//api/name/close">- close</option>
+		
+		<option value="//api/name/columnCount">- columnCount</option>
+		
+		<option value="//api/name/columnIndexForName:">- columnIndexForName:</option>
+		
+		<option value="//api/name/columnIndexIsNull:">- columnIndexIsNull:</option>
+		
+		<option value="//api/name/columnIsNull:">- columnIsNull:</option>
+		
+		<option value="//api/name/columnNameForIndex:">- columnNameForIndex:</option>
+		
+		<option value="//api/name/columnNameToIndexMap">- columnNameToIndexMap</option>
+		
+		<option value="//api/name/dataForColumn:">- dataForColumn:</option>
+		
+		<option value="//api/name/dataForColumnIndex:">- dataForColumnIndex:</option>
+		
+		<option value="//api/name/dataNoCopyForColumn:">- dataNoCopyForColumn:</option>
+		
+		<option value="//api/name/dataNoCopyForColumnIndex:">- dataNoCopyForColumnIndex:</option>
+		
+		<option value="//api/name/dateForColumn:">- dateForColumn:</option>
+		
+		<option value="//api/name/dateForColumnIndex:">- dateForColumnIndex:</option>
+		
+		<option value="//api/name/doubleForColumn:">- doubleForColumn:</option>
+		
+		<option value="//api/name/doubleForColumnIndex:">- doubleForColumnIndex:</option>
+		
+		<option value="//api/name/hasAnotherRow">- hasAnotherRow</option>
+		
+		<option value="//api/name/intForColumn:">- intForColumn:</option>
+		
+		<option value="//api/name/intForColumnIndex:">- intForColumnIndex:</option>
+		
+		<option value="//api/name/kvcMagic:">- kvcMagic:</option>
+		
+		<option value="//api/name/longForColumn:">- longForColumn:</option>
+		
+		<option value="//api/name/longForColumnIndex:">- longForColumnIndex:</option>
+		
+		<option value="//api/name/longLongIntForColumn:">- longLongIntForColumn:</option>
+		
+		<option value="//api/name/longLongIntForColumnIndex:">- longLongIntForColumnIndex:</option>
+		
+		<option value="//api/name/next">- next</option>
+		
+		<option value="//api/name/nextWithError:">- nextWithError:</option>
+		
+		<option value="//api/name/objectAtIndexedSubscript:">- objectAtIndexedSubscript:</option>
+		
+		<option value="//api/name/objectForColumnIndex:">- objectForColumnIndex:</option>
+		
+		<option value="//api/name/objectForColumnName:">- objectForColumnName:</option>
+		
+		<option value="//api/name/objectForKeyedSubscript:">- objectForKeyedSubscript:</option>
+		
+		<option value="//api/name/resultDict">- resultDict</option>
+		
+		<option value="//api/name/resultDictionary">- resultDictionary</option>
+		
+		<option value="//api/name/stringForColumn:">- stringForColumn:</option>
+		
+		<option value="//api/name/stringForColumnIndex:">- stringForColumnIndex:</option>
+		
+		<option value="//api/name/unsignedLongLongIntForColumn:">- unsignedLongLongIntForColumn:</option>
+		
+		<option value="//api/name/unsignedLongLongIntForColumnIndex:">- unsignedLongLongIntForColumnIndex:</option>
+		
+	</optgroup>
 	
 	
 </select>
-				</li>
-			</ul>
-		</header>
-		<nav id="tocContainer" class="isShowingTOC">
-			<ul id="toc" role="tree">
-				
-<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+						</label>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</aside>
 
+	<article>
+		<div id="overview_contents" class="container">
+			<div id="content">
+				<main role="main">
+					<h1 class="title">FMResultSet Class Reference</h1>
 
-
-
-<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Properties">Properties</a></span></li>
-	
-</ul></li>
-
-
-
-
-
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/query">query</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/statement">statement</a></span></li>
-	
-</ul></li>
-
-
-
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/resultSetWithStatement:usingParentDatabase:">resultSetWithStatement:usingParentDatabase:</a></span></li>
-	
-</ul></li>
-
-
-
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/UTF8StringForColumnIndex:">UTF8StringForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/UTF8StringForColumnName:">UTF8StringForColumnName:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/boolForColumn:">boolForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/boolForColumnIndex:">boolForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/close">close</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/columnCount">columnCount</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/columnIndexForName:">columnIndexForName:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/columnIndexIsNull:">columnIndexIsNull:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/columnIsNull:">columnIsNull:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/columnNameForIndex:">columnNameForIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/columnNameToIndexMap">columnNameToIndexMap</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dataForColumn:">dataForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dataForColumnIndex:">dataForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dataNoCopyForColumn:">dataNoCopyForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dataNoCopyForColumnIndex:">dataNoCopyForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dateForColumn:">dateForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dateForColumnIndex:">dateForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/doubleForColumn:">doubleForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/doubleForColumnIndex:">doubleForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hasAnotherRow">hasAnotherRow</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/intForColumn:">intForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/intForColumnIndex:">intForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/kvcMagic:">kvcMagic:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/longForColumn:">longForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/longForColumnIndex:">longForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/longLongIntForColumn:">longLongIntForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/longLongIntForColumnIndex:">longLongIntForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/next">next</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/objectAtIndexedSubscript:">objectAtIndexedSubscript:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/objectForColumnIndex:">objectForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/objectForColumnName:">objectForColumnName:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/objectForKeyedSubscript:">objectForKeyedSubscript:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/resultDict">resultDict</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/resultDictionary">resultDictionary</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stringForColumn:">stringForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stringForColumnIndex:">stringForColumnIndex:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/unsignedLongLongIntForColumn:">unsignedLongLongIntForColumn:</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/unsignedLongLongIntForColumnIndex:">unsignedLongLongIntForColumnIndex:</a></span></li>
-	
-</ul></li>
-
-
-			</ul>
-		</nav>
-		<article>
-			<div id="contents" class="isShowingTOC" role="main">
-				<a title="FMResultSet Class Reference" name="top"></a>
-				<div class="main-navigation navigation-top">
-					<ul>
-	<li><a href="../index.html">Index</a></li>
-	<li><a href="../hierarchy.html">Hierarchy</a></li>
-</ul>
-				</div>
-				<div id="header">
-					<div class="section-header">
-						<h1 class="title title-header">FMResultSet Class Reference</h1>
-					</div>		
-				</div>
-				<div id="container">	
 					
 					<div class="section section-specification"><table cellspacing="0"><tbody>
 						<tr>
-	<td class="specification-title">Inherits from</td>
-	<td class="specification-value">NSObject</td>
+	<th>Inherits from</th>
+	<td>NSObject</td>
 </tr><tr>
-	<td class="specification-title">Declared in</td>
-	<td class="specification-value">FMResultSet.h<br />FMResultSet.m</td>
+	<th>Declared in</th>
+	<td>FMResultSet.h<br />FMResultSet.m</td>
 </tr>
 						</tbody></table></div>
 					
-					
-					
+
+                    
 					
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
@@ -300,1920 +197,2425 @@
 					</div>
 					
 					
-					
+
 					
 					
 					<div class="section section-tasks">
 						<a title="Tasks" name="tasks"></a>
-						<h2 class="subtitle subtitle-tasks">Tasks</h2>
 						
-						
-						
-						<h3 class="subsubtitle task-title">Other Methods</h3>
 
-						<ul class="task-list">
-							<li>
-	<span class="tooltip">
-		<code><a href="#//api/name/resultSetWithStatement:usingParentDatabase:">+&nbsp;resultSetWithStatement:usingParentDatabase:</a></code>
-		<span class="tooltip"><p>Create result set from <a href="../Classes/FMStatement.html"><code>FMStatement</code></a></p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/close">&ndash;&nbsp;close</a></code>
-		<span class="tooltip"><p>Close result set</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/columnCount">&ndash;&nbsp;columnCount</a></code>
-		<span class="tooltip"><p>How many columns in result set</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/columnNameToIndexMap">&ndash;&nbsp;columnNameToIndexMap</a></code>
-		<span class="tooltip"><p><code>NSMutableDictionary</code> mapping column names to numeric index</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/kvcMagic:">&ndash;&nbsp;kvcMagic:</a></code>
-		<span class="tooltip"><p>Performs <code>setValue</code> to yield support for key value observing.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/resultDict">&ndash;&nbsp;resultDict</a></code>
-		<span class="tooltip"><p>Returns a dictionary of the row results</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/resultDictionary">&ndash;&nbsp;resultDictionary</a></code>
-		<span class="tooltip"><p>Returns a dictionary of the row results mapped to case sensitive keys of the column names.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/next">&ndash;&nbsp;next</a></code>
-		<span class="tooltip"><p>Retrieve next row for result set.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/hasAnotherRow">&ndash;&nbsp;hasAnotherRow</a></code>
-		<span class="tooltip"><p>Did the last call to <a href="#//api/name/next"><code>next</code></a> succeed in retrieving another row?</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/columnIndexForName:">&ndash;&nbsp;columnIndexForName:</a></code>
-		<span class="tooltip"><p>Column index for column name</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/intForColumn:">&ndash;&nbsp;intForColumn:</a></code>
-		<span class="tooltip"><p>Result set integer value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/intForColumnIndex:">&ndash;&nbsp;intForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set integer value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/longForColumn:">&ndash;&nbsp;longForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>long</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/longForColumnIndex:">&ndash;&nbsp;longForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set long value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/longLongIntForColumn:">&ndash;&nbsp;longLongIntForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>long long int</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/longLongIntForColumnIndex:">&ndash;&nbsp;longLongIntForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>long long int</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/unsignedLongLongIntForColumn:">&ndash;&nbsp;unsignedLongLongIntForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>unsigned long long int</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/unsignedLongLongIntForColumnIndex:">&ndash;&nbsp;unsignedLongLongIntForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>unsigned long long int</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/boolForColumn:">&ndash;&nbsp;boolForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>BOOL</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/boolForColumnIndex:">&ndash;&nbsp;boolForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>BOOL</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/doubleForColumn:">&ndash;&nbsp;doubleForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>double</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/doubleForColumnIndex:">&ndash;&nbsp;doubleForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>double</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/stringForColumnIndex:">&ndash;&nbsp;stringForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>NSString</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/stringForColumn:">&ndash;&nbsp;stringForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>NSString</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/dateForColumn:">&ndash;&nbsp;dateForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>NSDate</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/dateForColumnIndex:">&ndash;&nbsp;dateForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>NSDate</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/dataForColumn:">&ndash;&nbsp;dataForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>NSData</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/dataForColumnIndex:">&ndash;&nbsp;dataForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>NSData</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/dataNoCopyForColumn:">&ndash;&nbsp;dataNoCopyForColumn:</a></code>
-		<span class="tooltip"><p>Result set <code>NSData</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/dataNoCopyForColumnIndex:">&ndash;&nbsp;dataNoCopyForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>NSData</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/columnIndexIsNull:">&ndash;&nbsp;columnIndexIsNull:</a></code>
-		<span class="tooltip"><p>Is the column <code>NULL</code>?</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/columnIsNull:">&ndash;&nbsp;columnIsNull:</a></code>
-		<span class="tooltip"><p>Is the column <code>NULL</code>?</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/UTF8StringForColumnIndex:">&ndash;&nbsp;UTF8StringForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set <code>(const unsigned char *)</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/UTF8StringForColumnName:">&ndash;&nbsp;UTF8StringForColumnName:</a></code>
-		<span class="tooltip"><p>Result set <code>(const unsigned char *)</code> value for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/objectForColumnIndex:">&ndash;&nbsp;objectForColumnIndex:</a></code>
-		<span class="tooltip"><p>Result set object for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/objectForColumnName:">&ndash;&nbsp;objectForColumnName:</a></code>
-		<span class="tooltip"><p>Result set object for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/columnNameForIndex:">&ndash;&nbsp;columnNameForIndex:</a></code>
-		<span class="tooltip"><p>Column name for column index</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/objectAtIndexedSubscript:">&ndash;&nbsp;objectAtIndexedSubscript:</a></code>
-		<span class="tooltip"><p>Result set object for column.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/objectForKeyedSubscript:">&ndash;&nbsp;objectForKeyedSubscript:</a></code>
-		<span class="tooltip"><p>Result set object for column.</p></span>
-	</span>
-	
-	
-</li>
-						</ul>
 						
-						
-						<a title="Properties" name="task_Properties"></a>
-						<h3 class="subsubtitle task-title">Properties</h3>
+						<h2 class="task-title">Other Methods</h2>
 
-						<ul class="task-list">
-							<li>
-	<span class="tooltip">
-		<code><a href="#//api/name/query">&nbsp;&nbsp;query</a></code>
-		<span class="tooltip"><p>Executed query</p></span>
-	</span>
-	<span class="task-item-suffix">property</span>
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/statement">&nbsp;&nbsp;statement</a></code>
-		<span class="tooltip"><p><code>FMStatement</code> used by result set.</p></span>
-	</span>
-	<span class="task-item-suffix">property</span>
-	
-</li>
-						</ul>
-						
-					</div>
-					
-					
-					
-					
-					
-					<div class="section section-methods">
-						<a title="Properties" name="properties"></a>
-						<h2 class="subtitle subtitle-methods">Properties</h2>
-						
-						<div class="section-method">
-	<a name="//api/name/query" title="query"></a>
-	<h3 class="subsubtitle method-title">query</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Executed query</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSString *query</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/statement" title="statement"></a>
-	<h3 class="subsubtitle method-title">statement</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p><code>FMStatement</code> used by result set.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (atomic, retain) FMStatement *statement</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-					</div>
-					
-					
-					
-					<div class="section section-methods">
-						<a title="Class Methods" name="class_methods"></a>
-						<h2 class="subtitle subtitle-methods">Class Methods</h2>
-						
-						<div class="section-method">
+						<div class="task-list">
+							<div class="section-method">
 	<a name="//api/name/resultSetWithStatement:usingParentDatabase:" title="resultSetWithStatement:usingParentDatabase:"></a>
-	<h3 class="subsubtitle method-title">resultSetWithStatement:usingParentDatabase:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Create result set from <a href="../Classes/FMStatement.html"><code>FMStatement</code></a></p>
-	</div>		
-	
-    
+	<h3 class="method-title"><code><a href="#//api/name/resultSetWithStatement:usingParentDatabase:">+&nbsp;resultSetWithStatement:usingParentDatabase:</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>+ (instancetype)resultSetWithStatement:(FMStatement *)<em>statement</em> usingParentDatabase:(FMDatabase *)<em>aDB</em></code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>statement</em></dt>
-			<dd><p>A <a href="../Classes/FMStatement.html"><code>FMStatement</code></a> to be performed</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>aDB</em></dt>
-			<dd><p>A <a href="../Classes/FMDatabase.html"><code>FMDatabase</code></a> to be used</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>A <code>FMResultSet</code> on success; <code>nil</code> on failure</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-					</div>
-					
-					
-					
-					<div class="section section-methods">
-						<a title="Instance Methods" name="instance_methods"></a>
-						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
-						
-						<div class="section-method">
-	<a name="//api/name/UTF8StringForColumnIndex:" title="UTF8StringForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">UTF8StringForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>(const unsigned char *)</code> value for column.</p>
-	</div>		
-	
-    
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create result set from <a href="../Classes/FMStatement.html"><code>FMStatement</code></a></p>
+			</div>
+			
+		    
 
-	<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>+ (instancetype)resultSetWithStatement:(FMStatement *)<em>statement</em> usingParentDatabase:(FMDatabase *)<em>aDB</em></code></div>
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>(const unsigned char *)</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/UTF8StringForColumnName:" title="UTF8StringForColumnName:"></a>
-	<h3 class="subsubtitle method-title">UTF8StringForColumnName:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>(const unsigned char *)</code> value for column.</p>
-	</div>		
-	
-    
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>statement</code></th>
+						<td><p>A <a href="../Classes/FMStatement.html"><code>FMStatement</code></a> to be performed</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>aDB</code></th>
+						<td><p>A <a href="../Classes/FMDatabase.html"><code>FMDatabase</code></a> to be used</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
 
-	<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnName:(NSString *)<em>columnName</em></code></div>
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>A <code>FMResultSet</code> on success; <code>nil</code> on failure</p>
+			</div>
+			
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>(const unsigned char *)</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/boolForColumn:" title="boolForColumn:"></a>
-	<h3 class="subsubtitle method-title">boolForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>BOOL</code> value for column.</p>
-	</div>		
-	
-    
+			
 
-	<div class="method-subsection method-declaration"><code>- (BOOL)boolForColumn:(NSString *)<em>columnName</em></code></div>
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Create result set from <a href="../Classes/FMStatement.html"><code>FMStatement</code></a></p>
+			</div>
+			
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>BOOL</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/boolForColumnIndex:" title="boolForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">boolForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>BOOL</code> value for column.</p>
-	</div>		
-	
-    
+			
 
-	<div class="method-subsection method-declaration"><code>- (BOOL)boolForColumnIndex:(int)<em>columnIdx</em></code></div>
+			
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
 	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>BOOL</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
+</div><div class="section-method">
 	<a name="//api/name/close" title="close"></a>
-	<h3 class="subsubtitle method-title">close</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Close result set</p>
-	</div>		
-	
-    
+	<h3 class="method-title"><code><a href="#//api/name/close">&ndash;&nbsp;close</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>- (void)close</code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Close result set</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)close</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Close result set</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/columnCount" title="columnCount"></a>
-	<h3 class="subsubtitle method-title">columnCount</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>How many columns in result set</p>
-	</div>		
-	
-    
+	<h3 class="method-title"><code><a href="#//api/name/columnCount">&ndash;&nbsp;columnCount</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>- (int)columnCount</code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Integer value of the number of columns.</p>
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>How many columns in result set</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (int)columnCount</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Integer value of the number of columns.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>How many columns in result set</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/columnIndexForName:" title="columnIndexForName:"></a>
-	<h3 class="subsubtitle method-title">columnIndexForName:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Column index for column name</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (int)columnIndexForName:(NSString *)<em>columnName</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Zero-based index for column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/columnIndexIsNull:" title="columnIndexIsNull:"></a>
-	<h3 class="subsubtitle method-title">columnIndexIsNull:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Is the column <code>NULL</code>?</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (BOOL)columnIndexIsNull:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>YES</code> if column is <code>NULL</code>; <code>NO</code> if not <code>NULL</code>.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/columnIsNull:" title="columnIsNull:"></a>
-	<h3 class="subsubtitle method-title">columnIsNull:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Is the column <code>NULL</code>?</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (BOOL)columnIsNull:(NSString *)<em>columnName</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>YES</code> if column is <code>NULL</code>; <code>NO</code> if not <code>NULL</code>.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/columnNameForIndex:" title="columnNameForIndex:"></a>
-	<h3 class="subsubtitle method-title">columnNameForIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Column name for column index</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSString *)columnNameForIndex:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>columnName <code>NSString</code> value of the name of the column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
+</div><div class="section-method">
 	<a name="//api/name/columnNameToIndexMap" title="columnNameToIndexMap"></a>
-	<h3 class="subsubtitle method-title">columnNameToIndexMap</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p><code>NSMutableDictionary</code> mapping column names to numeric index</p>
-	</div>		
-	
-    
+	<h3 class="method-title"><code><a href="#//api/name/columnNameToIndexMap">&ndash;&nbsp;columnNameToIndexMap</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>- (NSMutableDictionary *)columnNameToIndexMap</code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/dataForColumn:" title="dataForColumn:"></a>
-	<h3 class="subsubtitle method-title">dataForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>NSData</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSData *)dataForColumn:(NSString *)<em>columnName</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSData</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<p>This is useful when storing binary data in table (such as image or the like).</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/dataForColumnIndex:" title="dataForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">dataForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>NSData</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSData *)dataForColumnIndex:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSData</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/dataNoCopyForColumn:" title="dataNoCopyForColumn:"></a>
-	<h3 class="subsubtitle method-title">dataNoCopyForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>NSData</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSData *)dataNoCopyForColumn:(NSString *)<em>columnName</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSData</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> If you are going to use this data after you iterate over the next row, or after you close the
-result set, make sure to make a copy of the data first (or just use <a href="#//api/name/dataForColumn:"><code>dataForColumn:</code></a>/<a href="#//api/name/dataForColumnIndex:"><code>dataForColumnIndex:</code></a>)
-If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and use the data.</p></div>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/dataNoCopyForColumnIndex:" title="dataNoCopyForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">dataNoCopyForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>NSData</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSData *)dataNoCopyForColumnIndex:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSData</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> If you are going to use this data after you iterate over the next row, or after you close the
-result set, make sure to make a copy of the data first (or just use <a href="#//api/name/dataForColumn:"><code>dataForColumn:</code></a>/<a href="#//api/name/dataForColumnIndex:"><code>dataForColumnIndex:</code></a>)
-If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and use the data.</p></div>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/dateForColumn:" title="dateForColumn:"></a>
-	<h3 class="subsubtitle method-title">dateForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>NSDate</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSDate *)dateForColumn:(NSString *)<em>columnName</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSDate</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/dateForColumnIndex:" title="dateForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">dateForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>NSDate</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSDate *)dateForColumnIndex:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSDate</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/doubleForColumn:" title="doubleForColumn:"></a>
-	<h3 class="subsubtitle method-title">doubleForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>double</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (double)doubleForColumn:(NSString *)<em>columnName</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>double</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/doubleForColumnIndex:" title="doubleForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">doubleForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>double</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (double)doubleForColumnIndex:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>double</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/hasAnotherRow" title="hasAnotherRow"></a>
-	<h3 class="subsubtitle method-title">hasAnotherRow</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Did the last call to <a href="#//api/name/next"><code>next</code></a> succeed in retrieving another row?</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (BOOL)hasAnotherRow</code></div>
-
-    
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>YES</code> if the last call to <a href="#//api/name/next"><code>next</code></a> succeeded in retrieving another record; <code>NO</code> if not.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> The <code>hasAnotherRow</code> method must follow a call to <a href="#//api/name/next"><code>next</code></a>. If the previous database interaction was something other than a call to <code>next</code>, then this method may return <code>NO</code>, whether there is another row of data or not.</p></div>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
+		<div class="method-info-container">
 			
-			<li><code><p><a href="#//api/name/next">- next</a></p></code></li>
 			
-		</ul>
-	</div>
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/intForColumn:" title="intForColumn:"></a>
-	<h3 class="subsubtitle method-title">intForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set integer value for column.</p>
-	</div>		
-	
-    
+			<div class="method-subsection brief-description">
+				<p><code>NSMutableDictionary</code> mapping column names to numeric index</p>
+			</div>
+			
+		    
 
-	<div class="method-subsection method-declaration"><code>- (int)intForColumn:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSMutableDictionary *)columnNameToIndexMap</code></div>
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>int</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/intForColumnIndex:" title="intForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">intForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set integer value for column.</p>
-	</div>		
-	
-    
+		    
+			
 
-	<div class="method-subsection method-declaration"><code>- (int)intForColumnIndex:(int)<em>columnIdx</em></code></div>
+			
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p><code>NSMutableDictionary</code> mapping column names to numeric index</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
 	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>int</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
+</div><div class="section-method">
 	<a name="//api/name/kvcMagic:" title="kvcMagic:"></a>
-	<h3 class="subsubtitle method-title">kvcMagic:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Performs <code>setValue</code> to yield support for key value observing.</p>
-	</div>		
-	
-    
+	<h3 class="method-title"><code><a href="#//api/name/kvcMagic:">&ndash;&nbsp;kvcMagic:</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>- (void)kvcMagic:(id)<em>object</em></code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>object</em></dt>
-			<dd><p>The object for which the values will be set. This is the key-value-coding compliant object that you might, for example, observe.</p></dd>
-		</dl>
-		
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Performs <code>setValue</code> to yield support for key value observing.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)kvcMagic:(id)<em>object</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>object</code></th>
+						<td><p>The object for which the values will be set. This is the key-value-coding compliant object that you might, for example, observe.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Performs <code>setValue</code> to yield support for key value observing.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/longForColumn:" title="longForColumn:"></a>
-	<h3 class="subsubtitle method-title">longForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>long</code> value for column.</p>
-	</div>		
-	
-    
+</div><div class="section-method">
+	<a name="//api/name/resultDict" title="resultDict"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultDict">&ndash;&nbsp;resultDict</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>- (long)longForColumn:(NSString *)<em>columnName</em></code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>long</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/longForColumnIndex:" title="longForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">longForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set long value for column.</p>
-	</div>		
-	
-    
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Returns a dictionary of the row results</p>
+			</div>
+			
+		    
 
-	<div class="method-subsection method-declaration"><code>- (long)longForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDict</code></div>
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>long</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/longLongIntForColumn:" title="longLongIntForColumn:"></a>
-	<h3 class="subsubtitle method-title">longLongIntForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>long long int</code> value for column.</p>
-	</div>		
-	
-    
+		    
+			
 
-	<div class="method-subsection method-declaration"><code>- (long long int)longLongIntForColumn:(NSString *)<em>columnName</em></code></div>
+			
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>long long int</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/longLongIntForColumnIndex:" title="longLongIntForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">longLongIntForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>long long int</code> value for column.</p>
-	</div>		
-	
-    
+			
 
-	<div class="method-subsection method-declaration"><code>- (long long int)longLongIntForColumnIndex:(int)<em>columnIdx</em></code></div>
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Returns a dictionary of the row results</p><div class="warning"><p><strong>Warning:</strong> <strong>Deprecated</strong>: Please use <a href="#//api/name/resultDictionary"><code>resultDictionary</code></a> instead.  Also, beware that <a href="#//api/name/resultDictionary"><code>resultDictionary</code></a> is case sensitive!</p></div>
+			</div>
+			
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/resultDictionary">- resultDictionary</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
 	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>long long int</code> value of the result set&rsquo;s column.</p>
+</div><div class="section-method">
+	<a name="//api/name/resultDictionary" title="resultDictionary"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultDictionary">&ndash;&nbsp;resultDictionary</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Returns a dictionary of the row results mapped to case sensitive keys of the column names.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDictionary</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSDictionary</code> of the row results.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Returns a dictionary of the row results mapped to case sensitive keys of the column names.</p><div class="warning"><p><strong>Warning:</strong> The keys to the dictionary are case sensitive of the column names.</p></div>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
+</div><div class="section-method">
 	<a name="//api/name/next" title="next"></a>
-	<h3 class="subsubtitle method-title">next</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Retrieve next row for result set.</p>
-	</div>		
-	
-    
+	<h3 class="method-title"><code><a href="#//api/name/next">&ndash;&nbsp;next</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>- (BOOL)next</code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>YES</code> if row successfully retrieved; <code>NO</code> if end of result set reached</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<p>You must always invoke <code>next</code> before attempting to access the values returned in a query, even if you&rsquo;re only expecting one.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
+		<div class="method-info-container">
 			
-			<li><code><p><a href="#//api/name/hasAnotherRow">- hasAnotherRow</a></p></code></li>
 			
-		</ul>
+			<div class="method-subsection brief-description">
+				<p>Retrieve next row for result set.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)next</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>YES</code> if row successfully retrieved; <code>NO</code> if end of result set reached</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Retrieve next row for result set.</p>
+
+<p>You must always invoke <code>next</code> or <code>nextWithError</code> before attempting to access the values returned in a query, even if you&rsquo;re only expecting one.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/hasAnotherRow">- hasAnotherRow</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
 	</div>
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
+</div><div class="section-method">
+	<a name="//api/name/nextWithError:" title="nextWithError:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/nextWithError:">&ndash;&nbsp;nextWithError:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Retrieve next row for result set.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)nextWithError:(NSError **)<em>outErr</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>outErr</code></th>
+						<td><p>A &lsquo;NSError&rsquo; object to receive any error object (if any).</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>&lsquo;YES&rsquo; if row successfully retrieved; &lsquo;NO&rsquo; if end of result set reached</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Retrieve next row for result set.</p>
+
+<p>  You must always invoke <code>next</code> or <code>nextWithError</code> before attempting to access the values returned in a query, even if you&rsquo;re only expecting one.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/hasAnotherRow">- hasAnotherRow</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/hasAnotherRow" title="hasAnotherRow"></a>
+	<h3 class="method-title"><code><a href="#//api/name/hasAnotherRow">&ndash;&nbsp;hasAnotherRow</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Did the last call to <a href="#//api/name/next"><code>next</code></a> succeed in retrieving another row?</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)hasAnotherRow</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>YES</code> if the last call to <a href="#//api/name/next"><code>next</code></a> succeeded in retrieving another record; <code>NO</code> if not.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Did the last call to <a href="#//api/name/next"><code>next</code></a> succeed in retrieving another row?</p><div class="warning"><p><strong>Warning:</strong> The <code>hasAnotherRow</code> method must follow a call to <a href="#//api/name/next"><code>next</code></a>. If the previous database interaction was something other than a call to <code>next</code>, then this method may return <code>NO</code>, whether there is another row of data or not.</p></div>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/next">- next</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/columnIndexForName:" title="columnIndexForName:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/columnIndexForName:">&ndash;&nbsp;columnIndexForName:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Column index for column name</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (int)columnIndexForName:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Zero-based index for column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Column index for column name</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/intForColumn:" title="intForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/intForColumn:">&ndash;&nbsp;intForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set integer value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (int)intForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>int</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set integer value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/intForColumnIndex:" title="intForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/intForColumnIndex:">&ndash;&nbsp;intForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set integer value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (int)intForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>int</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set integer value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/longForColumn:" title="longForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/longForColumn:">&ndash;&nbsp;longForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>long</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (long)longForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>long</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>long</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/longForColumnIndex:" title="longForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/longForColumnIndex:">&ndash;&nbsp;longForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set long value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (long)longForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>long</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set long value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/longLongIntForColumn:" title="longLongIntForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/longLongIntForColumn:">&ndash;&nbsp;longLongIntForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>long long int</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (long long int)longLongIntForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>long long int</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>long long int</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/longLongIntForColumnIndex:" title="longLongIntForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/longLongIntForColumnIndex:">&ndash;&nbsp;longLongIntForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>long long int</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (long long int)longLongIntForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>long long int</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>long long int</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/unsignedLongLongIntForColumn:" title="unsignedLongLongIntForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/unsignedLongLongIntForColumn:">&ndash;&nbsp;unsignedLongLongIntForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>unsigned long long int</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (unsigned long long int)unsignedLongLongIntForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>unsigned long long int</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>unsigned long long int</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/unsignedLongLongIntForColumnIndex:" title="unsignedLongLongIntForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/unsignedLongLongIntForColumnIndex:">&ndash;&nbsp;unsignedLongLongIntForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>unsigned long long int</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (unsigned long long int)unsignedLongLongIntForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>unsigned long long int</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>unsigned long long int</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/boolForColumn:" title="boolForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/boolForColumn:">&ndash;&nbsp;boolForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>BOOL</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)boolForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>BOOL</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>BOOL</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/boolForColumnIndex:" title="boolForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/boolForColumnIndex:">&ndash;&nbsp;boolForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>BOOL</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)boolForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>BOOL</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>BOOL</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/doubleForColumn:" title="doubleForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/doubleForColumn:">&ndash;&nbsp;doubleForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>double</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (double)doubleForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>double</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>double</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/doubleForColumnIndex:" title="doubleForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/doubleForColumnIndex:">&ndash;&nbsp;doubleForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>double</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (double)doubleForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>double</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>double</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/stringForColumnIndex:" title="stringForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/stringForColumnIndex:">&ndash;&nbsp;stringForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>NSString</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSString</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>NSString</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/stringForColumn:" title="stringForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/stringForColumn:">&ndash;&nbsp;stringForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>NSString</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSString</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>NSString</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dateForColumn:" title="dateForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dateForColumn:">&ndash;&nbsp;dateForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>NSDate</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSDate *)dateForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSDate</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>NSDate</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dateForColumnIndex:" title="dateForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dateForColumnIndex:">&ndash;&nbsp;dateForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>NSDate</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSDate *)dateForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSDate</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>NSDate</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dataForColumn:" title="dataForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dataForColumn:">&ndash;&nbsp;dataForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>NSData</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSData *)dataForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSData</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>NSData</code> value for column.</p>
+
+<p>This is useful when storing binary data in table (such as image or the like).</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dataForColumnIndex:" title="dataForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dataForColumnIndex:">&ndash;&nbsp;dataForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>NSData</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSData *)dataForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSData</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>NSData</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dataNoCopyForColumn:" title="dataNoCopyForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dataNoCopyForColumn:">&ndash;&nbsp;dataNoCopyForColumn:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>NSData</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSData *)dataNoCopyForColumn:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSData</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>NSData</code> value for column.</p><div class="warning"><p><strong>Warning:</strong> If you are going to use this data after you iterate over the next row, or after you close the
+result set, make sure to make a copy of the data first (or just use <a href="#//api/name/dataForColumn:"><code>dataForColumn:</code></a>/<a href="#//api/name/dataForColumnIndex:"><code>dataForColumnIndex:</code></a>)
+If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and use the data.</p></div>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dataNoCopyForColumnIndex:" title="dataNoCopyForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dataNoCopyForColumnIndex:">&ndash;&nbsp;dataNoCopyForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>NSData</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSData *)dataNoCopyForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>NSData</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>NSData</code> value for column.</p><div class="warning"><p><strong>Warning:</strong> If you are going to use this data after you iterate over the next row, or after you close the
+result set, make sure to make a copy of the data first (or just use <a href="#//api/name/dataForColumn:"><code>dataForColumn:</code></a>/<a href="#//api/name/dataForColumnIndex:"><code>dataForColumnIndex:</code></a>)
+If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and use the data.</p></div>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/columnIndexIsNull:" title="columnIndexIsNull:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/columnIndexIsNull:">&ndash;&nbsp;columnIndexIsNull:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Is the column <code>NULL</code>?</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)columnIndexIsNull:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>YES</code> if column is <code>NULL</code>; <code>NO</code> if not <code>NULL</code>.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Is the column <code>NULL</code>?</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/columnIsNull:" title="columnIsNull:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/columnIsNull:">&ndash;&nbsp;columnIsNull:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Is the column <code>NULL</code>?</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)columnIsNull:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>YES</code> if column is <code>NULL</code>; <code>NO</code> if not <code>NULL</code>.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Is the column <code>NULL</code>?</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/UTF8StringForColumnIndex:" title="UTF8StringForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/UTF8StringForColumnIndex:">&ndash;&nbsp;UTF8StringForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>(const unsigned char *)</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/UTF8StringForColumnName:" title="UTF8StringForColumnName:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/UTF8StringForColumnName:">&ndash;&nbsp;UTF8StringForColumnName:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnName:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>(const unsigned char *)</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/objectForColumnIndex:" title="objectForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/objectForColumnIndex:">&ndash;&nbsp;objectForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set object for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)objectForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set object for column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/objectAtIndexedSubscript:">- objectAtIndexedSubscript:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/objectForColumnName:" title="objectForColumnName:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/objectForColumnName:">&ndash;&nbsp;objectForColumnName:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set object for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)objectForColumnName:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set object for column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/objectForKeyedSubscript:">- objectForKeyedSubscript:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/columnNameForIndex:" title="columnNameForIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/columnNameForIndex:">&ndash;&nbsp;columnNameForIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Column name for column index</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSString *)columnNameForIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>columnName <code>NSString</code> value of the name of the column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Column name for column index</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/objectAtIndexedSubscript:" title="objectAtIndexedSubscript:"></a>
-	<h3 class="subsubtitle method-title">objectAtIndexedSubscript:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set object for column.</p>
-	</div>		
-	
-    
+	<h3 class="method-title"><code><a href="#//api/name/objectAtIndexedSubscript:">&ndash;&nbsp;objectAtIndexedSubscript:</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>- (id)objectAtIndexedSubscript:(int)<em>columnIdx</em></code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<p>This method allows the use of the &ldquo;boxed&rdquo; syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:</p>
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set object for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)objectAtIndexedSubscript:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set object for column.</p>
+
+<p>This method allows the use of the &ldquo;boxed&rdquo; syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:</p>
 
 <pre><code>id result = rs[0];
 </code></pre>
@@ -2227,182 +2629,71 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 
 <pre><code>id result = [rs objectForColumnName:0];
 </code></pre>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/objectForColumnIndex:" title="objectForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">objectForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set object for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (id)objectForColumnIndex:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
+			</div>
 			
-			<li><code><p><a href="#//api/name/objectAtIndexedSubscript:">- objectAtIndexedSubscript:</a></p></code></li>
-			
-		</ul>
-	</div>
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/objectForColumnName:" title="objectForColumnName:"></a>
-	<h3 class="subsubtitle method-title">objectForColumnName:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set object for column.</p>
-	</div>		
-	
-    
 
-	<div class="method-subsection method-declaration"><code>- (id)objectForColumnName:(NSString *)<em>columnName</em></code></div>
+			
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
 			
-			<li><code><p><a href="#//api/name/objectForKeyedSubscript:">- objectForKeyedSubscript:</a></p></code></li>
+
 			
-		</ul>
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
 	</div>
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
+</div><div class="section-method">
 	<a name="//api/name/objectForKeyedSubscript:" title="objectForKeyedSubscript:"></a>
-	<h3 class="subsubtitle method-title">objectForKeyedSubscript:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set object for column.</p>
-	</div>		
-	
-    
+	<h3 class="method-title"><code><a href="#//api/name/objectForKeyedSubscript:">&ndash;&nbsp;objectForKeyedSubscript:</a></code>
+</h3>
 
-	<div class="method-subsection method-declaration"><code>- (id)objectForKeyedSubscript:(NSString *)<em>columnName</em></code></div>
+	<div class="method-info">
+		<div class="pointy-thing"></div>
 
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<p>This method allows the use of the &ldquo;boxed&rdquo; syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:</p>
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set object for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)objectForKeyedSubscript:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set object for column.</p>
+
+<p>This method allows the use of the &ldquo;boxed&rdquo; syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:</p>
 
 <pre><code>id result = rs[@"employee_name"];
 </code></pre>
@@ -2416,433 +2707,146 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 
 <pre><code>id result = [rs objectForColumnName:@"employee_name"];
 </code></pre>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/resultDict" title="resultDict"></a>
-	<h3 class="subsubtitle method-title">resultDict</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Returns a dictionary of the row results</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDict</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> <strong>Deprecated</strong>: Please use <a href="#//api/name/resultDictionary"><code>resultDictionary</code></a> instead.  Also, beware that <a href="#//api/name/resultDictionary"><code>resultDictionary</code></a> is case sensitive!</p></div>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection see-also-section">
-		<h4 class="method-subtitle">See Also</h4>
-		<ul>
-			
-			<li><code><p><a href="#//api/name/resultDictionary">- resultDictionary</a></p></code></li>
-			
-		</ul>
-	</div>
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/resultDictionary" title="resultDictionary"></a>
-	<h3 class="subsubtitle method-title">resultDictionary</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Returns a dictionary of the row results mapped to case sensitive keys of the column names.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDictionary</code></div>
-
-    
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSDictionary</code> of the row results.</p>
-	</div>
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<div class="warning"><p><strong>Warning:</strong> The keys to the dictionary are case sensitive of the column names.</p></div>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/stringForColumn:" title="stringForColumn:"></a>
-	<h3 class="subsubtitle method-title">stringForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>NSString</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumn:(NSString *)<em>columnName</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSString</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/stringForColumnIndex:" title="stringForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">stringForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>NSString</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumnIndex:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>NSString</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/unsignedLongLongIntForColumn:" title="unsignedLongLongIntForColumn:"></a>
-	<h3 class="subsubtitle method-title">unsignedLongLongIntForColumn:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>unsigned long long int</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (unsigned long long int)unsignedLongLongIntForColumn:(NSString *)<em>columnName</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnName</em></dt>
-			<dd><p><code>NSString</code> value of the name of the column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>unsigned long long int</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/unsignedLongLongIntForColumnIndex:" title="unsignedLongLongIntForColumnIndex:"></a>
-	<h3 class="subsubtitle method-title">unsignedLongLongIntForColumnIndex:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Result set <code>unsigned long long int</code> value for column.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (unsigned long long int)unsignedLongLongIntForColumnIndex:(int)<em>columnIdx</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>columnIdx</em></dt>
-			<dd><p>Zero-based index for column.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	<div class="method-subsection return">
-		<h4 class="method-subtitle parameter-title">Return Value</h4>
-		<p><code>unsigned long long int</code> value of the result set&rsquo;s column.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">FMResultSet.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-					</div>
-					
-					
-				</div>
-				<div class="main-navigation navigation-bottom">
-					<ul>
-	<li><a href="../index.html">Index</a></li>
-	<li><a href="../hierarchy.html">Hierarchy</a></li>
-</ul>
-				</div>
-				<div id="footer">
-					<hr />
-					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2014 ccgus. All rights reserved. (Last updated: 2014-05-25)</span><br />
-						
-						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
-						
-					</div>
-				</div>
 			</div>
-		</article>
-		<script type="text/javascript">
-			function jumpToChange()
-			{
-				window.location.hash = this.options[this.selectedIndex].value;
-			}
 			
-			function toggleTOC()
-			{
-				var contents = document.getElementById('contents');
-				var tocContainer = document.getElementById('tocContainer');
-				
-				if (this.getAttribute('class') == 'open')
-				{
-					this.setAttribute('class', '');
-					contents.setAttribute('class', '');
-					tocContainer.setAttribute('class', '');
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+
+						<a title="Properties" name="task_Properties"></a>
+						<h2 class="task-title">Properties</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/query" title="query"></a>
+	<h3 class="method-title"><code><a href="#//api/name/query">&nbsp;&nbsp;query</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Executed query</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSString *query</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Executed query</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/statement" title="statement"></a>
+	<h3 class="method-title"><code><a href="#//api/name/statement">&nbsp;&nbsp;statement</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p><code>FMStatement</code> used by result set.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (atomic, retain) FMStatement *statement</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p><code>FMStatement</code> used by result set.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+					</div>
 					
-					window.name = "hideTOC";
-				}
-				else
-				{
-					this.setAttribute('class', 'open');
-					contents.setAttribute('class', 'isShowingTOC');
-					tocContainer.setAttribute('class', 'isShowingTOC');
 					
-					window.name = "";
-				}
-				return false;
-			}
-			
-			function toggleTOCEntryChildren(e)
-			{
-				e.stopPropagation();
-				var currentClass = this.getAttribute('class');
-				if (currentClass == 'children') {
-					this.setAttribute('class', 'children open');
-				}
-				else if (currentClass == 'children open') {
-					this.setAttribute('class', 'children');
-				}
-				return false;
-			}
-			
-			function tocEntryClick(e)
-			{
-				e.stopPropagation();
-				return true;
-			}
-			
-			function init()
-			{
-				var selectElement = document.getElementById('jumpTo');
-				selectElement.addEventListener('change', jumpToChange, false);
-				
-				var tocButton = document.getElementById('table_of_contents');
-				tocButton.addEventListener('click', toggleTOC, false);
-				
-				var taskTreeItem = document.getElementById('task_treeitem');
-				if (taskTreeItem.getElementsByTagName('li').length > 0)
-				{
-					taskTreeItem.setAttribute('class', 'children');
-					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
-				}
-				
-				var tocList = document.getElementById('toc');
-				
-				var tocEntries = tocList.getElementsByTagName('li');
-				for (var i = 0; i < tocEntries.length; i++) {
-					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
-				}
-				
-				var tocLinks = tocList.getElementsByTagName('a');
-				for (var i = 0; i < tocLinks.length; i++) {
-					tocLinks[i].addEventListener('click', tocEntryClick, false);
-				}
-				
-				if (window.name == "hideTOC") {
-					toggleTOC.call(tocButton);
-				}
-			}
-			
-			window.onload = init;
-			
-			// If showing in Xcode, hide the TOC and Header
-			if (navigator.userAgent.match(/xcode/i)) {
-				document.getElementById("contents").className = "hideInXcode"
-				document.getElementById("tocContainer").className = "hideInXcode"
-				document.getElementById("top_header").className = "hideInXcode"
-			}
-			
-		</script>
-	</body>
+
+                    
+				</main>
+
+				<footer>
+					<div class="footer-copyright">
+						
+						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-01-25</p>
+						
+						
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>
+						
+					</div>
+				</footer>
+			</div>
+		</div>
+	</article>
+
+	<script src="../js/script.js"></script>
+</body>
 </html>

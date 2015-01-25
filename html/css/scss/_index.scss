@@ -1,0 +1,13 @@
+.index-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	@media (max-width: $mobile-max-width) {
+		flex-direction: column;
+	}
+
+	.index-column {
+		flex: 1 1 33%;
+	}
+}
