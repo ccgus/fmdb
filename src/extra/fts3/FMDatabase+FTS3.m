@@ -7,6 +7,7 @@
 //
 
 #import "FMDatabase+FTS3.h"
+#import "FMDatabasePrivate.h"
 #import "fts3_tokenizer.h"
 
 NSString *const kFTSCommandOptimize = @"optimize";

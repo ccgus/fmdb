@@ -98,6 +98,7 @@
 		8314AF3218CD73D600EC0E25 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
 		831DE6FD175B7C9C001F7317 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		832F502419EC4C6B0087DCBF /* FMDatabaseVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseVariadic.swift"; sourceTree = "<group>"; };
+		8342E80C1AC72F3B003D3921 /* FMDatabasePrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FMDatabasePrivate.h; path = src/fmdb/FMDatabasePrivate.h; sourceTree = "<group>"; };
 		8352D5AC1A73DCEA003A8E09 /* FMDatabaseAdditionsVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseAdditionsVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseAdditionsVariadic.swift"; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* fmdb */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fmdb; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF5D041618416BB2008C5AA9 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -245,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				8314AF3218CD73D600EC0E25 /* FMDB.h */,
+				8342E80C1AC72F3B003D3921 /* FMDatabasePrivate.h */,
 				CCC24EBA0A13E34D00A6D3E3 /* FMDatabase.h */,
 				CCC24EBB0A13E34D00A6D3E3 /* FMDatabase.m */,
 				CCC24EBF0A13E34D00A6D3E3 /* FMResultSet.h */,
@@ -436,7 +438,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0620;
 				TargetAttributes = {
 					BF5D041518416BB2008C5AA9 = {
 						TestTargetID = EE4290EE12B42F870088BD94;
@@ -620,7 +622,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -642,7 +644,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -738,7 +740,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -773,7 +775,7 @@
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

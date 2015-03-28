@@ -7,6 +7,7 @@
 //
 
 #import "FMDatabase.h"
+#import "FMDatabasePrivate.h"
 #import "FMDatabaseAdditions.h"
 #import "TargetConditionals.h"
 
@@ -118,9 +119,6 @@ return ret;
     return returnBool;
 }
 
-
-#if SQLITE_VERSION_NUMBER >= 3007017
-
 - (uint32_t)applicationID {
     
     uint32_t r = 0;
@@ -143,7 +141,6 @@ return ret;
     [rs close];
 }
 
-
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE
 - (NSString*)applicationIDString {
     NSString *s = NSFileTypeForHFSTypeCode([self applicationID]);
@@ -152,9 +149,7 @@ return ret;
     
     s = [s substringWithRange:NSMakeRange(1, 4)];
     
-    
     return s;
-    
 }
 
 - (void)setApplicationIDString:(NSString*)s {
@@ -165,9 +160,6 @@ return ret;
     
     [self setApplicationID:NSHFSTypeCodeFromFileType([NSString stringWithFormat:@"'%@'", s])];
 }
-
-
-#endif
 
 #endif
 
@@ -205,7 +197,7 @@ return ret;
     sqlite3_stmt *pStmt = NULL;
     BOOL validationSucceeded = YES;
     
-    int rc = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
+    int rc = sqlite3_prepare_v2(self.db, [sql UTF8String], -1, &pStmt, 0);
     if (rc != SQLITE_OK) {
         validationSucceeded = NO;
         if (error) {

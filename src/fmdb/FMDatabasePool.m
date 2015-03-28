@@ -8,6 +8,7 @@
 
 #import "FMDatabasePool.h"
 #import "FMDatabase.h"
+#import "FMDatabasePrivate.h"
 
 @interface FMDatabasePool()
 
@@ -127,11 +128,9 @@
         }
         
         //This ensures that the db is opened before returning
-#if SQLITE_VERSION_NUMBER >= 3005000
+
         BOOL success = [db openWithFlags:self->_openFlags];
-#else
-        BOOL success = [db open];
-#endif
+
         if (success) {
             if ([self->_delegate respondsToSelector:@selector(databasePool:shouldAddDatabaseToPool:)] && ![self->_delegate databasePool:self shouldAddDatabaseToPool:db]) {
                 [db close];
