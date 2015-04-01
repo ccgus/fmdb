@@ -242,7 +242,7 @@ To do this, you must:
 
  For more information on bridging headers, see [Swift and Objective-C in the Same Project](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-XID_76).
 
-3. In your briding header, add a line that says:
+3. In your bridging header, add a line that says:
 
         #import "FMDB.h"
 
