@@ -1,8 +1,11 @@
 #import "FMDatabase.h"
-#import "unistd.h"
+#import "FMDatabasePrivate.h"
+#import <unistd.h>
 #import <objc/runtime.h>
 
 @interface FMDatabase ()
+
+@property (nonatomic, assign) sqlite3 *db;
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
@@ -109,7 +112,7 @@
     return sqlite3_threadsafe() != 0;
 }
 
-- (sqlite3*)sqliteHandle {
+- (void *)sqliteHandle {
     return _db;
 }
 
@@ -149,8 +152,8 @@
     return YES;
 }
 
-#if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags {
+#if SQLITE_VERSION_NUMBER >= 3005000
     if (_db) {
         return YES;
     }
@@ -167,8 +170,10 @@
     }
     
     return YES;
-}
+#else
+    return [self open];
 #endif
+}
 
 
 - (BOOL)close {
@@ -231,7 +236,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     NSTimeInterval delta = [NSDate timeIntervalSinceReferenceDate] - (self->_startBusyRetryTime);
     
     if (delta < [self maxBusyRetryTimeInterval]) {
-        int requestedSleepInMillseconds = arc4random_uniform(50) + 50;
+        int requestedSleepInMillseconds = (int)arc4random_uniform(50) + 50;
         int actualSleepInMilliseconds = sqlite3_sleep(requestedSleepInMillseconds);
         if (actualSleepInMilliseconds != requestedSleepInMillseconds) {
             NSLog(@"WARNING: Requested sleep of %i milliseconds, but SQLite returned %i. Maybe SQLite wasn't built with HAVE_USLEEP=1?", requestedSleepInMillseconds, actualSleepInMilliseconds);
@@ -497,7 +502,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 
 #pragma mark Update information routines
 
-- (sqlite_int64)lastInsertRowId {
+- (long long int)lastInsertRowId {
     
     if (_isExecutingStatement) {
         [self warnInUse];
@@ -1247,8 +1252,6 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     return _inTransaction;
 }
 
-#if SQLITE_VERSION_NUMBER >= 3007000
-
 static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     return [savepointName stringByReplacingOccurrencesOfString:@"'" withString:@"''"];
 }
@@ -1323,8 +1326,6 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     return err;
 }
 
-#endif
-
 #pragma mark Cache statements
 
 - (BOOL)shouldCacheStatements {
@@ -1357,7 +1358,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 }
 
 
-- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block {
+- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(void *context, int argc, void **argv))block {
     
     if (!_openFunctions) {
         _openFunctions = [NSMutableSet new];
@@ -1378,6 +1379,11 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 @end
 
 
+@interface FMStatement ()
+
+@property (nonatomic, assign) sqlite3_stmt *statement;
+
+@end
 
 @implementation FMStatement
 @synthesize statement=_statement;

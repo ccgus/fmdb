@@ -8,6 +8,7 @@
 
 #import "FMDatabaseQueue.h"
 #import "FMDatabase.h"
+#import "FMDatabasePrivate.h"
 
 /*
  

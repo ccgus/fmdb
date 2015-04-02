@@ -9,6 +9,7 @@
 #import "FMDBTempDBTests.h"
 #import "FMDatabase.h"
 #import "FMResultSet.h"
+#import <sqlite3.h>
 
 @interface FMResultSetTests : FMDBTempDBTests
 

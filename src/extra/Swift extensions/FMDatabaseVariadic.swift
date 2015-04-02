@@ -19,7 +19,7 @@ extension FMDatabase {
     /// :returns: This returns FMResultSet if successful. Returns nil upon error.
 
     func executeQuery(sql:String, _ values: AnyObject...) -> FMResultSet? {
-        return executeQuery(sql, withArgumentsInArray: values as NSArray);
+        return executeQuery(sql, withArgumentsInArray: values as [AnyObject]);
     }
 
     /// This is a rendition of executeUpdate that handles Swift variadic parameters
@@ -31,6 +31,6 @@ extension FMDatabase {
     /// :returns: This returns true if successful. Returns false upon error.
 
     func executeUpdate(sql:String, _ values: AnyObject...) -> Bool {
-        return executeUpdate(sql, withArgumentsInArray: values as NSArray);
+        return executeUpdate(sql, withArgumentsInArray: values as [AnyObject]);
     }
 }

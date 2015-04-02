@@ -9,6 +9,7 @@
 #import "FMDBTempDBTests.h"
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import <sqlite3.h>
 
 @interface FMDatabaseTests : FMDBTempDBTests
 
@@ -785,7 +786,7 @@
     [self.db executeUpdate:@"insert into ftest values ('not h!')"];
     [self.db executeUpdate:@"insert into ftest values ('definitely not h!')"];
     
-    [self.db makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(sqlite3_context *context, int aargc, sqlite3_value **aargv) {
+    [self.db makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(void *context, int aargc, void **aargv) {
         if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
             
             @autoreleasepool {
