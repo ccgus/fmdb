@@ -1,13 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//  CODE MONASTERY
-//  Copyright 2015 Code Monastery Pty Ltd
-//  All Rights Reserved.
+//  fmdb
 //
-//  NOTICE: Prepared by AppsQuick.ly on behalf of Code Monastery. This software
-//  is proprietary information. Unauthorized use is prohibited.
+//  NOTICE: The authors permit you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //
 ////////////////////////////////////////////////////////////////////////////////
+
+
 
 #import "FMResultSet+Mapping.h"
 #import "FMRowMapper.h"
@@ -24,8 +24,8 @@
         id mappedRow = [mapper mapRow:[results count] inResultSet:self];
         [results addObject:mappedRow];
     }
-    //Return an immutable copy.
     [self close];
+    //Return an immutable copy.
     return [results copy];
 
 }
@@ -33,7 +33,6 @@
 - (id)extractWith:(id<FMResultSetExtractor>)extractor
 {
     id extracted = [extractor extractData:self];
-    FMDBAutorelease(extracted);
     [self close];
     return extracted;
 }

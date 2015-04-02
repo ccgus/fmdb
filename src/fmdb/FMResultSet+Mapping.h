@@ -1,13 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//  CODE MONASTERY
-//  Copyright 2015 Code Monastery Pty Ltd
-//  All Rights Reserved.
+//  fmdb
 //
-//  NOTICE: Prepared by AppsQuick.ly on behalf of Code Monastery. This software
-//  is proprietary information. Unauthorized use is prohibited.
+//  NOTICE: The authors permit you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //
 ////////////////////////////////////////////////////////////////////////////////
+
 
 #import <Foundation/Foundation.h>
 #import "FMResultSet.h"
