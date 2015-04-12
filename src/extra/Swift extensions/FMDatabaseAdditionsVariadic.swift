@@ -18,9 +18,9 @@ extension FMDatabase {
     private func valueForQuery<T>(sql: String, values: NSArray?, completionHandler:(FMResultSet)->(T!)) -> T! {
         var result: T!
         
-        if let rs = executeQuery(sql, withArgumentsInArray: values) {
+        if let rs = executeQuery(sql, values!) {
             if rs.next() {
-                let obj = rs.objectForColumnIndex(0) as NSObject
+                let obj = rs.objectForColumnIndex(0) as! NSObject
                 if !(obj is NSNull) {
                     result = completionHandler(rs)
                 }
