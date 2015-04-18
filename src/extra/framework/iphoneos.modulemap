@@ -1,4 +1,7 @@
-module sqlite3 [system] {
-    header "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/sqlite3.h"
-    export *
+framework module FMDB {
+  umbrella header "FMDB.h"
+  header "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/sqlite3.h"
+
+  export *
+  module * { export * }
 }
