@@ -893,8 +893,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				"MODULEMAP_FILE[sdk=iphoneos*]" = src/extra/framework/iphoneos.modulemap;
-				"MODULEMAP_FILE[sdk=iphonesimulator*]" = src/extra/framework/iphonesimulator.modulemap;
+				MODULEMAP_FILE = src/extra/framework/ios.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = FMDB;
 				SDKROOT = iphoneos;
@@ -932,8 +931,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				"MODULEMAP_FILE[sdk=iphoneos*]" = src/extra/framework/iphoneos.modulemap;
-				"MODULEMAP_FILE[sdk=iphonesimulator*]" = src/extra/framework/iphonesimulator.modulemap;
+				MODULEMAP_FILE = src/extra/framework/ios.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = FMDB;
 				SDKROOT = iphoneos;
@@ -979,8 +977,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MODULEMAP_FILE = src/extra/framework/macosx.modulemap;
-				"MODULEMAP_FILE[sdk=macosx*]" = src/extra/framework/macosx.modulemap;
+				MODULEMAP_FILE = src/extra/framework/osx.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = FMDB;
 				SDKROOT = macosx;
@@ -1019,8 +1016,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MODULEMAP_FILE = src/extra/framework/macosx.modulemap;
-				"MODULEMAP_FILE[sdk=macosx*]" = src/extra/framework/macosx.modulemap;
+				MODULEMAP_FILE = src/extra/framework/osx.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = FMDB;
 				SDKROOT = macosx;
