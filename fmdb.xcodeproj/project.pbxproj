@@ -189,11 +189,9 @@
 				CC8C138C0E3135C400FBE1E7 /* CONTRIBUTORS.txt */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6859EA2029092E104C91782 /* Documentation */,
-				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
 				BF5D041A18416BB2008C5AA9 /* Tests */,
 				BF5D041718416BB2008C5AA9 /* Frameworks */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
-				EE42910C12B42FFA0088BD94 /* libsqlite3.dylib */,
 			);
 			name = fmdb;
 			sourceTree = "<group>";
@@ -206,16 +204,6 @@
 				8314AF3118CD739500EC0E25 /* sample */,
 			);
 			name = Source;
-			sourceTree = "<group>";
-		};
-		08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				CCBEBDAB0DF5DE1A003DDD08 /* libsqlite3.dylib */,
-				08FB779EFE84155DC02AAC07 /* Foundation.framework */,
-				CCBE26C013B3BA8C006F6C37 /* AppKit.framework */,
-			);
-			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
 		};
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
@@ -289,9 +277,13 @@
 		BF5D041718416BB2008C5AA9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BF5D041818416BB2008C5AA9 /* XCTest.framework */,
+				CCBEBDAB0DF5DE1A003DDD08 /* libsqlite3.dylib */,
+				EE42910C12B42FFA0088BD94 /* libsqlite3.dylib */,
+				08FB779EFE84155DC02AAC07 /* Foundation.framework */,
 				6290CBB6188FE836009790F8 /* Foundation.framework */,
+				CCBE26C013B3BA8C006F6C37 /* AppKit.framework */,
 				6290CBC6188FE837009790F8 /* UIKit.framework */,
+				BF5D041818416BB2008C5AA9 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
