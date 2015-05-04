@@ -47,17 +47,32 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     return q;
 }
 
++ (instancetype)databaseQueueWithPath:(NSString*)aPath
+                                flags:(int)openFlags
+                      didOpenCallback:(FMDBDidOpenDatabaseCallbackBlock)didOpenCallback
+{
+    
+    FMDatabaseQueue *q = [[self alloc] initWithPath:aPath flags:openFlags didOpenCallback:didOpenCallback];
+    
+    FMDBAutorelease(q);
+    
+    return q;
+}
+
 + (Class)databaseClass {
     return [FMDatabase class];
 }
 
-- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
-    
+- (instancetype)initWithPath:(NSString*)aPath
+                       flags:(int)openFlags
+             didOpenCallback:(FMDBDidOpenDatabaseCallbackBlock)didOpenCallback
+{
     self = [super init];
     
     if (self != nil) {
         
         _db = [[[self class] databaseClass] databaseWithPath:aPath];
+        _db.didOpenCallback = didOpenCallback;
         FMDBRetain(_db);
         
 #if SQLITE_VERSION_NUMBER >= 3005000
@@ -79,6 +94,12 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     }
     
     return self;
+}
+
+- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
+    
+    // will nil default did open callback
+    return [self initWithPath:aPath flags:openFlags didOpenCallback:nil];
 }
 
 - (instancetype)initWithPath:(NSString*)aPath {

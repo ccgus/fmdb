@@ -145,7 +145,16 @@
         [self setMaxBusyRetryTimeInterval:_maxBusyRetryTimeInterval];
     }
     
-    
+    if (self.didOpenCallback)
+    {
+#if ! __has_feature(objc_arc)
+        self.didOpenCallback(self);
+#else
+        __weak FMDatabase *weakSelf = self;
+        self.didOpenCallback(weakSelf);
+#endif
+    }
+
     return YES;
 }
 
@@ -166,6 +175,16 @@
         [self setMaxBusyRetryTimeInterval:_maxBusyRetryTimeInterval];
     }
     
+    if (self.didOpenCallback)
+    {
+#if ! __has_feature(objc_arc)
+        self.didOpenCallback(self);
+#else
+        __weak FMDatabase *weakSelf = self;
+        self.didOpenCallback(weakSelf);
+#endif
+    }
+
     return YES;
 }
 #endif
