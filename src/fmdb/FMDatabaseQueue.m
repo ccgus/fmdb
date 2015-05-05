@@ -137,6 +137,10 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 }
 
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
+    [self inDatabase:block async:NO];
+}
+
+- (void)inDatabase:(void (^)(FMDatabase *db))block async:(BOOL)async {
     /* Get the currently executing queue (which should probably be nil, but in theory could be another DB queue
      * and then check it against self to make sure we're not about to deadlock. */
     FMDatabaseQueue *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueSpecificKey);
@@ -144,7 +148,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     
     FMDBRetain(self);
     
-    dispatch_sync(_queue, ^() {
+    dispatch_block_t dispatchBlock = ^() {
         
         FMDatabase *db = [self database];
         block(db);
@@ -160,15 +164,22 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
             }
 #endif
         }
-    });
+    };
+    
+    if (async) {
+        dispatch_async(_queue, dispatchBlock);
+    } else {
+        dispatch_sync(_queue, dispatchBlock);
+    }
     
     FMDBRelease(self);
 }
 
 
-- (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block async:(BOOL)async {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+    
+    dispatch_block_t dispatchBlock = ^() {
         
         BOOL shouldRollback = NO;
         
@@ -187,26 +198,56 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         else {
             [[self database] commit];
         }
-    });
+    };
+    
+    if (async) {
+        dispatch_async(_queue, dispatchBlock);
+    } else {
+        dispatch_sync(_queue, dispatchBlock);
+    }
     
     FMDBRelease(self);
 }
 
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    [self beginTransaction:YES withBlock:block];
+    [self beginTransaction:YES withBlock:block async:NO];
+}
+
+- (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block async:(BOOL)async {
+    [self beginTransaction:YES withBlock:block async:async];
 }
 
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    [self beginTransaction:NO withBlock:block];
+    [self beginTransaction:NO withBlock:block async:NO];
+}
+
+- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block async:(BOOL)async {
+    [self beginTransaction:NO withBlock:block async:async];
 }
 
 #if SQLITE_VERSION_NUMBER >= 3007000
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
     
+    __block NSError *err = 0x00;
+    
+    FMDBRetain(self);
+    
+    [self inSavePoint:block async:NO completion:^(NSError *error) {
+        err = error;
+    }];
+    
+    FMDBRelease(self);
+    
+    return err;
+}
+
+- (void)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block async:(BOOL)async completion:(void(^)(NSError *error))completion {
+    
     static unsigned long savePointIdx = 0;
     __block NSError *err = 0x00;
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+    
+    dispatch_block_t dispatchBlock = ^() {
         
         NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
         
@@ -223,9 +264,20 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
             [[self database] releaseSavePointWithName:name error:&err];
             
         }
-    });
+        
+        if (async) {
+            completion(err);
+        }
+    };
+    
+    if (async) {
+        dispatch_async(_queue, dispatchBlock);
+    } else {
+        dispatch_sync(_queue, dispatchBlock);
+        completion(err);
+    }
+    
     FMDBRelease(self);
-    return err;
 }
 #endif
 

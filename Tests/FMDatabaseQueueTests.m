@@ -62,6 +62,33 @@
     }];
 }
 
+- (void)testAsync
+{
+    XCTestExpectation *queueExpectation = [self expectationWithDescription:@"Async inDatabase operation"];
+    
+    [self.queue inDatabase:^(FMDatabase *adb) {
+        int count = 0;
+        FMResultSet *rsl = [adb executeQuery:@"select * from qfoo where foo like 'h%'"];
+        while ([rsl next]) {
+            count++;
+        }
+        
+        XCTAssertEqual(count, 2);
+        
+        count = 0;
+        rsl = [adb executeQuery:@"select * from qfoo where foo like ?", @"h%"];
+        while ([rsl next]) {
+            count++;
+        }
+        
+        XCTAssertEqual(count, 2);
+        
+        [queueExpectation fulfill];
+    } async:YES];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
 - (void)testReadOnlyQueue
 {
     FMDatabaseQueue *queue2 = [FMDatabaseQueue databaseQueueWithPath:self.databasePath flags:SQLITE_OPEN_READONLY];
