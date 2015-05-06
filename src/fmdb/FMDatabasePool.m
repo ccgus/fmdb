@@ -38,7 +38,7 @@
     
     if (self != nil) {
         _path               = [aPath copy];
-        _lockQueue          = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
+        _lockQueue          = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], DISPATCH_QUEUE_SERIAL);
         _databaseInPool     = FMDBReturnRetained([NSMutableArray array]);
         _databaseOutPool    = FMDBReturnRetained([NSMutableArray array]);
         _openFlags          = openFlags;
