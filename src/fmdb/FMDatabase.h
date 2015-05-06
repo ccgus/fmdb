@@ -269,7 +269,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
  */
 
-- (BOOL)executeUpdate:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
+- (BOOL)executeUpdate:(NSString*)sql withErrorAndBindings:(NSError* __autoreleasing*)outErr, ...;
 
 /** Execute single update statement
  
@@ -278,7 +278,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @warning **Deprecated**: Please use `<executeUpdate:withErrorAndBindings>` instead.
  */
 
-- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... __attribute__ ((deprecated));
+- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError* __autoreleasing*)outErr, ... __attribute__ ((deprecated));
 
 /** Execute single update statement
 
@@ -809,7 +809,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see rollbackToSavePointWithName:error:
  */
 
-- (BOOL)startSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (BOOL)startSavePointWithName:(NSString*)name error:(NSError* __autoreleasing*)outErr;
 
 /** Release save point
 
@@ -824,7 +824,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError* __autoreleasing*)outErr;
 
 /** Roll back to save point
 
@@ -838,7 +838,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError* __autoreleasing*)outErr;
 
 /** Start save point
 

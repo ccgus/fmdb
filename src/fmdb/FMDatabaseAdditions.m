@@ -201,7 +201,7 @@ return ret;
 #pragma clang diagnostic pop
 
 
-- (BOOL)validateSQL:(NSString*)sql error:(NSError**)error {
+- (BOOL)validateSQL:(NSString*)sql error:(NSError* __autoreleasing*)error {
     sqlite3_stmt *pStmt = NULL;
     BOOL validationSucceeded = YES;
     
