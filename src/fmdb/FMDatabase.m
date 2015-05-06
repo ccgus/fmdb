@@ -347,13 +347,13 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 
 #pragma mark Key routines
 
-- (BOOL)rekey:(NSString*)key {
+- (BOOL)rekeyEncryptionKey:(NSString*)key {
     NSData *keyData = [NSData dataWithBytes:(void *)[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
     
-    return [self rekeyWithData:keyData];
+    return [self rekeyEncryptionKeyWithData:keyData];
 }
 
-- (BOOL)rekeyWithData:(NSData *)keyData {
+- (BOOL)rekeyEncryptionKeyWithData:(NSData *)keyData {
 #ifdef SQLITE_HAS_CODEC
     if (!keyData) {
         return NO;
@@ -372,13 +372,13 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 #endif
 }
 
-- (BOOL)setKey:(NSString*)key {
+- (BOOL)setEncryptionKey:(NSString*)key {
     NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
     
-    return [self setKeyWithData:keyData];
+    return [self setEncryptionKeyWithData:keyData];
 }
 
-- (BOOL)setKeyWithData:(NSData *)keyData {
+- (BOOL)setEncryptionKeyWithData:(NSData *)keyData {
 #ifdef SQLITE_HAS_CODEC
     if (!keyData) {
         return NO;

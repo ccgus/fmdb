@@ -667,7 +667,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
 
-- (BOOL)setKey:(NSString*)key;
+- (BOOL)setEncryptionKey:(NSString*)key;
 
 /** Reset encryption key
 
@@ -680,7 +680,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
 
-- (BOOL)rekey:(NSString*)key;
+- (BOOL)rekeyEncryptionKey:(NSString*)key;
 
 /** Set encryption key using `keyData`.
  
@@ -693,7 +693,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
 
-- (BOOL)setKeyWithData:(NSData *)keyData;
+- (BOOL)setEncryptionKeyWithData:(NSData *)keyData;
 
 /** Reset encryption key using `keyData`.
 
@@ -706,7 +706,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
 
-- (BOOL)rekeyWithData:(NSData *)keyData;
+- (BOOL)rekeyEncryptionKeyWithData:(NSData *)keyData;
 
 
 ///------------------------------
