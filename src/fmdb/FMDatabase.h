@@ -891,7 +891,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 /** Adds SQL functions or aggregates or to redefine the behavior of existing SQL functions or aggregates.
  
  For example:
- 
+ \code
     [queue inDatabase:^(FMDatabase *adb) {
 
         [adb executeUpdate:@"create table ftest (foo text)"];
@@ -922,7 +922,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
         }
         FMDBQuickCheck(rowCount == 2);
     }];
-
+\endcode
  @param name Name of function
 
  @param count Maximum number of parameters
