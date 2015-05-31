@@ -219,6 +219,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags;
+- (BOOL)openWithFlags:(int)flags andVFS:(const char*)vfs;
 #endif
 
 /** Closing a database connection
