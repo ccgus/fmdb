@@ -151,14 +151,14 @@
 
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags {
-    return [self openWithFlags:flags andVFS:NULL];
+    return [self openWithFlags:flags vfs:nil];
 }
-- (BOOL)openWithFlags:(int)flags andVFS:(const char*)vfs {
+- (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName; {
     if (_db) {
         return YES;
     }
 
-    int err = sqlite3_open_v2([self sqlitePath], &_db, flags, vfs);
+    int err = sqlite3_open_v2([self sqlitePath], &_db, flags, [vfsName UTF8String]);
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
