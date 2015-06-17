@@ -68,6 +68,25 @@
     
 }
 
+- (void)testOpenWithVFS
+{
+    // create custom vfs
+    sqlite3_vfs vfs = *sqlite3_vfs_find(NULL);
+    vfs.zName = "MyCustomVFS";
+    XCTAssertEqual(SQLITE_OK, sqlite3_vfs_register(&vfs, 0));
+    // use custom vfs to open a in memory database
+    FMDatabase *db = [[FMDatabase alloc] initWithPath:@":memory:"];
+    [db openWithFlags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE vfs:@"MyCustomVFS"];
+    XCTAssertFalse([db hadError], @"Open with a custom VFS should have succeeded");
+}
+
+- (void)testFailOnOpenWithUnknownVFS
+{
+    FMDatabase *db = [[FMDatabase alloc] initWithPath:@":memory:"];
+    [db openWithFlags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE vfs:@"UnknownVFS"];
+    XCTAssertTrue([db hadError], @"Should have failed");    
+}
+
 - (void)testFailOnUnopenedDatabase
 {
     [self.db close];
