@@ -194,7 +194,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (BOOL)open;
 
-/** Opening a new database connection with flags
+/** Opening a new database connection with flags and an optional virtual file system (VFS)
 
  @param flags one of the following three values, optionally combined with the `SQLITE_OPEN_NOMUTEX`, `SQLITE_OPEN_FULLMUTEX`, `SQLITE_OPEN_SHAREDCACHE`, `SQLITE_OPEN_PRIVATECACHE`, and/or `SQLITE_OPEN_URI` flags:
 
@@ -210,6 +210,8 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for `open` method.
  
+ If vfs is given the value is passed to the vfs parameter of sqlite3_open_v2.
+ 
  @return `YES` if successful, `NO` on error.
 
  @see [sqlite3_open_v2()](http://sqlite.org/c3ref/open.html)
@@ -219,6 +221,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags;
+- (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName;
 #endif
 
 /** Closing a database connection
