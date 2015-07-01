@@ -1315,7 +1315,9 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
         return err;
     }
     
-    block(&shouldRollback);
+    if (block) {
+        block(&shouldRollback);
+    }
     
     if (shouldRollback) {
         // We need to rollback and release this savepoint to remove it
@@ -1356,7 +1358,9 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 #else
     void (^block)(sqlite3_context *context, int argc, sqlite3_value **argv) = (__bridge id)sqlite3_user_data(context);
 #endif
-    block(context, argc, argv);
+    if (block) {
+        block(context, argc, argv);
+    }
 }
 
 
