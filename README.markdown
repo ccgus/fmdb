@@ -363,33 +363,32 @@ FOUNDATION_EXPORT const unsigned char FMDBVersionString[];
 
 8. You can now use this new FMDB framework from your main target. For example, in Swift:
 
- ```import UIKit
-import FMDB
+        import UIKit
+        import FMDB
 
-class ViewController: UIViewController {
+        class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+            override func viewDidLoad() {
+                super.viewDidLoad()
 
-        let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first as! String
-        let path = documents.stringByAppendingPathComponent("test.sqlite")
-        NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
+                let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first as! String
+                let path = documents.stringByAppendingPathComponent("test.sqlite")
+                NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
 
-        let queue = FMDatabaseQueue(path: path)
+                let queue = FMDatabaseQueue(path: path)
 
-        queue.inDatabase { db in
-            db.executeUpdate("create table foo (bar text)", withArgumentsInArray: nil)
-            db.executeUpdate("insert into foo (bar) values (?)", withArgumentsInArray: ["baz"])
+                queue.inDatabase { db in
+                    db.executeUpdate("create table foo (bar text)", withArgumentsInArray: nil)
+                    db.executeUpdate("insert into foo (bar) values (?)", withArgumentsInArray: ["baz"])
 
-            if let rs = db.executeQuery("select * from foo", withArgumentsInArray: nil) {
-                while rs.next() {
-                    println(rs.resultDictionary())
+                    if let rs = db.executeQuery("select * from foo", withArgumentsInArray: nil) {
+                        while rs.next() {
+                            println(rs.resultDictionary())
+                        }
+                    }
                 }
             }
         }
-    }
-}
-```
 
 
 ## History
