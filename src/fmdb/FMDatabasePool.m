@@ -239,9 +239,13 @@
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:NO withBlock:block];
 }
-#if SQLITE_VERSION_NUMBER >= 3007000
+
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
     
+    NSError *err = 0x00;
+
+#if SQLITE_VERSION_NUMBER >= 3007000
+
     static unsigned long savePointIdx = 0;
     
     NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
@@ -249,8 +253,6 @@
     BOOL shouldRollback = NO;
     
     FMDatabase *db = [self db];
-    
-    NSError *err = 0x00;
     
     if (![db startSavePointWithName:name error:&err]) {
         [self pushDatabaseBackInPool:db];
@@ -267,8 +269,9 @@
     
     [self pushDatabaseBackInPool:db];
     
+#endif
+    
     return err;
 }
-#endif
 
 @end
