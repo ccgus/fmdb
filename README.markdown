@@ -363,7 +363,7 @@ FOUNDATION_EXPORT const unsigned char FMDBVersionString[];
 
 8. You can now use this new FMDB framework from your main target. For example, in Swift:
 
-```import UIKit
+ ```import UIKit
 import FMDB
 
 class ViewController: UIViewController {
