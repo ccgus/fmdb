@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'common' do |ss|
     ss.source_files = 'src/fmdb/FM*.{h,m}'
+    ss.private_header_files = 'src/fmdb/*Private.h'
     ss.exclude_files = 'src/fmdb.m'
   end
 

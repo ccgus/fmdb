@@ -1,8 +1,11 @@
 #import "FMDatabase.h"
 #import "unistd.h"
 #import <objc/runtime.h>
+#import "FMDatabase+Private.h"
 
 @interface FMDatabase ()
+
+@property (nonatomic, assign) sqlite3 *db;
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
@@ -109,7 +112,7 @@
     return sqlite3_threadsafe() != 0;
 }
 
-- (sqlite3*)sqliteHandle {
+- (void*)sqliteHandle {
     return _db;
 }
 
@@ -149,11 +152,11 @@
     return YES;
 }
 
-#if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags {
     return [self openWithFlags:flags vfs:nil];
 }
 - (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName; {
+#if SQLITE_VERSION_NUMBER >= 3005000
     if (_db) {
         return YES;
     }
@@ -170,8 +173,12 @@
     }
     
     return YES;
-}
+#else 
+    NSLog(@"Requires SQLite 3.5; will just open");
+    return [self open];
 #endif
+
+}
 
 
 - (BOOL)close {
@@ -1364,7 +1371,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 }
 
 
-- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block {
+- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(void *context, int argc, void **argv))block {
     
     if (!_openFunctions) {
         _openFunctions = [NSMutableSet new];
