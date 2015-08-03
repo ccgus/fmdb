@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "sqlite3.h"
 #import "FMResultSet.h"
 #import "FMDatabasePool.h"
 
@@ -72,6 +73,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 @interface FMDatabase : NSObject  {
     
+    sqlite3*            _db;
     NSString*           _databasePath;
     BOOL                _logsErrors;
     BOOL                _crashOnErrors;
@@ -215,12 +217,12 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [sqlite3_open_v2()](http://sqlite.org/c3ref/open.html)
  @see open
  @see close
- 
- @warning Requires SQLite 3.5
  */
 
+#if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags;
 - (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName;
+#endif
 
 /** Closing a database connection
  
@@ -438,7 +440,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  */
 
-- (long long int)lastInsertRowId;
+- (sqlite_int64)lastInsertRowId;
 
 /** The number of rows changed by prior SQL statement.
  
@@ -728,7 +730,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (void*)sqliteHandle;
+- (sqlite3*)sqliteHandle;
 
 
 ///-----------------------------
@@ -792,6 +794,8 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 - (NSTimeInterval)maxBusyRetryTimeInterval;
 
 
+#if SQLITE_VERSION_NUMBER >= 3007000
+
 ///------------------
 /// @name Save points
 ///------------------
@@ -853,6 +857,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (NSError*)inSavePoint:(void (^)(BOOL *rollback))block;
 
+#endif
 
 ///----------------------------
 /// @name SQLite library status
@@ -930,7 +935,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [sqlite3_create_function()](http://sqlite.org/c3ref/create_function.html)
  */
 
-- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(void *context, int argc, void **argv))block;
+- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
 
 
 ///---------------------
@@ -1034,6 +1039,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  */
 
 @interface FMStatement : NSObject {
+    sqlite3_stmt *_statement;
     NSString *_query;
     long _useCount;
     BOOL _inUse;
@@ -1056,7 +1062,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [`sqlite3_stmt`](http://www.sqlite.org/c3ref/stmt.html)
  */
 
-@property (atomic, assign) void *statement;
+@property (atomic, assign) sqlite3_stmt *statement;
 
 /** Indication of whether the statement is in use */
 
