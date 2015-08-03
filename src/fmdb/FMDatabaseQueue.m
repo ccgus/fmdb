@@ -8,7 +8,6 @@
 
 #import "FMDatabaseQueue.h"
 #import "FMDatabase.h"
-#import "FMDatabase+Private.h"
 
 /*
  
@@ -205,13 +204,11 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     [self beginTransaction:NO withBlock:block];
 }
 
+#if SQLITE_VERSION_NUMBER >= 3007000
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
     
-    __block NSError *err = 0x00;
-
-#if SQLITE_VERSION_NUMBER >= 3007000
-
     static unsigned long savePointIdx = 0;
+    __block NSError *err = 0x00;
     FMDBRetain(self);
     dispatch_sync(_queue, ^() { 
         
@@ -232,9 +229,8 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         }
     });
     FMDBRelease(self);
-
-#endif
     return err;
 }
+#endif
 
 @end

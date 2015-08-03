@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "sqlite3.h"
 
 @class FMDatabase;
 
@@ -155,6 +156,8 @@
 
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
 
+#if SQLITE_VERSION_NUMBER >= 3007000
+
 /** Synchronously perform database operations in pool using save point.
 
  @param block The code to be run on the `FMDatabasePool` pool.
@@ -165,6 +168,7 @@
 */
 
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
+#endif
 
 @end
 
