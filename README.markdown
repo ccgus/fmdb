@@ -319,6 +319,78 @@ if let rs = database.executeQuery("select x, y, z from test", withArgumentsInArr
 database.close()
 ```
 
+Then you can bring it up on the FMDB mailing list by showing your nice and compact FMDBReportABugFunction, or you can report the bug via the github FMDB bug reporter.
+
+## Using FMDB in a framework
+
+1. Clone FMDB repo.
+
+2. Switch to “framework” branch.
+
+3. In your project create a new target (“File” - “New” - “Target…”) and choose “Framework". Call this new target “FMDB” (and make sure to specify language of Objective-C, regardless of the base language for your main project)
+
+4. Copy the contents of the `src/fmdb` directory into your new framework target. **Do not copy the `FMDB.h` file, though.**
+
+5. Edit the `FMDB.h` file in the framework to include whatever headers you want, e.g. 
+
+ ```//
+//  FMDB.h
+//  FMDB
+//
+//  Created by You on 8/2/15.
+//  Copyright (c) 2015 You. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+//! Project version number for FMDB.
+FOUNDATION_EXPORT double FMDBVersionNumber;
+
+//! Project version string for FMDB.
+FOUNDATION_EXPORT const unsigned char FMDBVersionString[];
+
+// In this header, you should import all the public headers of your framework using statements like #import <FMDB/PublicHeader.h>
+
+#import "FMDatabase.h"
+#import "FMResultSet.h"
+#import "FMDatabaseAdditions.h"
+#import "FMDatabaseQueue.h"
+```
+
+6. Whichever headers you include in this `FMDB.h` must be changed to “public” headers as discussed here: http://stackoverflow.com/a/24317456/1271826
+
+7. Remember to link the `libsqlite3.dylib` with your new FMDB framework target.
+
+8. You can now use this new FMDB framework from your main target. For example, in Swift:
+
+        import UIKit
+        import FMDB
+
+        class ViewController: UIViewController {
+
+            override func viewDidLoad() {
+                super.viewDidLoad()
+
+                let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first as! String
+                let path = documents.stringByAppendingPathComponent("test.sqlite")
+                NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
+
+                let queue = FMDatabaseQueue(path: path)
+
+                queue.inDatabase { db in
+                    db.executeUpdate("create table foo (bar text)", withArgumentsInArray: nil)
+                    db.executeUpdate("insert into foo (bar) values (?)", withArgumentsInArray: ["baz"])
+
+                    if let rs = db.executeQuery("select * from foo", withArgumentsInArray: nil) {
+                        while rs.next() {
+                            println(rs.resultDictionary())
+                        }
+                    }
+                }
+            }
+        }
+
+
 ## History
 
 The history and changes are availbe on its [GitHub page](https://github.com/ccgus/fmdb) and are summarized in the "CHANGES_AND_TODO_LIST.txt" file.
@@ -348,7 +420,6 @@ And we've even added a template function to main.m (FMDBReportABugFunction) in t
     * Make your query or update(s).
     * Add some assertions which demonstrate the bug.
 
-Then you can bring it up on the FMDB mailing list by showing your nice and compact FMDBReportABugFunction, or you can report the bug via the github FMDB bug reporter.
 
 **Optional:**
 
