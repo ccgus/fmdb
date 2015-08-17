@@ -147,21 +147,26 @@ static int FMDBTokenizerNext(sqlite3_tokenizer_cursor *pCursor,  /* Cursor retur
     }
     
     // The range from the tokenizer is in UTF-16 positions, we need give UTF-8 positions to SQLite.
-    CFIndex usedBytes1, usedBytes2;
-    CFRange range1 = CFRangeMake(0, cursor->currentRange.location);
-    CFRange range2 = CFRangeMake(0, cursor->currentRange.length);
+    CFIndex startOffset, endOffset, newBytesUsed;
+    CFRange rangeToStartToken = CFRangeMake(0, cursor->currentRange.location);
+    CFRange newTokenRange = CFRangeMake(0, CFStringGetLength(cursor->tokenString));
     
     // This will tell us how many UTF-8 bytes there are before the start of the token
-    CFStringGetBytes(cursor->inputString, range1, kCFStringEncodingUTF8, '?', false,
-                     NULL, 0, &usedBytes1);
-    
-    CFStringGetBytes(cursor->tokenString, range2, kCFStringEncodingUTF8, '?', false,
-                     cursor->outputBuf, sizeof(cursor->outputBuf), &usedBytes2);
+    CFStringGetBytes(cursor->inputString, rangeToStartToken, kCFStringEncodingUTF8, '?', false,
+                     NULL, 0, &startOffset);
+
+    // and how many UTF-8 bytes there are within the token in the original string
+    CFStringGetBytes(cursor->inputString, cursor->currentRange, kCFStringEncodingUTF8, '?', false,
+                     NULL, 0, &endOffset);
+
+    // Determine how many bytes the new token string uses
+    CFStringGetBytes(cursor->tokenString, newTokenRange, kCFStringEncodingUTF8, '?', false,
+                     cursor->outputBuf, sizeof(cursor->outputBuf), &newBytesUsed);
     
     *pzToken = (char *) cursor->outputBuf;
-    *pnBytes = (int) usedBytes2;
-    *piStartOffset = (int) usedBytes1;
-    *piEndOffset = (int) (usedBytes1 + usedBytes2);
+    *pnBytes = (int) newBytesUsed;
+    *piStartOffset = (int) startOffset;
+    *piEndOffset = (int) (startOffset + endOffset);
     *piPosition = cursor->tokenIndex++;
     
     return SQLITE_OK;
