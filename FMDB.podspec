@@ -47,7 +47,10 @@ Pod::Spec.new do |s|
   s.subspec 'SQLCipher' do |ss|
     ss.dependency 'SQLCipher'
     ss.dependency 'FMDB/common'
-    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC' }
-  end
-  
+    
+    ss.subspec 'FTS' do |sss|
+        sss.dependency 'SQLCipher/fts'
+        sss.dependency 'FMDB/FTS'
+    end
+  end  
 end
