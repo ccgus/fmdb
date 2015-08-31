@@ -1,4 +1,5 @@
 #import "FMDatabase+InMemoryOnDiskIO.h"
+#import "FMDatabase+Private.h"
 
 // http://www.sqlite.org/backup.html
 static
@@ -63,13 +64,13 @@ int loadOrSaveDb(sqlite3 *pInMemory, const char *zFilename, int isSave)
     }
     
     // and only if the database is open
-    if ( self->_db == nil ) 
+    if ( self.db == nil )
     {
         NSLog(@"Invalid database connection." );
         return NO;
     }
     
-    return ( SQLITE_OK == loadOrSaveDb( self->_db, [filePath fileSystemRepresentation], false ) );
+    return ( SQLITE_OK == loadOrSaveDb( self.db, [filePath fileSystemRepresentation], false ) );
 
 }
 
@@ -83,14 +84,14 @@ int loadOrSaveDb(sqlite3 *pInMemory, const char *zFilename, int isSave)
     }
     
     // and only if the database is open
-    if ( self->_db == nil ) 
+    if ( self.db == nil )
     {
         NSLog(@"Invalid database connection." );
         return NO;
     }
     
     // save the in-memory representation    
-    return ( SQLITE_OK == loadOrSaveDb( self->_db, [filePath fileSystemRepresentation], true ) );
+    return ( SQLITE_OK == loadOrSaveDb( self.db, [filePath fileSystemRepresentation], true ) );
 }
 
 @end
