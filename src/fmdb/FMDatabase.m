@@ -1330,6 +1330,71 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 
 #endif
 
+#pragma mark Online backup
+
+- (BOOL)backupTo:(NSString*)aPath withProgressBlock:(void (^)(int pagesRemaining, int pageCount))progressBlock
+{
+	NSParameterAssert(aPath);
+	NSParameterAssert(progressBlock);
+	
+	if (![self databaseExists]) {
+		return NO;
+	}
+	
+	if (_isExecutingStatement) {
+		[self warnInUse];
+		return NO;
+	}
+	
+	_isExecutingStatement = YES;
+	
+	int err					= 0;
+	sqlite3 *pFile			= NULL;
+	sqlite3_backup *pBackup	= NULL;
+	
+	if (_traceExecution) {
+		NSLog(@"%@ backupTo: %@", self, aPath);
+	}
+	
+	err = sqlite3_open([aPath fileSystemRepresentation], &pFile);
+	if (err != SQLITE_OK) {
+		goto backupTowithProgressBlockDone;
+	}
+	
+	/* Open the backup object to accomplish the backup. */
+	pBackup = sqlite3_backup_init(pFile, "main", _db, "main");
+	if (!pBackup) {
+		goto backupTowithProgressBlockDone;
+	}
+
+	do {
+		err = sqlite3_backup_step(pBackup, 10); //TODO optimize page count
+		progressBlock(sqlite3_backup_remaining(pBackup), sqlite3_backup_pagecount(pBackup));
+		
+		//if (err == SQLITE_OK || err == SQLITE_BUSY || err == SQLITE_LOCKED) {
+		//	sqlite3_sleep(5);
+		//}
+	} while (err == SQLITE_OK || err == SQLITE_BUSY || err == SQLITE_LOCKED);
+	
+	/* Release resources allocated by backup_init(). */
+	sqlite3_backup_finish(pBackup);
+
+
+backupTowithProgressBlockDone:
+	
+	err = sqlite3_errcode(pFile);
+	if (err != SQLITE_OK) {
+		NSString *msg = [NSString stringWithUTF8String:sqlite3_errmsg(pFile)];
+		NSLog(@"error performing backup: %d \"%@\"", err, msg);
+	}
+
+	_isExecutingStatement = NO;
+
+	sqlite3_close (pFile);
+	
+	return (err == SQLITE_OK);
+}
+
 #pragma mark Cache statements
 
 - (BOOL)shouldCacheStatements {
