@@ -48,7 +48,7 @@
 	NSString *backupPath = @"/tmp/tmp.db.bck";
 
 	// perform the backup
-	XCTAssertTrue ([self.db backupTo:backupPath withProgressBlock:^(int pagesRemaining, int pageCount) {
+	XCTAssertTrue ([self.db backupTo:backupPath withKey:nil andProgressBlock:^(int pagesRemaining, int pageCount) {
 		// No need to show progress.
 	}], @"Should have succeeded");
 	
@@ -57,7 +57,30 @@
 	XCTAssertTrue([fileManager fileExistsAtPath:backupPath],
 				  @"Backup db file should exist");
 	
-	// test if the database is o
+	// test if the bakcup is ok
+	FMDatabase *bck = [FMDatabase databaseWithPath:backupPath];
+	XCTAssertTrue([bck open], @"Should pass");
+	XCTAssertTrue([bck close], @"Should pass");
+	
+	// delete backup
+	[fileManager removeItemAtPath:backupPath error:NULL];
+}
+
+- (void)testBackupDatabaseEncrypted
+{
+	NSString *backupPath = @"/tmp/tmp.edb.bck";
+	
+	// perform the backup
+	XCTAssertTrue ([self.db backupTo:backupPath withKey:@"passw0rd" andProgressBlock:^(int pagesRemaining, int pageCount) {
+		// No need to show progress.
+	}], @"Should have succeeded");
+	
+	// check if the backup file exists
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	XCTAssertTrue([fileManager fileExistsAtPath:backupPath],
+				  @"Backup db file should exist");
+	
+	// test if the backup is ok
 	FMDatabase *bck = [FMDatabase databaseWithPath:backupPath];
 	XCTAssertTrue([bck open], @"Should pass");
 	XCTAssertTrue([bck close], @"Should pass");

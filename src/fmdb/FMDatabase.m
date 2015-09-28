@@ -1332,7 +1332,9 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 
 #pragma mark Online backup
 
-- (BOOL)backupTo:(NSString*)aPath withProgressBlock:(void (^)(int pagesRemaining, int pageCount))progressBlock
+- (BOOL)backupTo:(NSString*)aPath
+		 withKey:(NSString*)key
+andProgressBlock:(void (^)(int pagesRemaining, int pageCount))progressBlock
 {
 	NSParameterAssert(aPath);
 	NSParameterAssert(progressBlock);
@@ -1345,7 +1347,7 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 		[self warnInUse];
 		return NO;
 	}
-	
+
 	_isExecutingStatement = YES;
 	
 	int err					= 0;
@@ -1360,6 +1362,15 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 	if (err != SQLITE_OK) {
 		goto backupTowithProgressBlockDone;
 	}
+#ifdef SQLITE_HAS_CODEC
+	if (key) {
+		NSData *keyData = [NSData dataWithBytes:[key UTF8String] length:(NSUInteger)strlen([key UTF8String])];
+		err = sqlite3_key(pFile, [keyData bytes], (int)[keyData length]);
+		if (err != SQLITE_OK) {
+			goto backupTowithProgressBlockDone;
+		}
+	}
+#endif
 	
 	/* Open the backup object to accomplish the backup. */
 	pBackup = sqlite3_backup_init(pFile, "main", _db, "main");
@@ -1394,7 +1405,7 @@ backupTowithProgressBlockDone:
 	
 	return (err == SQLITE_OK);
 }
-
+	
 #pragma mark Cache statements
 
 - (BOOL)shouldCacheStatements {
