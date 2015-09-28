@@ -60,6 +60,7 @@
 	// test if the bakcup is ok
 	FMDatabase *bck = [FMDatabase databaseWithPath:backupPath];
 	XCTAssertTrue([bck open], @"Should pass");
+	XCTAssert([bck executeQuery:@"select * from test"] != nil, @"Should pass");
 	XCTAssertTrue([bck close], @"Should pass");
 	
 	// delete backup
@@ -83,6 +84,7 @@
 	// test if the backup is ok
 	FMDatabase *bck = [FMDatabase databaseWithPath:backupPath];
 	XCTAssertTrue([bck open], @"Should pass");
+	XCTAssert([bck executeQuery:@"select * from test"] != nil, @"Should pass");
 	XCTAssertTrue([bck close], @"Should pass");
 	
 	// delete backup
