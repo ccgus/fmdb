@@ -153,7 +153,7 @@
 - (BOOL)openWithFlags:(int)flags {
     return [self openWithFlags:flags vfs:nil];
 }
-- (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName; {
+- (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName {
     if (_db) {
         return YES;
     }
@@ -277,6 +277,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 }
 
 - (void)setBusyRetryTimeout:(int)i {
+#pragma unused(i)
     NSLog(@"%s:%d", __FUNCTION__, __LINE__);
     NSLog(@"FMDB: setBusyRetryTimeout does nothing, please use setMaxBusyRetryTimeInterval:");
 }
@@ -371,6 +372,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     
     return (rc == SQLITE_OK);
 #else
+#pragma unused(keyData)
     return NO;
 #endif
 }
@@ -391,6 +393,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     
     return (rc == SQLITE_OK);
 #else
+#pragma unused(keyData)
     return NO;
 #endif
 }
