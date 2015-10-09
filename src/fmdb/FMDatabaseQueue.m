@@ -144,8 +144,11 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     /* Get the currently executing queue (which should probably be nil, but in theory could be another DB queue
      * and then check it against self to make sure we're not about to deadlock. */
     FMDatabaseQueue *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueSpecificKey);
-    assert(currentSyncQueue != self && "inDatabase: was called reentrantly on the same queue, which would lead to a deadlock");
-    
+    if (currentSyncQueue == self) {
+        block(currentSyncQueue.database);
+        return;
+    }
+  
     FMDBRetain(self);
     
     dispatch_sync(_queue, ^() {
@@ -171,8 +174,42 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
+  
+#if SQLITE_VERSION_NUMBER >= 3007000
+    FMDatabaseQueue *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueSpecificKey);
+    if (currentSyncQueue == self) {
+      
+        BOOL shouldRollbackSavePoint = NO;
+        NSString *savepoint = @(rand()).stringValue;
+        NSError *error = nil;
+      
+        FMDatabase *db = currentSyncQueue.database;
+      
+        if (![db startSavePointWithName:savepoint error:&error]) {
+            NSLog(@"Unable to create savepoint for nested transaction: %@", error);
+            return;
+        }
+        
+        block(db, &shouldRollbackSavePoint);
+        
+        if (shouldRollbackSavePoint) {
+            if (![db rollbackToSavePointWithName:savepoint error:&error]) {
+                NSLog(@"Warning: Unable to rollback to savepoint for nested transaction: %@", error);
+            }
+        }
+        
+        if(![db releaseSavePointWithName:savepoint error:&error]) {
+            NSLog(@"Warning: Unable to release savepoint for nested transaction: %@", error);
+        }
+        
+        
+        return;
+    }
+#endif
+  
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+
+    dispatch_sync(_queue, ^() {
         
         BOOL shouldRollback = NO;
         
