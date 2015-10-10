@@ -3,6 +3,12 @@
 #import <objc/runtime.h>
 #import "FMDatabase+Private.h"
 
+
+// Date initializer & extractor method binders
+typedef NSDate *(*DateInitializerMethod)(id inst, SEL cmd);
+typedef double(*DateExtractorMethod)(id inst, SEL cmd);
+
+
 @interface FMDatabase ()
 
 @property (nonatomic, assign) sqlite3 *db;
@@ -42,6 +48,7 @@
         _logsErrors                 = YES;
         _crashOnErrors              = NO;
         _maxBusyRetryTimeInterval   = 2;
+        [self setDateEpoch1970];
     }
     
     return self;
@@ -431,6 +438,26 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     return [_dateFormat stringFromDate:date];
 }
 
+- (void) setDateEpoch1970 {
+    _dateInitializer = @selector(dateWithTimeIntervalSince1970:);
+    _dateExtractor = @selector(timeIntervalSince1970);
+}
+
+- (void) setDateEpochReferenceDate {
+    _dateInitializer = @selector(dateWithTimeIntervalSinceReferenceDate:);
+    _dateExtractor = @selector(timeIntervalSinceReferenceDate);
+}
+
+- (NSDate *)dateFromDouble:(double)d {
+    DateInitializerMethod initializer = (DateInitializerMethod)[NSDate.class methodForSelector:_dateInitializer];
+    return initializer(NSDate.class, _dateInitializer);
+}
+
+- (double)doubleFromDate:(NSDate *)date {
+    DateExtractorMethod extractor = (DateExtractorMethod)[date methodForSelector:_dateExtractor];
+    return extractor(date, _dateExtractor);
+}
+
 #pragma mark State of database
 
 - (BOOL)goodConnection {
@@ -560,7 +587,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         if (self.hasDateFormatter)
             sqlite3_bind_text(pStmt, idx, [[self stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
         else
-            sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
+            sqlite3_bind_double(pStmt, idx, [self doubleFromDate:obj]);
     }
     else if ([obj isKindOfClass:[NSNumber class]]) {
         

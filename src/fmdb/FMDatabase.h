@@ -88,6 +88,8 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
     NSMutableSet        *_openFunctions;
 
     NSDateFormatter     *_dateFormat;
+    SEL                 _dateInitializer;
+    SEL                 _dateExtractor;
 }
 
 ///-----------------
@@ -1018,6 +1020,46 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  */
 
 - (NSString *)stringFromDate:(NSDate *)date;
+
+///---------------------
+/// @name Date epoch
+///---------------------
+
+/** Sets the NSDate epoch to the Unix/C standard January 1, 1970
+ */
+
+-(void) setDateEpoch1970;
+
+/** Sets the NSDate epoch to the Cocoa standard reference date.
+ */
+
+-(void) setDateEpochReferenceDate;
+
+/** Convert the supplied double to NSDate, using the current date epoch.
+ 
+ @param d `double` to convert to `NSDate`.
+ 
+ @return The `NSDate` object.
+ 
+ @see setDateEpoch1970
+ @see setDateEpochReference
+ @see doubleFromDate:
+ */
+
+- (NSDate *)dateFromDouble:(double)d;
+
+/** Convert the supplied NSDate to double, using the current date epoch.
+ 
+ @param date `NSDate` of date to convert to `double`.
+ 
+ @return The `double` value of the date.
+ 
+ @see setDateEpoch1970
+ @see setDateEpochReference
+ @see dateFromDouble:
+ */
+
+- (double)doubleFromDate:(NSDate *)date;
 
 @end
 
