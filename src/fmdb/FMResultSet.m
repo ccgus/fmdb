@@ -1,6 +1,7 @@
 #import "FMResultSet.h"
 #import "FMDatabase.h"
 #import "unistd.h"
+#import "FMDatabase+Private.h"
 
 @interface FMDatabase ()
 - (void)resultSetDidClose:(FMResultSet *)resultSet;
@@ -300,7 +301,7 @@
         return nil;
     }
     
-    return [_parentDB hasDateFormatter] ? [_parentDB dateFromString:[self stringForColumnIndex:columnIdx]] : [NSDate dateWithTimeIntervalSince1970:[self doubleForColumnIndex:columnIdx]];
+    return [_parentDB hasDateFormatter] ? [_parentDB dateFromString:[self stringForColumnIndex:columnIdx]] : [_parentDB dateFromDouble:[self doubleForColumnIndex:columnIdx]];
 }
 
 

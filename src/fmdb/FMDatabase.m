@@ -1,8 +1,17 @@
 #import "FMDatabase.h"
 #import "unistd.h"
 #import <objc/runtime.h>
+#import "FMDatabase+Private.h"
+
+
+// Date initializer & extractor method binders
+typedef NSDate *(*DateInitializerMethod)(id inst, SEL cmd);
+typedef double(*DateExtractorMethod)(id inst, SEL cmd);
+
 
 @interface FMDatabase ()
+
+@property (nonatomic, assign) sqlite3 *db;
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 - (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
@@ -39,6 +48,7 @@
         _logsErrors                 = YES;
         _crashOnErrors              = NO;
         _maxBusyRetryTimeInterval   = 2;
+        [self setDateEpoch1970];
     }
     
     return self;
@@ -109,7 +119,7 @@
     return sqlite3_threadsafe() != 0;
 }
 
-- (sqlite3*)sqliteHandle {
+- (void*)sqliteHandle {
     return _db;
 }
 
@@ -149,11 +159,11 @@
     return YES;
 }
 
-#if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags {
     return [self openWithFlags:flags vfs:nil];
 }
 - (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName; {
+#if SQLITE_VERSION_NUMBER >= 3005000
     if (_db) {
         return YES;
     }
@@ -170,8 +180,12 @@
     }
     
     return YES;
-}
+#else 
+    NSLog(@"Requires SQLite 3.5; will just open");
+    return [self open];
 #endif
+
+}
 
 
 - (BOOL)close {
@@ -424,6 +438,26 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     return [_dateFormat stringFromDate:date];
 }
 
+- (void) setDateEpoch1970 {
+    _dateInitializer = @selector(dateWithTimeIntervalSince1970:);
+    _dateExtractor = @selector(timeIntervalSince1970);
+}
+
+- (void) setDateEpochReferenceDate {
+    _dateInitializer = @selector(dateWithTimeIntervalSinceReferenceDate:);
+    _dateExtractor = @selector(timeIntervalSinceReferenceDate);
+}
+
+- (NSDate *)dateFromDouble:(double)d {
+    DateInitializerMethod initializer = (DateInitializerMethod)[NSDate.class methodForSelector:_dateInitializer];
+    return initializer(NSDate.class, _dateInitializer);
+}
+
+- (double)doubleFromDate:(NSDate *)date {
+    DateExtractorMethod extractor = (DateExtractorMethod)[date methodForSelector:_dateExtractor];
+    return extractor(date, _dateExtractor);
+}
+
 #pragma mark State of database
 
 - (BOOL)goodConnection {
@@ -553,7 +587,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         if (self.hasDateFormatter)
             sqlite3_bind_text(pStmt, idx, [[self stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
         else
-            sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
+            sqlite3_bind_double(pStmt, idx, [self doubleFromDate:obj]);
     }
     else if ([obj isKindOfClass:[NSNumber class]]) {
         
@@ -1364,7 +1398,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 }
 
 
-- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block {
+- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(void *context, int argc, void **argv))block {
     
     if (!_openFunctions) {
         _openFunctions = [NSMutableSet new];
