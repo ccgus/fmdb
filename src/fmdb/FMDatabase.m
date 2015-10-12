@@ -1,6 +1,11 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wauto-import"
+
 #import "FMDatabase.h"
 #import "unistd.h"
 #import <objc/runtime.h>
+
+#pragma clang diagnostic pop
 
 @interface FMDatabase ()
 

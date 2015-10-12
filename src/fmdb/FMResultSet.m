@@ -1,6 +1,11 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wauto-import"
+
 #import "FMResultSet.h"
 #import "FMDatabase.h"
 #import "unistd.h"
+
+#pragma clang diagnostic pop
 
 @interface FMDatabase ()
 - (void)resultSetDidClose:(FMResultSet *)resultSet;

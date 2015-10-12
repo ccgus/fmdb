@@ -1,7 +1,12 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wauto-import"
+
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"
 #import "FMResultSet.h"
 #import "FMDatabasePool.h"
+
+#pragma clang diagnostic pop
 
 
 #if ! __has_feature(objc_arc)

@@ -6,7 +6,13 @@
 //  Copyright 2011 Flying Meat Inc. All rights reserved.
 //
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wauto-import"
+
 #import <Foundation/Foundation.h>
+
+#pragma clang diagnostic pop
+
 #import "sqlite3.h"
 
 @class FMDatabase;
@@ -29,6 +35,9 @@
  in the main.m file.
  */
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-interface-ivars"
+
 @interface FMDatabasePool : NSObject {
     NSString            *_path;
     
@@ -42,6 +51,8 @@
     NSUInteger          _maximumNumberOfDatabasesToCreate;
     int                 _openFlags;
 }
+
+#pragma clang diagnostic pop
 
 /** Database path */
 

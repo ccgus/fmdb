@@ -1,5 +1,10 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wauto-import"
+
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"
+
+#pragma clang diagnostic pop
 
 #ifndef __has_feature      // Optional.
 #define __has_feature(x) 0 // Compatibility with non-clang compilers.
@@ -23,6 +28,9 @@
  - `<FMDatabase>`
  */
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-interface-ivars"
+
 @interface FMResultSet : NSObject {
     FMDatabase          *_parentDB;
     FMStatement         *_statement;
@@ -30,6 +38,8 @@
     NSString            *_query;
     NSMutableDictionary *_columnNameToIndexMap;
 }
+
+#pragma clang diagnostic pop
 
 ///-----------------
 /// @name Properties
