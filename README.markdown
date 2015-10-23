@@ -283,10 +283,10 @@ To do this, you must:
 If you do the above, you can then write Swift code that uses FMDatabase. For example:
 
 ```swift
-let documentsFolder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-let path = documentsFolder.stringByAppendingPathComponent("test.sqlite")
+let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+let fileURL = documents.URLByAppendingPathComponent("test.sqlite")
 
-let database = FMDatabase(path: path)
+let database = FMDatabase(path: fileURL.path)
 
 if !database.open() {
     println("Unable to open database")
