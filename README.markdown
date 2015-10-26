@@ -283,26 +283,26 @@ To do this, you must:
 If you do the above, you can then write Swift code that uses FMDatabase. For example:
 
 ```swift
-let documentsFolder = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-let path = documentsFolder.stringByAppendingPathComponent("test.sqlite")
+let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+let fileURL = documents.URLByAppendingPathComponent("test.sqlite")
 
-let database = FMDatabase(path: path)
+let database = FMDatabase(path: fileURL.path)
 
 if !database.open() {
-    println("Unable to open database")
+    print("Unable to open database")
     return
 }
 
 if !database.executeUpdate("create table test(x text, y text, z text)", withArgumentsInArray: nil) {
-    println("create table failed: \(database.lastErrorMessage())")
+    print("create table failed: \(database.lastErrorMessage())")
 }
 
 if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["a", "b", "c"]) {
-    println("insert 1 table failed: \(database.lastErrorMessage())")
+    print("insert 1 table failed: \(database.lastErrorMessage())")
 }
 
 if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["e", "f", "g"]) {
-    println("insert 2 table failed: \(database.lastErrorMessage())")
+    print("insert 2 table failed: \(database.lastErrorMessage())")
 }
 
 if let rs = database.executeQuery("select x, y, z from test", withArgumentsInArray: nil) {
@@ -310,10 +310,10 @@ if let rs = database.executeQuery("select x, y, z from test", withArgumentsInArr
         let x = rs.stringForColumn("x")
         let y = rs.stringForColumn("y")
         let z = rs.stringForColumn("z")
-        println("x = \(x); y = \(y); z = \(z)")
+        print("x = \(x); y = \(y); z = \(z)")
     }
 } else {
-    println("select failed: \(database.lastErrorMessage())")
+    print("select failed: \(database.lastErrorMessage())")
 }
 
 database.close()
