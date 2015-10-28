@@ -47,7 +47,7 @@ Pod::Spec.new do |s|
   s.subspec 'SQLCipher' do |ss|
     ss.dependency 'SQLCipher'
     ss.dependency 'FMDB/common'
-    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC' }
+    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DHAVE_USLEEP=1' }
   end
   
 end
