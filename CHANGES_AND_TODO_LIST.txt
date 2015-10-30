@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2015.10.29
+    Added renditions of `executeUpdate:values:error:` and `executeQuery:values:error:`, which in Swift 2 throw errors.
+
 2015.01.23
     Added Swift renditions of the variadic methods of FMDatabaseAdditions.
 

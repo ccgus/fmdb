@@ -278,7 +278,7 @@ To do this, you must:
     #import "FMDB.h"
     ```
 
-4. Optionally, copy the `FMDatabaseVariadic.swift` from the "src/extra/Swift Extensions" folder into your project. This allows you to use `executeUpdate` and `executeQuery` with variadic parameters, rather than the `withArgumentsInArray` rendition.
+4. Use the variations of `executeQuery` and `executeUpdate` with the `sql` and `values` parameters with `try` pattern, as shown below. These renditions of `executeQuery` and `executeUpdate` both `throw` errors in true Swift 2 fashion.
 
 If you do the above, you can then write Swift code that uses FMDatabase. For example:
 
@@ -293,27 +293,20 @@ if !database.open() {
     return
 }
 
-if !database.executeUpdate("create table test(x text, y text, z text)", withArgumentsInArray: nil) {
-    print("create table failed: \(database.lastErrorMessage())")
-}
+do {
+    try database.executeUpdate("create table test(x text, y text, z text)", values: nil)
+    try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"])
+    try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"])
 
-if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["a", "b", "c"]) {
-    print("insert 1 table failed: \(database.lastErrorMessage())")
-}
-
-if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["e", "f", "g"]) {
-    print("insert 2 table failed: \(database.lastErrorMessage())")
-}
-
-if let rs = database.executeQuery("select x, y, z from test", withArgumentsInArray: nil) {
+    let rs = try database.executeQuery("select x, y, z from test", values: nil)
     while rs.next() {
         let x = rs.stringForColumn("x")
         let y = rs.stringForColumn("y")
         let z = rs.stringForColumn("z")
         print("x = \(x); y = \(y); z = \(z)")
     }
-} else {
-    print("select failed: \(database.lastErrorMessage())")
+} catch let error as NSError {
+    print("failed: \(error.localizedDescription)")
 }
 
 database.close()
