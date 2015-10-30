@@ -192,11 +192,11 @@ if ([s next]) {
 
 <h2>Using FMDatabaseQueue and Thread Safety.</h2>
 
-<p>Using a single instance of FMDatabase from multiple threads at once is a bad idea.  It has always been OK to make a FMDatabase object <em>per thread</em>.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  <em>This would suck</em>.</p>
+<p>Using a single instance of <code>FMDatabase</code> from multiple threads at once is a bad idea.  It has always been OK to make a <code>FMDatabase</code> object <em>per thread</em>.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  <em>This would suck</em>.</p>
 
 <p><strong>So don't instantiate a single FMDatabase object and use it across multiple threads.</strong></p>
 
-<p>Instead, use FMDatabaseQueue.  It's your friend and it's here to help.  Here's how to use it:</p>
+<p>Instead, use <code>FMDatabaseQueue</code>.  It's your friend and it's here to help.  Here's how to use it:</p>
 
 <p>First, make your queue.</p>
 
@@ -233,12 +233,50 @@ if ([s next]) {
 }];
 </code></pre>
 
-<p>FMDatabaseQueue will make a serialized GCD queue in the background and execute the blocks you pass to the GCD queue.  This means if you call your FMDatabaseQueue's methods from multiple threads at the same time GDC will execute them in the order they are received.  This means queries and updates won't step on each other's toes, and every one is happy.</p>
+<p><code>FMDatabaseQueue</code> will make a serialized GCD queue in the background and execute the blocks you pass to the GCD queue.  This means if you call your <code>FMDatabaseQueue</code>'s methods from multiple threads at the same time GDC will execute them in the order they are received.  This means queries and updates won't step on each other's toes, and every one is happy.</p>
 
 <h2>Making custom sqlite functions, based on blocks.</h2>
+<p>You can do this!  For an example, look for <code>makeFunctionNamed:</code> in main.m</p>
 
-<p>You can do this!  For an example, look for "makeFunctionNamed:" in main.m</p>
+<h2>Swift</h2>
+<p> You can use FMDB in Swift projects, too. To do this, you should: </p>
 
+<ol>
+<li>Copy the FMDB .m and .h files into your project. </li>
+<li>If prompted to create a "bridging header", you should do so. If not prompted and if you don't already have a bridging header, add one. For more information on bridging headers, see <a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-XID_76">Swift and Objective-C in the Same Project</a>. </li>
+<li>In your bridging header, add a line that says: <br />
+<pre><code>#import "FMDB.h" </code></pre></li>
+<li>Use the variations of <code>executeQuery</code> and <code>executeUpdate</code> with the sql and values parameters with try pattern, as shown below.
+</p></ol>
+
+<p>These renditions of <code>executeQuery</code> and <code>executeUpdate</code> both throw errors in true Swift 2 fashion. If you do the above, you can then write Swift code that uses <code>FMDatabase</code>. For example: </p>
+
+<pre><code>let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false) 
+let fileURL = documents.URLByAppendingPathComponent("test.sqlite")
+let database = FMDatabase(path: fileURL.path) 
+
+if !database.open() { 
+    print("Unable to open database")
+    return 
+} 
+
+do { 
+    try database.executeUpdate("create table test(x text, y text, z text)", values: nil)
+    try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"]) 
+    try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"]) 
+    
+    let rs = try database.executeQuery("select x, y, z from test", values: nil) 
+    while rs.next() {
+        let x = rs.stringForColumn("x") 
+        let y = rs.stringForColumn("y") 
+        let z = rs.stringForColumn("z") 
+        print("x = \(x); y = \(y); z = \(z)") 
+    } 
+} catch let error as NSError { 
+    print("failed: \(error.localizedDescription)") 
+} 
+
+database.close()</code></pre>
 <h2>History</h2>
 
 <p>The history and changes are availbe on its <a href="https://github.com/ccgus/fmdb">GitHub page</a> and are summarized in the "CHANGES_AND_TODO_LIST.txt" file.</p>

@@ -7,7 +7,7 @@
 
 	<link rel="stylesheet" href="../css/style.css">
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
-	<meta name="generator" content="appledoc 2.2.1 (build 1333)">
+	<meta name="generator" content="appledoc 2.2.1 (build 1334)">
 </head>
 <body class="appledoc">
 	<header>
@@ -106,6 +106,8 @@
 		
 		<option value="//api/name/executeQuery:">- executeQuery:</option>
 		
+		<option value="//api/name/executeQuery:values:error:">- executeQuery:values:error:</option>
+		
 		<option value="//api/name/executeQuery:withArgumentsInArray:">- executeQuery:withArgumentsInArray:</option>
 		
 		<option value="//api/name/executeQuery:withParameterDictionary:">- executeQuery:withParameterDictionary:</option>
@@ -117,6 +119,8 @@
 		<option value="//api/name/executeStatements:withResultBlock:">- executeStatements:withResultBlock:</option>
 		
 		<option value="//api/name/executeUpdate:">- executeUpdate:</option>
+		
+		<option value="//api/name/executeUpdate:values:error:">- executeUpdate:values:error:</option>
 		
 		<option value="//api/name/executeUpdate:withArgumentsInArray:">- executeUpdate:withArgumentsInArray:</option>
 		
@@ -758,7 +762,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 			
 			<div class="method-subsection brief-description">
-				<p>Opening a new database connection with flags</p>
+				<p>Opening a new database connection with flags and an optional virtual file system (VFS)</p>
 			</div>
 			
 		    
@@ -785,7 +789,9 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
 <p><code>SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE</code></p>
 
-<p>The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for <code>open</code> method.</p></td>
+<p>The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for <code>open</code> method.</p>
+
+<p>If vfs is given the value is passed to the vfs parameter of sqlite3_open_v2.</p></td>
 					</tr>
 				
 				</table>
@@ -804,7 +810,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Opening a new database connection with flags</p>
+				<p>Opening a new database connection with flags and an optional virtual file system (VFS)</p>
 			</div>
 			
 
@@ -1350,6 +1356,104 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 <p>This method executes a single SQL update statement (i.e. any SQL that does not return results, such as <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code>. This method employs <a href="http://sqlite.org/c3ref/prepare.html"><code>sqlite3_prepare_v2</code></a> and <a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a> binding any <code>?</code> placeholders in the SQL with the optional list of parameters.</p>
 
 <p>The optional values provided to this method should be objects (e.g. <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects), not fundamental data types (e.g. <code>int</code>, <code>long</code>, <code>NSInteger</code>, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/executeUpdate:values:error:">- executeUpdate:values:error:</a></p></code></li>
+					
+					<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+					
+					<li><code><p><a href="#//api/name/lastErrorCode">- lastErrorCode</a></p></code></li>
+					
+					<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/executeUpdate:values:error:" title="executeUpdate:values:error:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/executeUpdate:values:error:">&ndash;&nbsp;executeUpdate:values:error:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Execute single update statement</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdate:(NSString *)<em>sql</em> values:(NSArray *)<em>values</em> error:(NSError *__autoreleasing *)<em>error</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>sql</code></th>
+						<td><p>The SQL to be performed, with optional <code>?</code> placeholders.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>values</code></th>
+						<td><p>A <code>NSArray</code> of objects to be used when binding values to the <code>?</code> placeholders in the SQL statement.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>error</code></th>
+						<td><p>A <code>NSError</code> object to receive any error object (if any).</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>YES</code> upon success; <code>NO</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Execute single update statement</p>
+
+<p>This method executes a single SQL update statement (i.e. any SQL that does not return results, such as <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code>. This method employs <a href="http://sqlite.org/c3ref/prepare.html"><code>sqlite3_prepare_v2</code></a> and <a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a> binding any <code>?</code> placeholders in the SQL with the optional list of parameters.</p>
+
+<p>The optional values provided to this method should be objects (e.g. <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects), not fundamental data types (e.g. <code>int</code>, <code>long</code>, <code>NSInteger</code>, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p>
+
+<p>This is similar to <a href="#//api/name/executeUpdate:withArgumentsInArray:"><code>executeUpdate:withArgumentsInArray:</code></a>, except that this also accepts a pointer to a <code>NSError</code> pointer, so that errors can be returned.</p>
+
+<p>In Swift 2, this throws errors, as if it were defined as follows:</p>
+
+<p><code>func executeUpdate(sql: String!, values: [AnyObject]!) throws -&gt; Bool</code></p>
 			</div>
 			
 
@@ -2082,6 +2186,102 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 <p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
 
 <p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/executeQuery:values:error:">- executeQuery:values:error:</a></p></code></li>
+					
+					<li><code><p><a href="../Classes/FMResultSet.html">FMResultSet</a></p></code></li>
+					
+					<li><code><p><a href="../Classes/FMResultSet.html#//api/name/next"><code>FMResultSet next</code></a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/executeQuery:values:error:" title="executeQuery:values:error:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/executeQuery:values:error:">&ndash;&nbsp;executeQuery:values:error:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Execute select statement</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQuery:(NSString *)<em>sql</em> values:(NSArray *)<em>values</em> error:(NSError *__autoreleasing *)<em>error</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>sql</code></th>
+						<td><p>The SELECT statement to be performed, with optional <code>?</code> placeholders.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>values</code></th>
+						<td><p>A <code>NSArray</code> of objects to be used when binding values to the <code>?</code> placeholders in the SQL statement.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>error</code></th>
+						<td><p>A <code>NSError</code> object to receive any error object (if any).</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>A <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> for the result set upon success; <code>nil</code> upon failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Execute select statement</p>
+
+<p>Executing queries returns an <a href="../Classes/FMResultSet.html"><code>FMResultSet</code></a> object if successful, and <code>nil</code> upon failure.  Like executing updates, there is a variant that accepts an <code>NSError **</code> parameter.  Otherwise you should use the <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> and <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> methods to determine why a query failed.</p>
+
+<p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p>
+
+<p>This is similar to <a href="#//api/name/executeQuery:withArgumentsInArray:"><code>executeQuery:withArgumentsInArray:</code></a>, except that this also accepts a pointer to a <code>NSError</code> pointer, so that errors can be returned.</p>
+
+<p>In Swift 2, this throws errors, as if it were defined as follows:</p>
+
+<p><code>func executeQuery(sql: String!, values: [AnyObject]!) throws  -&gt; FMResultSet!</code></p><div class="note"><p><strong>Note:</strong> When called from Swift, only use the first two parameters, <code>sql</code> and <code>values</code>. This but throws the error.</p></div>
 			</div>
 			
 
@@ -4445,10 +4645,10 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-01-25</p>
+						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-10-29</p>
 						
 						
-						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>
 						
 					</div>
 				</footer>
