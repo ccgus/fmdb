@@ -691,6 +691,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = include/FMDB;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
@@ -716,6 +717,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = include/FMDB;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
@@ -807,6 +809,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = FMDB;
+				PUBLIC_HEADERS_FOLDER_PATH = include/FMDB;
 			};
 			name = Debug;
 		};
@@ -818,6 +821,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				PRODUCT_NAME = FMDB;
+				PUBLIC_HEADERS_FOLDER_PATH = include/FMDB;
 				ZERO_LINK = NO;
 			};
 			name = Release;
