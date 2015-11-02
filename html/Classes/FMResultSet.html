@@ -7,7 +7,7 @@
 
 	<link rel="stylesheet" href="../css/style.css">
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
-	<meta name="generator" content="appledoc 2.2.1 (build 1333)">
+	<meta name="generator" content="appledoc 2.2.1 (build 1334)">
 </head>
 <body class="appledoc">
 	<header>
@@ -56,6 +56,8 @@
 	
 	<optgroup label="Properties">
 		
+		<option value="//api/name/columnNameToIndexMap">columnNameToIndexMap</option>
+		
 		<option value="//api/name/query">query</option>
 		
 		<option value="//api/name/statement">statement</option>
@@ -93,8 +95,6 @@
 		<option value="//api/name/columnIsNull:">- columnIsNull:</option>
 		
 		<option value="//api/name/columnNameForIndex:">- columnNameForIndex:</option>
-		
-		<option value="//api/name/columnNameToIndexMap">- columnNameToIndexMap</option>
 		
 		<option value="//api/name/dataForColumn:">- dataForColumn:</option>
 		
@@ -176,7 +176,7 @@
 	<td>NSObject</td>
 </tr><tr>
 	<th>Declared in</th>
-	<td>FMResultSet.h<br />FMResultSet.m</td>
+	<td>FMResultSet.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -204,8 +204,154 @@
 						<a title="Tasks" name="tasks"></a>
 						
 
+						<a title="Properties" name="task_Properties"></a>
+						<h2 class="task-title">Properties</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/query" title="query"></a>
+	<h3 class="method-title"><code><a href="#//api/name/query">&nbsp;&nbsp;query</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Executed query</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSString *query</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Executed query</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/columnNameToIndexMap" title="columnNameToIndexMap"></a>
+	<h3 class="method-title"><code><a href="#//api/name/columnNameToIndexMap">&nbsp;&nbsp;columnNameToIndexMap</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p><code>NSMutableDictionary</code> mapping column names to numeric index</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (readonly) NSMutableDictionary *columnNameToIndexMap</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p><code>NSMutableDictionary</code> mapping column names to numeric index</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/statement" title="statement"></a>
+	<h3 class="method-title"><code><a href="#//api/name/statement">&nbsp;&nbsp;statement</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p><code>FMStatement</code> used by result set.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (atomic, retain) FMStatement *statement</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p><code>FMStatement</code> used by result set.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
 						
-						<h2 class="task-title">Other Methods</h2>
+
+						<a title="Creating and closing database" name="task_Creating and closing database"></a>
+						<h2 class="task-title">Creating and closing database</h2>
 
 						<div class="task-list">
 							<div class="section-method">
@@ -322,268 +468,15 @@
 			
 		</div>
 	</div>
-</div><div class="section-method">
-	<a name="//api/name/columnCount" title="columnCount"></a>
-	<h3 class="method-title"><code><a href="#//api/name/columnCount">&ndash;&nbsp;columnCount</a></code>
-</h3>
+</div>
+						</div>
+						
 
-	<div class="method-info">
-		<div class="pointy-thing"></div>
+						<a title="Iterating through the result set" name="task_Iterating through the result set"></a>
+						<h2 class="task-title">Iterating through the result set</h2>
 
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>How many columns in result set</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (int)columnCount</code></div>
-
-		    
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>Integer value of the number of columns.</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>How many columns in result set</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/columnNameToIndexMap" title="columnNameToIndexMap"></a>
-	<h3 class="method-title"><code><a href="#//api/name/columnNameToIndexMap">&ndash;&nbsp;columnNameToIndexMap</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p><code>NSMutableDictionary</code> mapping column names to numeric index</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (NSMutableDictionary *)columnNameToIndexMap</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p><code>NSMutableDictionary</code> mapping column names to numeric index</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/kvcMagic:" title="kvcMagic:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/kvcMagic:">&ndash;&nbsp;kvcMagic:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Performs <code>setValue</code> to yield support for key value observing.</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (void)kvcMagic:(id)<em>object</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>object</code></th>
-						<td><p>The object for which the values will be set. This is the key-value-coding compliant object that you might, for example, observe.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Performs <code>setValue</code> to yield support for key value observing.</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/resultDict" title="resultDict"></a>
-	<h3 class="method-title"><code><a href="#//api/name/resultDict">&ndash;&nbsp;resultDict</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Returns a dictionary of the row results</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDict</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Returns a dictionary of the row results</p><div class="warning"><p><strong>Warning:</strong> <strong>Deprecated</strong>: Please use <a href="#//api/name/resultDictionary"><code>resultDictionary</code></a> instead.  Also, beware that <a href="#//api/name/resultDictionary"><code>resultDictionary</code></a> is case sensitive!</p></div>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection see-also-section">
-				<h4 class="method-subtitle">See Also</h4>
-				<ul>
-					
-					<li><code><p><a href="#//api/name/resultDictionary">- resultDictionary</a></p></code></li>
-					
-				</ul>
-			</div>
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/resultDictionary" title="resultDictionary"></a>
-	<h3 class="method-title"><code><a href="#//api/name/resultDictionary">&ndash;&nbsp;resultDictionary</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Returns a dictionary of the row results mapped to case sensitive keys of the column names.</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDictionary</code></div>
-
-		    
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSDictionary</code> of the row results.</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Returns a dictionary of the row results mapped to case sensitive keys of the column names.</p><div class="warning"><p><strong>Warning:</strong> The keys to the dictionary are case sensitive of the column names.</p></div>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
+						<div class="task-list">
+							<div class="section-method">
 	<a name="//api/name/next" title="next"></a>
 	<h3 class="method-title"><code><a href="#//api/name/next">&ndash;&nbsp;next</a></code>
 </h3>
@@ -779,6 +672,65 @@
 			
 		</div>
 	</div>
+</div>
+						</div>
+						
+
+						<a title="Retrieving information from result set" name="task_Retrieving information from result set"></a>
+						<h2 class="task-title">Retrieving information from result set</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/columnCount" title="columnCount"></a>
+	<h3 class="method-title"><code><a href="#//api/name/columnCount">&ndash;&nbsp;columnCount</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>How many columns in result set</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (int)columnCount</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Integer value of the number of columns.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>How many columns in result set</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
 </div><div class="section-method">
 	<a name="//api/name/columnIndexForName:" title="columnIndexForName:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/columnIndexForName:">&ndash;&nbsp;columnIndexForName:</a></code>
@@ -826,6 +778,69 @@
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
 				<p>Column index for column name</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/columnNameForIndex:" title="columnNameForIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/columnNameForIndex:">&ndash;&nbsp;columnNameForIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Column name for column index</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSString *)columnNameForIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>columnName <code>NSString</code> value of the name of the column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Column name for column index</p>
 			</div>
 			
 
@@ -1599,8 +1614,8 @@
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/stringForColumnIndex:" title="stringForColumnIndex:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/stringForColumnIndex:">&ndash;&nbsp;stringForColumnIndex:</a></code>
+	<a name="//api/name/stringForColumn:" title="stringForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/stringForColumn:">&ndash;&nbsp;stringForColumn:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -1615,7 +1630,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumn:(NSString *)<em>columnName</em></code></div>
 
 		    
 			
@@ -1624,8 +1639,8 @@
 				<table class="argument-def parameter-def">
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>columnIdx</code></th>
-						<td><p>Zero-based index for column.</p></td>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
 					</tr>
 				
 				</table>
@@ -1662,8 +1677,8 @@
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/stringForColumn:" title="stringForColumn:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/stringForColumn:">&ndash;&nbsp;stringForColumn:</a></code>
+	<a name="//api/name/stringForColumnIndex:" title="stringForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/stringForColumnIndex:">&ndash;&nbsp;stringForColumnIndex:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -1678,7 +1693,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumn:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumnIndex:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -1687,8 +1702,8 @@
 				<table class="argument-def parameter-def">
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>columnName</code></th>
-						<td><p><code>NSString</code> value of the name of the column.</p></td>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
 					</tr>
 				
 				</table>
@@ -1979,6 +1994,432 @@
 		</div>
 	</div>
 </div><div class="section-method">
+	<a name="//api/name/UTF8StringForColumnName:" title="UTF8StringForColumnName:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/UTF8StringForColumnName:">&ndash;&nbsp;UTF8StringForColumnName:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnName:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>(const unsigned char *)</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/UTF8StringForColumnIndex:" title="UTF8StringForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/UTF8StringForColumnIndex:">&ndash;&nbsp;UTF8StringForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>(const unsigned char *)</code> value of the result set&rsquo;s column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/objectForColumnName:" title="objectForColumnName:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/objectForColumnName:">&ndash;&nbsp;objectForColumnName:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set object for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)objectForColumnName:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set object for column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/objectForKeyedSubscript:">- objectForKeyedSubscript:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/objectForColumnIndex:" title="objectForColumnIndex:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/objectForColumnIndex:">&ndash;&nbsp;objectForColumnIndex:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set object for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)objectForColumnIndex:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set object for column.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/objectAtIndexedSubscript:">- objectAtIndexedSubscript:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/objectForKeyedSubscript:" title="objectForKeyedSubscript:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/objectForKeyedSubscript:">&ndash;&nbsp;objectForKeyedSubscript:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set object for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)objectForKeyedSubscript:(NSString *)<em>columnName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnName</code></th>
+						<td><p><code>NSString</code> value of the name of the column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set object for column.</p>
+
+<p>This method allows the use of the &ldquo;boxed&rdquo; syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:</p>
+
+<pre><code>id result = rs[@"employee_name"];
+</code></pre>
+
+<p>This simplified syntax is equivalent to calling:</p>
+
+<pre><code>id result = [rs objectForKeyedSubscript:@"employee_name"];
+</code></pre>
+
+<p>which is, it turns out, equivalent to calling:</p>
+
+<pre><code>id result = [rs objectForColumnName:@"employee_name"];
+</code></pre>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/objectAtIndexedSubscript:" title="objectAtIndexedSubscript:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/objectAtIndexedSubscript:">&ndash;&nbsp;objectAtIndexedSubscript:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Result set object for column.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)objectAtIndexedSubscript:(int)<em>columnIdx</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>columnIdx</code></th>
+						<td><p>Zero-based index for column.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Result set object for column.</p>
+
+<p>This method allows the use of the &ldquo;boxed&rdquo; syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:</p>
+
+<pre><code>id result = rs[0];
+</code></pre>
+
+<p>This simplified syntax is equivalent to calling:</p>
+
+<pre><code>id result = [rs objectForKeyedSubscript:0];
+</code></pre>
+
+<p>which is, it turns out, equivalent to calling:</p>
+
+<pre><code>id result = [rs objectForColumnName:0];
+</code></pre>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMResultSet.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/dataNoCopyForColumn:" title="dataNoCopyForColumn:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/dataNoCopyForColumn:">&ndash;&nbsp;dataNoCopyForColumn:</a></code>
 </h3>
@@ -2235,8 +2676,8 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/UTF8StringForColumnIndex:" title="UTF8StringForColumnIndex:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/UTF8StringForColumnIndex:">&ndash;&nbsp;UTF8StringForColumnIndex:</a></code>
+	<a name="//api/name/resultDictionary" title="resultDictionary"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultDictionary">&ndash;&nbsp;resultDictionary</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2246,32 +2687,20 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 			
 			<div class="method-subsection brief-description">
-				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+				<p>Returns a dictionary of the row results mapped to case sensitive keys of the column names.</p>
 			</div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDictionary</code></div>
 
 		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>columnIdx</code></th>
-						<td><p>Zero-based index for column.</p></td>
-					</tr>
-				
-				</table>
-			</div>
 			
 
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>(const unsigned char *)</code> value of the result set&rsquo;s column.</p>
+				<p><code>NSDictionary</code> of the row results.</p>
 			</div>
 			
 
@@ -2280,7 +2709,7 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+				<p>Returns a dictionary of the row results mapped to case sensitive keys of the column names.</p><div class="warning"><p><strong>Warning:</strong> The keys to the dictionary are case sensitive of the column names.</p></div>
 			</div>
 			
 
@@ -2298,8 +2727,8 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/UTF8StringForColumnName:" title="UTF8StringForColumnName:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/UTF8StringForColumnName:">&ndash;&nbsp;UTF8StringForColumnName:</a></code>
+	<a name="//api/name/resultDict" title="resultDict"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultDict">&ndash;&nbsp;resultDict</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2309,33 +2738,16 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 			
 			<div class="method-subsection brief-description">
-				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
+				<p>Returns a dictionary of the row results</p>
 			</div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnName:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDict</code></div>
 
 		    
 			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>columnName</code></th>
-						<td><p><code>NSString</code> value of the name of the column.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>(const unsigned char *)</code> value of the result set&rsquo;s column.</p>
-			</div>
 			
 
 			
@@ -2343,70 +2755,7 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Result set <code>(const unsigned char *)</code> value for column.</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/objectForColumnIndex:" title="objectForColumnIndex:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/objectForColumnIndex:">&ndash;&nbsp;objectForColumnIndex:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Result set object for column.</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (id)objectForColumnIndex:(int)<em>columnIdx</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>columnIdx</code></th>
-						<td><p>Zero-based index for column.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Result set object for column.</p>
+				<p>Returns a dictionary of the row results</p><div class="warning"><p><strong>Warning:</strong> <strong>Deprecated</strong>: Please use <a href="#//api/name/resultDictionary"><code>resultDictionary</code></a> instead.  Also, beware that <a href="#//api/name/resultDictionary"><code>resultDictionary</code></a> is case sensitive!</p></div>
 			</div>
 			
 
@@ -2417,301 +2766,10 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 				<h4 class="method-subtitle">See Also</h4>
 				<ul>
 					
-					<li><code><p><a href="#//api/name/objectAtIndexedSubscript:">- objectAtIndexedSubscript:</a></p></code></li>
+					<li><code><p><a href="#//api/name/resultDictionary">- resultDictionary</a></p></code></li>
 					
 				</ul>
 			</div>
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/objectForColumnName:" title="objectForColumnName:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/objectForColumnName:">&ndash;&nbsp;objectForColumnName:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Result set object for column.</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (id)objectForColumnName:(NSString *)<em>columnName</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>columnName</code></th>
-						<td><p><code>NSString</code> value of the name of the column.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Result set object for column.</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection see-also-section">
-				<h4 class="method-subtitle">See Also</h4>
-				<ul>
-					
-					<li><code><p><a href="#//api/name/objectForKeyedSubscript:">- objectForKeyedSubscript:</a></p></code></li>
-					
-				</ul>
-			</div>
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/columnNameForIndex:" title="columnNameForIndex:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/columnNameForIndex:">&ndash;&nbsp;columnNameForIndex:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Column name for column index</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (NSString *)columnNameForIndex:(int)<em>columnIdx</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>columnIdx</code></th>
-						<td><p>Zero-based index for column.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>columnName <code>NSString</code> value of the name of the column.</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Column name for column index</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/objectAtIndexedSubscript:" title="objectAtIndexedSubscript:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/objectAtIndexedSubscript:">&ndash;&nbsp;objectAtIndexedSubscript:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Result set object for column.</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (id)objectAtIndexedSubscript:(int)<em>columnIdx</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>columnIdx</code></th>
-						<td><p>Zero-based index for column.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Result set object for column.</p>
-
-<p>This method allows the use of the &ldquo;boxed&rdquo; syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:</p>
-
-<pre><code>id result = rs[0];
-</code></pre>
-
-<p>This simplified syntax is equivalent to calling:</p>
-
-<pre><code>id result = [rs objectForKeyedSubscript:0];
-</code></pre>
-
-<p>which is, it turns out, equivalent to calling:</p>
-
-<pre><code>id result = [rs objectForColumnName:0];
-</code></pre>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/objectForKeyedSubscript:" title="objectForKeyedSubscript:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/objectForKeyedSubscript:">&ndash;&nbsp;objectForKeyedSubscript:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Result set object for column.</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (id)objectForKeyedSubscript:(NSString *)<em>columnName</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>columnName</code></th>
-						<td><p><code>NSString</code> value of the name of the column.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>Either <code>NSNumber</code>, <code>NSString</code>, <code>NSData</code>, or <code>NSNull</code>. If the column was <code>NULL</code>, this returns <code>[NSNull null]</code> object.</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Result set object for column.</p>
-
-<p>This method allows the use of the &ldquo;boxed&rdquo; syntax supported in Modern Objective-C. For example, by defining this method, the following syntax is now supported:</p>
-
-<pre><code>id result = rs[@"employee_name"];
-</code></pre>
-
-<p>This simplified syntax is equivalent to calling:</p>
-
-<pre><code>id result = [rs objectForKeyedSubscript:@"employee_name"];
-</code></pre>
-
-<p>which is, it turns out, equivalent to calling:</p>
-
-<pre><code>id result = [rs objectForColumnName:@"employee_name"];
-</code></pre>
-			</div>
-			
-
-			
-
 			
 
 			
@@ -2727,13 +2785,13 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 						</div>
 						
 
-						<a title="Properties" name="task_Properties"></a>
-						<h2 class="task-title">Properties</h2>
+						<a title="Key value coding magic" name="task_Key value coding magic"></a>
+						<h2 class="task-title">Key value coding magic</h2>
 
 						<div class="task-list">
 							<div class="section-method">
-	<a name="//api/name/query" title="query"></a>
-	<h3 class="method-title"><code><a href="#//api/name/query">&nbsp;&nbsp;query</a></code>
+	<a name="//api/name/kvcMagic:" title="kvcMagic:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/kvcMagic:">&ndash;&nbsp;kvcMagic:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2743,14 +2801,26 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 			
 			<div class="method-subsection brief-description">
-				<p>Executed query</p>
+				<p>Performs <code>setValue</code> to yield support for key value observing.</p>
 			</div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSString *query</code></div>
+			<div class="method-subsection method-declaration"><code>- (void)kvcMagic:(id)<em>object</em></code></div>
 
 		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>object</code></th>
+						<td><p>The object for which the values will be set. This is the key-value-coding compliant object that you might, for example, observe.</p></td>
+					</tr>
+				
+				</table>
+			</div>
 			
 
 			
@@ -2760,53 +2830,7 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Executed query</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMResultSet.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/statement" title="statement"></a>
-	<h3 class="method-title"><code><a href="#//api/name/statement">&nbsp;&nbsp;statement</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p><code>FMStatement</code> used by result set.</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>@property (atomic, retain) FMStatement *statement</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p><code>FMStatement</code> used by result set.</p>
+				<p>Performs <code>setValue</code> to yield support for key value observing.</p>
 			</div>
 			
 
@@ -2836,10 +2860,10 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-01-25</p>
+						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-10-29</p>
 						
 						
-						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>
 						
 					</div>
 				</footer>

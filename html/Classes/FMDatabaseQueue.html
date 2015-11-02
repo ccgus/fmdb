@@ -7,7 +7,7 @@
 
 	<link rel="stylesheet" href="../css/style.css">
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
-	<meta name="generator" content="appledoc 2.2.1 (build 1333)">
+	<meta name="generator" content="appledoc 2.2.1 (build 1334)">
 </head>
 <body class="appledoc">
 	<header>
@@ -92,6 +92,8 @@
 		
 		<option value="//api/name/initWithPath:flags:">- initWithPath:flags:</option>
 		
+		<option value="//api/name/initWithPath:flags:vfs:">- initWithPath:flags:vfs:</option>
+		
 	</optgroup>
 	
 	
@@ -116,7 +118,7 @@
 	<td>NSObject</td>
 </tr><tr>
 	<th>Declared in</th>
-	<td>FMDatabaseQueue.h<br />FMDatabaseQueue.m</td>
+	<td>FMDatabaseQueue.h</td>
 </tr>
 						</tbody></table></div>
 					
@@ -187,6 +189,106 @@
 
 						
 						<h2 class="task-title">Other Methods</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/path" title="path"></a>
+	<h3 class="method-title"><code><a href="#//api/name/path">&nbsp;&nbsp;path</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Path of database</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSString *path</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Path of database</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabaseQueue.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/openFlags" title="openFlags"></a>
+	<h3 class="method-title"><code><a href="#//api/name/openFlags">&nbsp;&nbsp;openFlags</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Open flags</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (atomic, readonly) int openFlags</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Open flags</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabaseQueue.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+
+						<a title="Initialization, opening, and closing of queue" name="task_Initialization, opening, and closing of queue"></a>
+						<h2 class="task-title">Initialization, opening, and closing of queue</h2>
 
 						<div class="task-list">
 							<div class="section-method">
@@ -321,8 +423,8 @@
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/databaseClass" title="databaseClass"></a>
-	<h3 class="method-title"><code><a href="#//api/name/databaseClass">+&nbsp;databaseClass</a></code>
+	<a name="//api/name/initWithPath:" title="initWithPath:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithPath:">&ndash;&nbsp;initWithPath:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -332,20 +434,32 @@
 			
 			
 			<div class="method-subsection brief-description">
-				<p>Returns the Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
+				<p>Create queue using path.</p>
 			</div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>+ (Class)databaseClass</code></div>
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *)<em>aPath</em></code></div>
 
 		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>aPath</code></th>
+						<td><p>The file path of the database.</p></td>
+					</tr>
+				
+				</table>
+			</div>
 			
 
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>The Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
+				<p>The <code>FMDatabaseQueue</code> object. <code>nil</code> on error.</p>
 			</div>
 			
 
@@ -354,9 +468,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Returns the Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
-
-<p>Subclasses can override this method to return specified Class of &lsquo;FMDatabase&rsquo; subclass.</p>
+				<p>Create queue using path.</p>
 			</div>
 			
 
@@ -442,8 +554,8 @@
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/initWithPath:" title="initWithPath:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/initWithPath:">&ndash;&nbsp;initWithPath:</a></code>
+	<a name="//api/name/initWithPath:flags:vfs:" title="initWithPath:flags:vfs:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithPath:flags:vfs:">&ndash;&nbsp;initWithPath:flags:vfs:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -453,12 +565,12 @@
 			
 			
 			<div class="method-subsection brief-description">
-				<p>Create queue using path.</p>
+				<p>Create queue using path and specified flags.</p>
 			</div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *)<em>aPath</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *)<em>aPath</em> flags:(int)<em>openFlags</em> vfs:(NSString *)<em>vfsName</em></code></div>
 
 		    
 			
@@ -469,6 +581,16 @@
 					<tr>
 						<th scope="row" class="argument-name"><code>aPath</code></th>
 						<td><p>The file path of the database.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>openFlags</code></th>
+						<td><p>Flags passed to the openWithFlags method of the database</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>vfsName</code></th>
+						<td><p>The name of a custom virtual file system</p></td>
 					</tr>
 				
 				</table>
@@ -487,7 +609,60 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Create queue using path.</p>
+				<p>Create queue using path and specified flags.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabaseQueue.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/databaseClass" title="databaseClass"></a>
+	<h3 class="method-title"><code><a href="#//api/name/databaseClass">+&nbsp;databaseClass</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Returns the Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (Class)databaseClass</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Returns the Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
+
+<p>Subclasses can override this method to return specified Class of &lsquo;FMDatabase&rsquo; subclass.</p>
 			</div>
 			
 
@@ -550,7 +725,15 @@
 			
 		</div>
 	</div>
-</div><div class="section-method">
+</div>
+						</div>
+						
+
+						<a title="Dispatching database operations to queue" name="task_Dispatching database operations to queue"></a>
+						<h2 class="task-title">Dispatching database operations to queue</h2>
+
+						<div class="task-list">
+							<div class="section-method">
 	<a name="//api/name/inDatabase:" title="inDatabase:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/inDatabase:">&ndash;&nbsp;inDatabase:</a></code>
 </h3>
@@ -609,64 +792,6 @@
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/inDeferredTransaction:" title="inDeferredTransaction:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/inDeferredTransaction:">&ndash;&nbsp;inDeferredTransaction:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Synchronously perform database operations on queue, using deferred transactions.</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (void)inDeferredTransaction:(void ( ^ ) ( FMDatabase *db , BOOL *rollback ))<em>block</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>block</code></th>
-						<td><p>The code to be run on the queue of <code>FMDatabaseQueue</code></p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Synchronously perform database operations on queue, using deferred transactions.</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMDatabaseQueue.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
 	<a name="//api/name/inTransaction:" title="inTransaction:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/inTransaction:">&ndash;&nbsp;inTransaction:</a></code>
 </h3>
@@ -708,6 +833,64 @@
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
 				<p>Synchronously perform database operations on queue, using transactions.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabaseQueue.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/inDeferredTransaction:" title="inDeferredTransaction:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/inDeferredTransaction:">&ndash;&nbsp;inDeferredTransaction:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Synchronously perform database operations on queue, using deferred transactions.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)inDeferredTransaction:(void ( ^ ) ( FMDatabase *db , BOOL *rollback ))<em>block</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>block</code></th>
+						<td><p>The code to be run on the queue of <code>FMDatabaseQueue</code></p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Synchronously perform database operations on queue, using deferred transactions.</p>
 			</div>
 			
 
@@ -785,106 +968,6 @@
 </div>
 						</div>
 						
-
-						
-						<h2 class="task-title">Other Methods</h2>
-
-						<div class="task-list">
-							<div class="section-method">
-	<a name="//api/name/path" title="path"></a>
-	<h3 class="method-title"><code><a href="#//api/name/path">&nbsp;&nbsp;path</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Path of database</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSString *path</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Path of database</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMDatabaseQueue.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/openFlags" title="openFlags"></a>
-	<h3 class="method-title"><code><a href="#//api/name/openFlags">&nbsp;&nbsp;openFlags</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Open flags</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>@property (atomic, readonly) int openFlags</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Open flags</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMDatabaseQueue.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div>
-						</div>
-						
 					</div>
 					
 					
@@ -895,10 +978,10 @@
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-01-25</p>
+						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-10-29</p>
 						
 						
-						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>
 						
 					</div>
 				</footer>
