@@ -919,6 +919,26 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 #endif
 
 ///----------------------------
+/// @name Online Backup
+///----------------------------
+
+/** Perform a live backup of the database to a new file
+ 
+ @param path Path of the file to write the backup to
+ @param key The encryption key to use for the target database.
+ @param block Block to call with progress updates
+ 
+ @return@return `YES` if successful, `NO` on error.
+ 
+ @see [Using the SQLite Online Backup API()](http://sqlite.org/backup.html)
+ 
+ */
+
+- (BOOL)backupTo:(NSString*)aPath
+		 withKey:(NSString*)key
+andProgressBlock:(void (^)(int pagesRemaining, int pageCount))progressBlock;
+ 
+///----------------------------
 /// @name SQLite library status
 ///----------------------------
 

@@ -15,6 +15,7 @@
 		621721B61892BFE30006691F /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9E4EB813B31188005F9210 /* FMDatabasePool.m */; };
 		6290CBB7188FE836009790F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6290CBB6188FE836009790F8 /* Foundation.framework */; };
 		67CB1E3019AD27D000A3CA7F /* FMDatabaseFTS3Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67CB1E2F19AD27D000A3CA7F /* FMDatabaseFTS3Tests.m */; };
+		8081C06C1BB319E200CA7C73 /* FMDatabaseOnlineBackupTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8081C06B1BB319E200CA7C73 /* FMDatabaseOnlineBackupTests.m */; };
 		8314AF3318CD73D600EC0E25 /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 8314AF3218CD73D600EC0E25 /* FMDB.h */; };
 		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
 		8DD76F9F0486AA7600D96B5E /* fmdb.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859EA3029092ED04C91782 /* fmdb.1 */; };
@@ -95,6 +96,7 @@
 		6290CBB6188FE836009790F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6290CBC6188FE837009790F8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		67CB1E2F19AD27D000A3CA7F /* FMDatabaseFTS3Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseFTS3Tests.m; sourceTree = "<group>"; };
+		8081C06B1BB319E200CA7C73 /* FMDatabaseOnlineBackupTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseOnlineBackupTests.m; sourceTree = "<group>"; };
 		8314AF3218CD73D600EC0E25 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
 		831DE6FD175B7C9C001F7317 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		832F502419EC4C6B0087DCBF /* FMDatabaseVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseVariadic.swift"; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 				BF940F5A18417D490001E077 /* FMDBTempDBTests.h */,
 				BF940F5B18417D490001E077 /* FMDBTempDBTests.m */,
 				3354379B19E71096005661F3 /* FMResultSetTests.m */,
+				8081C06B1BB319E200CA7C73 /* FMDatabaseOnlineBackupTests.m */,
 				BF5D041B18416BB2008C5AA9 /* Supporting Files */,
 			);
 			path = Tests;
@@ -512,6 +515,7 @@
 			files = (
 				BFC152B118417F0D00605DF7 /* FMDatabaseAdditions.m in Sources */,
 				CCA66A3019C0CB1900EFDAC1 /* FMTokenizers.m in Sources */,
+				8081C06C1BB319E200CA7C73 /* FMDatabaseOnlineBackupTests.m in Sources */,
 				BF940F5C18417D490001E077 /* FMDBTempDBTests.m in Sources */,
 				BF940F5E18417DEA0001E077 /* FMDatabaseAdditionsTests.m in Sources */,
 				3354379C19E71096005661F3 /* FMResultSetTests.m in Sources */,
