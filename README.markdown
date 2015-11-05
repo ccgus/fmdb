@@ -17,7 +17,7 @@ Do you have an awesome idea that deserves to be in FMDB?  You might consider pin
 [![Dependency Status](https://www.versioneye.com/objective-c/fmdb/2.3/badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/2.3)
 [![Reference Status](https://www.versioneye.com/objective-c/fmdb/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/references)
 
-FMDB can be installed using [CocoaPods](http://cocoapods.org/).
+FMDB can be installed using [CocoaPods](https://cocoapods.org/).
 
 ```
 pod 'FMDB'
@@ -27,7 +27,7 @@ pod 'FMDB'
 # pod 'FMDB/SQLCipher'   # FMDB with SQLCipher
 ```
 
-**If using FMDB with [SQLCipher](http://sqlcipher.net/) you must use the FMDB/SQLCipher subspec. The FMDB/SQLCipher subspec declares SQLCipher as a dependency, allowing FMDB to be compiled with the `-DSQLITE_HAS_CODEC` flag.**
+**If using FMDB with [SQLCipher](https://www.zetetic.net/sqlcipher/) you must use the FMDB/SQLCipher subspec. The FMDB/SQLCipher subspec declares SQLCipher as a dependency, allowing FMDB to be compiled with the `-DSQLITE_HAS_CODEC` flag.**
 
 ## FMDB Class Reference:
 http://ccgus.github.io/fmdb/html/index.html
