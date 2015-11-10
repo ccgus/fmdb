@@ -724,7 +724,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return `YES` if success, `NO` on error.
 
- @see http://www.sqlite-encrypt.com/develop-guide.htm
+ @see https://www.zetetic.net/sqlcipher/
  
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
@@ -737,7 +737,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return `YES` if success, `NO` on error.
 
- @see http://www.sqlite-encrypt.com/develop-guide.htm
+ @see https://www.zetetic.net/sqlcipher/
 
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
@@ -750,7 +750,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return `YES` if success, `NO` on error.
 
- @see http://www.sqlite-encrypt.com/develop-guide.htm
+ @see https://www.zetetic.net/sqlcipher/
  
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
@@ -763,7 +763,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return `YES` if success, `NO` on error.
 
- @see http://www.sqlite-encrypt.com/develop-guide.htm
+ @see https://www.zetetic.net/sqlcipher/
 
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
