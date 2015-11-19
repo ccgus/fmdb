@@ -33,7 +33,7 @@ pod 'FMDB'
 http://ccgus.github.io/fmdb/html/index.html
 
 ## Automatic Reference Counting (ARC) or Manual Memory Management?
-You can use either style in your Cocoa project.  FMDB Will figure out which you are using at compile time and do the right thing.
+You can use either style in your Cocoa project.  FMDB will figure out which you are using at compile time and do the right thing.
 
 ## Usage
 There are three main classes in FMDB:
