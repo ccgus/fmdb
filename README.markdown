@@ -267,9 +267,9 @@ You can use FMDB in Swift projects too.
 
 To do this, you must:
 
-1. Copy the FMDB `.m` and `.h` files into your project.
+1. Copy the FMDB.h file into your project and ANY .m file into your project.  The latter triggers a promprt for the necessary step of creating a bridging file.  It can be removed when it has done that.
 
-2. If prompted to create a "bridging header", you should do so. If not prompted and if you don't already have a bridging header, add one.
+2. Ccreate a "bridging header".  Creating one manually may not work as a required rule is not automatically generated.
 
  For more information on bridging headers, see [Swift and Objective-C in the Same Project](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-XID_76).
 
