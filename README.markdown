@@ -269,7 +269,7 @@ To do this, you must:
 
 1. Copy the relevant `.m` and `.h` files from the FMDB `src` folder into your project.
 
- You can copy all of them (which is easiest), or only the ones you need. Likely you will need [`FMDatabase`](http://ccgus.github.io/fmdb/html/Classes/FMDatabase.html) and [`FMResultSet`](http://ccgus.github.io/fmdb/html/Classes/FMResultSet.html) at a minimum. [`FMDatabaseAdditions`](http://ccgus.github.io/fmdb/html/Categories/FMDatabase+FMDatabaseAdditions.html) provides some very useful convenience methods, so you will likely want that, too. If you are doing multithreaded access to a database, [`FMDatabaseQueue`](http://ccgus.github.io/fmdb/html/Classes/FMDatabaseQueue.html) is quite useful, too.
+ You can copy all of them (which is easiest), or only the ones you need. Likely you will need [`FMDatabase`](http://ccgus.github.io/fmdb/html/Classes/FMDatabase.html) and [`FMResultSet`](http://ccgus.github.io/fmdb/html/Classes/FMResultSet.html) at a minimum. [`FMDatabaseAdditions`](http://ccgus.github.io/fmdb/html/Categories/FMDatabase+FMDatabaseAdditions.html) provides some very useful convenience methods, so you will likely want that, too. If you are doing multithreaded access to a database, [`FMDatabaseQueue`](http://ccgus.github.io/fmdb/html/Classes/FMDatabaseQueue.html) is quite useful, too. If you choose to not copy all of the files from the `src` directory, though, you may want to update `FMDB.h` to only reference the files that you included in your project.
 
  Note, if you're copying all of the files to your project, you may want to drag the individual files into your project, not the folder, itself, because if you drag the folder, you won't be prompted to add the bridging header (see next point).
 
