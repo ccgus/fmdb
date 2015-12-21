@@ -169,7 +169,7 @@ NSString *name = @"Liam O'Flaherty (\"the famous Irish author\")";
 NSDate *date = [NSDate date];
 NSString *comment = nil;
 
-BOOL success = [db executeUpdate:@"INSERT INTO myTable (identifier, name, date, comment) VALUES (?, ?, ?, ?)", @(identifier), name, date, comment ?: [NSNull null]];
+BOOL success = [db executeUpdate:@"INSERT INTO authors (identifier, name, date, comment) VALUES (?, ?, ?, ?)", @(identifier), name, date, comment ?: [NSNull null]];
 if (!success) {
     NSLog(@"error = %@", [db lastErrorMessage]);
 }
