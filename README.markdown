@@ -199,13 +199,13 @@ do {
 Alternatively, you may use named parameters syntax:
 
 ```sql
-INSERT INTO myTable (identifier, name, date, comment) VALUES (:identifier, :name, :date, :comment)
+INSERT INTO authors (identifier, name, date, comment) VALUES (:identifier, :name, :date, :comment)
 ```
 
 The parameters *must* start with a colon. SQLite itself supports other characters, but internally the dictionary keys are prefixed with a colon, do **not** include the colon in your dictionary keys.
 
 ```objc
-NSDictionary *arguments = @{@"identifier": @(identifier), @"name": name, @"date": date, comment: [NSNull null]};
+NSDictionary *arguments = @{@"identifier": @(identifier), @"name": name, @"date": date, @"comment": comment ?: [NSNull null]};
 BOOL success = [db executeUpdate:@"INSERT INTO authors (identifier, name, date, comment) VALUES (:identifier, :name, :date, :comment)" withParameterDictionary:arguments];
 if (!success) {
     NSLog(@"error = %@", [db lastErrorMessage]);
