@@ -156,55 +156,63 @@ success = [self.db executeStatements:sql withResultBlock:^int(NSDictionary *dict
 When providing a SQL statement to FMDB, you should not attempt to "sanitize" any values before insertion.  Instead, you should use the standard SQLite binding syntax:
 
 ```sql
-INSERT INTO myTable VALUES (?, ?, ?)
+INSERT INTO myTable VALUES (?, ?, ?, ?)
 ```
 
 The `?` character is recognized by SQLite as a placeholder for a value to be inserted.  The execution methods all accept a variable number of arguments (or a representation of those arguments, such as an `NSArray`, `NSDictionary`, or a `va_list`), which are properly escaped for you.
 
+And, to use that SQL with the `?` placeholders from Objective-C:
+
+```objc
+NSInteger identifier = 42;
+NSString *name = @"Liam O'Flaherty (\"the famous Irish author\")";
+NSDate *date = [NSDate date];
+NSString *comment = nil;
+
+BOOL success = [db executeUpdate:@"INSERT INTO authors (identifier, name, date, comment) VALUES (?, ?, ?, ?)", @(identifier), name, date, comment ?: [NSNull null]];
+if (!success) {
+    NSLog(@"error = %@", [db lastErrorMessage]);
+}
+```
+
+> **Note:** Fundamental data types, like the `NSInteger` variable `identifier`, should be as a `NSNumber` objects, achieved by using the `@` syntax, shown above. Or you can use the `[NSNumber numberWithInt:identifier]` syntax, too.
+>
+> Likewise, SQL `NULL` values should be inserted as `[NSNull null]`. For example, in the case of `comment` which might be `nil` (and is in this example), you can use the `comment ?: [NSNull null]` syntax, which will insert the string if `comment` is not `nil`, but will insert `[NSNull null]` if it is `nil`.
+
+In Swift, you would use `executeUpdate(values:)`, which not only is a concise Swift syntax, but also `throws` errors for proper Swift 2 error handling:
+
+```swift
+do {
+    let identifier = 42
+    let name = "Liam O'Flaherty (\"the famous Irish author\")"
+    let date = NSDate()
+    let comment: String? = nil
+
+    try db.executeUpdate("INSERT INTO authors (identifier, name, date, comment) VALUES (?, ?, ?, ?)", values: [identifier, name, date, comment ?? NSNull()])
+} catch {
+    print("error = \(error)")
+}
+```
+
+> **Note:** In Swift, you don't have to wrap fundamental numeric types like you do in Objective-C. But if you are going to insert an optional string, you would probably use the `comment ?? NSNull()` syntax (i.e., if it is `nil`, use `NSNull`, otherwise use the string).
+
 Alternatively, you may use named parameters syntax:
 
 ```sql
-INSERT INTO myTable VALUES (:id, :name, :value)
+INSERT INTO authors (identifier, name, date, comment) VALUES (:identifier, :name, :date, :comment)
 ```
 
-The parameters *must* start with a colon. SQLite itself supports other characters, but internally the Dictionary keys are prefixed with a colon, do **not** include the colon in your dictionary keys.
+The parameters *must* start with a colon. SQLite itself supports other characters, but internally the dictionary keys are prefixed with a colon, do **not** include the colon in your dictionary keys.
 
 ```objc
-NSDictionary *argsDict = [NSDictionary dictionaryWithObjectsAndKeys:@"My Name", @"name", nil];
-[db executeUpdate:@"INSERT INTO myTable (name) VALUES (:name)" withParameterDictionary:argsDict];
+NSDictionary *arguments = @{@"identifier": @(identifier), @"name": name, @"date": date, @"comment": comment ?: [NSNull null]};
+BOOL success = [db executeUpdate:@"INSERT INTO authors (identifier, name, date, comment) VALUES (:identifier, :name, :date, :comment)" withParameterDictionary:arguments];
+if (!success) {
+    NSLog(@"error = %@", [db lastErrorMessage]);
+}
 ```
 
-Thus, you SHOULD NOT do this (or anything like this):
-
-```objc
-[db executeUpdate:[NSString stringWithFormat:@"INSERT INTO myTable VALUES (%@)", @"this has \" lots of ' bizarre \" quotes '"]];
-```
-Instead, you SHOULD do:
-
-```objc
-[db executeUpdate:@"INSERT INTO myTable VALUES (?)", @"this has \" lots of ' bizarre \" quotes '"];
-```
-
-All arguments provided to the `-executeUpdate:` method (or any of the variants that accept a `va_list` as a parameter) must be objects.  The following will not work (and will result in a crash):
-
-```objc
-[db executeUpdate:@"INSERT INTO myTable VALUES (?)", 42];
-```
-
-The proper way to insert a number is to box it in an `NSNumber` object:
-
-```objc
-[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:42]];
-```
-
-Alternatively, you can use the `-execute*WithFormat:` variant to use `NSString`-style substitution:
-
-```objc
-[db executeUpdateWithFormat:@"INSERT INTO myTable VALUES (%d)", 42];
-```
-
-Internally, the `-execute*WithFormat:` methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
-
+The key point is that one should not use `NSString` method `stringWithFormat` to manually insert values into the SQL statement, itself. Nor should one Swift string interpolation to insert values into the SQL. Use `?` placeholders for values to be inserted into the database (or used in `WHERE` clauses in `SELECT` statements).
 
 <h2 id="threads">Using FMDatabaseQueue and Thread Safety.</h2>
 
@@ -212,7 +220,7 @@ Using a single instance of FMDatabase from multiple threads at once is a bad ide
 
 **So don't instantiate a single FMDatabase object and use it across multiple threads.**
 
-Instead, use FMDatabaseQueue.  It's your friend and it's here to help.  Here's how to use it:
+Instead, use `FMDatabaseQueue`. Instantiate a single `FMDatabaseQueue` and use it across multiple threads. The `FMDatabaseQueue` object will synchronize and coordinate access across the multiple threads. Here's how to use it:
 
 First, make your queue.
 
@@ -225,9 +233,9 @@ Then use it like so:
 
 ```objc
 [queue inDatabase:^(FMDatabase *db) {
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @1];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @2];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @3];
 
     FMResultSet *rs = [db executeQuery:@"select * from foo"];
     while ([rs next]) {
@@ -240,16 +248,16 @@ An easy way to wrap things up in a transaction can be done like this:
 
 ```objc
 [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @1];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @2];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @3];
 
     if (whoopsSomethingWrongHappened) {
         *rollback = YES;
         return;
     }
     // etc…
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:4]];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @4];
 }];
 ```
 
