@@ -216,9 +216,9 @@ The key point is that one should not use `NSString` method `stringWithFormat` to
 
 <h2 id="threads">Using FMDatabaseQueue and Thread Safety.</h2>
 
-Using a single instance of FMDatabase from multiple threads at once is a bad idea.  It has always been OK to make a FMDatabase object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
+Using a single instance of `FMDatabase` from multiple threads at once is a bad idea.  It has always been OK to make a `FMDatabase` object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
 
-**So don't instantiate a single FMDatabase object and use it across multiple threads.**
+**So don't instantiate a single `FMDatabase` object and use it across multiple threads.**
 
 Instead, use `FMDatabaseQueue`. Instantiate a single `FMDatabaseQueue` and use it across multiple threads. The `FMDatabaseQueue` object will synchronize and coordinate access across the multiple threads. Here's how to use it:
 
@@ -261,13 +261,35 @@ An easy way to wrap things up in a transaction can be done like this:
 }];
 ```
 
-FMDatabaseQueue will run the blocks on a serialized queue (hence the name of the class).  So if you call FMDatabaseQueue's methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
+The Swift equivalent would be:
 
-**Note:** The calls to FMDatabaseQueue's methods are blocking.  So even though you are passing along blocks, they will **not** be run on another thread.
+```swift
+queue.inTransaction { db, rollback in
+    do {
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [1])
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [2])
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [3])
+
+        if whoopsSomethingWrongHappened {
+            rollback.memory = true
+            return
+        }
+
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [4])
+    } catch {
+        rollback.memory = true
+        print(error)
+    }
+}
+```
+
+`FMDatabaseQueue` will run the blocks on a serialized queue (hence the name of the class).  So if you call `FMDatabaseQueue`'s methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
+
+**Note:** The calls to `FMDatabaseQueue`'s methods are blocking.  So even though you are passing along blocks, they will **not** be run on another thread.
 
 ## Making custom sqlite functions, based on blocks.
 
-You can do this!  For an example, look for "makeFunctionNamed:" in main.m
+You can do this!  For an example, look for `-makeFunctionNamed:` in main.m
 
 ## Swift
 
@@ -286,13 +308,13 @@ To do this, you must:
  For more information on bridging headers, see [Swift and Objective-C in the Same Project](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-XID_76).
 
 3. In your bridging header, add a line that says:
-    ```swift
+    ```objc
     #import "FMDB.h"
     ```
 
 4. Use the variations of `executeQuery` and `executeUpdate` with the `sql` and `values` parameters with `try` pattern, as shown below. These renditions of `executeQuery` and `executeUpdate` both `throw` errors in true Swift 2 fashion.
 
-If you do the above, you can then write Swift code that uses FMDatabase. For example:
+If you do the above, you can then write Swift code that uses `FMDatabase`. For example:
 
 ```swift
 let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
