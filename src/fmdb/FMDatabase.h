@@ -683,6 +683,15 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (BOOL)inTransaction;
 
+/** Interupt pending database operation
+ 
+ This method causes any pending database operation to abort and return at its earliest opportunity
+ 
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ 
+ */
+
+- (BOOL)interrupt;
 
 ///----------------------------------------
 /// @name Cached statements and result sets

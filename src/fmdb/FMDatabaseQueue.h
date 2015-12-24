@@ -145,6 +145,10 @@
 
 - (void)close;
 
+/** Interupt pending database operation. */
+
+- (void)interrupt;
+
 ///-----------------------------------------------
 /// @name Dispatching database operations to queue
 ///-----------------------------------------------
