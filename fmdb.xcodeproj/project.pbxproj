@@ -25,6 +25,12 @@
 		8314AF3318CD73D600EC0E25 /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 8314AF3218CD73D600EC0E25 /* FMDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
 		8DD76F9F0486AA7600D96B5E /* fmdb.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859EA3029092ED04C91782 /* fmdb.1 */; };
+		BA798634E6978DC162E8B5B2 /* FMResultSet+Mapping.h in Headers */ = {isa = PBXBuildFile; fileRef = BA7988CFD936AD14F1533F8D /* FMResultSet+Mapping.h */; };
+		BA7987EF437A8C4E4E7442A3 /* FMResultSet+Mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = BA798DD183B52CCCDF5C8B67 /* FMResultSet+Mapping.m */; };
+		BA798A7479DBE3192DEB3EA6 /* FMResultSet+Mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = BA798DD183B52CCCDF5C8B67 /* FMResultSet+Mapping.m */; };
+		BA798C03C0C2B58FC4014D33 /* FMResultSetExtractor.h in Headers */ = {isa = PBXBuildFile; fileRef = BA798CC2E391FD1D862A430B /* FMResultSetExtractor.h */; };
+		BA798D44476D11B00F5C37CA /* FMRowMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = BA798ECFAA083202D5B778D2 /* FMRowMapper.h */; };
+		BA798E9634C3998B62C93207 /* FMResultSet+Mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = BA798DD183B52CCCDF5C8B67 /* FMResultSet+Mapping.m */; };
 		BF5D041918416BB2008C5AA9 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF5D041818416BB2008C5AA9 /* XCTest.framework */; };
 		BF5D041F18416BB2008C5AA9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF5D041D18416BB2008C5AA9 /* InfoPlist.strings */; };
 		BF5D042118416BB2008C5AA9 /* FMDatabaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BF5D042018416BB2008C5AA9 /* FMDatabaseTests.m */; };
@@ -104,6 +110,10 @@
 		832F502419EC4C6B0087DCBF /* FMDatabaseVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseVariadic.swift"; sourceTree = "<group>"; };
 		8352D5AC1A73DCEA003A8E09 /* FMDatabaseAdditionsVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseAdditionsVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseAdditionsVariadic.swift"; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* fmdb */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fmdb; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA7988CFD936AD14F1533F8D /* FMResultSet+Mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMResultSet+Mapping.h"; path = "src/fmdb/FMResultSet+Mapping.h"; sourceTree = "<group>"; };
+		BA798CC2E391FD1D862A430B /* FMResultSetExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSetExtractor.h; path = src/fmdb/FMResultSetExtractor.h; sourceTree = "<group>"; };
+		BA798DD183B52CCCDF5C8B67 /* FMResultSet+Mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMResultSet+Mapping.m"; path = "src/fmdb/FMResultSet+Mapping.m"; sourceTree = "<group>"; };
+		BA798ECFAA083202D5B778D2 /* FMRowMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMRowMapper.h; path = src/fmdb/FMRowMapper.h; sourceTree = "<group>"; };
 		BF5D041618416BB2008C5AA9 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF5D041818416BB2008C5AA9 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BF5D041C18416BB2008C5AA9 /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
@@ -255,6 +265,10 @@
 				CC50F2CB0DF9183600E4AAAE /* FMDatabaseAdditions.m */,
 				CC9E4EB713B31188005F9210 /* FMDatabasePool.h */,
 				CC9E4EB813B31188005F9210 /* FMDatabasePool.m */,
+				BA7988CFD936AD14F1533F8D /* FMResultSet+Mapping.h */,
+				BA798DD183B52CCCDF5C8B67 /* FMResultSet+Mapping.m */,
+				BA798CC2E391FD1D862A430B /* FMResultSetExtractor.h */,
+				BA798ECFAA083202D5B778D2 /* FMRowMapper.h */,
 			);
 			name = fmdb;
 			sourceTree = "<group>";
@@ -367,6 +381,9 @@
 				8314AF3318CD73D600EC0E25 /* FMDB.h in Headers */,
 				CC9E4EBA13B31188005F9210 /* FMDatabasePool.h in Headers */,
 				CC47A00F148581E9002CCDAB /* FMDatabaseQueue.h in Headers */,
+				BA798634E6978DC162E8B5B2 /* FMResultSet+Mapping.h in Headers */,
+				BA798C03C0C2B58FC4014D33 /* FMResultSetExtractor.h in Headers */,
+				BA798D44476D11B00F5C37CA /* FMRowMapper.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +518,7 @@
 				621721B61892BFE30006691F /* FMDatabasePool.m in Sources */,
 				621721B41892BFE30006691F /* FMDatabaseQueue.m in Sources */,
 				621721B51892BFE30006691F /* FMDatabaseAdditions.m in Sources */,
+				BA798E9634C3998B62C93207 /* FMResultSet+Mapping.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +535,7 @@
 				CC9E4EB913B31188005F9210 /* FMDatabasePool.m in Sources */,
 				CC47A010148581E9002CCDAB /* FMDatabaseQueue.m in Sources */,
 				CCA66A2D19C0CB1900EFDAC1 /* FMDatabase+FTS3.m in Sources */,
+				BA798A7479DBE3192DEB3EA6 /* FMResultSet+Mapping.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +566,7 @@
 				EE42910A12B42FD20088BD94 /* FMResultSet.m in Sources */,
 				CC9E4EBB13B31188005F9210 /* FMDatabasePool.m in Sources */,
 				CC47A011148581E9002CCDAB /* FMDatabaseQueue.m in Sources */,
+				BA7987EF437A8C4E4E7442A3 /* FMResultSet+Mapping.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
