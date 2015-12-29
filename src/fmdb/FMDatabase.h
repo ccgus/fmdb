@@ -1,9 +1,4 @@
 #import <Foundation/Foundation.h>
-#if FMDB_SQLITE_STANDALONE
-#import <sqlite3/sqlite3.h>
-#else
-#import <sqlite3.h>
-#endif
 #import "FMResultSet.h"
 #import "FMDatabasePool.h"
 
@@ -77,7 +72,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 @interface FMDatabase : NSObject  {
     
-    sqlite3*            _db;
+    void*               _db;
     NSString*           _databasePath;
     BOOL                _logsErrors;
     BOOL                _crashOnErrors;
@@ -213,9 +208,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  `SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE`
  
  The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for `open` method.
- 
- If vfs is given the value is passed to the vfs parameter of sqlite3_open_v2.
- 
+  
  @return `YES` if successful, `NO` on error.
 
  @see [sqlite3_open_v2()](http://sqlite.org/c3ref/open.html)
@@ -223,10 +216,34 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see close
  */
 
-#if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags;
+
+/** Opening a new database connection with flags and an optional virtual file system (VFS)
+ 
+ @param flags one of the following three values, optionally combined with the `SQLITE_OPEN_NOMUTEX`, `SQLITE_OPEN_FULLMUTEX`, `SQLITE_OPEN_SHAREDCACHE`, `SQLITE_OPEN_PRIVATECACHE`, and/or `SQLITE_OPEN_URI` flags:
+ 
+ `SQLITE_OPEN_READONLY`
+ 
+ The database is opened in read-only mode. If the database does not already exist, an error is returned.
+ 
+ `SQLITE_OPEN_READWRITE`
+ 
+ The database is opened for reading and writing if possible, or reading only if the file is write protected by the operating system. In either case the database must already exist, otherwise an error is returned.
+ 
+ `SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE`
+ 
+ The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for `open` method.
+ 
+ @param vfsName   If vfs is given the value is passed to the vfs parameter of sqlite3_open_v2.
+ 
+ @return `YES` if successful, `NO` on error.
+ 
+ @see [sqlite3_open_v2()](http://sqlite.org/c3ref/open.html)
+ @see open
+ @see close
+ */
+
 - (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName;
-#endif
 
 /** Closing a database connection
  
@@ -473,7 +490,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  */
 
-- (sqlite_int64)lastInsertRowId;
+- (int64_t)lastInsertRowId;
 
 /** The number of rows changed by prior SQL statement.
  
@@ -793,7 +810,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (sqlite3*)sqliteHandle;
+- (void*)sqliteHandle;
 
 
 ///-----------------------------
@@ -857,8 +874,6 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 - (NSTimeInterval)maxBusyRetryTimeInterval;
 
 
-#if SQLITE_VERSION_NUMBER >= 3007000
-
 ///------------------
 /// @name Save points
 ///------------------
@@ -919,8 +934,6 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  */
 
 - (NSError*)inSavePoint:(void (^)(BOOL *rollback))block;
-
-#endif
 
 ///----------------------------
 /// @name SQLite library status
@@ -998,7 +1011,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [sqlite3_create_function()](http://sqlite.org/c3ref/create_function.html)
  */
 
-- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
+- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(void *context, int argc, void **argv))block;
 
 
 ///---------------------
@@ -1102,7 +1115,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  */
 
 @interface FMStatement : NSObject {
-    sqlite3_stmt *_statement;
+    void *_statement;
     NSString *_query;
     long _useCount;
     BOOL _inUse;
@@ -1125,7 +1138,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [`sqlite3_stmt`](http://www.sqlite.org/c3ref/stmt.html)
  */
 
-@property (atomic, assign) sqlite3_stmt *statement;
+@property (atomic, assign) void *statement;
 
 /** Indication of whether the statement is in use */
 

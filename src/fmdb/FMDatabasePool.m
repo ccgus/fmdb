@@ -6,6 +6,12 @@
 //  Copyright 2011 Flying Meat Inc. All rights reserved.
 //
 
+#if FMDB_SQLITE_STANDALONE
+#import <sqlite3/sqlite3.h>
+#else
+#import <sqlite3.h>
+#endif
+
 #import "FMDatabasePool.h"
 #import "FMDatabase.h"
 
@@ -238,9 +244,9 @@
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:NO withBlock:block];
 }
-#if SQLITE_VERSION_NUMBER >= 3007000
+
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    
+#if SQLITE_VERSION_NUMBER >= 3007000
     static unsigned long savePointIdx = 0;
     
     NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
@@ -267,7 +273,11 @@
     [self pushDatabaseBackInPool:db];
     
     return err;
-}
+#else
+    NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
+    if (self.logsErrors) NSLog(@"%@", errorMessage);
+    return [NSError errorWithDomain:@"FMDatabase" code:0 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
 #endif
+}
 
 @end
