@@ -90,7 +90,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
     NSTimeInterval      _startBusyRetryTime;
     
     NSMutableDictionary *_cachedStatements;
-    NSMutableSet        *_openResultSets;
+    NSHashTable         *_openResultSets;
     NSMutableSet        *_openFunctions;
 
     NSDateFormatter     *_dateFormat;
