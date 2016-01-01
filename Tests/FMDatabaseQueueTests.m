@@ -9,6 +9,12 @@
 #import <XCTest/XCTest.h>
 #import "FMDatabaseQueue.h"
 
+#if FMDB_SQLITE_STANDALONE
+#import <sqlite3/sqlite3.h>
+#else
+#import <sqlite3.h>
+#endif
+
 @interface FMDatabaseQueueTests : FMDBTempDBTests
 
 @property FMDatabaseQueue *queue;

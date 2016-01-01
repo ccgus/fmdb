@@ -10,6 +10,13 @@
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
 
+#if FMDB_SQLITE_STANDALONE
+#import <sqlite3/sqlite3.h>
+#else
+#import <sqlite3.h>
+#endif
+
+
 @interface FMDatabaseTests : FMDBTempDBTests
 
 @end
@@ -804,7 +811,7 @@
     [self.db executeUpdate:@"insert into ftest values ('not h!')"];
     [self.db executeUpdate:@"insert into ftest values ('definitely not h!')"];
     
-    [self.db makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(sqlite3_context *context, int aargc, sqlite3_value **aargv) {
+    [self.db makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(void *context, int aargc, void **aargv) {
         if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
             
             @autoreleasepool {
@@ -833,7 +840,7 @@
 }
 
 - (void)testVersionNumber {
-    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0250); // this is going to break everytime we bump it.
+    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0260); // this is going to break everytime we bump it.
 }
 
 - (void)testExecuteStatements

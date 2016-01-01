@@ -1,16 +1,23 @@
 TODO:
 Zip, nada, zilch.  Got any ideas?
 
-If you would like to contribute some code- awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add a couple of tests for your new code to fmdb.m.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
+If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
+
+2015.12.28
+    Removed `sqlite3.h` from the headers to simplify incorporation of FMDB into a framework. This eliminates the dreaded "non-modular headers" error in frameworks.
+
+    To accomplish this, the few references to SQLite pointers have been changed to return `void` pointers. This means that if you have application code that used SQLite pointers exposed by FMDB, you may have to cast the pointer to the appropriate type when you use it (and `#import <sqlite3.h>` yourself). In general, we would advise against using SQLite pointers unless you absolutely need to.
+
+    Also changed the `FMDatabaseVariadic.swift` to throw errors for Swift 2.
 
 2015.10.29
     Added renditions of `executeUpdate:values:error:` and `executeQuery:values:error:`, which in Swift 2 throw errors.
 
 2015.01.23
-    Added Swift renditions of the variadic methods of FMDatabaseAdditions.
+    Added Swift renditions of the variadic methods of `FMDatabaseAdditions`.
 
 2014.10.19
-Added a 'nextWithError:' to FMResultSet.  Thanks to Roshan Muralidharan for the patch.
+    Added a `nextWithError:` to `FMResultSet`.  Thanks to Roshan Muralidharan for the patch.
 
 2014.09.10
     New classes for exposing SQLite's FTS features.  Thanks to Andrew Goodale for the code.
@@ -18,7 +25,7 @@ Added a 'nextWithError:' to FMResultSet.  Thanks to Roshan Muralidharan for the 
 2014.04.23
     New executeStatements: method, which will take a single UTF-8 string with multiple statements in it.  This is great for batch updates.  There is also a executeStatements:withResultBlock: version which takes a callback block which will be used for any statements which return rows in the bulk statement.  Thanks to Rob Ryan for contributing code for this.
 
-    Deprecated update:withErrorAndBindings: in favor of executeUpdate:withErrorAndBindings:
+    Deprecated `update:withErrorAndBindings:` in favor of `executeUpdate:withErrorAndBindings:` or `executeUpdate:values:error:`.
 
 2014.04.09
     Added back in busy handler code after a brief hiatus (check out the 2013.12.10 notes).  But now doing so with sqlite3_busy_handler instead of while loops in the various execution places.

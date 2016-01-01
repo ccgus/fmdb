@@ -1,4 +1,5 @@
-# FMDB v2.5
+# FMDB v2.6
+
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
 ## The FMDB Mailing List:
