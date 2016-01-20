@@ -1,4 +1,4 @@
-# FMDB v2.6
+# FMDB v2.6.2
 
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
