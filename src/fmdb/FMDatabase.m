@@ -1309,16 +1309,7 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     
     NSString *sql = [NSString stringWithFormat:@"savepoint '%@';", FMDBEscapeSavePointName(name)];
     
-    if (![self executeUpdate:sql]) {
-
-        if (outErr) {
-            *outErr = [self lastError];
-        }
-        
-        return NO;
-    }
-    
-    return YES;
+    return [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:nil];
 #else
     NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
@@ -1331,13 +1322,8 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     NSParameterAssert(name);
     
     NSString *sql = [NSString stringWithFormat:@"release savepoint '%@';", FMDBEscapeSavePointName(name)];
-    BOOL worked = [self executeUpdate:sql];
-    
-    if (!worked && outErr) {
-        *outErr = [self lastError];
-    }
-    
-    return worked;
+
+    return [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:nil];
 #else
     NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
@@ -1350,13 +1336,8 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     NSParameterAssert(name);
     
     NSString *sql = [NSString stringWithFormat:@"rollback transaction to savepoint '%@';", FMDBEscapeSavePointName(name)];
-    BOOL worked = [self executeUpdate:sql];
-    
-    if (!worked && outErr) {
-        *outErr = [self lastError];
-    }
-    
-    return worked;
+
+    return [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:nil];
 #else
     NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
