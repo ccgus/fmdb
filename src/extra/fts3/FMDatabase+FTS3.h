@@ -59,11 +59,13 @@ typedef struct FMTokenizerCursor
 {
     void       *tokenizer;      /* Internal SQLite reference */
     CFStringRef inputString;    /* The input text being tokenized */
-    CFRange     currentRange;   /* The current offset within `inputString` */
+    CFRange     currentRange;   /* The current range within `inputString` */
     CFStringRef tokenString;    /* The contents of the current token */
     CFTypeRef   userObject;     /* Additional state for the cursor */
     int         tokenIndex;     /* Index of next token to be returned */
     UInt8       outputBuf[128]; /* Result for SQLite */
+    CFRange     previousRange;  /* Cached range of previous token within `inputString` */
+    CFRange     previousOffsetRange; /* Cached range of previous token as UTF-8 offset */
 } FMTokenizerCursor;
 
 @protocol FMTokenizerDelegate

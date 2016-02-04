@@ -96,6 +96,8 @@ static int FMDBTokenizerOpen(sqlite3_tokenizer *pTokenizer,         /* The token
     cursor->tokenString = NULL;
     cursor->userObject = NULL;
     cursor->outputBuf[0] = '\0';
+    cursor->previousRange = CFRangeMake(0, 0);
+    cursor->previousOffsetRange = CFRangeMake(0, 0);
         
     [tokenizer->delegate openTokenizerCursor:cursor];
 
@@ -146,27 +148,42 @@ static int FMDBTokenizerNext(sqlite3_tokenizer_cursor *pCursor,  /* Cursor retur
         return SQLITE_DONE;
     }
     
-    // The range from the tokenizer is in UTF-16 positions, we need give UTF-8 positions to SQLite.
-    CFIndex startOffset, endOffset, newBytesUsed;
-    CFRange rangeToStartToken = CFRangeMake(0, cursor->currentRange.location);
-    CFRange newTokenRange = CFRangeMake(0, CFStringGetLength(cursor->tokenString));
-    
+    // The range from the tokenizer is in UTF-16 positions, we need give UTF-8 positions to SQLite
+    // Conversion to bytes is very expensive on longer strings. In order to avoid processing the same data over and over again for each token, we cache the previousRange and previousOffsetRange
+    // Not all tokenizers may process strings sequentially. Reset the cached ranges if necessary
+    if (cursor->currentRange.location < cursor->previousRange.location + cursor->previousRange.length) {
+        cursor->previousRange = CFRangeMake(0, 0);
+        cursor->previousOffsetRange = CFRangeMake(0, 0);
+    }
+
+    // First calculate the offset of current token range in original string
+    CFIndex locationOffset, lengthOffset;
+    const CFRange rangeToStartToken = CFRangeMake((cursor->previousRange.location + cursor->previousRange.length), cursor->currentRange.location - (cursor->previousRange.location + cursor->previousRange.length));
+
     // This will tell us how many UTF-8 bytes there are before the start of the token
     CFStringGetBytes(cursor->inputString, rangeToStartToken, kCFStringEncodingUTF8, '?', false,
-                     NULL, 0, &startOffset);
-
+                     NULL, 0, &locationOffset);
     // and how many UTF-8 bytes there are within the token in the original string
     CFStringGetBytes(cursor->inputString, cursor->currentRange, kCFStringEncodingUTF8, '?', false,
-                     NULL, 0, &endOffset);
+                     NULL, 0, &lengthOffset);
+
+    // Update the location offset
+    locationOffset += (cursor->previousOffsetRange.location + cursor->previousOffsetRange.length);
+
+    // Cache the data to reuse on next token
+    cursor->previousRange = cursor->currentRange;
+    cursor->previousOffsetRange = CFRangeMake(locationOffset, lengthOffset);
 
     // Determine how many bytes the new token string uses
+    CFIndex newBytesUsed;
+    const CFRange newTokenRange = CFRangeMake(0, CFStringGetLength(cursor->tokenString));
     CFStringGetBytes(cursor->tokenString, newTokenRange, kCFStringEncodingUTF8, '?', false,
                      cursor->outputBuf, sizeof(cursor->outputBuf), &newBytesUsed);
     
     *pzToken = (char *) cursor->outputBuf;
     *pnBytes = (int) newBytesUsed;
-    *piStartOffset = (int) startOffset;
-    *piEndOffset = (int) (startOffset + endOffset);
+    *piStartOffset = (int) locationOffset;
+    *piEndOffset = (int) (locationOffset + lengthOffset);
     *piPosition = cursor->tokenIndex++;
     
     return SQLITE_OK;
