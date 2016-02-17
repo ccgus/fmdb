@@ -26,6 +26,7 @@ Pod::Spec.new do |s|
   s.subspec 'FTS' do |ss|
     ss.source_files = 'src/extra/fts3/*.{h,m}'
     ss.dependency 'FMDB/standard'
+    ss.private_header_files = 'src/extra/fts3/fts3_tokenizer.h'
   end
 
   # use a custom built version of sqlite3
@@ -41,6 +42,7 @@ Pod::Spec.new do |s|
     ss.subspec 'FTS' do |sss|
       sss.source_files = 'src/extra/fts3/*.{h,m}'
       sss.dependency 'sqlite3/unicode61'
+      sss.private_header_files = 'src/extra/fts3/fts3_tokenizer.h'
     end
   end
 
