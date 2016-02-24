@@ -215,9 +215,9 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 }
 
 - (void)beginTransactionAsync:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    FMDBRetain(self);
+    
     dispatch_async(_queue, ^() {
-        
+        FMDBRetain(self);
         BOOL shouldRollback = NO;
         
         if (useDeferred) {
@@ -235,9 +235,9 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         else {
             [[self database] commit];
         }
+        FMDBRelease(self);
     });
     
-    FMDBRelease(self);
 }
 
 
