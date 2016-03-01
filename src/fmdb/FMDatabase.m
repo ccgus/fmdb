@@ -321,7 +321,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 - (void)clearCachedStatements {
     
     for (NSMutableSet *statements in [_cachedStatements objectEnumerator]) {
-        for (FMStatement *statement in statements.allObjects) [statement close];
+        for (FMStatement *statement in [statements allObjects]) {
+            [statement close];
+        }
     }
     
     [_cachedStatements removeAllObjects];
