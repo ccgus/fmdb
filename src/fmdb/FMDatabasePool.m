@@ -48,14 +48,14 @@
         _databaseInPool     = FMDBReturnRetained([NSMutableArray array]);
         _databaseOutPool    = FMDBReturnRetained([NSMutableArray array]);
         _openFlags          = openFlags;
-		_vfsName			= [vfsName copy];
+        _vfsName            = [vfsName copy];
     }
     
     return self;
 }
 
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
-	return [self initWithPath:aPath flags:openFlags vfs:nil];
+    return [self initWithPath:aPath flags:openFlags vfs:nil];
 }
 
 - (instancetype)initWithPath:(NSString*)aPath
@@ -69,7 +69,7 @@
 }
 
 + (Class)databaseClass {
-	return [FMDatabase class];
+    return [FMDatabase class];
 }
 
 - (void)dealloc {

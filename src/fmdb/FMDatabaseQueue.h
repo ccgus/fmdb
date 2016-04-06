@@ -65,7 +65,7 @@
     dispatch_queue_t    _queue;
     FMDatabase          *_db;
     int                 _openFlags;
-	NSString            *_vfsName;
+    NSString            *_vfsName;
 }
 
 /** Path of database */

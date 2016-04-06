@@ -39,8 +39,8 @@
     __unsafe_unretained id _delegate;
     
     NSUInteger          _maximumNumberOfDatabasesToCreate;
-	int                 _openFlags;
-	NSString            *_vfsName;
+    int                 _openFlags;
+    NSString            *_vfsName;
 }
 
 /** Database path */

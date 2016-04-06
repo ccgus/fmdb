@@ -83,7 +83,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
         dispatch_queue_set_specific(_queue, kDispatchQueueSpecificKey, (__bridge void *)self, NULL);
         _openFlags = openFlags;
-		_vfsName = [vfsName copy];
+        _vfsName = [vfsName copy];
     }
     
     return self;
