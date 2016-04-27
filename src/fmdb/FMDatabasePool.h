@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "sqlite3.h"
 
 @class FMDatabase;
 
@@ -41,6 +40,7 @@
     
     NSUInteger          _maximumNumberOfDatabasesToCreate;
     int                 _openFlags;
+    NSString            *_vfsName;
 }
 
 /** Database path */
@@ -58,6 +58,10 @@
 /** Open flags */
 
 @property (atomic, readonly) int openFlags;
+
+/**  Custom virtual file system name */
+
+@property (atomic, copy) NSString *vfsName;
 
 
 ///---------------------
@@ -101,6 +105,26 @@
  */
 
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags;
+
+/** Create pool using path and specified flags.
+
+ @param aPath The file path of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ @param vfsName The name of a custom virtual file system
+
+ @return The `FMDatabasePool` object. `nil` on error.
+ */
+
+- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags vfs:(NSString *)vfsName;
+
+/** Returns the Class of 'FMDatabase' subclass, that will be used to instantiate database object.
+
+ Subclasses can override this method to return specified Class of 'FMDatabase' subclass.
+
+ @return The Class of 'FMDatabase' subclass, that will be used to instantiate database object.
+ */
+
++ (Class)databaseClass;
 
 ///------------------------------------------------
 /// @name Keeping track of checked in/out databases
@@ -156,8 +180,6 @@
 
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
 
-#if SQLITE_VERSION_NUMBER >= 3007000
-
 /** Synchronously perform database operations in pool using save point.
 
  @param block The code to be run on the `FMDatabasePool` pool.
@@ -168,7 +190,6 @@
 */
 
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
-#endif
 
 @end
 

@@ -9,6 +9,12 @@
 #import "FMDatabaseQueue.h"
 #import "FMDatabase.h"
 
+#if FMDB_SQLITE_STANDALONE
+#import <sqlite3/sqlite3.h>
+#else
+#import <sqlite3.h>
+#endif
+
 /*
  
  Note: we call [self retain]; before using dispatch_sync, just incase 
@@ -28,6 +34,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 
 @synthesize path = _path;
 @synthesize openFlags = _openFlags;
+@synthesize vfsName = _vfsName;
 
 + (instancetype)databaseQueueWithPath:(NSString*)aPath {
     
@@ -76,6 +83,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         _queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
         dispatch_queue_set_specific(_queue, kDispatchQueueSpecificKey, (__bridge void *)self, NULL);
         _openFlags = openFlags;
+        _vfsName = [vfsName copy];
     }
     
     return self;
@@ -122,10 +130,10 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 
 - (FMDatabase*)database {
     if (!_db) {
-        _db = FMDBReturnRetained([FMDatabase databaseWithPath:_path]);
+       _db = FMDBReturnRetained([[[self class] databaseClass] databaseWithPath:_path]);
         
 #if SQLITE_VERSION_NUMBER >= 3005000
-        BOOL success = [_db openWithFlags:_openFlags];
+        BOOL success = [_db openWithFlags:_openFlags vfs:_vfsName];
 #else
         BOOL success = [_db open];
 #endif
@@ -204,9 +212,8 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     [self beginTransaction:NO withBlock:block];
 }
 
-#if SQLITE_VERSION_NUMBER >= 3007000
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    
+#if SQLITE_VERSION_NUMBER >= 3007000
     static unsigned long savePointIdx = 0;
     __block NSError *err = 0x00;
     FMDBRetain(self);
@@ -230,7 +237,11 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     });
     FMDBRelease(self);
     return err;
-}
+#else
+    NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
+    if (self.logsErrors) NSLog(@"%@", errorMessage);
+    return [NSError errorWithDomain:@"FMDatabase" code:0 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
 #endif
+}
 
 @end

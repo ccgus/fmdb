@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "sqlite3.h"
 
 @class FMDatabase;
 
@@ -66,6 +65,7 @@
     dispatch_queue_t    _queue;
     FMDatabase          *_db;
     int                 _openFlags;
+    NSString            *_vfsName;
 }
 
 /** Path of database */
@@ -75,6 +75,10 @@
 /** Open flags */
 
 @property (atomic, readonly) int openFlags;
+
+/**  Custom virtual file system name */
+
+@property (atomic, copy) NSString *vfsName;
 
 ///----------------------------------------------------
 /// @name Initialization, opening, and closing of queue
@@ -175,11 +179,9 @@
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 
-#if SQLITE_VERSION_NUMBER >= 3007000
 // NOTE: you can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock.
 // If you need to nest, use FMDatabase's startSavePointWithName:error: instead.
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
-#endif
 
 @end
 

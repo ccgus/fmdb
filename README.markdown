@@ -1,4 +1,5 @@
-# FMDB v2.5
+# FMDB v2.6.2
+
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
 ## The FMDB Mailing List:
@@ -17,7 +18,7 @@ Do you have an awesome idea that deserves to be in FMDB?  You might consider pin
 [![Dependency Status](https://www.versioneye.com/objective-c/fmdb/2.3/badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/2.3)
 [![Reference Status](https://www.versioneye.com/objective-c/fmdb/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/references)
 
-FMDB can be installed using [CocoaPods](http://cocoapods.org/).
+FMDB can be installed using [CocoaPods](https://cocoapods.org/).
 
 ```
 pod 'FMDB'
@@ -27,13 +28,13 @@ pod 'FMDB'
 # pod 'FMDB/SQLCipher'   # FMDB with SQLCipher
 ```
 
-**If using FMDB with [SQLCipher](http://sqlcipher.net/) you must use the FMDB/SQLCipher subspec. The FMDB/SQLCipher subspec declares SQLCipher as a dependency, allowing FMDB to be compiled with the `-DSQLITE_HAS_CODEC` flag.**
+**If using FMDB with [SQLCipher](https://www.zetetic.net/sqlcipher/) you must use the FMDB/SQLCipher subspec. The FMDB/SQLCipher subspec declares SQLCipher as a dependency, allowing FMDB to be compiled with the `-DSQLITE_HAS_CODEC` flag.**
 
 ## FMDB Class Reference:
 http://ccgus.github.io/fmdb/html/index.html
 
 ## Automatic Reference Counting (ARC) or Manual Memory Management?
-You can use either style in your Cocoa project.  FMDB Will figure out which you are using at compile time and do the right thing.
+You can use either style in your Cocoa project.  FMDB will figure out which you are using at compile time and do the right thing.
 
 ## Usage
 There are three main classes in FMDB:
@@ -156,63 +157,71 @@ success = [self.db executeStatements:sql withResultBlock:^int(NSDictionary *dict
 When providing a SQL statement to FMDB, you should not attempt to "sanitize" any values before insertion.  Instead, you should use the standard SQLite binding syntax:
 
 ```sql
-INSERT INTO myTable VALUES (?, ?, ?)
+INSERT INTO myTable VALUES (?, ?, ?, ?)
 ```
 
 The `?` character is recognized by SQLite as a placeholder for a value to be inserted.  The execution methods all accept a variable number of arguments (or a representation of those arguments, such as an `NSArray`, `NSDictionary`, or a `va_list`), which are properly escaped for you.
 
+And, to use that SQL with the `?` placeholders from Objective-C:
+
+```objc
+NSInteger identifier = 42;
+NSString *name = @"Liam O'Flaherty (\"the famous Irish author\")";
+NSDate *date = [NSDate date];
+NSString *comment = nil;
+
+BOOL success = [db executeUpdate:@"INSERT INTO authors (identifier, name, date, comment) VALUES (?, ?, ?, ?)", @(identifier), name, date, comment ?: [NSNull null]];
+if (!success) {
+    NSLog(@"error = %@", [db lastErrorMessage]);
+}
+```
+
+> **Note:** Fundamental data types, like the `NSInteger` variable `identifier`, should be as a `NSNumber` objects, achieved by using the `@` syntax, shown above. Or you can use the `[NSNumber numberWithInt:identifier]` syntax, too.
+>
+> Likewise, SQL `NULL` values should be inserted as `[NSNull null]`. For example, in the case of `comment` which might be `nil` (and is in this example), you can use the `comment ?: [NSNull null]` syntax, which will insert the string if `comment` is not `nil`, but will insert `[NSNull null]` if it is `nil`.
+
+In Swift, you would use `executeUpdate(values:)`, which not only is a concise Swift syntax, but also `throws` errors for proper Swift 2 error handling:
+
+```swift
+do {
+    let identifier = 42
+    let name = "Liam O'Flaherty (\"the famous Irish author\")"
+    let date = NSDate()
+    let comment: String? = nil
+
+    try db.executeUpdate("INSERT INTO authors (identifier, name, date, comment) VALUES (?, ?, ?, ?)", values: [identifier, name, date, comment ?? NSNull()])
+} catch {
+    print("error = \(error)")
+}
+```
+
+> **Note:** In Swift, you don't have to wrap fundamental numeric types like you do in Objective-C. But if you are going to insert an optional string, you would probably use the `comment ?? NSNull()` syntax (i.e., if it is `nil`, use `NSNull`, otherwise use the string).
+
 Alternatively, you may use named parameters syntax:
 
 ```sql
-INSERT INTO myTable VALUES (:id, :name, :value)
+INSERT INTO authors (identifier, name, date, comment) VALUES (:identifier, :name, :date, :comment)
 ```
 
-The parameters *must* start with a colon. SQLite itself supports other characters, but internally the Dictionary keys are prefixed with a colon, do **not** include the colon in your dictionary keys.
+The parameters *must* start with a colon. SQLite itself supports other characters, but internally the dictionary keys are prefixed with a colon, do **not** include the colon in your dictionary keys.
 
 ```objc
-NSDictionary *argsDict = [NSDictionary dictionaryWithObjectsAndKeys:@"My Name", @"name", nil];
-[db executeUpdate:@"INSERT INTO myTable (name) VALUES (:name)" withParameterDictionary:argsDict];
+NSDictionary *arguments = @{@"identifier": @(identifier), @"name": name, @"date": date, @"comment": comment ?: [NSNull null]};
+BOOL success = [db executeUpdate:@"INSERT INTO authors (identifier, name, date, comment) VALUES (:identifier, :name, :date, :comment)" withParameterDictionary:arguments];
+if (!success) {
+    NSLog(@"error = %@", [db lastErrorMessage]);
+}
 ```
 
-Thus, you SHOULD NOT do this (or anything like this):
-
-```objc
-[db executeUpdate:[NSString stringWithFormat:@"INSERT INTO myTable VALUES (%@)", @"this has \" lots of ' bizarre \" quotes '"]];
-```
-Instead, you SHOULD do:
-
-```objc
-[db executeUpdate:@"INSERT INTO myTable VALUES (?)", @"this has \" lots of ' bizarre \" quotes '"];
-```
-
-All arguments provided to the `-executeUpdate:` method (or any of the variants that accept a `va_list` as a parameter) must be objects.  The following will not work (and will result in a crash):
-
-```objc
-[db executeUpdate:@"INSERT INTO myTable VALUES (?)", 42];
-```
-
-The proper way to insert a number is to box it in an `NSNumber` object:
-
-```objc
-[db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:42]];
-```
-
-Alternatively, you can use the `-execute*WithFormat:` variant to use `NSString`-style substitution:
-
-```objc
-[db executeUpdateWithFormat:@"INSERT INTO myTable VALUES (%d)", 42];
-```
-
-Internally, the `-execute*WithFormat:` methods are properly boxing things for you.  The following percent modifiers are recognized:  `%@`, `%c`, `%s`, `%d`, `%D`, `%i`, `%u`, `%U`, `%hi`, `%hu`, `%qi`, `%qu`, `%f`, `%g`, `%ld`, `%lu`, `%lld`, and `%llu`.  Using a modifier other than those will have unpredictable results.  If, for some reason, you need the `%` character to appear in your SQL statement, you should use `%%`.
-
+The key point is that one should not use `NSString` method `stringWithFormat` to manually insert values into the SQL statement, itself. Nor should one Swift string interpolation to insert values into the SQL. Use `?` placeholders for values to be inserted into the database (or used in `WHERE` clauses in `SELECT` statements).
 
 <h2 id="threads">Using FMDatabaseQueue and Thread Safety.</h2>
 
-Using a single instance of FMDatabase from multiple threads at once is a bad idea.  It has always been OK to make a FMDatabase object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
+Using a single instance of `FMDatabase` from multiple threads at once is a bad idea.  It has always been OK to make a `FMDatabase` object *per thread*.  Just don't share a single instance across threads, and definitely not across multiple threads at the same time.  Bad things will eventually happen and you'll eventually get something to crash, or maybe get an exception, or maybe meteorites will fall out of the sky and hit your Mac Pro.  *This would suck*.
 
-**So don't instantiate a single FMDatabase object and use it across multiple threads.**
+**So don't instantiate a single `FMDatabase` object and use it across multiple threads.**
 
-Instead, use FMDatabaseQueue.  It's your friend and it's here to help.  Here's how to use it:
+Instead, use `FMDatabaseQueue`. Instantiate a single `FMDatabaseQueue` and use it across multiple threads. The `FMDatabaseQueue` object will synchronize and coordinate access across the multiple threads. Here's how to use it:
 
 First, make your queue.
 
@@ -225,9 +234,9 @@ Then use it like so:
 
 ```objc
 [queue inDatabase:^(FMDatabase *db) {
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @1];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @2];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @3];
 
     FMResultSet *rs = [db executeQuery:@"select * from foo"];
     while ([rs next]) {
@@ -240,26 +249,48 @@ An easy way to wrap things up in a transaction can be done like this:
 
 ```objc
 [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @1];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @2];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @3];
 
     if (whoopsSomethingWrongHappened) {
         *rollback = YES;
         return;
     }
     // etc…
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:4]];
+    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @4];
 }];
 ```
 
-FMDatabaseQueue will run the blocks on a serialized queue (hence the name of the class).  So if you call FMDatabaseQueue's methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
+The Swift equivalent would be:
 
-**Note:** The calls to FMDatabaseQueue's methods are blocking.  So even though you are passing along blocks, they will **not** be run on another thread.
+```swift
+queue.inTransaction { db, rollback in
+    do {
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [1])
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [2])
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [3])
+
+        if whoopsSomethingWrongHappened {
+            rollback.memory = true
+            return
+        }
+
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [4])
+    } catch {
+        rollback.memory = true
+        print(error)
+    }
+}
+```
+
+`FMDatabaseQueue` will run the blocks on a serialized queue (hence the name of the class).  So if you call `FMDatabaseQueue`'s methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
+
+**Note:** The calls to `FMDatabaseQueue`'s methods are blocking.  So even though you are passing along blocks, they will **not** be run on another thread.
 
 ## Making custom sqlite functions, based on blocks.
 
-You can do this!  For an example, look for "makeFunctionNamed:" in main.m
+You can do this!  For an example, look for `-makeFunctionNamed:` in main.m
 
 ## Swift
 
@@ -267,20 +298,24 @@ You can use FMDB in Swift projects too.
 
 To do this, you must:
 
-1. Copy the FMDB `.m` and `.h` files into your project.
+1. Copy the relevant `.m` and `.h` files from the FMDB `src` folder into your project.
+
+ You can copy all of them (which is easiest), or only the ones you need. Likely you will need [`FMDatabase`](http://ccgus.github.io/fmdb/html/Classes/FMDatabase.html) and [`FMResultSet`](http://ccgus.github.io/fmdb/html/Classes/FMResultSet.html) at a minimum. [`FMDatabaseAdditions`](http://ccgus.github.io/fmdb/html/Categories/FMDatabase+FMDatabaseAdditions.html) provides some very useful convenience methods, so you will likely want that, too. If you are doing multithreaded access to a database, [`FMDatabaseQueue`](http://ccgus.github.io/fmdb/html/Classes/FMDatabaseQueue.html) is quite useful, too. If you choose to not copy all of the files from the `src` directory, though, you may want to update `FMDB.h` to only reference the files that you included in your project.
+
+ Note, if you're copying all of the files from the `src` folder into to your project (which is recommended), you may want to drag the individual files into your project, not the folder, itself, because if you drag the folder, you won't be prompted to add the bridging header (see next point).
 
 2. If prompted to create a "bridging header", you should do so. If not prompted and if you don't already have a bridging header, add one.
 
  For more information on bridging headers, see [Swift and Objective-C in the Same Project](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-XID_76).
 
 3. In your bridging header, add a line that says:
-    ```swift
+    ```objc
     #import "FMDB.h"
     ```
 
-4. Optionally, copy the `FMDatabaseVariadic.swift` from the "src/extra/Swift Extensions" folder into your project. This allows you to use `executeUpdate` and `executeQuery` with variadic parameters, rather than the `withArgumentsInArray` rendition.
+4. Use the variations of `executeQuery` and `executeUpdate` with the `sql` and `values` parameters with `try` pattern, as shown below. These renditions of `executeQuery` and `executeUpdate` both `throw` errors in true Swift 2 fashion.
 
-If you do the above, you can then write Swift code that uses FMDatabase. For example:
+If you do the above, you can then write Swift code that uses `FMDatabase`. For example:
 
 ```swift
 let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
@@ -293,27 +328,20 @@ if !database.open() {
     return
 }
 
-if !database.executeUpdate("create table test(x text, y text, z text)", withArgumentsInArray: nil) {
-    print("create table failed: \(database.lastErrorMessage())")
-}
+do {
+    try database.executeUpdate("create table test(x text, y text, z text)", values: nil)
+    try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"])
+    try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"])
 
-if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["a", "b", "c"]) {
-    print("insert 1 table failed: \(database.lastErrorMessage())")
-}
-
-if !database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", withArgumentsInArray: ["e", "f", "g"]) {
-    print("insert 2 table failed: \(database.lastErrorMessage())")
-}
-
-if let rs = database.executeQuery("select x, y, z from test", withArgumentsInArray: nil) {
+    let rs = try database.executeQuery("select x, y, z from test", values: nil)
     while rs.next() {
         let x = rs.stringForColumn("x")
         let y = rs.stringForColumn("y")
         let z = rs.stringForColumn("z")
         print("x = \(x); y = \(y); z = \(z)")
     }
-} else {
-    print("select failed: \(database.lastErrorMessage())")
+} catch let error as NSError {
+    print("failed: \(error.localizedDescription)")
 }
 
 database.close()

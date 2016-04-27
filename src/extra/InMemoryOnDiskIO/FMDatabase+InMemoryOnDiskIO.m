@@ -1,4 +1,6 @@
 #import "FMDatabase+InMemoryOnDiskIO.h"
+#import <sqlite3.h>
+
 
 // http://www.sqlite.org/backup.html
 static
