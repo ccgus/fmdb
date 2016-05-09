@@ -328,33 +328,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (BOOL)executeUpdate:(NSString*)sql, ...;
 
-/** Execute single update statement
 
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite_step`](http://sqlite.org/c3ref/step.html) to perform the update. Unlike the other `executeUpdate` methods, this uses printf-style formatters (e.g. `%s`, `%d`, etc.) to build the SQL. Do not use `?` placeholders in the SQL if you use this method.
-
- @param format The SQL to be performed, with `printf`-style escape sequences.
-
- @param ... Optional parameters to bind to use in conjunction with the `printf`-style escape sequences in the SQL statement.
-
- @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
-
- @see executeUpdate:
- @see lastError
- @see lastErrorCode
- @see lastErrorMessage
- 
- @note This method does not technically perform a traditional printf-style replacement. What this method actually does is replace the printf-style percent sequences with a SQLite `?` placeholder, and then bind values to that placeholder. Thus the following command
-
-    [db executeUpdateWithFormat:@"INSERT INTO test (name) VALUES (%@)", @"Gus"];
-
- is actually replacing the `%@` with `?` placeholder, and then performing something equivalent to `<executeUpdate:>`
-
-    [db executeUpdate:@"INSERT INTO test (name) VALUES (?)", @"Gus"];
-
- There are two reasons why this distinction is important. First, the printf-style escape sequences can only be used where it is permissible to use a SQLite `?` placeholder. You can use it only for values in SQL statements, but not for table names or column names or any other non-value context. This method also cannot be used in conjunction with `pragma` statements and the like. Second, note the lack of quotation marks in the SQL. The `VALUES` clause was _not_ `VALUES ('%@')` (like you might have to do if you built a SQL statement using `NSString` method `stringWithFormat`), but rather simply `VALUES (%@)`.
- */
-
-- (BOOL)executeUpdateWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
 /** Execute single update statement
  
@@ -532,35 +506,6 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (FMResultSet *)executeQuery:(NSString*)sql, ...;
 
-/** Execute select statement
-
- Executing queries returns an `<FMResultSet>` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the `<lastErrorMessage>` and `<lastErrorMessage>` methods to determine why a query failed.
- 
- In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" (via `<[FMResultSet next]>`) from one record to the other.
- 
- @param format The SQL to be performed, with `printf`-style escape sequences.
-
- @param ... Optional parameters to bind to use in conjunction with the `printf`-style escape sequences in the SQL statement.
-
- @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
-
- @see executeQuery:
- @see FMResultSet
- @see [`FMResultSet next`](<[FMResultSet next]>)
-
- @note This method does not technically perform a traditional printf-style replacement. What this method actually does is replace the printf-style percent sequences with a SQLite `?` placeholder, and then bind values to that placeholder. Thus the following command
- 
-    [db executeQueryWithFormat:@"SELECT * FROM test WHERE name=%@", @"Gus"];
- 
- is actually replacing the `%@` with `?` placeholder, and then performing something equivalent to `<executeQuery:>`
- 
-    [db executeQuery:@"SELECT * FROM test WHERE name=?", @"Gus"];
- 
- There are two reasons why this distinction is important. First, the printf-style escape sequences can only be used where it is permissible to use a SQLite `?` placeholder. You can use it only for values in SQL statements, but not for table names or column names or any other non-value context. This method also cannot be used in conjunction with `pragma` statements and the like. Second, note the lack of quotation marks in the SQL. The `WHERE` clause was _not_ `WHERE name='%@'` (like you might have to do if you built a SQL statement using `NSString` method `stringWithFormat`), but rather simply `WHERE name=%@`.
- 
- */
-
-- (FMResultSet *)executeQueryWithFormat:(NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
 
 /** Execute select statement
 
