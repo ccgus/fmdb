@@ -5,6 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FMDB.h"
+#import <sqlite3.h>
 
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
@@ -1045,7 +1046,7 @@ int main (int argc, const char * argv[]) {
         [adb executeUpdate:@"insert into ftest values ('not h!')"];
         [adb executeUpdate:@"insert into ftest values ('definitely not h!')"];
         
-        [adb makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(sqlite3_context *context, int aargc, sqlite3_value **aargv) {
+        [adb makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(/*sqlite3_context*/ void *context, int aargc, /*sqlite3_value*/ void **aargv) {
             if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
                 
                 @autoreleasepool {

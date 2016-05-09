@@ -209,8 +209,6 @@
 - (BOOL)validateSQL:(NSString*)sql error:(NSError* __autoreleasing*)error;
 
 
-#if SQLITE_VERSION_NUMBER >= 3007017
-
 ///-----------------------------------
 /// @name Application identifier tasks
 ///-----------------------------------
@@ -252,7 +250,6 @@
  */
 
 - (void)setApplicationIDString:(NSString*)string;
-#endif
 
 #endif
 
