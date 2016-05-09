@@ -2,7 +2,6 @@
 #import "FMResultSet.h"
 #import "FMDatabasePool.h"
 
-
 #if ! __has_feature(objc_arc)
     #define FMDBAutorelease(__v) ([__v autorelease]);
     #define FMDBReturnAutoreleased FMDBAutorelease
@@ -37,6 +36,7 @@
     #define instancetype id
 #endif
 
+@class FMDBQ;
 
 typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary);
 
@@ -327,6 +327,9 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  */
 
 - (BOOL)executeUpdate:(NSString*)sql, ...;
+
+
+- (void)executeUpdateInBackground:(FMDBQ*)q completion:(void (^)(NSError *error))callback;
 
 
 
@@ -1045,6 +1048,15 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (NSString *)stringFromDate:(NSDate *)date;
 
+
+
+
+/////////// 33333333333333333333333333333333
+
+- (FMDBQ*)u:(NSString*)sql, ...;
+
+
+
 @end
 
 
@@ -1104,4 +1116,23 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 @end
 
 #pragma clang diagnostic pop
+
+
+#pragma message "FIXME: This name is temporary"
+@interface FMDBQ : NSObject {
+    
+}
+
+
+@property (atomic, weak) FMDatabase *db;
+@property (atomic, assign) void *statement;
+@property (atomic, strong) NSString *query;
+@property (atomic, strong) NSArray *arguments;
+
+
+- (BOOL)executeUpdate:(NSError * __autoreleasing *)outErr;
+- (void)executeUpdateInBackground:(void (^)(NSError *error))callback;
+
+@end
+
 

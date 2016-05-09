@@ -47,6 +47,68 @@ int main (int argc, const char * argv[]) {
     // kind of experimentalish.
     [db setShouldCacheStatements:YES];
     
+    
+    
+    
+    
+    
+    
+    
+    
+    ////////////////////////////////////////////// 3
+    
+    {
+        
+        
+        
+        NSError *err = nil;
+        FMDBQuickCheck([[db u:@"create table test3 (a text, b text, c integer, d double, e double)"] executeUpdate:&err]);
+        FMDBQuickCheck(err == nil);
+        
+        
+        
+        __block BOOL allGood = NO;
+        
+        [[db u:@"create table test3 (a text, b text, c integer, d double, e double)"] executeUpdateInBackground:^(NSError *error) {
+            
+            
+            FMDBQuickCheck(error != nil);
+            
+            allGood = YES;
+        }];
+                        
+        
+        
+        sleep(2);
+        
+        FMDBQuickCheck(allGood);
+        
+        
+        NSLog(@"yay");
+        
+        
+        
+        
+        
+        return 0;
+        
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // create a bad statement, just to test the error code.
     [db executeUpdate:@"blah blah blah"];
     
@@ -61,8 +123,6 @@ int main (int argc, const char * argv[]) {
     FMDBQuickCheck(err != nil);
     FMDBQuickCheck([err code] == SQLITE_ERROR);
     NSLog(@"err: '%@'", err);
-    
-    
     
     // empty strings should still return a value.
     FMDBQuickCheck(([db boolForQuery:@"SELECT ? not null", @""]));
