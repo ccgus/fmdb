@@ -1291,8 +1291,10 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 }
 
 - (FMDBQ*)u:(NSString*)sql, ... {
-    FMDBQ *q = [FMDBQ new];
     
+    #pragma message "FIXME: this will go kabom if it's not on a queue."
+    
+    FMDBQ *q = [FMDBQ new];
     
     va_list args;
     va_start(args, sql);
@@ -1315,6 +1317,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
         
         sqlite3_finalize(pStmt);
         
+        return nil;
     }
     
     int idx = 0;
@@ -1384,28 +1387,55 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 
 @implementation FMDBQ
 
-- (void)executeUpdateInBackground:(void (^)(NSError *error))callback {
+- (void)executeUpdateSync:(BOOL)isSync callback:(void (^)(NSError *))callback {
+    
+    static dispatch_queue_t FMDBQ_queue;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        FMDBQ_queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], DISPATCH_QUEUE_SERIAL);
+    });
     
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    void (*dispatch_function)(dispatch_queue_t queue, dispatch_block_t block) = isSync ? dispatch_sync : dispatch_async;
+    
+    dispatch_function(FMDBQ_queue, ^{
         
         NSError *outErr = nil;
         
-        if (![self executeUpdate:&outErr]) {
+        if (![self executeUpdateInt:&outErr]) {
             callback(outErr);
         }
         else {
             callback(nil);
         }
         
-        
-        
     });
+}
+
+- (void)executeUpdateInBackground:(void (^)(NSError *error))callback {
     
+    [self executeUpdateSync:NO callback:callback];
 }
 
 
 - (BOOL)executeUpdate:(NSError * __autoreleasing *)outErr {
+    
+    __block BOOL worked = NO;
+    [self executeUpdateSync:YES callback:^(NSError *e) {
+        
+        worked = e == nil;
+        if (e) {
+            *outErr = e;
+        }
+    }];
+    
+    
+    return worked;
+}
+
+
+- (BOOL)executeUpdateInt:(NSError * __autoreleasing *)outErr {
     
     // FIXME: ref the db here instead of using an ivar.
     BOOL _logsErrors = NO;

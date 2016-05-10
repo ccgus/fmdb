@@ -45,7 +45,7 @@ int main (int argc, const char * argv[]) {
     }
     
     // kind of experimentalish.
-    [db setShouldCacheStatements:YES];
+    //[db setShouldCacheStatements:YES];
     
     
     
@@ -67,21 +67,34 @@ int main (int argc, const char * argv[]) {
         
         
         
-        __block BOOL allGood = NO;
+        __block int allGoodCount = NO;
         
         [[db u:@"create table test3 (a text, b text, c integer, d double, e double)"] executeUpdateInBackground:^(NSError *error) {
-            
-            
             FMDBQuickCheck(error != nil);
-            
-            allGood = YES;
+            allGoodCount++;
         }];
-                        
         
+        
+        
+        dispatch_apply(20, dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH), ^(size_t i) {
+            
+            NSLog(@"idx: %ld", i);
+            
+            [[db u:@"insert into test3 (a, b, c, d, e) values (?, ?, ?, ?, ?)" ,
+              @"hi'", // look!  I put in a ', and I'm not escaping it!
+              [NSString stringWithFormat:@"number %ld", i],
+              @(i),
+              [NSDate date],
+              [NSNumber numberWithFloat:2.2f]] executeUpdateInBackground:^(NSError *error) {
+                
+                FMDBQuickCheck(error == nil);
+                allGoodCount++;
+            }];
+        });
         
         sleep(2);
         
-        FMDBQuickCheck(allGood);
+        FMDBQuickCheck(allGoodCount == 21);
         
         
         NSLog(@"yay");
