@@ -838,7 +838,8 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             }
             
             if (_crashOnErrors) {
-                NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
+                NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
+                assert(NO);
                 abort();
             }
             
@@ -1290,56 +1291,6 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 #endif
 }
 
-- (FMDBQ*)u:(NSString*)sql, ... {
-    
-    #pragma message "FIXME: this will go kabom if it's not on a queue."
-    
-    FMDBQ *q = [FMDBQ new];
-    
-    va_list args;
-    va_start(args, sql);
-    
-    sqlite3_stmt *pStmt = nil;
-    
-    int rc = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
-    
-    if (SQLITE_OK != rc) {
-        if (_logsErrors) {
-            NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
-            NSLog(@"DB Query: %@", sql);
-            NSLog(@"DB Path: %@", _databasePath);
-        }
-        
-        if (_crashOnErrors) {
-            NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
-            abort();
-        }
-        
-        sqlite3_finalize(pStmt);
-        
-        return nil;
-    }
-    
-    int idx = 0;
-    int queryCount = sqlite3_bind_parameter_count(pStmt); // pointed out by Dominic Yu (thanks!)
-
-    while (idx < queryCount) {
-        
-        id obj = va_arg(args, id);
-        
-        idx++;
-        
-        [self bindObject:obj toColumn:idx inStatement:pStmt];
-    }
-    
-    va_end(args);
-    
-    [q setStatement:pStmt];
-    [q setDb:self];
-    
-    return q;
-}
-
 @end
 
 
@@ -1380,132 +1331,6 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 - (NSString*)description {
     return [NSString stringWithFormat:@"%@ %ld hit(s) for query %@", [super description], _useCount, _query];
 }
-
-
-@end
-
-
-@implementation FMDBQ
-
-- (void)executeUpdateSync:(BOOL)isSync callback:(void (^)(NSError *))callback {
-    
-    static dispatch_queue_t FMDBQ_queue;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        FMDBQ_queue = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], DISPATCH_QUEUE_SERIAL);
-    });
-    
-    
-    void (*dispatch_function)(dispatch_queue_t queue, dispatch_block_t block) = isSync ? dispatch_sync : dispatch_async;
-    
-    dispatch_function(FMDBQ_queue, ^{
-        
-        NSError *outErr = nil;
-        
-        if (![self executeUpdateInt:&outErr]) {
-            callback(outErr);
-        }
-        else {
-            callback(nil);
-        }
-        
-    });
-}
-
-- (void)executeUpdateInBackground:(void (^)(NSError *error))callback {
-    
-    [self executeUpdateSync:NO callback:callback];
-}
-
-
-- (BOOL)executeUpdate:(NSError * __autoreleasing *)outErr {
-    
-    __block BOOL worked = NO;
-    [self executeUpdateSync:YES callback:^(NSError *e) {
-        
-        worked = e == nil;
-        if (e) {
-            *outErr = e;
-        }
-    }];
-    
-    
-    return worked;
-}
-
-
-- (BOOL)executeUpdateInt:(NSError * __autoreleasing *)outErr {
-    
-    // FIXME: ref the db here instead of using an ivar.
-    BOOL _logsErrors = NO;
-    NSString *sql = nil;
-    
-    
-    /* Call sqlite3_step() to run the virtual machine. Since the SQL being
-     ** executed is not a SELECT statement, we assume no data will be returned.
-     */
-    
-    int rc = sqlite3_step(_statement);
-    
-    if (SQLITE_DONE == rc) {
-        // all is well, let's return.
-    }
-    else if (rc == SQLITE_ROW) {
-        NSString *message = [NSString stringWithFormat:@"A executeUpdate is being called with a query string '%@'", sql];
-        if (_logsErrors) {
-            NSLog(@"%@", message);
-            NSLog(@"DB Query: %@", sql);
-        }
-        if (outErr) {
-            *outErr = [[self db] errorWithMessage:message];
-        }
-    }
-    else {
-        if (outErr) {
-            *outErr = [[self db] errorWithMessage:[NSString stringWithUTF8String:sqlite3_errmsg([[self db] sqliteHandle])]];
-        }
-        
-        if (SQLITE_ERROR == rc) {
-            if (_logsErrors) {
-                NSLog(@"Error calling sqlite3_step (%d: %s) SQLITE_ERROR", rc, sqlite3_errmsg([[self db] sqliteHandle]));
-                NSLog(@"DB Query: %@", sql);
-            }
-        }
-        else if (SQLITE_MISUSE == rc) {
-            // uh oh.
-            if (_logsErrors) {
-                NSLog(@"Error calling sqlite3_step (%d: %s) SQLITE_MISUSE", rc, sqlite3_errmsg([[self db] sqliteHandle]));
-                NSLog(@"DB Query: %@", sql);
-            }
-        }
-        else {
-            // wtf?
-            if (_logsErrors) {
-                NSLog(@"Unknown error calling sqlite3_step (%d: %s) eu", rc, sqlite3_errmsg([[self db] sqliteHandle]));
-                NSLog(@"DB Query: %@", sql);
-            }
-        }
-    }
-    
-    /* Finalize the virtual machine. This releases all memory and other
-     ** resources allocated by the sqlite3_prepare() call above.
-     */
-    
-    int closeErrorCode = sqlite3_finalize(_statement);
-    
-    
-    if (closeErrorCode != SQLITE_OK) {
-        if (_logsErrors) {
-            #pragma message "FIXME: set something in the outErr here."
-            NSLog(@"Unknown error finalizing or resetting statement (%d: %s)", closeErrorCode, sqlite3_errmsg([[self db] sqliteHandle]));
-            NSLog(@"DB Query: %@", sql);
-        }
-    }
-    
-    return (rc == SQLITE_DONE || rc == SQLITE_OK);
-}
-
 
 @end
 

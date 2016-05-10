@@ -149,6 +149,14 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 }
 
 - (void)inDatabase:(void (^)(FMDatabase *db))block {
+    [self inDatabase:block isAsync:NO];
+}
+
+- (void)inBackground:(void (^)(FMDatabase *db))block {
+    [self inDatabase:block isAsync:YES];
+}
+
+- (void)inDatabase:(void (^)(FMDatabase *db))block isAsync:(BOOL)isAsync {
     /* Get the currently executing queue (which should probably be nil, but in theory could be another DB queue
      * and then check it against self to make sure we're not about to deadlock. */
     FMDatabaseQueue *currentSyncQueue = (__bridge id)dispatch_get_specific(kDispatchQueueSpecificKey);
@@ -156,7 +164,10 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     
     FMDBRetain(self);
     
-    dispatch_sync(_queue, ^() {
+    void (*dispatch_function)(dispatch_queue_t queue, dispatch_block_t block) = isAsync ? dispatch_async : dispatch_sync;
+
+    
+    dispatch_function(_queue, ^() {
         
         FMDatabase *db = [self database];
         block(db);

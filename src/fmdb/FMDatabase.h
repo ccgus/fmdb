@@ -328,11 +328,6 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (BOOL)executeUpdate:(NSString*)sql, ...;
 
-
-- (void)executeUpdateInBackground:(FMDBQ*)q completion:(void (^)(NSError *error))callback;
-
-
-
 /** Execute single update statement
  
  This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html) binding any `?` placeholders in the SQL with the optional list of parameters.
@@ -1051,12 +1046,6 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 
 
-/////////// 33333333333333333333333333333333
-
-- (FMDBQ*)u:(NSString*)sql, ...;
-
-
-
 @end
 
 
@@ -1116,23 +1105,5 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 @end
 
 #pragma clang diagnostic pop
-
-
-#pragma message "FIXME: This name is temporary"
-@interface FMDBQ : NSObject {
-    
-}
-
-
-@property (atomic, weak) FMDatabase *db;
-@property (atomic, assign) void *statement;
-@property (atomic, strong) NSString *query;
-@property (atomic, strong) NSArray *arguments;
-
-
-- (BOOL)executeUpdate:(NSError * __autoreleasing *)outErr;
-- (void)executeUpdateInBackground:(void (^)(NSError *error))callback;
-
-@end
 
 

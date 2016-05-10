@@ -45,74 +45,63 @@ int main (int argc, const char * argv[]) {
     }
     
     // kind of experimentalish.
-    //[db setShouldCacheStatements:YES];
+    [db setShouldCacheStatements:YES];
     
     
     
-    
-    
-    
-    
-    
-    
-    ////////////////////////////////////////////// 3
+    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
     
     {
         
-        
-        
-        NSError *err = nil;
-        FMDBQuickCheck([[db u:@"create table test3 (a text, b text, c integer, d double, e double)"] executeUpdate:&err]);
-        FMDBQuickCheck(err == nil);
+        // 3.0, async stuff.
         
         
         
-        __block int allGoodCount = NO;
-        
-        [[db u:@"create table test3 (a text, b text, c integer, d double, e double)"] executeUpdateInBackground:^(NSError *error) {
-            FMDBQuickCheck(error != nil);
-            allGoodCount++;
+        [queue inDatabase:^(FMDatabase *adb) {
+            [adb setShouldCacheStatements:YES];
+            [adb setCrashOnErrors:YES];
+            [adb executeUpdate:@"create table threeasync (foo text)"];
         }];
         
+        static int32_t updateCount = 0;
+        static int32_t submitCount = 0;
         
-        
-        dispatch_apply(20, dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH), ^(size_t i) {
+        dispatch_apply(40, dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_DEFAULT), ^(size_t idx) {
             
-            NSLog(@"idx: %ld", i);
-            
-            [[db u:@"insert into test3 (a, b, c, d, e) values (?, ?, ?, ?, ?)" ,
-              @"hi'", // look!  I put in a ', and I'm not escaping it!
-              [NSString stringWithFormat:@"number %ld", i],
-              @(i),
-              [NSDate date],
-              [NSNumber numberWithFloat:2.2f]] executeUpdateInBackground:^(NSError *error) {
+            [queue inBackground:^(FMDatabase *adb) {
                 
-                FMDBQuickCheck(error == nil);
-                allGoodCount++;
+                if (idx % 2 == 0) {
+                    usleep(50); // artificial delay.
+                }
+                
+                if (idx % 3 == 0) {
+                    usleep(100); // another artificial delay.
+                }
+                
+                [adb executeUpdate:@"insert into threeasync (foo) values (?)", [NSString stringWithFormat:@"%ld", idx]];
+                
+                FMDBQuickCheck(![adb hadError]);
+                
+                OSAtomicIncrement32(&updateCount);
+                
             }];
+            
+            
+            OSAtomicIncrement32(&submitCount);
         });
         
-        sleep(2);
+        NSLog(@"submitCount: %d", submitCount);
         
-        FMDBQuickCheck(allGoodCount == 21);
-        
-        
-        NSLog(@"yay");
+        FMDBQuickCheck(submitCount == 40);
         
         
-        
-        
-        
-        return 0;
-        
-        
-        
-        
-        
+        // This will block till all the above async stuff is done.
+        [queue inDatabase:^(FMDatabase *adb) {
+            NSLog(@"done?");
+            FMDBQuickCheck(updateCount == 40);
+        }];
         
     }
-    
-    
     
     
     
@@ -761,6 +750,8 @@ int main (int argc, const char * argv[]) {
     
     
     {
+        FMDBQuickCheck([db executeUpdate:@"create table t5 (a text, b int, c blob, d text, e text)"]);
+        
         FMDBQuickCheck(([db executeUpdate:@"insert into t5 values (?, ?, ?, ?, ?)" withErrorAndBindings:&err, @"text", [NSNumber numberWithInt:42], @"BLOB", @"d", [NSNumber numberWithInt:0]]));
         
     }
@@ -870,7 +861,7 @@ int main (int argc, const char * argv[]) {
     
     
     
-    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
+    
     
     FMDBQuickCheck(queue);
     
@@ -1073,11 +1064,13 @@ int main (int argc, const char * argv[]) {
         }];
         
         int rowCount = 0;
-        FMResultSet *ars = [adb executeQuery:@"select * from ftest where StringStartsWithH(foo)"];
+        FMResultSet *ars = [adb executeQuery:@"select foo from ftest where StringStartsWithH(foo)"];
         while ([ars next]) {
             rowCount++;
             
-            NSLog(@"Does %@ start with 'h'?", [rs stringForColumnIndex:0]);
+            FMDBQuickCheck([[ars stringForColumnIndex:0] hasPrefix:@"h"]);
+            
+            NSLog(@"Does %@ start with 'h'?", [ars stringForColumnIndex:0]);
             
         }
         FMDBQuickCheck(rowCount == 2);
@@ -1085,6 +1078,8 @@ int main (int argc, const char * argv[]) {
         testStatementCaching();
         
     }];
+    
+    
     
     NSLog(@"That was version %@ of sqlite", [FMDatabase sqliteLibVersion]);
     
