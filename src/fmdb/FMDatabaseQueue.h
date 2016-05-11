@@ -165,6 +165,8 @@
 
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
 
+- (void)inBackgroundTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+
 /** Synchronously perform database operations on queue, using deferred transactions.
 
  @param block The code to be run on the queue of `FMDatabaseQueue`

@@ -189,9 +189,12 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 }
 
 
-- (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)beginTransaction:(BOOL)useDeferred isAsync:(BOOL)isAsync withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+    
+    void (*dispatch_function)(dispatch_queue_t queue, dispatch_block_t block) = isAsync ? dispatch_async : dispatch_sync;
+    
+    dispatch_function(_queue, ^() {
         
         BOOL shouldRollback = NO;
         
@@ -216,11 +219,15 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 }
 
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    [self beginTransaction:YES withBlock:block];
+    [self beginTransaction:YES isAsync:NO withBlock:block];
 }
 
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    [self beginTransaction:NO withBlock:block];
+    [self beginTransaction:NO isAsync:NO withBlock:block];
+}
+
+- (void)inBackgroundTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
+    [self beginTransaction:NO isAsync:YES withBlock:block];
 }
 
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {

@@ -55,8 +55,6 @@ int main (int argc, const char * argv[]) {
         
         // 3.0, async stuff.
         
-        
-        
         [queue inDatabase:^(FMDatabase *adb) {
             [adb setShouldCacheStatements:YES];
             [adb setCrashOnErrors:YES];
@@ -86,7 +84,6 @@ int main (int argc, const char * argv[]) {
                 
             }];
             
-            
             OSAtomicIncrement32(&submitCount);
         });
         
@@ -94,13 +91,73 @@ int main (int argc, const char * argv[]) {
         
         FMDBQuickCheck(submitCount == 40);
         
-        
         // This will block till all the above async stuff is done.
         [queue inDatabase:^(FMDatabase *adb) {
             NSLog(@"done?");
             FMDBQuickCheck(updateCount == 40);
         }];
         
+        
+        
+        
+        {
+            // Let's do async transactions now.
+            
+            updateCount = 0;
+            submitCount = 0;
+            
+            [queue inBackgroundTransaction:^(FMDatabase *adb, BOOL *rollback) {
+                 [adb executeUpdate:@"delete from threeasync"];
+            }];
+            
+            
+            [queue inDatabase:^(FMDatabase *adb) {
+                int count = [adb intForQuery:@"select count(*) from threeasync"];
+                FMDBQuickCheck(count == 0);
+            }];
+            
+            
+            dispatch_apply(20, dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_DEFAULT), ^(size_t idx) {
+                
+                [queue inBackgroundTransaction:^(FMDatabase *adb, BOOL *rollback) {
+                    
+                    if (idx % 2 == 0) {
+                        usleep(50); // artificial delay.
+                    }
+                    
+                    if (idx % 3 == 0) {
+                        usleep(100); // another artificial delay.
+                    }
+                    
+                    [adb executeUpdate:@"insert into threeasync (foo) values (?)", @(idx)];
+                    [adb executeUpdate:@"insert into threeasync (foo) values (?)", @(idx * 2)];
+                    [adb executeUpdate:@"insert into threeasync (foo) values (?)", @(idx * 4)];
+                    [adb executeUpdate:@"insert into threeasync (foo) values (?)", @(idx * 8)];
+                    
+                    FMDBQuickCheck(![adb hadError]);
+                    
+                    OSAtomicIncrement32(&updateCount);
+                    
+                }];
+                
+                
+                OSAtomicIncrement32(&submitCount);
+            });
+            
+            NSLog(@"submitCount: %d", submitCount);
+            
+            FMDBQuickCheck(submitCount == 20);
+            
+            // This will block till all the above async stuff is done.
+            [queue inDatabase:^(FMDatabase *adb) {
+                NSLog(@"done?");
+                FMDBQuickCheck(updateCount == 20);
+                
+                int count = [adb intForQuery:@"select count(*) from threeasync"];
+                
+                FMDBQuickCheck(count == 80);
+            }];
+        }
     }
     
     
