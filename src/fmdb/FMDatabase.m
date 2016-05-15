@@ -893,7 +893,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 - (FMResultSet *)executeQuery:(NSString*)sql, ... {
     va_list args;
     va_start(args, sql);
-    
+
+    sql = [NSString stringWithFormat:sql, args];
+
     id result = [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:args];
     
     va_end(args);
@@ -1152,6 +1154,8 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 - (BOOL)executeUpdate:(NSString*)sql, ... {
     va_list args;
     va_start(args, sql);
+    
+    sql = [NSString stringWithFormat:sql, args];
     
     BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:args];
     
