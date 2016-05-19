@@ -627,20 +627,20 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
     
     if (![self databaseExists]) {
-        return 0x00;
+        return nil;
     }
     
     if (_isExecutingStatement) {
         [self warnInUse];
-        return 0x00;
+        return nil;
     }
     
     _isExecutingStatement = YES;
     
-    int rc                  = 0x00;
-    sqlite3_stmt *pStmt     = 0x00;
-    FMStatement *statement  = 0x00;
-    FMResultSet *rs         = 0x00;
+    int rc                  = SQLITE_OK;
+    sqlite3_stmt *pStmt     = nil;
+    FMStatement *statement  = nil;
+    FMResultSet *rs         = nil;
     
     if (_traceExecution && sql) {
         NSLog(@"%@ executeQuery: %@", self, sql);
@@ -648,7 +648,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     
     if (_shouldCacheStatements) {
         statement = [self cachedStatementForQuery:sql];
-        pStmt = statement ? [statement statement] : 0x00;
+        pStmt = statement ? [statement statement] : nil;
         [statement reset];
     }
     
@@ -811,11 +811,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     
     _isExecutingStatement = YES;
     
-    #pragma message "FIXME: chagne all the 0x00's to nils."
-    
-    int rc                   = 0x00;
-    sqlite3_stmt *pStmt      = 0x00;
-    FMStatement *cachedStmt  = 0x00;
+    int rc                   = SQLITE_OK;
+    sqlite3_stmt *pStmt      = nil;
+    FMStatement *cachedStmt  = nil;
     
     if (_traceExecution && sql) {
         NSLog(@"%@ executeUpdate: %@", self, sql);
@@ -823,7 +821,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     
     if (_shouldCacheStatements) {
         cachedStmt = [self cachedStatementForQuery:sql];
-        pStmt = cachedStmt ? [cachedStmt statement] : 0x00;
+        pStmt = cachedStmt ? [cachedStmt statement] : nil;
         [cachedStmt reset];
     }
     
@@ -1214,7 +1212,7 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     
     BOOL shouldRollback = NO;
     
-    NSError *err = 0x00;
+    NSError *err = nil;
     
     if (![self startSavePointWithName:name error:&err]) {
         return err;
@@ -1285,9 +1283,9 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
     
     /* I tried adding custom functions to release the block when the connection is destroyed- but they seemed to never be called, so we use _openFunctions to store the values instead. */
 #if ! __has_feature(objc_arc)
-    sqlite3_create_function([self sqliteHandle], [name UTF8String], count, SQLITE_UTF8, (void*)b, &FMDBBlockSQLiteCallBackFunction, 0x00, 0x00);
+    sqlite3_create_function([self sqliteHandle], [name UTF8String], count, SQLITE_UTF8, (void*)b, &FMDBBlockSQLiteCallBackFunction, nil, nil);
 #else
-    sqlite3_create_function([self sqliteHandle], [name UTF8String], count, SQLITE_UTF8, (__bridge void*)b, &FMDBBlockSQLiteCallBackFunction, 0x00, 0x00);
+    sqlite3_create_function([self sqliteHandle], [name UTF8String], count, SQLITE_UTF8, (__bridge void*)b, &FMDBBlockSQLiteCallBackFunction, nil, nil);
 #endif
 }
 
@@ -1314,7 +1312,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 - (void)close {
     if (_statement) {
         sqlite3_finalize(_statement);
-        _statement = 0x00;
+        _statement = nil;
     }
     
     _inUse = NO;

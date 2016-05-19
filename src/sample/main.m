@@ -177,7 +177,7 @@ int main (int argc, const char * argv[]) {
         NSLog(@"Err %d: %@", [db lastErrorCode], [db lastErrorMessage]);
     }
     
-    NSError *err = 0x00;
+    NSError *err = nil;
     FMDBQuickCheck(![db executeUpdate:@"blah blah blah" withErrorAndBindings:&err]);
     FMDBQuickCheck(err != nil);
     FMDBQuickCheck([err code] == SQLITE_ERROR);

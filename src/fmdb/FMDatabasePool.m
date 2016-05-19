@@ -74,14 +74,14 @@
 
 - (void)dealloc {
     
-    _delegate = 0x00;
+    _delegate = nil;
     FMDBRelease(_path);
     FMDBRelease(_databaseInPool);
     FMDBRelease(_databaseOutPool);
     
     if (_lockQueue) {
         FMDBDispatchQueueRelease(_lockQueue);
-        _lockQueue = 0x00;
+        _lockQueue = nil;
     }
 #if ! __has_feature(objc_arc)
     [super dealloc];
@@ -149,7 +149,7 @@
         if (success) {
             if ([self->_delegate respondsToSelector:@selector(databasePool:shouldAddDatabaseToPool:)] && ![self->_delegate databasePool:self shouldAddDatabaseToPool:db]) {
                 [db close];
-                db = 0x00;
+                db = nil;
             }
             else {
                 //It should not get added in the pool twice if lastObject was found
@@ -164,7 +164,7 @@
         }
         else {
             NSLog(@"Could not open up the database at path %@", self->_path);
-            db = 0x00;
+            db = nil;
         }
     }];
     
@@ -263,7 +263,7 @@
     
     FMDatabase *db = [self db];
     
-    NSError *err = 0x00;
+    NSError *err = nil;
     
     if (![db startSavePointWithName:name error:&err]) {
         [self pushDatabaseBackInPool:db];

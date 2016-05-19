@@ -75,7 +75,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         if (!success) {
             NSLog(@"Could not create database queue for path %@", aPath);
             FMDBRelease(self);
-            return 0x00;
+            return nil;
         }
         
         _path = FMDBReturnRetained(aPath);
@@ -111,7 +111,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     
     if (_queue) {
         FMDBDispatchQueueRelease(_queue);
-        _queue = 0x00;
+        _queue = nil;
     }
 #if ! __has_feature(objc_arc)
     [super dealloc];
@@ -123,7 +123,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     dispatch_sync(_queue, ^() {
         [self->_db close];
         FMDBRelease(_db);
-        self->_db = 0x00;
+        self->_db = nil;
     });
     FMDBRelease(self);
 }
@@ -140,8 +140,8 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
         if (!success) {
             NSLog(@"FMDatabaseQueue could not reopen database for path %@", _path);
             FMDBRelease(_db);
-            _db  = 0x00;
-            return 0x00;
+            _db  = nil;
+            return nil;
         }
     }
     
@@ -233,7 +233,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
 #if SQLITE_VERSION_NUMBER >= 3007000
     static unsigned long savePointIdx = 0;
-    __block NSError *err = 0x00;
+    __block NSError *err = nil;
     FMDBRetain(self);
     dispatch_sync(_queue, ^() { 
         
