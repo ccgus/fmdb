@@ -38,7 +38,6 @@ return ret;
     RETURN_RESULT_FOR_QUERY_WITH_SELECTOR(NSString *, stringForColumnIndex);
 }
 
-#pragma message "FIXME: rename this integer? Or maybe give a size like uint32 or something along those lines?"
 - (int)intForQuery:(NSString*)query, ... {
     RETURN_RESULT_FOR_QUERY_WITH_SELECTOR(int, intForColumnIndex);
 }
