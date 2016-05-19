@@ -50,10 +50,6 @@
     return self;
 }
 
-- (void)finalize {
-    [self close];
-    [super finalize];
-}
 
 - (void)dealloc {
     [self close];
@@ -1294,12 +1290,6 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 
 
 @implementation FMStatement
-
-#pragma message "FIXME: kill all the finalizes"
-- (void)finalize {
-    [self close];
-    [super finalize];
-}
 
 - (void)dealloc {
     [self close];

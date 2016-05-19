@@ -30,11 +30,6 @@
     return FMDBReturnAutoreleased(rs);
 }
 
-- (void)finalize {
-    [self close];
-    [super finalize];
-}
-
 - (void)dealloc {
     [self close];
     
