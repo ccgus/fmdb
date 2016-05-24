@@ -24,21 +24,18 @@ Pod::Spec.new do |s|
 
   # build the latest stable version of sqlite3
   s.subspec 'standalone' do |ss|
-    ss.default_subspec = 'default'    
     ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DFMDB_SQLITE_STANDALONE' }
-    
-    ss.subspec 'default' do |sss|
-      sss.dependency 'sqlite3'
-      sss.source_files = 'src/fmdb/FM*.{h,m}'
-      sss.exclude_files = 'src/fmdb.m'
-    end
+    ss.dependency 'sqlite3'
+    ss.source_files = 'src/fmdb/FM*.{h,m}'
+    ss.exclude_files = 'src/fmdb.m'
+  end
 
-    # build with FTS support and custom FTS tokenizer source files
-    ss.subspec 'FTS' do |sss|
-      sss.source_files = 'src/fmdb/FM*.{h,m}', 'src/extra/fts3/*.{h,m}'
-      sss.exclude_files = 'src/fmdb.m'
-      sss.dependency 'sqlite3/fts'
-    end
+  # build with FTS support and custom FTS tokenizer source files
+  s.subspec 'standalone-fts' do |ss|
+    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DFMDB_SQLITE_STANDALONE' }
+    ss.source_files = 'src/fmdb/FM*.{h,m}', 'src/extra/fts3/*.{h,m}'
+    ss.exclude_files = 'src/fmdb.m'
+    ss.dependency 'sqlite3/fts'
   end
 
   # use SQLCipher and enable -DSQLITE_HAS_CODEC flag
