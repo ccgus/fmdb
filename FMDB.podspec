@@ -9,50 +9,53 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.default_subspec = 'standard'
 
+  # common: for internal use only
   s.subspec 'common' do |ss|
     ss.source_files = 'src/fmdb/FM*.{h,m}'
     ss.exclude_files = 'src/fmdb.m'
   end
-
-  # use the built-in library version of sqlite3
+  
+  # common_FTS: for internal use only
+  s.subspec 'common_FTS' do |ss|
+    ss.source_files = 'src/extra/fts3/*.{h,m}'
+    ss.pod_target_xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_ENABLE_FTS4=1 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1' }
+  end
+  
+  # standard: use the built-in library version of sqlite3
   s.subspec 'standard' do |ss|
     ss.library = 'sqlite3'
-    ss.source_files = 'src/fmdb/FM*.{h,m}'
-    ss.exclude_files = 'src/fmdb.m'
+    ss.dependency 'FMDB/common'
+    
+    # use the built-in library version of sqlite3 with custom FTS tokenizer source files
+    ss.subspec 'FTS' do |sss|
+      sss.dependency 'FMDB/common_FTS'
+    end
   end
 
-  # use the built-in library version of sqlite3 with custom FTS tokenizer source files
-  s.subspec 'FTS' do |ss|
-    ss.source_files = 'src/extra/fts3/*.{h,m}'
-    ss.dependency 'FMDB/standard'
-  end
-
-  # build the latest stable version of sqlite3
+  # standalone: latest stable version of sqlite3
   s.subspec 'standalone' do |ss|
-    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DFMDB_SQLITE_STANDALONE' }
     ss.dependency 'sqlite3'
     ss.dependency 'FMDB/common'
-	end
-	
-  # build the latest stable version of sqlite3 
-	# with FTS support and custom FTS tokenizer source files
-  s.subspec 'standalone-fts' do |ss|
-    ss.dependency 'FMDB/standalone'
-    ss.dependency 'sqlite3/fts'
-    ss.source_files = 'src/extra/fts3/*.{h,m}'
+    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DFMDB_SQLITE_STANDALONE' }
+
+    # standalone/FTS: latest stable version of sqlite3 + custom FTS tokenizer source files  
+    ss.subspec 'FTS' do |sss|
+      sss.dependency 'sqlite3/fts'
+      sss.dependency 'FMDB/common_FTS'
+    end
   end
 
-  # use SQLCipher and enable -DSQLITE_HAS_CODEC flag
+  # SQLCipher: SQLCipher replaces sqlite3, and enable -DSQLITE_HAS_CODEC flag
   s.subspec 'SQLCipher' do |ss|
     ss.dependency 'SQLCipher'
-  	ss.dependency 'FMDB/common'
-    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DHAVE_USLEEP=1' }		
-		
-		# FMDB/SQLCipher/FTS subspec, which uses SQLCipher 
-		# and adds FTS support + custom FTS tokenizer source files
+    ss.dependency 'FMDB/common'
+    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DHAVE_USLEEP=1' }   
+    
+    # SQLCipher/FTS subspec, which uses SQLCipher 
+    # and adds FTS support + custom FTS tokenizer source files
     ss.subspec 'FTS' do |sss|
-        sss.dependency 'SQLCipher/fts'
-        sss.dependency 'FMDB/FTS'
+      sss.dependency 'SQLCipher/fts'
+      sss.dependency 'FMDB/common_FTS'
     end
   end  
 end
