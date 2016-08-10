@@ -317,6 +317,7 @@ To do this, you must:
 
 If you do the above, you can then write Swift code that uses `FMDatabase`. For example, in Swift 3:
 
+```swift
 let fileURL = try! FileManager.default
     .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     .appendingPathComponent("test.sqlite")
