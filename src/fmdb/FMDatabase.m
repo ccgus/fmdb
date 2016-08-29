@@ -1210,6 +1210,9 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     for (NSInteger i = 0; i < columns; i++) {
         NSString *key = [NSString stringWithUTF8String:names[i]];
         id value = values[i] ? [NSString stringWithUTF8String:values[i]] : [NSNull null];
+        if (value == nil) {
+            value = [NSNull null];
+        }
         [dictionary setObject:value forKey:key];
     }
     
