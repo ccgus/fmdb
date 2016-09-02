@@ -34,7 +34,7 @@
 /**
  Load a stop-word tokenizer using a file containing words delimited by newlines. The file should be encoded in UTF-8.
  */
-+ (instancetype)tokenizerWithFileURL:(NSURL *)wordFileURL baseTokenizer:(id<FMTokenizerDelegate>)tokenizer error:(NSError **)error;
++ (instancetype)tokenizerWithFileURL:(NSURL *)wordFileURL baseTokenizer:(id<FMTokenizerDelegate>)tokenizer error:(NSError *__autoreleasing *)error;
 
 /**
  Initialize an instance of the tokenizer using the set of words. The words should be lowercase if you're using the 

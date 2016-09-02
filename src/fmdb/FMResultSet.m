@@ -156,7 +156,7 @@
     return [self nextWithError:nil];
 }
 
-- (BOOL)nextWithError:(NSError **)outErr {
+- (BOOL)nextWithError:(NSError *__autoreleasing *)outErr {
     
     int rc = sqlite3_step([_statement statement]);
     
