@@ -7,6 +7,7 @@
 //
 
 #import "FMDatabase+Introspection.h"
+#import "FMResultSet+ORM.h"
 
 @implementation FMDatabase (Introspection)
 
@@ -19,22 +20,21 @@
     
     tableName = [tableName lowercaseString];
     
-    FMDatabaseResult *rs = [self executeQueryWithParameters:@"select [sql] from sqlite_master where [type] = 'table' and lower(name) = ?", tableName,nil];
+    FMResultSet *rs = [self executeQuery:@"select [sql] from sqlite_master where [type] = 'table' and lower(name) = ?", tableName,nil];
     
-    //if at least one next exists, table exists
-    return rs.count > 0;
+    return [[rs resultDictionaries]count] > 0;
 }
 
 /*
  get table with list of tables: result colums: type[STRING], name[STRING],tbl_name[STRING],rootpage[INTEGER],sql[STRING]
  check if table exist in database  (patch from OZLB)
  */
-- (NSArray*)getSchema {
-    
+- (NSArray*)getSchema
+{
     //result colums: type[STRING], name[STRING],tbl_name[STRING],rootpage[INTEGER],sql[STRING]
-    FMDatabaseResult *rs = [self executeQuery:@"SELECT type, name, tbl_name, rootpage, sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type != 'meta' AND name NOT LIKE 'sqlite_%' ORDER BY tbl_name, type DESC, name"];
-    
-    return [rs.rows valueForKey:@"dictionary"];
+    FMResultSet *rs = [self executeQuery:@"SELECT type, name, tbl_name, rootpage, sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type != 'meta' AND name NOT LIKE 'sqlite_%' ORDER BY tbl_name, type DESC, name"];
+ 
+    return [rs resultDictionaries];
 }
 
 /*
@@ -43,8 +43,8 @@
 - (NSArray*)getTableSchema:(NSString*)tableName {
     
     //result colums: cid[INTEGER], name,type [STRING], notnull[INTEGER], dflt_value[],pk[INTEGER]
-    FMDatabaseResult* rs = [self executeQuery:[NSString stringWithFormat: @"pragma table_info('%@')", tableName]];
-    return [rs.rows valueForKey:@"dictionary"];
+    FMResultSet* rs = [self executeQuery:[NSString stringWithFormat:@"pragma table_info('%@')", tableName]];
+    return [rs resultDictionaries];
 }
 
 - (BOOL)columnExists:(NSString*)columnName inTableWithName:(NSString*)tableName
@@ -67,8 +67,8 @@
 
 -(NSDictionary*)createScripts
 {
-    FMDatabaseResult* rs = [self executeQuery:@"select name, sql from sqlite_master where type='table' ORDER BY name"];
-    NSArray* rows = [rs.rows valueForKey:@"dictionary"];
+    FMResultSet* rs = [self executeQuery:@"select name, sql from sqlite_master where type='table' ORDER BY name"];
+    NSArray* rows = [rs resultDictionaries];
     return [NSDictionary dictionaryWithObjects:[rows valueForKey:@"sql"] forKeys:[rows valueForKey:@"name"]];
 }
 

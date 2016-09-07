@@ -7,6 +7,7 @@
 //
 
 #import "FMResultSet+ORM.h"
+#import "FMDatabase.h"
 
 #if FMDB_SQLITE_STANDALONE
 #import <sqlite3/sqlite3.h>
@@ -36,6 +37,16 @@
     return newRows;
 }
 
+- (NSArray*)resultDictionaries
+{
+    NSMutableArray* newRows = [NSMutableArray array];
+    while([self next])
+    {
+        [newRows addObject: [self resultDictionary]];
+    }
+    return newRows;
+}
+
 - (id)populateObject:(id)obj
 {
     [self kvcMagic:obj];
@@ -55,7 +66,7 @@
         if (c) 
         {
             NSString *s = [NSString stringWithUTF8String:c];    
-            [object setValue:s forKey:d[[NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)]]];
+            [obj setValue:s forKey:d[[NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)]]];
         }
     }
     return obj;

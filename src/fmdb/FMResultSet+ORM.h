@@ -12,5 +12,6 @@
 
 - (NSArray*)objectsOfClass:(Class)c;
 - (NSArray*)objectsOfClass:(Class)c mappings:(NSDictionary*)d;
+- (NSArray*)resultDictionaries;
 
 @end
