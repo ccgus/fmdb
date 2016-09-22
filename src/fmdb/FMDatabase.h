@@ -834,16 +834,32 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 /** Last error code
  
  Returns the numeric result code or extended result code for the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.
-
+ 
  @return Integer value of the last error code.
-
+ 
  @see [sqlite3_errcode()](http://sqlite.org/c3ref/errcode.html)
  @see lastErrorMessage
  @see lastError
-
+ 
  */
 
 - (int)lastErrorCode;
+
+/** Last extended error code
+ 
+ Returns the numeric extended result code for the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.
+ 
+ @return Integer value of the last extended error code.
+ 
+ @see [sqlite3_errcode()](http://sqlite.org/c3ref/errcode.html)
+ @see [2. Primary Result Codes versus Extended Result Codes](http://sqlite.org/rescode.html#primary_result_codes_versus_extended_result_codes)
+ @see [5. Extended Result Code List](http://sqlite.org/rescode.html#extrc)
+ @see lastErrorMessage
+ @see lastError
+ 
+ */
+
+- (int)lastExtendedErrorCode;
 
 /** Had error
 
