@@ -323,7 +323,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  @note This technique supports the use of `?` placeholders in the SQL, automatically binding any supplied value parameters to those placeholders. This approach is more robust than techniques that entail using `stringWithFormat` to manually build SQL statements, which can be problematic if the values happened to include any characters that needed to be quoted.
  
- @note If you want to use this from Swift, please note that you must include `FMDatabaseVariadic.swift` in your project. Without that, you cannot use this method directly, and instead have to use methods such as `<executeUpdate:withArgumentsInArray:>`.
+ @note You cannot use this method from Swift due to incompatibilities between Swift and Objective-C variadic implementations. Consider using `<executeUpdate:values:>` instead.
  */
 
 - (BOOL)executeUpdate:(NSString*)sql, ...;
@@ -527,7 +527,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [`FMResultSet next`](<[FMResultSet next]>)
  @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
  
- @note If you want to use this from Swift, please note that you must include `FMDatabaseVariadic.swift` in your project. Without that, you cannot use this method directly, and instead have to use methods such as `<executeQuery:withArgumentsInArray:>`.
+ @note You cannot use this method from Swift due to incompatibilities between Swift and Objective-C variadic implementations. Consider using `<executeQuery:values:>` instead.
  */
 
 - (FMResultSet *)executeQuery:(NSString*)sql, ...;
