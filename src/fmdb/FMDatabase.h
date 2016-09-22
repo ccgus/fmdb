@@ -323,7 +323,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  @note This technique supports the use of `?` placeholders in the SQL, automatically binding any supplied value parameters to those placeholders. This approach is more robust than techniques that entail using `stringWithFormat` to manually build SQL statements, which can be problematic if the values happened to include any characters that needed to be quoted.
  
- @note If you want to use this from Swift, please note that you must include `FMDatabaseVariadic.swift` in your project. Without that, you cannot use this method directly, and instead have to use methods such as `<executeUpdate:withArgumentsInArray:>`.
+ @note You cannot use this method from Swift due to incompatibilities between Swift and Objective-C variadic implementations. Consider using `<executeUpdate:values:>` instead.
  */
 
 - (BOOL)executeUpdate:(NSString*)sql, ...;
@@ -527,7 +527,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [`FMResultSet next`](<[FMResultSet next]>)
  @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
  
- @note If you want to use this from Swift, please note that you must include `FMDatabaseVariadic.swift` in your project. Without that, you cannot use this method directly, and instead have to use methods such as `<executeQuery:withArgumentsInArray:>`.
+ @note You cannot use this method from Swift due to incompatibilities between Swift and Objective-C variadic implementations. Consider using `<executeQuery:values:>` instead.
  */
 
 - (FMResultSet *)executeQuery:(NSString*)sql, ...;
@@ -843,16 +843,32 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 /** Last error code
  
  Returns the numeric result code or extended result code for the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.
-
+ 
  @return Integer value of the last error code.
-
+ 
  @see [sqlite3_errcode()](http://sqlite.org/c3ref/errcode.html)
  @see lastErrorMessage
  @see lastError
-
+ 
  */
 
 - (int)lastErrorCode;
+
+/** Last extended error code
+ 
+ Returns the numeric extended result code for the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.
+ 
+ @return Integer value of the last extended error code.
+ 
+ @see [sqlite3_errcode()](http://sqlite.org/c3ref/errcode.html)
+ @see [2. Primary Result Codes versus Extended Result Codes](http://sqlite.org/rescode.html#primary_result_codes_versus_extended_result_codes)
+ @see [5. Extended Result Code List](http://sqlite.org/rescode.html#extrc)
+ @see lastErrorMessage
+ @see lastError
+ 
+ */
+
+- (int)lastExtendedErrorCode;
 
 /** Had error
 

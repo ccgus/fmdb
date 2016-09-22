@@ -501,6 +501,10 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     return sqlite3_errcode(_db);
 }
 
+- (int)lastExtendedErrorCode {
+    return sqlite3_extended_errcode(_db);
+}
+
 - (NSError*)errorWithMessage:(NSString*)message {
     NSDictionary* errorMessage = [NSDictionary dictionaryWithObject:message forKey:NSLocalizedDescriptionKey];
     
