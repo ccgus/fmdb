@@ -53,7 +53,8 @@ An `FMDatabase` is created with a path to a SQLite database file.  This path can
 (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: http://www.sqlite.org/inmemorydb.html)
 
 ```objc
-FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"tmp.db"];
+FMDatabase *db = [FMDatabase databaseWithPath:path];
 ```
 
 ### Opening
@@ -62,7 +63,8 @@ Before you can interact with the database, it must be opened.  Opening fails if 
 
 ```objc
 if (![db open]) {
-    [db release];
+    // [db release];   // uncomment this line in manual referencing code; in ARC, this is not necessary/permitted
+    db = nil;
     return;
 }
 ```
