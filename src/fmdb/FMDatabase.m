@@ -73,7 +73,7 @@
 }
 
 + (NSString*)FMDBUserVersion {
-    return @"2.6.2";
+    return @"2.6.3";
 }
 
 // returns 0x0240 for version 2.4.  This makes it super easy to do things like:

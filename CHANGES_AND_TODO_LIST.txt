@@ -3,6 +3,18 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2016.10.21
+    Changed all `NSLog` statements that report errors to do so conditionally, only if `logsErrors` is set.
+
+2016.09.22
+    Added `lastExtendedErrorCode`.
+
+2016.06.08
+    Added `interrupt`.
+
+2016.04.06
+    Added virtual file support.
+
 2015.12.28
     Removed `sqlite3.h` from the headers to simplify incorporation of FMDB into a framework. This eliminates the dreaded "non-modular headers" error in frameworks.
 
