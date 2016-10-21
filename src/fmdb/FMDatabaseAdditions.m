@@ -180,7 +180,7 @@ return ret;
 
 - (void)setApplicationIDString:(NSString*)s {
 #if SQLITE_VERSION_NUMBER >= 3007017
-    if ([s length] != 4) {
+    if ([s length] != 4 && _logsErrors) {
         NSLog(@"setApplicationIDString: string passed is not exactly 4 chars long. (was %ld)", [s length]);
     }
     

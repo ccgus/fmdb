@@ -141,7 +141,9 @@
     
     int err = sqlite3_open([self sqlitePath], (sqlite3**)&_db );
     if(err != SQLITE_OK) {
-        NSLog(@"error opening!: %d", err);
+        if (_logsErrors) {
+            NSLog(@"error opening!: %d", err);
+        }
         return NO;
     }
     
@@ -165,7 +167,9 @@
     
     int err = sqlite3_open_v2([self sqlitePath], (sqlite3**)&_db, flags, [vfsName UTF8String]);
     if(err != SQLITE_OK) {
-        NSLog(@"error opening!: %d", err);
+        if (_logsErrors) {
+            NSLog(@"error opening!: %d", err);
+        }
         return NO;
     }
     
@@ -176,7 +180,9 @@
     
     return YES;
 #else
-    NSLog(@"openWithFlags requires SQLite 3.5");
+    if (_logsErrors) {
+        NSLog(@"openWithFlags requires SQLite 3.5");
+    }
     return NO;
 #endif
 }
@@ -203,14 +209,18 @@
                 triedFinalizingOpenStatements = YES;
                 sqlite3_stmt *pStmt;
                 while ((pStmt = sqlite3_next_stmt(_db, nil)) !=0) {
-                    NSLog(@"Closing leaked statement");
+                    if (_logsErrors) {
+                        NSLog(@"Closing leaked statement");
+                    }
                     sqlite3_finalize(pStmt);
                     retry = YES;
                 }
             }
         }
         else if (SQLITE_OK != rc) {
-            NSLog(@"error closing!: %d", rc);
+            if (_logsErrors) {
+                NSLog(@"error closing!: %d", rc);
+            }
         }
     }
     while (retry);
@@ -244,7 +254,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     if (delta < [self maxBusyRetryTimeInterval]) {
         int requestedSleepInMillseconds = (int) arc4random_uniform(50) + 50;
         int actualSleepInMilliseconds = sqlite3_sleep(requestedSleepInMillseconds);
-        if (actualSleepInMilliseconds != requestedSleepInMillseconds) {
+        if (actualSleepInMilliseconds != requestedSleepInMillseconds && self.logsErrors) {
             NSLog(@"WARNING: Requested sleep of %i milliseconds, but SQLite returned %i. Maybe SQLite wasn't built with HAVE_USLEEP=1?", requestedSleepInMillseconds, actualSleepInMilliseconds);
         }
         return 1;
@@ -279,15 +289,19 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 // but for folks who don't bother noticing that the interface to FMDatabase changed,
 // we'll still implement the method so they don't get suprise crashes
 - (int)busyRetryTimeout {
-    NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-    NSLog(@"FMDB: busyRetryTimeout no longer works, please use maxBusyRetryTimeInterval");
+    if (_logsErrors) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"FMDB: busyRetryTimeout no longer works, please use maxBusyRetryTimeInterval");
+    }
     return -1;
 }
 
 - (void)setBusyRetryTimeout:(int)i {
 #pragma unused(i)
-    NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-    NSLog(@"FMDB: setBusyRetryTimeout does nothing, please use setMaxBusyRetryTimeInterval:");
+    if (_logsErrors) {
+        NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+        NSLog(@"FMDB: setBusyRetryTimeout does nothing, please use setMaxBusyRetryTimeInterval:");
+    }
 }
 
 #pragma mark Result set functions
@@ -375,7 +389,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     
     int rc = sqlite3_rekey(_db, [keyData bytes], (int)[keyData length]);
     
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK && _logsErrors) {
         NSLog(@"error on rekey: %d", rc);
         NSLog(@"%@", [self lastErrorMessage]);
     }
@@ -456,7 +470,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 }
 
 - (void)warnInUse {
-    NSLog(@"The FMDatabase %@ is currently in use.", self);
+    if (_logsErrors) {
+        NSLog(@"The FMDatabase %@ is currently in use.", self);
+    }
     
 #ifndef NS_BLOCK_ASSERTIONS
     if (_crashOnErrors) {
@@ -469,8 +485,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 - (BOOL)databaseExists {
     
     if (!_db) {
-        
-        NSLog(@"The FMDatabase %@ is not open.", self);
+        if (_logsErrors) {
+            NSLog(@"The FMDatabase %@ is not open.", self);
+        }
         
 #ifndef NS_BLOCK_ASSERTIONS
         if (_crashOnErrors) {
@@ -826,7 +843,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
                 idx++;
             }
             else {
-                NSLog(@"Could not find index for %@", dictionaryKey);
+                if (_logsErrors) {
+                    NSLog(@"Could not find index for %@", dictionaryKey);
+                }
             }
         }
     }
@@ -861,7 +880,9 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     }
     
     if (idx != queryCount) {
-        NSLog(@"Error: the bind count is not correct for the # of variables (executeQuery)");
+        if (_logsErrors) {
+            NSLog(@"Error: the bind count is not correct for the # of variables (executeQuery)");
+        }
         sqlite3_finalize(pStmt);
         _isExecutingStatement = NO;
         return nil;
@@ -1231,8 +1252,10 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     
     rc = sqlite3_exec([self sqliteHandle], [sql UTF8String], block ? FMDBExecuteBulkSQLCallback : nil, (__bridge void *)(block), &errmsg);
     
-    if (errmsg && [self logsErrors]) {
-        NSLog(@"Error inserting batch: %s", errmsg);
+    if (errmsg) {
+        if (_logsErrors) {
+            NSLog(@"Error inserting batch: %s", errmsg);
+        }
         sqlite3_free(errmsg);
     }
     
