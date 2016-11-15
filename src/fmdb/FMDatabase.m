@@ -50,10 +50,12 @@
     return self;
 }
 
+#if ! __has_feature(objc_arc)
 - (void)finalize {
     [self close];
     [super finalize];
 }
+#endif
 
 - (void)dealloc {
     [self close];
@@ -1461,10 +1463,12 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 @synthesize useCount=_useCount;
 @synthesize inUse=_inUse;
 
+#if ! __has_feature(objc_arc)
 - (void)finalize {
     [self close];
     [super finalize];
 }
+#endif
 
 - (void)dealloc {
     [self close];
