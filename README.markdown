@@ -20,7 +20,7 @@ Do you have an awesome idea that deserves to be in FMDB?  You might consider pin
 
 FMDB can be installed using [CocoaPods](https://cocoapods.org/).
 
-```
+```ruby
 pod 'FMDB'
 # pod 'FMDB/FTS'   # FMDB with FTS
 # pod 'FMDB/standalone'   # FMDB with latest SQLite amalgamation source
