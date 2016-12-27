@@ -238,8 +238,8 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         self->_startBusyRetryTime = [NSDate timeIntervalSinceReferenceDate];
         return 1;
     }
-    
-    NSTimeInterval delta = [NSDate timeIntervalSinceReferenceDate] - (self->_startBusyRetryTime);
+    /** appledoc NSInternalInconsistencyException: Invalid parameter not satisfying: [arguments count] >= 1 , add to  (NSTimeInterval)(self->_startBusyRetryTime);   succeed*/
+    NSTimeInterval delta = [NSDate timeIntervalSinceReferenceDate] - (NSTimeInterval)(self->_startBusyRetryTime);
     
     if (delta < [self maxBusyRetryTimeInterval]) {
         int requestedSleepInMillseconds = (int) arc4random_uniform(50) + 50;
