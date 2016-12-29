@@ -71,7 +71,7 @@
         int columnIdx = 0;
         for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
             [_columnNameToIndexMap setObject:[NSNumber numberWithInt:columnIdx]
-                                      forKey:[[NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)] lowercaseString]];
+                                      forKey:[NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)]];
         }
     }
     return _columnNameToIndexMap;
