@@ -213,7 +213,7 @@
 }
 
 - (int)columnIndexForName:(NSString*)columnName {
-    columnName = [columnName lowercaseString];
+//    columnName = [columnName lowercaseString];
     
     NSNumber *n = [[self columnNameToIndexMap] objectForKey:columnName];
     
