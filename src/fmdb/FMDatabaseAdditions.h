@@ -206,7 +206,7 @@
  
  */
 
-- (BOOL)validateSQL:(NSString*)sql error:(NSError**)error;
+- (BOOL)validateSQL:(NSString*)sql error:(NSError *__autoreleasing *)error;
 
 
 ///-----------------------------------
