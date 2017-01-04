@@ -1368,26 +1368,21 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 #endif
 }
 
-- (NSError*)inSavePoint:(void (^)(BOOL *rollback))block {
+- (NSError*)inSavePoint:(BOOL (^)(void))block {
 #if SQLITE_VERSION_NUMBER >= 3007000
     static unsigned long savePointIdx = 0;
     
     NSString *name = [NSString stringWithFormat:@"dbSavePoint%ld", savePointIdx++];
-    
-    BOOL shouldRollback = NO;
-    
+
     NSError *err = 0x00;
     
     if (![self startSavePointWithName:name error:&err]) {
         return err;
     }
     
-    if (block) {
-        block(&shouldRollback);
-    }
+    BOOL success = block();
     
-    if (shouldRollback) {
-        // We need to rollback and release this savepoint to remove it
+    if (!success) {
         [self rollbackToSavePointWithName:name error:&err];
     }
     [self releaseSavePointWithName:name error:&err];
