@@ -10,8 +10,8 @@
 
 @interface FMDatabase ()
 
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
-- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list*)args;
+- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list*)args;
 
 @end
 
@@ -750,7 +750,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     return [self executeQuery:sql withArgumentsInArray:nil orDictionary:arguments orVAList:nil];
 }
 
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
+- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list*)args {
     
     if (![self databaseExists]) {
         return 0x00;
@@ -840,7 +840,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
                 obj = [arrayArgs objectAtIndex:(NSUInteger)idx];
             }
             else if (args) {
-                obj = va_arg(args, id);
+                obj = va_arg(*args, id);
             }
             else {
                 //We ran out of arguments
@@ -900,7 +900,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     va_list args;
     va_start(args, sql);
     
-    id result = [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    id result = [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:&args];
     
     va_end(args);
     return result;
@@ -932,12 +932,12 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 }
 
 - (FMResultSet *)executeQuery:(NSString*)sql withVAList:(va_list)args {
-    return [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    return [self executeQuery:sql withArgumentsInArray:nil orDictionary:nil orVAList:&args];
 }
 
 #pragma mark Execute updates
 
-- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args {
+- (BOOL)executeUpdate:(NSString*)sql error:(NSError**)outErr withArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list*)args {
     
     if (![self databaseExists]) {
         return NO;
@@ -1037,7 +1037,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
                 obj = [arrayArgs objectAtIndex:(NSUInteger)idx];
             }
             else if (args) {
-                obj = va_arg(args, id);
+                obj = va_arg(*args, id);
             }
             else {
                 //We ran out of arguments
@@ -1165,7 +1165,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     va_list args;
     va_start(args, sql);
     
-    BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:&args];
     
     va_end(args);
     return result;
@@ -1184,7 +1184,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 }
 
 - (BOOL)executeUpdate:(NSString*)sql withVAList:(va_list)args {
-    return [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    return [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:&args];
 }
 
 - (BOOL)executeUpdateWithFormat:(NSString*)format, ... {
@@ -1246,7 +1246,7 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     va_list args;
     va_start(args, outErr);
     
-    BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:&args];
     
     va_end(args);
     return result;
@@ -1259,7 +1259,7 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     va_list args;
     va_start(args, outErr);
     
-    BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:args];
+    BOOL result = [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:&args];
     
     va_end(args);
     return result;
