@@ -259,32 +259,34 @@ An easy way to wrap things up in a transaction can be done like this:
         *rollback = YES;
         return;
     }
-    // etc…
-    [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @4];
+
+    // etc ...
 }];
 ```
 
-The Swift equivalent would be:
+The Swift 3 equivalent would be:
 
 ```swift
 queue.inTransaction { db, rollback in
     do {
-        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [1])
-        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [2])
-        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [3])
+        try db?.executeUpdate("INSERT INTO myTable VALUES (?)", values: [1])
+        try db?.executeUpdate("INSERT INTO myTable VALUES (?)", values: [2])
+        try db?.executeUpdate("INSERT INTO myTable VALUES (?)", values: [3])
 
         if whoopsSomethingWrongHappened {
-            rollback.memory = true
+            rollback?.pointee = true
             return
         }
 
-        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [4])
+        // etc ...
     } catch {
-        rollback.memory = true
+        rollback?.pointee = true
         print(error)
     }
 }
 ```
+
+(Note, in Swift 3, use `pointee`. But in Swift 2.3, use `memory` rather than `pointee`.)
 
 `FMDatabaseQueue` will run the blocks on a serialized queue (hence the name of the class).  So if you call `FMDatabaseQueue`'s methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
 
