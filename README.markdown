@@ -1,4 +1,4 @@
-# FMDB v2.6.2
+# FMDB v2.7
 
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
@@ -35,6 +35,78 @@ http://ccgus.github.io/fmdb/html/index.html
 
 ## Automatic Reference Counting (ARC) or Manual Memory Management?
 You can use either style in your Cocoa project.  FMDB will figure out which you are using at compile time and do the right thing.
+
+## What's New in FMDB 2.7
+
+### Nullability and Swift Optionals
+
+FMDB 2.8 is largely the same as prior versions, but has been audited for nullability. For Objective-C users, this simply means that you may receive more meaningful warnings if you attempt to pass `nil` to a method that does not accept `nil` values.
+
+The main benefit is for Swift users, where the library will use optionals more judiciously, and only use where optionals are necessary.
+
+This means, though, that Swift code written for FMDB 2.7 may require changes. For example, consider the following Swift 3 code written for FMDB 2.6:
+```swift
+queue.inTransaction { db, rollback in
+    do {
+        try db?.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [1])
+        try db?.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [2])
+    } catch {
+        rollback?.pointee = true
+    }
+}
+```
+
+Because FMDB 2.6 was not audited for nullability, Swift assumed that the `db` and `rollback` were optionals. But, now, in FMDB 2.7, Swift now knows that neither `db` nor `rollback` can be `nil`, so they are not optionals any more. Thus it becomes:
+
+```swift
+queue.inTransaction { db, rollback in
+    do {
+        try db.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [1])
+        try db.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [2])
+    } catch {
+        rollback.pointee = true
+    }
+}
+```
+
+### Custom Functions
+
+In the past, when writing custom functions, you would have to generally include your own `@autoreleasepool` block to avoid problems when writing functions that scanned through a large table. Now, FMDB will automatically wrap it in an autorelease pool, so you don't have to.
+
+Also, in the past, when retrieving the values passed to the function, you had to drop down to the SQLite C API and include your own `sqlite3_value_XXX` calls. There are now `FMDatabase` methods, `valueInt`, `valueString`, etc., so you can stay within Swift and/or Objective-C, without needing to call the C functions yourself. Likewise, when specifying the return values, you no longer need to call `sqlite3_result_XXX` C API, but rather you can use `FMDatabase` methods, `resultInt`, `resultString`, etc. There is a new `enum` for `valueType` called `SqliteValueType`, which can be used for checking the type of parameter passed to the custom function.
+
+Thus, you can do something like (in Swift 3):
+
+```swift
+db.makeFunctionNamed("RemoveDiacritics", arguments: 1) { context, argc, argv in
+    guard db.valueType(argv[0]) == .text || db.valueType(argv[0]) == .null else {
+        db.resultError("Expected string parameter", context: context)
+        return
+    }
+
+    if let string = db.valueString(argv[0])?.folding(options: .diacriticInsensitive, locale: nil) {
+        db.resultString(string, context: context)
+    } else {
+        db.resultNull(context: context)
+    }
+}
+```
+
+And you can then use that function in your SQL (in this case, matching both "Jose" and "José"):
+
+```sql
+SELECT * FROM employees WHERE RemoveDiacritics(first_name) LIKE 'jose'
+```
+
+Note, the method `makeFunctionNamed:maximumArguments:withBlock:` has been renamed to `makeFunctionNamed:arguments:block:`, to more accurately reflect the functional intent of the second parameter.
+
+### API Changes
+
+In addition to the `makeFunctionNamed` noted above, there are two other API changes. Specifically, to become consistent with the rest of the API, the methods `objectForColumnName` and `UTF8StringForColumnName` have been renamed to `objectForColumn` and `UTF8StringForColumn`.
+
+### URL Methods
+
+Added `NSURL` renditions of the various `init` methods, previously only accepting paths. 
 
 ## Usage
 There are three main classes in FMDB:
@@ -269,18 +341,18 @@ The Swift 3 equivalent would be:
 ```swift
 queue.inTransaction { db, rollback in
     do {
-        try db?.executeUpdate("INSERT INTO myTable VALUES (?)", values: [1])
-        try db?.executeUpdate("INSERT INTO myTable VALUES (?)", values: [2])
-        try db?.executeUpdate("INSERT INTO myTable VALUES (?)", values: [3])
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [1])
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [2])
+        try db.executeUpdate("INSERT INTO myTable VALUES (?)", values: [3])
 
         if whoopsSomethingWrongHappened {
-            rollback?.pointee = true
+            rollback.pointee = true
             return
         }
 
         // etc ...
     } catch {
-        rollback?.pointee = true
+        rollback.pointee = true
         print(error)
     }
 }
@@ -326,7 +398,7 @@ let fileURL = try! FileManager.default
     .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     .appendingPathComponent("test.sqlite")
 
-guard let database = FMDatabase(path: fileURL.path) else {
+guard let database = FMDatabase(url: fileURL) else {
     print("unable to create database")
     return
 }
@@ -361,7 +433,7 @@ let fileURL = try! NSFileManager.defaultManager()
     .URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
     .URLByAppendingPathComponent("test.sqlite")
 
-let database = FMDatabase(path: fileURL.path)
+let database = FMDatabase(url: fileURL)
 
 if !database.open() {
     print("Unable to open database")

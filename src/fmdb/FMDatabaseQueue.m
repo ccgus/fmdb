@@ -36,8 +36,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 @synthesize openFlags = _openFlags;
 @synthesize vfsName = _vfsName;
 
-+ (instancetype)databaseQueueWithPath:(NSString*)aPath {
-    
++ (instancetype)databaseQueueWithPath:(NSString *)aPath {
     FMDatabaseQueue *q = [[self alloc] initWithPath:aPath];
     
     FMDBAutorelease(q);
@@ -45,8 +44,11 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     return q;
 }
 
-+ (instancetype)databaseQueueWithPath:(NSString*)aPath flags:(int)openFlags {
-    
++ (instancetype)databaseQueueWithURL:(NSURL *)url {
+    return [self databaseQueueWithPath:url.path];
+}
+
++ (instancetype)databaseQueueWithPath:(NSString *)aPath flags:(int)openFlags {
     FMDatabaseQueue *q = [[self alloc] initWithPath:aPath flags:openFlags];
     
     FMDBAutorelease(q);
@@ -54,12 +56,19 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     return q;
 }
 
++ (instancetype)databaseQueueWithURL:(NSURL *)url flags:(int)openFlags {
+    return [self databaseQueueWithPath:url.path flags:openFlags];
+}
+
 + (Class)databaseClass {
     return [FMDatabase class];
 }
 
+- (instancetype)initWithURL:(NSURL *)url flags:(int)openFlags vfs:(NSString *)vfsName {
+    return [self initWithPath:url.path flags:openFlags vfs:vfsName];
+}
+
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags vfs:(NSString *)vfsName {
-    
     self = [super init];
     
     if (self != nil) {
@@ -89,12 +98,19 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     return self;
 }
 
-- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags {
+- (instancetype)initWithPath:(NSString *)aPath flags:(int)openFlags {
     return [self initWithPath:aPath flags:openFlags vfs:nil];
 }
 
-- (instancetype)initWithPath:(NSString*)aPath {
-    
+- (instancetype)initWithURL:(NSURL *)url flags:(int)openFlags {
+    return [self initWithPath:url.path flags:openFlags vfs:nil];
+}
+
+- (instancetype)initWithURL:(NSURL *)url {
+    return [self initWithPath:url.path];
+}
+
+- (instancetype)initWithPath:(NSString *)aPath {
     // default flags for sqlite3_open
     return [self initWithPath:aPath flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE vfs:nil];
 }
@@ -105,9 +121,9 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 
     
 - (void)dealloc {
-    
     FMDBRelease(_db);
     FMDBRelease(_path);
+    FMDBRelease(_vfsName);
     
     if (_queue) {
         FMDBDispatchQueueRelease(_queue);
@@ -128,8 +144,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     FMDBRelease(self);
 }
 
-- (void)interrupt
-{
+- (void)interrupt {
     [[self database] interrupt];
 }
 
@@ -183,7 +198,6 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     
     FMDBRelease(self);
 }
-
 
 - (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     FMDBRetain(self);

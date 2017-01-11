@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
 /** Category of additions for `<FMDatabase>` class.
  
@@ -81,7 +82,7 @@
  @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
  */
 
-- (NSString*)stringForQuery:(NSString*)query, ...;
+- (NSString * _Nullable)stringForQuery:(NSString*)query, ...;
 
 /** Return `NSData` value for query
 
@@ -93,7 +94,7 @@
  @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
  */
 
-- (NSData*)dataForQuery:(NSString*)query, ...;
+- (NSData * _Nullable)dataForQuery:(NSString*)query, ...;
 
 /** Return `NSDate` value for query
 
@@ -105,7 +106,7 @@
  @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
  */
 
-- (NSDate*)dateForQuery:(NSString*)query, ...;
+- (NSDate * _Nullable)dateForQuery:(NSString*)query, ...;
 
 
 // Notice that there's no dataNoCopyForQuery:.
@@ -141,7 +142,7 @@
  @see [SQLite File Format](http://www.sqlite.org/fileformat.html)
  */
 
-- (FMResultSet*)getSchema;
+- (FMResultSet *)getSchema;
 
 /** The schema of the database.
 
@@ -206,7 +207,7 @@
  
  */
 
-- (BOOL)validateSQL:(NSString*)sql error:(NSError**)error;
+- (BOOL)validateSQL:(NSString*)sql error:(NSError * _Nullable *)error;
 
 
 ///-----------------------------------
@@ -276,3 +277,5 @@
 - (void)setUserVersion:(uint32_t)version;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class FMDatabase;
 
 /** Pool of `<FMDatabase>` objects.
@@ -69,53 +71,102 @@
 ///---------------------
 
 /** Create pool using path.
-
+ 
  @param aPath The file path of the database.
-
+ 
  @return The `FMDatabasePool` object. `nil` on error.
  */
 
-+ (instancetype)databasePoolWithPath:(NSString*)aPath;
++ (instancetype)databasePoolWithPath:(NSString * _Nullable)aPath;
+
+/** Create pool using file URL.
+ 
+ @param url The file `NSURL` of the database.
+ 
+ @return The `FMDatabasePool` object. `nil` on error.
+ */
+
++ (instancetype)databasePoolWithURL:(NSURL * _Nullable)url;
 
 /** Create pool using path and specified flags
-
+ 
  @param aPath The file path of the database.
  @param openFlags Flags passed to the openWithFlags method of the database
-
+ 
  @return The `FMDatabasePool` object. `nil` on error.
  */
 
-+ (instancetype)databasePoolWithPath:(NSString*)aPath flags:(int)openFlags;
++ (instancetype)databasePoolWithPath:(NSString * _Nullable)aPath flags:(int)openFlags;
+
+/** Create pool using file URL and specified flags
+ 
+ @param url The file `NSURL` of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ 
+ @return The `FMDatabasePool` object. `nil` on error.
+ */
+
++ (instancetype)databasePoolWithURL:(NSURL * _Nullable)url flags:(int)openFlags;
 
 /** Create pool using path.
-
+ 
  @param aPath The file path of the database.
-
+ 
  @return The `FMDatabasePool` object. `nil` on error.
  */
 
-- (instancetype)initWithPath:(NSString*)aPath;
+- (instancetype)initWithPath:(NSString * _Nullable)aPath;
+
+/** Create pool using file URL.
+ 
+ @param url The file `NSURL of the database.
+ 
+ @return The `FMDatabasePool` object. `nil` on error.
+ */
+
+- (instancetype)initWithURL:(NSURL * _Nullable)url;
 
 /** Create pool using path and specified flags.
-
+ 
  @param aPath The file path of the database.
  @param openFlags Flags passed to the openWithFlags method of the database
-
+ 
  @return The `FMDatabasePool` object. `nil` on error.
  */
 
-- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags;
+- (instancetype)initWithPath:(NSString * _Nullable)aPath flags:(int)openFlags;
+
+/** Create pool using file URL and specified flags.
+ 
+ @param url The file `NSURL` of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ 
+ @return The `FMDatabasePool` object. `nil` on error.
+ */
+
+- (instancetype)initWithURL:(NSURL * _Nullable)url flags:(int)openFlags;
 
 /** Create pool using path and specified flags.
-
+ 
  @param aPath The file path of the database.
  @param openFlags Flags passed to the openWithFlags method of the database
  @param vfsName The name of a custom virtual file system
-
+ 
  @return The `FMDatabasePool` object. `nil` on error.
  */
 
-- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags vfs:(NSString *)vfsName;
+- (instancetype)initWithPath:(NSString * _Nullable)aPath flags:(int)openFlags vfs:(NSString * _Nullable)vfsName;
+
+/** Create pool using file URL and specified flags.
+ 
+ @param url The file `NSURL` of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ @param vfsName The name of a custom virtual file system
+ 
+ @return The `FMDatabasePool` object. `nil` on error.
+ */
+
+- (instancetype)initWithURL:(NSURL * _Nullable)url flags:(int)openFlags vfs:(NSString * _Nullable)vfsName;
 
 /** Returns the Class of 'FMDatabase' subclass, that will be used to instantiate database object.
 
@@ -189,7 +240,7 @@
  @warning You can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock. If you need to nest, use `<[FMDatabase startSavePointWithName:error:]>` instead.
 */
 
-- (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (NSError * _Nullable)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
 
 @end
 
@@ -223,3 +274,4 @@
 
 @end
 
+NS_ASSUME_NONNULL_END

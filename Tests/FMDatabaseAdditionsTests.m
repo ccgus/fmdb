@@ -77,8 +77,19 @@
     XCTAssertEqualWithAccuracy([foo timeIntervalSinceDate:date], 0.0, 1.0, @"Dates should be the same to within a second");
 }
 
-- (void)testTableExists
-{
+- (void)testValidate {
+    NSError *error;
+    XCTAssert([self.db validateSQL:@"create table datetest (a double, b double, c double)" error:&error]);
+    XCTAssertNil(error, @"There should be no error object");
+}
+
+- (void)testFailValidate {
+    NSError *error;
+    XCTAssertFalse([self.db validateSQL:@"blah blah blah" error:&error]);
+    XCTAssert(error, @"There should be no error object");
+}
+
+- (void)testTableExists {
     XCTAssertTrue([self.db executeUpdate:@"create table t4 (a text, b text)"]);
 
     XCTAssertTrue([self.db tableExists:@"t4"]);
@@ -91,8 +102,7 @@
 
 }
 
-- (void)testColumnExists
-{
+- (void)testColumnExists {
     [self.db executeUpdate:@"create table nulltest (a text, b text)"];
     
     XCTAssertTrue([self.db columnExists:@"a" inTableWithName:@"nulltest"]);
@@ -101,7 +111,6 @@
 }
 
 - (void)testUserVersion {
-    
     [[self db] setUserVersion:12];
     
     XCTAssertTrue([[self db] userVersion] == 12);

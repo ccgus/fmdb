@@ -2,6 +2,7 @@
 #import "FMResultSet.h"
 #import "FMDatabasePool.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
 #if ! __has_feature(objc_arc)
     #define FMDBAutorelease(__v) ([__v autorelease]);
@@ -113,7 +114,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 /** Dictionary of cached statements */
 
-@property (atomic, retain) NSMutableDictionary *cachedStatements;
+@property (atomic, retain, nullable) NSMutableDictionary *cachedStatements;
 
 ///---------------------
 /// @name Initialization
@@ -145,7 +146,8 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  */
 
-+ (instancetype)databaseWithPath:(NSString*)inPath;
++ (instancetype)databaseWithPath:(NSString * _Nullable)inPath;
++ (instancetype)databaseWithURL:(NSURL * _Nullable)url;
 
 /** Initialize a `FMDatabase` object.
  
@@ -167,14 +169,41 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
 
- @param inPath Path of database file
+ @param path Path of database file.
  
  @return `FMDatabase` object if successful; `nil` if failure.
 
  */
 
-- (instancetype)initWithPath:(NSString*)inPath;
+- (instancetype)initWithPath:(NSString * _Nullable)path;
 
+/** Initialize a `FMDatabase` object.
+ 
+ An `FMDatabase` is created with a local file URL to a SQLite database file.  This path can be one of these three:
+ 
+ 1. A file system path.  The file does not have to exist on disk.  If it does not exist, it is created for you.
+ 2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
+ 3. `nil`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
+ 
+ For example, to create/open a database in your Mac OS X `tmp` folder:
+ 
+ FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+ 
+ Or, in iOS, you might open a database in the app's `Documents` directory:
+ 
+ NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+ NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
+ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
+ 
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
+ 
+ @param url The file `NSURL` of database file.
+ 
+ @return `FMDatabase` object if successful; `nil` if failure.
+ 
+ */
+
+- (instancetype)initWithURL:(NSURL * _Nullable)url;
 
 ///-----------------------------------
 /// @name Opening and closing database
@@ -243,7 +272,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see close
  */
 
-- (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName;
+- (BOOL)openWithFlags:(int)flags vfs:(NSString * _Nullable)vfsName;
 
 /** Closing a database connection
  
@@ -293,7 +322,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
  */
 
-- (BOOL)executeUpdate:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
+- (BOOL)executeUpdate:(NSString*)sql withErrorAndBindings:(NSError * _Nullable *)outErr, ...;
 
 /** Execute single update statement
  
@@ -302,7 +331,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @warning **Deprecated**: Please use `<executeUpdate:withErrorAndBindings>` instead.
  */
 
-- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ... __attribute__ ((deprecated));
+- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError * _Nullable*)outErr, ... __attribute__ ((deprecated));
 
 /** Execute single update statement
 
@@ -402,7 +431,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (BOOL)executeUpdate:(NSString*)sql values:(NSArray *)values error:(NSError * __autoreleasing *)error;
+- (BOOL)executeUpdate:(NSString*)sql values:(NSArray * _Nullable)values error:(NSError * _Nullable __autoreleasing *)error;
 
 /** Execute single update statement
 
@@ -476,7 +505,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  */
 
-- (BOOL)executeStatements:(NSString *)sql withResultBlock:(FMDBExecuteStatementsCallbackBlock)block;
+- (BOOL)executeStatements:(NSString *)sql withResultBlock:(FMDBExecuteStatementsCallbackBlock _Nullable)block;
 
 /** Last insert rowid
  
@@ -530,7 +559,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @note You cannot use this method from Swift due to incompatibilities between Swift and Objective-C variadic implementations. Consider using `<executeQuery:values:>` instead.
  */
 
-- (FMResultSet *)executeQuery:(NSString*)sql, ...;
+- (FMResultSet * _Nullable)executeQuery:(NSString*)sql, ...;
 
 /** Execute select statement
 
@@ -560,7 +589,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (FMResultSet *)executeQueryWithFormat:(NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
+- (FMResultSet * _Nullable)executeQueryWithFormat:(NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
 
 /** Execute select statement
 
@@ -579,7 +608,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [`FMResultSet next`](<[FMResultSet next]>)
  */
 
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
+- (FMResultSet * _Nullable)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
 
 /** Execute select statement
  
@@ -608,7 +637,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  */
 
-- (FMResultSet *)executeQuery:(NSString *)sql values:(NSArray *)values error:(NSError * __autoreleasing *)error;
+- (FMResultSet * _Nullable)executeQuery:(NSString *)sql values:(NSArray * _Nullable)values error:(NSError * _Nullable __autoreleasing *)error;
 
 /** Execute select statement
 
@@ -626,11 +655,11 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see [`FMResultSet next`](<[FMResultSet next]>)
  */
 
-- (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
+- (FMResultSet * _Nullable)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary * _Nullable)arguments;
 
 
 // Documentation forthcoming.
-- (FMResultSet *)executeQuery:(NSString*)sql withVAList: (va_list)args;
+- (FMResultSet * _Nullable)executeQuery:(NSString *)sql withVAList:(va_list)args;
 
 ///-------------------
 /// @name Transactions
@@ -811,7 +840,15 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (NSString *)databasePath;
+- (NSString * _Nullable)databasePath;
+
+/** The file URL of the database file.
+ 
+ @return The file `NSURL` of database.
+ 
+ */
+
+- (NSURL * _Nullable)databaseURL;
 
 /** The underlying SQLite handle 
  
@@ -819,7 +856,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (void*)sqliteHandle;
+- (void *)sqliteHandle;
 
 
 ///-----------------------------
@@ -891,7 +928,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (NSError*)lastError;
+- (NSError *)lastError;
 
 
 // description forthcoming
@@ -915,7 +952,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see rollbackToSavePointWithName:error:
  */
 
-- (BOOL)startSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (BOOL)startSavePointWithName:(NSString*)name error:(NSError * _Nullable *)outErr;
 
 /** Release save point
 
@@ -930,7 +967,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError * _Nullable *)outErr;
 
 /** Roll back to save point
 
@@ -944,7 +981,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr;
+- (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError * _Nullable *)outErr;
 
 /** Start save point
 
@@ -958,7 +995,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (NSError*)inSavePoint:(void (^)(BOOL *rollback))block;
+- (NSError * _Nullable)inSavePoint:(void (^)(BOOL *rollback))block;
 
 ///----------------------------
 /// @name SQLite library status
@@ -996,48 +1033,63 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  For example:
  
-    [queue inDatabase:^(FMDatabase *adb) {
-
-        [adb executeUpdate:@"create table ftest (foo text)"];
-        [adb executeUpdate:@"insert into ftest values ('hello')"];
-        [adb executeUpdate:@"insert into ftest values ('hi')"];
-        [adb executeUpdate:@"insert into ftest values ('not h!')"];
-        [adb executeUpdate:@"insert into ftest values ('definitely not h!')"];
-
-        [adb makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(sqlite3_context *context, int aargc, sqlite3_value **aargv) {
-            if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
-                @autoreleasepool {
-                    const char *c = (const char *)sqlite3_value_text(aargv[0]);
-                    NSString *s = [NSString stringWithUTF8String:c];
-                    sqlite3_result_int(context, [s hasPrefix:@"h"]);
-                }
-            }
-            else {
-                NSLog(@"Unknown formart for StringStartsWithH (%d) %s:%d", sqlite3_value_type(aargv[0]), __FUNCTION__, __LINE__);
-                sqlite3_result_null(context);
-            }
-        }];
-
-        int rowCount = 0;
-        FMResultSet *ars = [adb executeQuery:@"select * from ftest where StringStartsWithH(foo)"];
-        while ([ars next]) {
-            rowCount++;
-            NSLog(@"Does %@ start with 'h'?", [rs stringForColumnIndex:0]);
+    [db makeFunctionNamed:@"RemoveDiacritics" arguments:1 block:^(void *context, int argc, void **argv) {
+        SqliteValueType type = [self.db valueType:argv[0]];
+        if (type == SqliteValueTypeNull) {
+            [self.db resultNullInContext:context];
+             return;
         }
-        FMDBQuickCheck(rowCount == 2);
+        if (type != SqliteValueTypeText) {
+            [self.db resultError:@"Expected text" context:context];
+            return;
+        }
+        NSString *string = [self.db valueString:argv[0]];
+        NSString *result = [string stringByFoldingWithOptions:NSDiacriticInsensitiveSearch locale:nil];
+        [self.db resultString:result context:context];
     }];
 
- @param name Name of function
+    FMResultSet *rs = [db executeQuery:@"SELECT * FROM employees WHERE RemoveDiacritics(first_name) LIKE 'jose'"];
+    NSAssert(rs, @"Error %@", [db lastErrorMessage]);
+ 
+ @param name Name of function.
 
- @param count Maximum number of parameters
+ @param arguments Maximum number of parameters.
 
- @param block The block of code for the function
+ @param block The block of code for the function.
 
  @see [sqlite3_create_function()](http://sqlite.org/c3ref/create_function.html)
  */
 
-- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(void *context, int argc, void **argv))block;
+- (void)makeFunctionNamed:(NSString *)name arguments:(int)arguments block:(void (^)(void *context, int argc, void * _Nonnull * _Nonnull argv))block;
 
+- (void)makeFunctionNamed:(NSString *)name maximumArguments:(int)count withBlock:(void (^)(void *context, int argc, void * _Nonnull * _Nonnull argv))block __deprecated_msg("Use makeFunctionNamed:arguments:block:");
+
+typedef NS_ENUM(int, SqliteValueType) {
+    SqliteValueTypeInteger = 1,
+    SqliteValueTypeFloat   = 2,
+    SqliteValueTypeText    = 3,
+    SqliteValueTypeBlob    = 4,
+    SqliteValueTypeNull    = 5
+};
+
+- (SqliteValueType)valueType:(void *)argv;
+
+- (int)valueInt:(void *)value;
+- (long)valueLong:(void *)value;
+- (double)valueDouble:(void *)value;
+- (NSData * _Nullable)valueData:(void *)value;
+- (NSString * _Nullable)valueString:(void *)value;
+
+- (void)resultNullInContext:(void *)context NS_SWIFT_NAME(resultNull(context:));
+- (void)resultInt:(int) value context:(void *)context;
+- (void)resultLong:(long)value context:(void *)context;
+- (void)resultDouble:(double)value context:(void *)context;
+- (void)resultData:(NSData *)data context:(void *)context;
+- (void)resultString:(NSString *)value context:(void *)context;
+- (void)resultError:(NSString *)error context:(void *)context;
+- (void)resultErrorCode:(int)errorCode context:(void *)context;
+- (void)resultErrorNoMemoryInContext:(void *)context NS_SWIFT_NAME(resultErrorNoMemory(context:));
+- (void)resultErrorTooBigInContext:(void *)context NS_SWIFT_NAME(resultErrorTooBig(context:));
 
 ///---------------------
 /// @name Date formatter
@@ -1185,3 +1237,4 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 #pragma clang diagnostic pop
 
+NS_ASSUME_NONNULL_END
