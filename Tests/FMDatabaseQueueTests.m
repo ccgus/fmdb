@@ -179,4 +179,62 @@
 
 }
 
+-(void) testRollbackTransaction
+{
+
+    @try {
+
+        [self.queue inTransaction:^(FMDatabase *adb, BOOL* rollback) {
+            [adb executeUpdate:@"INSERT INTO easy VALUES (?)", [NSNumber numberWithInt:42]];
+            @throw [[NSException alloc] initWithName:@"Test" reason:@"TestException" userInfo:@{}];
+        }];
+
+        XCTFail(@"Didn't throw exception");
+
+    } @catch (NSException *exception) {
+    
+        __block BOOL hasResults = 0;
+    
+        [self.queue inDatabase:^(FMDatabase *adb) {
+            FMResultSet *results = [adb executeQuery:@"SELECT * FROM easy"];
+            hasResults = [results hasAnotherRow];
+            [results close];
+        }];
+
+        XCTAssertFalse(hasResults, @"Commit should not have succeeded.");
+
+    }
+
+
+}
+
+-(void) testRollbackSavePoint
+{
+    
+    @try {
+        
+        [self.queue inSavePoint:^(FMDatabase *adb, BOOL* rollback) {
+            [adb executeUpdate:@"INSERT INTO easy VALUES (?)", [NSNumber numberWithInt:42]];
+            @throw [[NSException alloc] initWithName:@"Test" reason:@"TestException" userInfo:@{}];
+        }];
+
+        XCTFail(@"Didn't throw exception");
+        
+    } @catch (NSException *exception) {
+        
+        __block BOOL hasResults = 0;
+
+        [self.queue inDatabase:^(FMDatabase *adb) {
+            FMResultSet *results = [adb executeQuery:@"SELECT * FROM easy"];
+            hasResults = [results hasAnotherRow];
+            [results close];
+        }];
+
+        XCTAssertFalse(hasResults, @"Commit should not have succeeded.");
+        
+    }
+    
+    
+}
+
 @end
