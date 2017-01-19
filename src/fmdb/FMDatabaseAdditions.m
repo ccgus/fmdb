@@ -64,10 +64,20 @@ return ret;
 
 
 - (BOOL)tableExists:(NSString*)tableName {
+    return [self table:tableName existsInDB:nil];
+}
+
+- (BOOL)table:(NSString *)tableName existsInDB:(NSString *)dbName {
+    if (dbName.length == 0) {
+        dbName = @"";
+    } else {
+        dbName = [dbName stringByAppendingString:@"."];
+    }
     
     tableName = [tableName lowercaseString];
     
-    FMResultSet *rs = [self executeQuery:@"select [sql] from sqlite_master where [type] = 'table' and lower(name) = ?", tableName];
+    FMResultSet *rs = [self executeQuery:@"select [sql] from %@sqlite_master where [type] = 'table' and lower(name) = ?",
+                       dbName, tableName];
     
     //if at least one next exists, table exists
     BOOL returnBool = [rs next];

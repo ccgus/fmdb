@@ -126,6 +126,17 @@
 
 - (BOOL)tableExists:(NSString*)tableName;
 
+/** Does table exist in an attached database?
+ 
+ @param tableName The name of the table being looked for.
+ 
+ @param dbName The name of the database being attached onto current connection.
+ 
+ @return `YES` if table found; `NO` if not found.
+ */
+
+- (BOOL)table:(NSString *)tableName existsInDB:(NSString *)dbName;
+
 /** The schema of the database.
  
  This will be the schema for the entire database. For each entity, each row of the result set will include the following fields:
