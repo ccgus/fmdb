@@ -405,7 +405,8 @@
 
 // returns autoreleased NSString containing the name of the column in the result set
 - (NSString*)columnNameForIndex:(int)columnIdx {
-    return [NSString stringWithUTF8String: sqlite3_column_name([_statement statement], columnIdx)];
+    const char* name = (const char*)sqlite3_column_name([_statement statement], columnIdx);
+    return name == NULL ? nil : [NSString stringWithUTF8String: name];
 }
 
 - (void)setParentDB:(FMDatabase *)newDb {
