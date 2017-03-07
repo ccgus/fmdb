@@ -403,6 +403,28 @@
     return [self objectForColumnIndex:[self columnIndexForName:columnName]];
 }
 
+- (NSUUID*)uuidForColumnIndex:(int)columnIdx {
+    
+    if (sqlite3_column_type([_statement statement], columnIdx) == SQLITE_NULL || (columnIdx < 0)) {
+        return nil;
+    }
+    
+    const char *c = (const char *)sqlite3_column_text([_statement statement], columnIdx);
+    
+    if (!c) {
+        // null row.
+        return nil;
+    }
+    
+    NSUUID *result = nil;
+    @try { result = [[NSUUID alloc] initWithUUIDString:[NSString stringWithUTF8String:c]]; } @catch(NSException *ex) {}
+    return result;
+}
+
+- (NSUUID*)uuidForColumn:(NSString*)columnName {
+    return [self uuidForColumnIndex:[self columnIndexForName:columnName]];
+}
+
 // returns autoreleased NSString containing the name of the column in the result set
 - (NSString*)columnNameForIndex:(int)columnIdx {
     return [NSString stringWithUTF8String: sqlite3_column_name([_statement statement], columnIdx)];
