@@ -71,26 +71,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 #pragma clang diagnostic ignored "-Wobjc-interface-ivars"
 
 
-@interface FMDatabase : NSObject  {
-    
-    void*               _db;
-    NSString*           _databasePath;
-    BOOL                _logsErrors;
-    BOOL                _crashOnErrors;
-    BOOL                _traceExecution;
-    BOOL                _checkedOut;
-    BOOL                _shouldCacheStatements;
-    BOOL                _isExecutingStatement;
-    BOOL                _inTransaction;
-    NSTimeInterval      _maxBusyRetryTimeInterval;
-    NSTimeInterval      _startBusyRetryTime;
-    
-    NSMutableDictionary *_cachedStatements;
-    NSMutableSet        *_openResultSets;
-    NSMutableSet        *_openFunctions;
-
-    NSDateFormatter     *_dateFormat;
-}
+@interface FMDatabase : NSObject
 
 ///-----------------
 /// @name Properties

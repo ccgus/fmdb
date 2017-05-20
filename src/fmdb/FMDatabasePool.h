@@ -30,28 +30,15 @@ NS_ASSUME_NONNULL_BEGIN
  in the main.m file.
  */
 
-@interface FMDatabasePool : NSObject {
-    NSString            *_path;
-    
-    dispatch_queue_t    _lockQueue;
-    
-    NSMutableArray      *_databaseInPool;
-    NSMutableArray      *_databaseOutPool;
-    
-    __unsafe_unretained id _delegate;
-    
-    NSUInteger          _maximumNumberOfDatabasesToCreate;
-    int                 _openFlags;
-    NSString            *_vfsName;
-}
+@interface FMDatabasePool : NSObject
 
 /** Database path */
 
-@property (atomic, retain) NSString *path;
+@property (atomic, copy, nullable) NSString *path;
 
 /** Delegate object */
 
-@property (atomic, assign) id delegate;
+@property (atomic, assign, nullable) id delegate;
 
 /** Maximum number of databases to create */
 
@@ -63,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**  Custom virtual file system name */
 
-@property (atomic, copy) NSString *vfsName;
+@property (atomic, copy, nullable) NSString *vfsName;
 
 
 ///---------------------

@@ -15,7 +15,12 @@
 #import "FMDatabasePool.h"
 #import "FMDatabase.h"
 
-@interface FMDatabasePool()
+@interface FMDatabasePool () {
+    dispatch_queue_t    _lockQueue;
+    
+    NSMutableArray      *_databaseInPool;
+    NSMutableArray      *_databaseOutPool;
+}
 
 - (void)pushDatabaseBackInPool:(FMDatabase*)db;
 - (FMDatabase*)db;

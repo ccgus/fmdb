@@ -29,12 +29,14 @@
  * the queue's dispatch queue, which should not happen and causes a deadlock.
  */
 static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey;
- 
-@implementation FMDatabaseQueue
 
-@synthesize path = _path;
-@synthesize openFlags = _openFlags;
-@synthesize vfsName = _vfsName;
+@interface FMDatabaseQueue () {
+    dispatch_queue_t    _queue;
+    FMDatabase          *_db;
+}
+@end
+
+@implementation FMDatabaseQueue
 
 + (instancetype)databaseQueueWithPath:(NSString *)aPath {
     FMDatabaseQueue *q = [[self alloc] initWithPath:aPath];

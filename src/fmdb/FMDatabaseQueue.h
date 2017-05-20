@@ -62,17 +62,10 @@ NS_ASSUME_NONNULL_BEGIN
 
  */
 
-@interface FMDatabaseQueue : NSObject {
-    NSString            *_path;
-    dispatch_queue_t    _queue;
-    FMDatabase          *_db;
-    int                 _openFlags;
-    NSString            *_vfsName;
-}
-
+@interface FMDatabaseQueue : NSObject
 /** Path of database */
 
-@property (atomic, retain) NSString *path;
+@property (atomic, retain, nullable) NSString *path;
 
 /** Open flags */
 
@@ -80,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**  Custom virtual file system name */
 
-@property (atomic, copy) NSString *vfsName;
+@property (atomic, copy, nullable) NSString *vfsName;
 
 ///----------------------------------------------------
 /// @name Initialization, opening, and closing of queue

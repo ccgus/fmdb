@@ -24,12 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  - `<FMDatabase>`
  */
 
-@interface FMResultSet : NSObject {
-    FMStatement         *_statement;
-    
-    NSString            *_query;
-    NSMutableDictionary *_columnNameToIndexMap;
-}
+@interface FMResultSet : NSObject
 
 @property (nonatomic, retain, nullable) FMDatabase *parentDB;
 
@@ -39,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Executed query */
 
-@property (atomic, retain) NSString *query;
+@property (atomic, retain, nullable) NSString *query;
 
 /** `NSMutableDictionary` mapping column names to numeric index */
 
@@ -47,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** `FMStatement` used by result set. */
 
-@property (atomic, retain) FMStatement *statement;
+@property (atomic, retain, nullable) FMStatement *statement;
 
 ///------------------------------------
 /// @name Creating and closing database

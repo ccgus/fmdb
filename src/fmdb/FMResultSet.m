@@ -12,10 +12,12 @@
 - (void)resultSetDidClose:(FMResultSet *)resultSet;
 @end
 
+@interface FMResultSet () {
+    NSMutableDictionary *_columnNameToIndexMap;
+}
+@end
 
 @implementation FMResultSet
-@synthesize query=_query;
-@synthesize statement=_statement;
 
 + (instancetype)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB {
     
