@@ -1,4 +1,4 @@
-f# FMDB v2.7
+# FMDB v2.7
 
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
@@ -284,7 +284,7 @@ In Swift, you would use `executeUpdate(values:)`, which not only is a concise Sw
 do {
     let identifier = 42
     let name = "Liam O'Flaherty (\"the famous Irish author\")"
-    let date = NSDate()
+    let date = Date()
     let comment: String? = nil
 
     try db.executeUpdate("INSERT INTO authors (identifier, name, date, comment) VALUES (?, ?, ?, ?)", values: [identifier, name, date, comment ?? NSNull()])
