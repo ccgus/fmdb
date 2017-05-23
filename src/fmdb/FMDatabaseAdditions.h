@@ -192,7 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
  @warning Deprecated - use `<columnExists:inTableWithName:>` instead.
  */
 
-- (BOOL)columnExists:(NSString*)tableName columnName:(NSString*)columnName __attribute__ ((deprecated));
+- (BOOL)columnExists:(NSString*)tableName columnName:(NSString*)columnName __deprecated_msg("Use columnExists:inTableWithName: instead");
 
 
 /** Validate SQL statement
@@ -221,36 +221,16 @@ NS_ASSUME_NONNULL_BEGIN
  @see setApplicationID:
  */
 
-- (uint32_t)applicationID;
-
-/** Set the application ID
-
- @param appID The `uint32_t` numeric value of the application ID.
- 
- @see applicationID
- */
-
-- (void)setApplicationID:(uint32_t)appID;
+@property (nonatomic) uint32_t applicationID;
 
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE
-/** Retrieve application ID string
 
- @return The `NSString` value of the application ID.
+/** Retrieve application ID string
 
  @see setApplicationIDString:
  */
 
-
-- (NSString*)applicationIDString;
-
-/** Set the application ID string
-
- @param string The `NSString` value of the application ID.
-
- @see applicationIDString
- */
-
-- (void)setApplicationIDString:(NSString*)string;
+@property (nonatomic, retain) NSString *applicationIDString;
 
 #endif
 
@@ -260,21 +240,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Retrieve user version
  
- @return The `uint32_t` numeric value of the user version.
- 
  @see setUserVersion:
  */
 
-- (uint32_t)userVersion;
-
-/** Set the user-version
- 
- @param version The `uint32_t` numeric value of the user version.
- 
- @see userVersion
- */
-
-- (void)setUserVersion:(uint32_t)version;
+@property (nonatomic) uint32_t userVersion;
 
 @end
 

@@ -10,11 +10,7 @@
 
 @interface FMDatabase () {
     void*               _db;
-    NSString*           _databasePath;
-    BOOL                _shouldCacheStatements;
     BOOL                _isExecutingStatement;
-    BOOL                _inTransaction;
-    NSTimeInterval      _maxBusyRetryTimeInterval;
     NSTimeInterval      _startBusyRetryTime;
     
     NSMutableSet        *_openResultSets;
@@ -33,6 +29,13 @@ NS_ASSUME_NONNULL_END
 @end
 
 @implementation FMDatabase
+
+// Because these two properties have all of their accessor methods implemented,
+// we have to synthesize them to get the corresponding ivars. The rest of the
+// properties have their ivars synthesized automatically for us.
+
+@synthesize shouldCacheStatements = _shouldCacheStatements;
+@synthesize maxBusyRetryTimeInterval = _maxBusyRetryTimeInterval;
 
 #pragma mark FMDatabase instantiation and deallocation
 
@@ -88,10 +91,6 @@ NS_ASSUME_NONNULL_END
 #if ! __has_feature(objc_arc)
     [super dealloc];
 #endif
-}
-
-- (NSString *)databasePath {
-    return _databasePath;
 }
 
 - (NSURL *)databaseURL {
@@ -1297,7 +1296,7 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     BOOL b = [self executeUpdate:@"rollback transaction"];
     
     if (b) {
-        _inTransaction = NO;
+        _isInTransaction = NO;
     }
     
     return b;
@@ -1307,7 +1306,7 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     BOOL b =  [self executeUpdate:@"commit transaction"];
     
     if (b) {
-        _inTransaction = NO;
+        _isInTransaction = NO;
     }
     
     return b;
@@ -1317,7 +1316,7 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     
     BOOL b = [self executeUpdate:@"begin deferred transaction"];
     if (b) {
-        _inTransaction = YES;
+        _isInTransaction = YES;
     }
     
     return b;
@@ -1327,14 +1326,14 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     
     BOOL b = [self executeUpdate:@"begin exclusive transaction"];
     if (b) {
-        _inTransaction = YES;
+        _isInTransaction = YES;
     }
     
     return b;
 }
 
 - (BOOL)inTransaction {
-    return _inTransaction;
+    return _isInTransaction;
 }
 
 - (BOOL)interrupt
@@ -1556,10 +1555,6 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 
 
 @implementation FMStatement
-@synthesize statement=_statement;
-@synthesize query=_query;
-@synthesize useCount=_useCount;
-@synthesize inUse=_inUse;
 
 #if ! __has_feature(objc_arc)
 - (void)finalize {

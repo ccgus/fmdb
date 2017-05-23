@@ -184,17 +184,45 @@
     XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
 }
 
-- (void)testSelectWithIndexedAndKeyedSubscript
+- (void)testInvalidColumnNames
 {
     FMResultSet *rs = [self.db executeQuery:@"select rowid, a, b, c from test"];
     
     XCTAssertNotNil(rs, @"Should have a non-nil result set");
     
+    NSString *invalidColumnName = @"foobar";
+
     while ([rs next]) {
-        XCTAssertEqualObjects(rs[0], rs[@"rowid"], @"Column zero should be equal to 'rowid'");
-        XCTAssertEqualObjects(rs[1], rs[@"a"], @"Column 1 should be equal to 'a'");
-        XCTAssertEqualObjects(rs[2], rs[@"b"], @"Column 2 should be equal to 'b'");
-        XCTAssertEqualObjects(rs[3], rs[@"c"], @"Column 3 should be equal to 'c'");
+        XCTAssertNil(rs[invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertNil([rs stringForColumn:invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertEqual([rs UTF8StringForColumn:invalidColumnName], (const unsigned char *)0, @"Invalid column name should return nil");
+        XCTAssertNil([rs dateForColumn:invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertNil([rs dataForColumn:invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertNil([rs dataNoCopyForColumn:invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertNil([rs objectForColumn:invalidColumnName], @"Invalid column name should return nil");
+    }
+    
+    [rs close];
+    XCTAssertFalse([self.db hasOpenResultSets], @"Shouldn't have any open result sets");
+    XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
+}
+
+- (void)testInvalidColumnIndexes
+{
+    FMResultSet *rs = [self.db executeQuery:@"select rowid, a, b, c from test"];
+    
+    XCTAssertNotNil(rs, @"Should have a non-nil result set");
+    
+    int invalidColumnIndex = 999;
+    
+    while ([rs next]) {
+        XCTAssertNil(rs[invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertNil([rs stringForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertEqual([rs UTF8StringForColumnIndex:invalidColumnIndex], (const unsigned char *)0, @"Invalid column name should return nil");
+        XCTAssertNil([rs dateForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertNil([rs dataForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertNil([rs dataNoCopyForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertNil([rs objectForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
     }
     
     [rs close];

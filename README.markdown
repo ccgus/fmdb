@@ -1,4 +1,4 @@
-# FMDB v2.7
+f# FMDB v2.7
 
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
@@ -38,27 +38,43 @@ You can use either style in your Cocoa project.  FMDB will figure out which you 
 
 ## What's New in FMDB 2.7
 
+FMDB 2.7 attempts to support a more natural interface. This represents a fairly significant change for Swift developers (audited for nullability; shifted to properties in external interfaces where possible rather than methods; etc.). For Objective-C developers, this should be a fairly seamless transition (unless you were using the ivars that were previously exposed in the public interface, which you shouldn't have been doing, anyway!). 
+
 ### Nullability and Swift Optionals
 
-FMDB 2.8 is largely the same as prior versions, but has been audited for nullability. For Objective-C users, this simply means that you may receive more meaningful warnings if you attempt to pass `nil` to a method that does not accept `nil` values.
+FMDB 2.7 is largely the same as prior versions, but has been audited for nullability. For Objective-C users, this simply means that if you perform a static analysis of your FMDB-based project, you may receive more meaningful warnings as you review your project, but there are likely to be few, if any, changes necessary in your code.
 
-The main benefit is for Swift users, where the library will use optionals more judiciously, and only use where optionals are necessary.
+For Swift users, this nullability audit results in changes that are not entirely backward compatible with FMDB 2.6, but is a little more Swifty. Before FMDB was audited for nullability, Swift was forced to defensively assume that variables were optional, but the library now more accurately knows which properties and method parameters are optional, and which are not.
 
 This means, though, that Swift code written for FMDB 2.7 may require changes. For example, consider the following Swift 3 code written for FMDB 2.6:
 ```swift
+
+guard let queue = FMDatabaseQueue(path: fileURL.path) else {
+    print("Unable to create FMDatabaseQueue")
+    return
+}
+
 queue.inTransaction { db, rollback in
     do {
-        try db?.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [1])
-        try db?.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [2])
+        guard let db == db else {
+            // handle error here
+            return
+        }
+
+        try db.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [1])
+        try db.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [2])
     } catch {
         rollback?.pointee = true
     }
 }
 ```
 
-Because FMDB 2.6 was not audited for nullability, Swift assumed that the `db` and `rollback` were optionals. But, now, in FMDB 2.7, Swift now knows that neither `db` nor `rollback` can be `nil`, so they are not optionals any more. Thus it becomes:
+Because FMDB 2.6 was not audited for nullability, Swift inferred that `db` and `rollback` were optionals. But, now, in FMDB 2.7, Swift now knows that, for example, neither `db` nor `rollback` above can be `nil`, so they are no longer optionals. Thus it becomes:
 
 ```swift
+
+let queue = FMDatabaseQueue(url: fileURL)
+
 queue.inTransaction { db, rollback in
     do {
         try db.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [1])
@@ -102,11 +118,19 @@ Note, the method `makeFunctionNamed:maximumArguments:withBlock:` has been rename
 
 ### API Changes
 
-In addition to the `makeFunctionNamed` noted above, there are two other API changes. Specifically, to become consistent with the rest of the API, the methods `objectForColumnName` and `UTF8StringForColumnName` have been renamed to `objectForColumn` and `UTF8StringForColumn`.
+In addition to the `makeFunctionNamed` noted above, there are a few other API changes. Specifically, 
+
+ - To become consistent with the rest of the API, the methods `objectForColumnName` and `UTF8StringForColumnName` have been renamed to `objectForColumn` and `UTF8StringForColumn`.
+
+ - Note, the `objectForColumn` (and the associted subscript operator) now returns `nil` if an invalid column name/index is passed to it. It used to return `NSNull`.
+
+ - To avoid confusion with `FMDatabaseQueue` method `inTransaction`, which performs transactions, the `FMDatabase` method to determine whether you are in a transaction or not, `inTransaction`, has been replaced with a read-only property, `isInTransaction`. 
+
+ - Several functions have been converted to properties, namely, `databasePath`, `maxBusyRetryTimeInterval`, `shouldCacheStatements`, `sqliteHandle`, `hasOpenResultSets`, `lastInsertRowId`, `changes`, `goodConnection`, `columnCount`, `resultDictionary`, `applicationID`, `applicationIDString`, `userVersion`, `countOfCheckedInDatabases`, `countOfCheckedOutDatabases`, and `countOfOpenDatabases`. For Objective-C users, this has little material impact, but for Swift users, it results in a slightly more natural interface. Note: For Objective-C developers, previously versions of FMDB exposed many ivars (but we hope you weren't using them directly, anyway!), but the implmentation details for these are no longer exposed.
 
 ### URL Methods
 
-Added `NSURL` renditions of the various `init` methods, previously only accepting paths. 
+In keeping with Apple's shift from paths to URLs, there are now `NSURL` renditions of the various `init` methods, previously only accepting paths. 
 
 ## Usage
 There are three main classes in FMDB:
@@ -182,8 +206,8 @@ if ([s next]) {
 - `dateForColumn:`
 - `dataForColumn:`
 - `dataNoCopyForColumn:`
-- `UTF8StringForColumnName:`
-- `objectForColumnName:`
+- `UTF8StringForColumn:`
+- `objectForColumn:`
 
 Each of these methods also has a `{type}ForColumnIndex:` variant that is used to retrieve the data based on the position of the column in the results, as opposed to the column's name.
 
@@ -398,10 +422,7 @@ let fileURL = try! FileManager.default
     .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     .appendingPathComponent("test.sqlite")
 
-guard let database = FMDatabase(url: fileURL) else {
-    print("unable to create database")
-    return
-}
+let database = FMDatabase(url: fileURL)
 
 guard database.open() else {
     print("Unable to open database")

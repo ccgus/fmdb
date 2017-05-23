@@ -128,6 +128,32 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  */
 
 + (instancetype)databaseWithPath:(NSString * _Nullable)inPath;
+
+/** Create a `FMDatabase` object.
+ 
+ An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
+ 
+ 1. A file system URL.  The file does not have to exist on disk.  If it does not exist, it is created for you.
+ 2. `nil`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
+ 
+ For example, to create/open a database in your Mac OS X `tmp` folder:
+ 
+    FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+ 
+ Or, in iOS, you might open a database in the app's `Documents` directory:
+ 
+    NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
+    FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
+ 
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
+ 
+ @param url The local file URL (not remote URL) of database file
+ 
+ @return `FMDatabase` object if successful; `nil` if failure.
+ 
+ */
+
 + (instancetype)databaseWithURL:(NSURL * _Nullable)url;
 
 /** Initialize a `FMDatabase` object.
@@ -162,9 +188,8 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  An `FMDatabase` is created with a local file URL to a SQLite database file.  This path can be one of these three:
  
- 1. A file system path.  The file does not have to exist on disk.  If it does not exist, it is created for you.
- 2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
- 3. `nil`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
+ 1. A file system URL.  The file does not have to exist on disk.  If it does not exist, it is created for you.
+ 2. `nil`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
  
  For example, to create/open a database in your Mac OS X `tmp` folder:
  
@@ -276,7 +301,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @return `YES` if everything succeeds, `NO` on failure.
  */
 
-- (BOOL)goodConnection;
+@property (nonatomic, readonly) BOOL goodConnection;
 
 
 ///----------------------
@@ -312,7 +337,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @warning **Deprecated**: Please use `<executeUpdate:withErrorAndBindings>` instead.
  */
 
-- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError * _Nullable*)outErr, ... __attribute__ ((deprecated));
+- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError * _Nullable*)outErr, ...  __deprecated_msg("Use executeUpdate:withErrorAndBindings: instead");;
 
 /** Execute single update statement
 
@@ -500,7 +525,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  */
 
-- (int64_t)lastInsertRowId;
+@property (nonatomic, readonly) int64_t lastInsertRowId;
 
 /** The number of rows changed by prior SQL statement.
  
@@ -512,7 +537,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (int)changes;
+@property (nonatomic, readonly) int changes;
 
 
 ///-------------------------
@@ -653,7 +678,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see commit
  @see rollback
  @see beginDeferredTransaction
- @see inTransaction
+ @see isInTransaction
  */
 
 - (BOOL)beginTransaction;
@@ -665,7 +690,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see commit
  @see rollback
  @see beginTransaction
- @see inTransaction
+ @see isInTransaction
  */
 
 - (BOOL)beginDeferredTransaction;
@@ -679,7 +704,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see beginTransaction
  @see beginDeferredTransaction
  @see rollback
- @see inTransaction
+ @see isInTransaction
  */
 
 - (BOOL)commit;
@@ -693,22 +718,22 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see beginTransaction
  @see beginDeferredTransaction
  @see commit
- @see inTransaction
+ @see isInTransaction
  */
 
 - (BOOL)rollback;
 
 /** Identify whether currently in a transaction or not
- 
- @return `YES` if currently within transaction; `NO` if not.
- 
+  
  @see beginTransaction
  @see beginDeferredTransaction
  @see commit
  @see rollback
  */
 
-- (BOOL)inTransaction;
+@property (nonatomic, readonly) BOOL isInTransaction;
+
+- (BOOL)inTransaction __deprecated_msg("Use isInTransaction property instead");
 
 
 ///----------------------------------------
@@ -728,21 +753,12 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @return `YES` if there are open result sets; `NO` if not.
  */
 
-- (BOOL)hasOpenResultSets;
+@property (nonatomic, readonly) BOOL hasOpenResultSets;
 
-/** Return whether should cache statements or not
- 
- @return `YES` if should cache statements; `NO` if not.
- */
+/** Whether should cache statements or not
+  */
 
-- (BOOL)shouldCacheStatements;
-
-/** Set whether should cache statements or not
- 
- @param value `YES` if should cache statements; `NO` if not.
- */
-
-- (void)setShouldCacheStatements:(BOOL)value;
+@property (nonatomic) BOOL shouldCacheStatements;
 
 /** Interupt pending database operation
  
@@ -816,20 +832,14 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 ///------------------------------
 
 /** The path of the database file
- 
- @return path of database.
- 
  */
 
-- (NSString * _Nullable)databasePath;
+@property (nonatomic, readonly, nullable) NSString *databasePath;
 
 /** The file URL of the database file.
- 
- @return The file `NSURL` of database.
- 
  */
 
-- (NSURL * _Nullable)databaseURL;
+@property (nonatomic, readonly, nullable) NSURL *databaseURL;
 
 /** The underlying SQLite handle 
  
@@ -837,7 +847,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (void *)sqliteHandle;
+@property (nonatomic, readonly) void *sqliteHandle;
 
 
 ///-----------------------------
@@ -913,8 +923,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 
 // description forthcoming
-- (void)setMaxBusyRetryTimeInterval:(NSTimeInterval)timeoutInSeconds;
-- (NSTimeInterval)maxBusyRetryTimeInterval;
+@property (nonatomic) NSTimeInterval maxBusyRetryTimeInterval;
 
 
 ///------------------
@@ -1141,7 +1150,7 @@ typedef NS_ENUM(int, SqliteValueType) {
  @see storeableDateFormat:
  */
 
-- (NSDate *)dateFromString:(NSString *)s;
+- (NSDate * _Nullable)dateFromString:(NSString *)s;
 
 /** Convert the supplied NSDate to NSString, using the current database formatter.
  

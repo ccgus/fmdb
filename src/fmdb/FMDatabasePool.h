@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** Create pool using path and specified flags
  
  @param aPath The file path of the database.
- @param openFlags Flags passed to the openWithFlags method of the database
+ @param openFlags Flags passed to the openWithFlags method of the database.
  
  @return The `FMDatabasePool` object. `nil` on error.
  */
@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** Create pool using file URL and specified flags
  
  @param url The file `NSURL` of the database.
- @param openFlags Flags passed to the openWithFlags method of the database
+ @param openFlags Flags passed to the openWithFlags method of the database.
  
  @return The `FMDatabasePool` object. `nil` on error.
  */
@@ -169,25 +169,19 @@ NS_ASSUME_NONNULL_BEGIN
 ///------------------------------------------------
 
 /** Number of checked-in databases in pool
- 
- @returns Number of databases
  */
 
-- (NSUInteger)countOfCheckedInDatabases;
+@property (nonatomic, readonly) NSUInteger countOfCheckedInDatabases;
 
 /** Number of checked-out databases in pool
-
- @returns Number of databases
  */
 
-- (NSUInteger)countOfCheckedOutDatabases;
+@property (nonatomic, readonly) NSUInteger countOfCheckedOutDatabases;
 
 /** Total number of databases in pool
-
- @returns Number of databases
  */
 
-- (NSUInteger)countOfOpenDatabases;
+@property (nonatomic, readonly) NSUInteger countOfOpenDatabases;
 
 /** Release all databases in pool */
 

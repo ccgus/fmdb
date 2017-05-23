@@ -111,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return Integer value of the number of columns.
  */
 
-- (int)columnCount;
+@property (nonatomic, readonly) int columnCount;
 
 /** Column index for column name
 
@@ -129,7 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return columnName `NSString` value of the name of the column.
  */
 
-- (NSString*)columnNameForIndex:(int)columnIdx;
+- (NSString * _Nullable)columnNameForIndex:(int)columnIdx;
 
 /** Result set integer value for column.
 
@@ -245,17 +245,17 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param columnName `NSString` value of the name of the column.
 
- @return `NSString` value of the result set's column.
+ @return String value of the result set's column.
  
  */
 
-- (NSString*)stringForColumn:(NSString*)columnName;
+- (NSString * _Nullable)stringForColumn:(NSString*)columnName;
 
 /** Result set `NSString` value for column.
 
  @param columnIdx Zero-based index for column.
 
- @return `NSString` value of the result set's column.
+ @return String value of the result set's column.
  */
 
 - (NSString * _Nullable)stringForColumnIndex:(int)columnIdx;
@@ -264,7 +264,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param columnName `NSString` value of the name of the column.
 
- @return `NSDate` value of the result set's column.
+ @return Date value of the result set's column.
  */
 
 - (NSDate * _Nullable)dateForColumn:(NSString*)columnName;
@@ -273,7 +273,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param columnIdx Zero-based index for column.
 
- @return `NSDate` value of the result set's column.
+ @return Date value of the result set's column.
  
  */
 
@@ -285,7 +285,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param columnName `NSString` value of the name of the column.
 
- @return `NSData` value of the result set's column.
+ @return Data value of the result set's column.
  
  */
 
@@ -295,7 +295,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param columnIdx Zero-based index for column.
 
- @return `NSData` value of the result set's column.
+ @return Data value of the result set's column.
  */
 
 - (NSData * _Nullable)dataForColumnIndex:(int)columnIdx;
@@ -307,9 +307,9 @@ NS_ASSUME_NONNULL_BEGIN
  @return `(const unsigned char *)` value of the result set's column.
  */
 
-- (const unsigned char *)UTF8StringForColumn:(NSString*)columnName;
+- (const unsigned char * _Nullable)UTF8StringForColumn:(NSString*)columnName;
 
-- (const unsigned char *)UTF8StringForColumnName:(NSString*)columnName __deprecated_msg("Use UTF8StringForColumn instead");
+- (const unsigned char * _Nullable)UTF8StringForColumnName:(NSString*)columnName __deprecated_msg("Use UTF8StringForColumn instead");
 
 /** Result set `(const unsigned char *)` value for column.
 
@@ -322,16 +322,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Result set object for column.
 
- @param columnName `NSString` value of the name of the column.
+ @param columnName Name of the column.
 
  @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
 
  @see objectForKeyedSubscript:
  */
 
-- (id)objectForColumn:(NSString*)columnName;
+- (id _Nullable)objectForColumn:(NSString*)columnName;
 
-- (id)objectForColumnName:(NSString*)columnName __deprecated_msg("Use objectForColumn instead");
+- (id _Nullable)objectForColumnName:(NSString*)columnName __deprecated_msg("Use objectForColumn instead");
 
 /** Result set object for column.
 
@@ -342,7 +342,7 @@ NS_ASSUME_NONNULL_BEGIN
  @see objectAtIndexedSubscript:
  */
 
-- (id)objectForColumnIndex:(int)columnIdx;
+- (id _Nullable)objectForColumnIndex:(int)columnIdx;
 
 /** Result set object for column.
  
@@ -363,7 +363,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
  */
 
-- (id)objectForKeyedSubscript:(NSString *)columnName;
+- (id _Nullable)objectForKeyedSubscript:(NSString *)columnName;
 
 /** Result set object for column.
 
@@ -384,13 +384,13 @@ NS_ASSUME_NONNULL_BEGIN
  @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
  */
 
-- (id)objectAtIndexedSubscript:(int)columnIdx;
+- (id _Nullable)objectAtIndexedSubscript:(int)columnIdx;
 
 /** Result set `NSData` value for column.
 
  @param columnName `NSString` value of the name of the column.
 
- @return `NSData` value of the result set's column.
+ @return Data value of the result set's column.
 
  @warning If you are going to use this data after you iterate over the next row, or after you close the
 result set, make sure to make a copy of the data first (or just use `<dataForColumn:>`/`<dataForColumnIndex:>`)
@@ -404,7 +404,7 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 
  @param columnIdx Zero-based index for column.
 
- @return `NSData` value of the result set's column.
+ @return Data value of the result set's column.
 
  @warning If you are going to use this data after you iterate over the next row, or after you close the
  result set, make sure to make a copy of the data first (or just use `<dataForColumn:>`/`<dataForColumnIndex:>`)
@@ -435,12 +435,10 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 
 /** Returns a dictionary of the row results mapped to case sensitive keys of the column names. 
  
- @returns `NSDictionary` of the row results.
- 
  @warning The keys to the dictionary are case sensitive of the column names.
  */
 
-- (NSDictionary * _Nullable)resultDictionary;
+@property (nonatomic, readonly, nullable) NSDictionary *resultDictionary;
  
 /** Returns a dictionary of the row results
  
@@ -449,7 +447,7 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
  @warning **Deprecated**: Please use `<resultDictionary>` instead.  Also, beware that `<resultDictionary>` is case sensitive! 
  */
 
-- (NSDictionary * _Nullable)resultDict  __attribute__ ((deprecated));
+- (NSDictionary * _Nullable)resultDict __deprecated_msg("Use resultDictionary instead");
 
 ///-----------------------------
 /// @name Key value coding magic
