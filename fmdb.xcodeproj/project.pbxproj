@@ -125,8 +125,6 @@
 		67CB1E2F19AD27D000A3CA7F /* FMDatabaseFTS3Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseFTS3Tests.m; sourceTree = "<group>"; };
 		8314AF3218CD73D600EC0E25 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
 		831DE6FD175B7C9C001F7317 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
-		832F502419EC4C6B0087DCBF /* FMDatabaseVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseVariadic.swift"; sourceTree = "<group>"; };
-		8352D5AC1A73DCEA003A8E09 /* FMDatabaseAdditionsVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseAdditionsVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseAdditionsVariadic.swift"; sourceTree = "<group>"; };
 		83C73EFE1C326AB000FFC730 /* FMDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FMDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83C73F0B1C326ADA00FFC730 /* FMDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FMDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83C73F291C326CE800FFC730 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -314,15 +312,6 @@
 			name = sample;
 			sourceTree = "<group>";
 		};
-		832F502319EC4C4A0087DCBF /* Swift extensions */ = {
-			isa = PBXGroup;
-			children = (
-				832F502419EC4C6B0087DCBF /* FMDatabaseVariadic.swift */,
-				8352D5AC1A73DCEA003A8E09 /* FMDatabaseAdditionsVariadic.swift */,
-			);
-			name = "Swift extensions";
-			sourceTree = "<group>";
-		};
 		832F502519EC4CA20087DCBF /* InMemoryOnDiskIO */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,7 +375,6 @@
 		CC7CE42518F5C02E00938264 /* optional extras */ = {
 			isa = PBXGroup;
 			children = (
-				832F502319EC4C4A0087DCBF /* Swift extensions */,
 				832F502519EC4CA20087DCBF /* InMemoryOnDiskIO */,
 				6767F81519AD13C300887DBC /* fts3 */,
 			);
