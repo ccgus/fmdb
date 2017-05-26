@@ -1048,13 +1048,9 @@ int main (int argc, const char * argv[]) {
         
         [adb makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(/*sqlite3_context*/ void *context, int aargc, /*sqlite3_value*/ void **aargv) {
             if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
-                
                 @autoreleasepool {
-                    
                     const char *c = (const char *)sqlite3_value_text(aargv[0]);
-                    
                     NSString *s = [NSString stringWithUTF8String:c];
-                    
                     sqlite3_result_int(context, [s hasPrefix:@"h"]);
                 }
             }

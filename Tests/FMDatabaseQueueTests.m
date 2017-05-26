@@ -47,6 +47,90 @@
     [super tearDown];
 }
 
+- (void)testURLOpenNoPath {
+    FMDatabaseQueue *queue = [[FMDatabaseQueue alloc] init];
+    XCTAssert(queue, @"Database queue should be returned");
+    queue = nil;
+}
+
+- (void)testURLOpenNoURL {
+    FMDatabaseQueue *queue = [[FMDatabaseQueue alloc] initWithURL:nil];
+    XCTAssert(queue, @"Database queue should be returned");
+    queue = nil;
+}
+
+- (void)testURLOpen {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithURL:fileURL];
+    XCTAssert(queue, @"Database queue should be returned");
+    queue = nil;
+    [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
+}
+
+- (void)testURLOpenInit {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabaseQueue *queue = [[FMDatabaseQueue alloc] initWithURL:fileURL];
+    XCTAssert(queue, @"Database queue should be returned");
+    queue = nil;
+    [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
+}
+
+- (void)testURLOpenWithOptions {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabaseQueue *queue = [FMDatabaseQueue databaseQueueWithURL:fileURL flags:SQLITE_OPEN_READWRITE];
+    XCTAssertNil(queue, @"Database queue should not have been created");
+}
+
+- (void)testURLOpenInitWithOptions {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabaseQueue *queue = [[FMDatabaseQueue alloc] initWithURL:fileURL flags:SQLITE_OPEN_READWRITE];
+    XCTAssertNil(queue, @"Database queue should not have been created");
+
+    queue = [[FMDatabaseQueue alloc] initWithURL:fileURL flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
+    XCTAssert(queue, @"Database queue should have been created");
+    
+    [queue inDatabase:^(FMDatabase * _Nonnull db) {
+        BOOL success = [db executeUpdate:@"CREATE TABLE foo (bar INT)"];
+        XCTAssert(success, @"Create failed");
+        success = [db executeUpdate:@"INSERT INTO foo (bar) VALUES (?)", @42];
+        XCTAssert(success, @"Insert failed");
+    }];
+    queue = nil;
+
+    queue = [[FMDatabaseQueue alloc] initWithURL:fileURL flags:SQLITE_OPEN_READONLY];
+    XCTAssert(queue, @"Now database queue should open have been created");
+    [queue inDatabase:^(FMDatabase * _Nonnull db) {
+        BOOL success = [db executeUpdate:@"CREATE TABLE baz (qux INT)"];
+        XCTAssertFalse(success, @"But updates should fail on read only database");
+    }];    
+    queue = nil;
+    
+    [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
+}
+
+- (void)testURLOpenWithOptionsVfs {
+    sqlite3_vfs vfs = *sqlite3_vfs_find(NULL);
+    vfs.zName = "MyCustomVFS";
+    XCTAssertEqual(SQLITE_OK, sqlite3_vfs_register(&vfs, 0));
+
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabaseQueue *queue = [[FMDatabaseQueue alloc] initWithURL:fileURL flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE vfs:@"MyCustomVFS"];
+    XCTAssert(queue, @"Database queue should not have been created");
+    queue = nil;
+
+    XCTAssertEqual(SQLITE_OK, sqlite3_vfs_unregister(&vfs));
+}
+
 - (void)testQueueSelect
 {
     [self.queue inDatabase:^(FMDatabase *adb) {

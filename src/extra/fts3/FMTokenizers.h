@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "FMDatabase+FTS3.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  This is the base tokenizer implementation, using a CFStringTokenizer to find words.
  */
@@ -18,7 +20,7 @@
  Create the tokenizer with a given locale. The locale will be used to initialize the string tokenizer and to lowercase the parsed word.
  The locale can be `NULL`, in which case the current locale will be used.
  */
-- (instancetype)initWithLocale:(CFLocaleRef)locale;
+- (instancetype)initWithLocale:(CFLocaleRef _Nullable)locale;
 
 @end
 
@@ -34,7 +36,7 @@
 /**
  Load a stop-word tokenizer using a file containing words delimited by newlines. The file should be encoded in UTF-8.
  */
-+ (instancetype)tokenizerWithFileURL:(NSURL *)wordFileURL baseTokenizer:(id<FMTokenizerDelegate>)tokenizer error:(NSError **)error;
++ (instancetype)tokenizerWithFileURL:(NSURL *)wordFileURL baseTokenizer:(id<FMTokenizerDelegate>)tokenizer error:(NSError * _Nullable *)error;
 
 /**
  Initialize an instance of the tokenizer using the set of words. The words should be lowercase if you're using the 
@@ -43,3 +45,5 @@
 - (instancetype)initWithWords:(NSSet *)words baseTokenizer:(id<FMTokenizerDelegate>)tokenizer;
 
 @end
+
+NS_ASSUME_NONNULL_END
