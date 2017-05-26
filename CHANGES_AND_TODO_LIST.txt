@@ -3,6 +3,17 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2017.05.26 Version 2.7
+    Audited library for nullability, offering informational warnings for Objective-C users during static analysis, but significantly changes interface for Swift users, more accurately representing parameters and return values as optional or non-optional, as appropriate.
+
+    Renamed a number of methods, deprecating old names.
+
+    Converted some methods to properties. Again, it should be largely transparent from Objective-C users, but Swift users will find they'll just have to remove some `()` in their code, lending itself to more logical looking code.
+
+    The `objectForColumn` used to return `NSNull` if you supplied it an invalid subscript. It now returns `nil`, more customary for subscript operators.
+
+    For more information, see https://github.com/ccgus/fmdb/pull/584.
+
 2015.12.28
     Removed `sqlite3.h` from the headers to simplify incorporation of FMDB into a framework. This eliminates the dreaded "non-modular headers" error in frameworks.
 
