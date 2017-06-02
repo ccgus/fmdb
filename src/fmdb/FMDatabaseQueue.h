@@ -210,6 +210,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
 
+/** Asynchronously perform database operations on queue, using transactions.
+ 
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+
+- (void)inTransactionAsync:(void (^)(FMDatabase *db, BOOL *rollback))block;
+
 /** Synchronously perform database operations on queue, using deferred transactions.
 
  @param block The code to be run on the queue of `FMDatabaseQueue`
