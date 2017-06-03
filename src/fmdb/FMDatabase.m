@@ -1491,7 +1491,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
     return sqlite3_value_int(value);
 }
 
-- (long)valueLong:(void *)value {
+- (long long)valueLong:(void *)value {
     return sqlite3_value_int64(value);
 }
 
@@ -1518,7 +1518,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
     sqlite3_result_int(context, value);
 }
 
-- (void)resultLong:(long)value context:(void *)context {
+- (void)resultLong:(long long)value context:(void *)context {
     sqlite3_result_int64(context, value);
 }
 
