@@ -3,6 +3,13 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+
+2017.06.01 Version 2.7.1
+
+    Adjust `valueLong` return type and `resultLong` parameter to suppress warning.
+
+    Fix pointer comparison to avoid static analysis warning in `columnIndexForName`.
+
 2017.05.26 Version 2.7
     Audited library for nullability, offering informational warnings for Objective-C users during static analysis, but significantly changes interface for Swift users, more accurately representing parameters and return values as optional or non-optional, as appropriate.
 
