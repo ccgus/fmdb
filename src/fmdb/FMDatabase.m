@@ -598,8 +598,11 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
     }
     else if ([obj isKindOfClass:[NSNumber class]]) {
-        
-        if (strcmp([obj objCType], @encode(char)) == 0) {
+
+        if (obj == (__bridge NSNumber *)kCFBooleanTrue || obj == (__bridge NSNumber *)kCFBooleanFalse) {
+            sqlite3_bind_int(pStmt, idx, ([obj boolValue] ? 1 : 0));
+        }
+        else if (strcmp([obj objCType], @encode(char)) == 0) {
             sqlite3_bind_int(pStmt, idx, [obj charValue]);
         }
         else if (strcmp([obj objCType], @encode(unsigned char)) == 0) {
