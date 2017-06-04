@@ -1065,14 +1065,14 @@ typedef NS_ENUM(int, SqliteValueType) {
 - (SqliteValueType)valueType:(void *)argv;
 
 - (int)valueInt:(void *)value;
-- (long)valueLong:(void *)value;
+- (long long)valueLong:(void *)value;
 - (double)valueDouble:(void *)value;
 - (NSData * _Nullable)valueData:(void *)value;
 - (NSString * _Nullable)valueString:(void *)value;
 
 - (void)resultNullInContext:(void *)context NS_SWIFT_NAME(resultNull(context:));
 - (void)resultInt:(int) value context:(void *)context;
-- (void)resultLong:(long)value context:(void *)context;
+- (void)resultLong:(long long)value context:(void *)context;
 - (void)resultDouble:(double)value context:(void *)context;
 - (void)resultData:(NSData *)data context:(void *)context;
 - (void)resultString:(NSString *)value context:(void *)context;
