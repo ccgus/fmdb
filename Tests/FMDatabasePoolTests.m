@@ -8,6 +8,12 @@
 
 #import <XCTest/XCTest.h>
 
+#if FMDB_SQLITE_STANDALONE
+#import <sqlite3/sqlite3.h>
+#else
+#import <sqlite3.h>
+#endif
+
 @interface FMDatabasePoolTests : FMDBTempDBTests
 
 @property FMDatabasePool *pool;
@@ -31,8 +37,7 @@
     [db executeUpdate:@"insert into likefoo values ('not')"];
 }
 
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     
@@ -42,19 +47,97 @@
     
 }
 
-- (void)tearDown
-{
+- (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
-- (void)testPoolIsInitiallyEmpty
-{
+- (void)testURLOpenNoURL {
+    FMDatabasePool *pool = [[FMDatabasePool alloc] initWithURL:nil];
+    XCTAssert(pool, @"Database pool should be returned");
+    pool = nil;
+}
+
+- (void)testURLOpen {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabasePool *pool = [FMDatabasePool databasePoolWithURL:fileURL];
+    XCTAssert(pool, @"Database pool should be returned");
+    pool = nil;
+    [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
+}
+
+- (void)testURLOpenInit {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabasePool *pool = [[FMDatabasePool alloc] initWithURL:fileURL];
+    XCTAssert(pool, @"Database pool should be returned");
+    pool = nil;
+    [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
+}
+
+- (void)testURLOpenWithOptions {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabasePool *pool = [FMDatabasePool databasePoolWithURL:fileURL flags:SQLITE_OPEN_READWRITE];
+    [pool inDatabase:^(FMDatabase * _Nonnull db) {
+        XCTAssertNil(db, @"The database should not have been created");
+    }];
+}
+
+- (void)testURLOpenInitWithOptions {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabasePool *pool = [[FMDatabasePool alloc] initWithURL:fileURL flags:SQLITE_OPEN_READWRITE];
+    [pool inDatabase:^(FMDatabase * _Nonnull db) {
+        XCTAssertNil(db, @"The database should not have been created");
+    }];
+    
+    pool = [[FMDatabasePool alloc] initWithURL:fileURL flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE];
+    [pool inDatabase:^(FMDatabase * _Nonnull db) {
+        XCTAssert(db, @"The database should have been created");
+
+        BOOL success = [db executeUpdate:@"CREATE TABLE foo (bar INT)"];
+        XCTAssert(success, @"Create failed");
+        success = [db executeUpdate:@"INSERT INTO foo (bar) VALUES (?)", @42];
+        XCTAssert(success, @"Insert failed");
+    }];
+    
+    pool = [[FMDatabasePool alloc] initWithURL:fileURL flags:SQLITE_OPEN_READONLY];
+    [pool inDatabase:^(FMDatabase * _Nonnull db) {
+        XCTAssert(db, @"Now database pool should open have been created");
+        BOOL success = [db executeUpdate:@"CREATE TABLE baz (qux INT)"];
+        XCTAssertFalse(success, @"But updates should fail on read only database");
+    }];
+    pool = nil;
+    
+    [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
+}
+
+- (void)testURLOpenWithOptionsVfs {
+    sqlite3_vfs vfs = *sqlite3_vfs_find(NULL);
+    vfs.zName = "MyCustomVFS";
+    XCTAssertEqual(SQLITE_OK, sqlite3_vfs_register(&vfs, 0));
+    
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabasePool *pool = [[FMDatabasePool alloc] initWithURL:fileURL flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE vfs:@"MyCustomVFS"];
+    XCTAssert(pool, @"Database pool should not have been created");
+    pool = nil;
+    
+    XCTAssertEqual(SQLITE_OK, sqlite3_vfs_unregister(&vfs));
+}
+
+- (void)testPoolIsInitiallyEmpty {
     XCTAssertEqual([self.pool countOfOpenDatabases], (NSUInteger)0, @"Pool should be empty on creation");
 }
 
-- (void)testDatabaseCreation
-{
+- (void)testDatabaseCreation {
     __block FMDatabase *db1;
     
     [self.pool inDatabase:^(FMDatabase *db) {

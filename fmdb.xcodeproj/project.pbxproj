@@ -125,8 +125,6 @@
 		67CB1E2F19AD27D000A3CA7F /* FMDatabaseFTS3Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseFTS3Tests.m; sourceTree = "<group>"; };
 		8314AF3218CD73D600EC0E25 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
 		831DE6FD175B7C9C001F7317 /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
-		832F502419EC4C6B0087DCBF /* FMDatabaseVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseVariadic.swift"; sourceTree = "<group>"; };
-		8352D5AC1A73DCEA003A8E09 /* FMDatabaseAdditionsVariadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FMDatabaseAdditionsVariadic.swift; path = "src/extra/Swift extensions/FMDatabaseAdditionsVariadic.swift"; sourceTree = "<group>"; };
 		83C73EFE1C326AB000FFC730 /* FMDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FMDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83C73F0B1C326ADA00FFC730 /* FMDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FMDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83C73F291C326CE800FFC730 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -314,15 +312,6 @@
 			name = sample;
 			sourceTree = "<group>";
 		};
-		832F502319EC4C4A0087DCBF /* Swift extensions */ = {
-			isa = PBXGroup;
-			children = (
-				832F502419EC4C6B0087DCBF /* FMDatabaseVariadic.swift */,
-				8352D5AC1A73DCEA003A8E09 /* FMDatabaseAdditionsVariadic.swift */,
-			);
-			name = "Swift extensions";
-			sourceTree = "<group>";
-		};
 		832F502519EC4CA20087DCBF /* InMemoryOnDiskIO */ = {
 			isa = PBXGroup;
 			children = (
@@ -347,12 +336,12 @@
 		BF5D041A18416BB2008C5AA9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				BF5D042018416BB2008C5AA9 /* FMDatabaseTests.m */,
 				BF940F5D18417DEA0001E077 /* FMDatabaseAdditionsTests.m */,
+				BFE55E141841D38800CB3A63 /* FMDatabaseQueueTests.m */,
+				BFE55E121841C9A000CB3A63 /* FMDatabasePoolTests.m */,
 				67CB1E2F19AD27D000A3CA7F /* FMDatabaseFTS3Tests.m */,
 				D4A740A11A7046330058EBEE /* FMDatabaseFTS3WithModuleNameTests.m */,
-				BFE55E121841C9A000CB3A63 /* FMDatabasePoolTests.m */,
-				BFE55E141841D38800CB3A63 /* FMDatabaseQueueTests.m */,
-				BF5D042018416BB2008C5AA9 /* FMDatabaseTests.m */,
 				BF940F5A18417D490001E077 /* FMDBTempDBTests.h */,
 				BF940F5B18417D490001E077 /* FMDBTempDBTests.m */,
 				3354379B19E71096005661F3 /* FMResultSetTests.m */,
@@ -386,7 +375,6 @@
 		CC7CE42518F5C02E00938264 /* optional extras */ = {
 			isa = PBXGroup;
 			children = (
-				832F502319EC4C4A0087DCBF /* Swift extensions */,
 				832F502519EC4CA20087DCBF /* InMemoryOnDiskIO */,
 				6767F81519AD13C300887DBC /* fts3 */,
 			);
@@ -564,7 +552,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0820;
 				TargetAttributes = {
 					83C73EFD1C326AB000FFC730 = {
 						CreatedOnToolsVersion = 7.2;
@@ -745,6 +733,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/sample/fmdb_Prefix.pch;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_SHADOW = YES;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";
@@ -764,6 +753,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/sample/fmdb_Prefix.pch;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_SHADOW = YES;
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS)";
@@ -774,11 +764,14 @@
 		1DEB927908733DD40010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -803,11 +796,14 @@
 		1DEB927A08733DD40010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -844,8 +840,9 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = include/FMDB;
@@ -869,9 +866,10 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = include/FMDB;
@@ -891,7 +889,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -906,6 +904,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = src/fmdb/Info.plist;
@@ -933,7 +932,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -943,6 +942,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -989,6 +989,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = src/fmdb/Info.plist;
@@ -1026,6 +1027,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -1070,6 +1072,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1108,6 +1111,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1130,6 +1134,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				PRODUCT_NAME = FMDB;
 				PUBLIC_HEADERS_FOLDER_PATH = include/FMDB;
 			};
@@ -1142,6 +1147,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				PRODUCT_NAME = FMDB;
 				PUBLIC_HEADERS_FOLDER_PATH = include/FMDB;
 				ZERO_LINK = NO;

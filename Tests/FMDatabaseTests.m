@@ -23,8 +23,7 @@
 
 @implementation FMDatabaseTests
 
-+ (void)populateDatabase:(FMDatabase *)db
-{
++ (void)populateDatabase:(FMDatabase *)db {
     [db executeUpdate:@"create table test (a text, b text, c integer, d double, e double)"];
     
     [db beginTransaction];
@@ -61,22 +60,17 @@
     [db commit];
 }
 
-- (void)setUp
-{
+- (void)setUp{
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
-    
 }
 
-- (void)tearDown
-{
+- (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
-    
 }
 
-- (void)testOpenWithVFS
-{
+- (void)testOpenWithVFS {
     // create custom vfs
     sqlite3_vfs vfs = *sqlite3_vfs_find(NULL);
     vfs.zName = "MyCustomVFS";
@@ -85,25 +79,35 @@
     FMDatabase *db = [[FMDatabase alloc] initWithPath:@":memory:"];
     [db openWithFlags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE vfs:@"MyCustomVFS"];
     XCTAssertFalse([db hadError], @"Open with a custom VFS should have succeeded");
+    XCTAssertEqual(SQLITE_OK, sqlite3_vfs_unregister(&vfs));
 }
 
-- (void)testFailOnOpenWithUnknownVFS
-{
+- (void)testURLOpen {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    
+    FMDatabase *db = [FMDatabase databaseWithURL:fileURL];
+    XCTAssert(db, @"Database should be returned");
+    XCTAssertTrue([db open], @"Open should succeed");
+    XCTAssertEqualObjects([db databaseURL], fileURL);
+    XCTAssertTrue([db close], @"close should succeed");
+    [[NSFileManager defaultManager] removeItemAtURL:fileURL error:nil];
+}
+
+- (void)testFailOnOpenWithUnknownVFS {
     FMDatabase *db = [[FMDatabase alloc] initWithPath:@":memory:"];
     [db openWithFlags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE vfs:@"UnknownVFS"];
     XCTAssertTrue([db hadError], @"Should have failed");    
 }
 
-- (void)testFailOnUnopenedDatabase
-{
+- (void)testFailOnUnopenedDatabase {
     [self.db close];
     
     XCTAssertNil([self.db executeQuery:@"select * from table"], @"Shouldn't get results from an empty table");
     XCTAssertTrue([self.db hadError], @"Should have failed");
 }
 
-- (void)testFailOnBadStatement
-{
+- (void)testFailOnBadStatement {
     XCTAssertFalse([self.db executeUpdate:@"blah blah blah"], @"Invalid statement should fail");
     XCTAssertTrue([self.db hadError], @"Should have failed");
 }
@@ -180,17 +184,45 @@
     XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
 }
 
-- (void)testSelectWithIndexedAndKeyedSubscript
+- (void)testInvalidColumnNames
 {
     FMResultSet *rs = [self.db executeQuery:@"select rowid, a, b, c from test"];
     
     XCTAssertNotNil(rs, @"Should have a non-nil result set");
     
+    NSString *invalidColumnName = @"foobar";
+
     while ([rs next]) {
-        XCTAssertEqualObjects(rs[0], rs[@"rowid"], @"Column zero should be equal to 'rowid'");
-        XCTAssertEqualObjects(rs[1], rs[@"a"], @"Column 1 should be equal to 'a'");
-        XCTAssertEqualObjects(rs[2], rs[@"b"], @"Column 2 should be equal to 'b'");
-        XCTAssertEqualObjects(rs[3], rs[@"c"], @"Column 3 should be equal to 'c'");
+        XCTAssertNil(rs[invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertNil([rs stringForColumn:invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertEqual([rs UTF8StringForColumn:invalidColumnName], (const unsigned char *)0, @"Invalid column name should return nil");
+        XCTAssertNil([rs dateForColumn:invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertNil([rs dataForColumn:invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertNil([rs dataNoCopyForColumn:invalidColumnName], @"Invalid column name should return nil");
+        XCTAssertNil([rs objectForColumn:invalidColumnName], @"Invalid column name should return nil");
+    }
+    
+    [rs close];
+    XCTAssertFalse([self.db hasOpenResultSets], @"Shouldn't have any open result sets");
+    XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
+}
+
+- (void)testInvalidColumnIndexes
+{
+    FMResultSet *rs = [self.db executeQuery:@"select rowid, a, b, c from test"];
+    
+    XCTAssertNotNil(rs, @"Should have a non-nil result set");
+    
+    int invalidColumnIndex = 999;
+    
+    while ([rs next]) {
+        XCTAssertNil(rs[invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertNil([rs stringForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertEqual([rs UTF8StringForColumnIndex:invalidColumnIndex], (const unsigned char *)0, @"Invalid column name should return nil");
+        XCTAssertNil([rs dateForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertNil([rs dataForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertNil([rs dataNoCopyForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
+        XCTAssertNil([rs objectForColumnIndex:invalidColumnIndex], @"Invalid column name should return nil");
     }
     
     [rs close];
@@ -532,7 +564,7 @@
     XCTAssertEqualObjects([rs stringForColumn:@"t4.a"], @"one");
     XCTAssertEqualObjects([rs stringForColumn:@"b"], @"two");
     
-    XCTAssertEqual(strcmp((const char*)[rs UTF8StringForColumnName:@"b"], "two"), 0, @"String comparison should return zero");
+    XCTAssertEqual(strcmp((const char*)[rs UTF8StringForColumn:@"b"], "two"), 0, @"String comparison should return zero");
     
     [rs close];
     
@@ -551,7 +583,7 @@
     XCTAssertEqualObjects([rs stringForColumn:@"t4.a"], @"one");
     XCTAssertEqualObjects([rs stringForColumn:@"b"], @"two");
     
-    XCTAssertEqual(strcmp((const char*)[rs UTF8StringForColumnName:@"b"], "two"), 0, @"String comparison should return zero");
+    XCTAssertEqual(strcmp((const char*)[rs UTF8StringForColumn:@"b"], "two"), 0, @"String comparison should return zero");
     
     [rs close];
 }
@@ -803,48 +835,300 @@
     
 }
 
-- (void)testCustomFunction
-{
-    [self.db executeUpdate:@"create table ftest (foo text)"];
-    [self.db executeUpdate:@"insert into ftest values ('hello')"];
-    [self.db executeUpdate:@"insert into ftest values ('hi')"];
-    [self.db executeUpdate:@"insert into ftest values ('not h!')"];
-    [self.db executeUpdate:@"insert into ftest values ('definitely not h!')"];
+- (void)testCustomStringFunction {
+    [self createCustomFunctions];
     
-    [self.db makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(void *context, int aargc, void **aargv) {
-        if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
-            
-            @autoreleasepool {
-                
-                const char *c = (const char *)sqlite3_value_text(aargv[0]);
-                
-                NSString *s = [NSString stringWithUTF8String:c];
-                
-                sqlite3_result_int(context, [s hasPrefix:@"h"]);
-            }
+    FMResultSet *ars = [self.db executeQuery:@"SELECT RemoveDiacritics(?)", @"José"];
+    if (![ars next]) {
+        XCTFail("Should have returned value");
+        return;
+    }
+    NSString *result = [ars stringForColumnIndex:0];
+    XCTAssertEqualObjects(result, @"Jose");
+}
+
+- (void)testFailCustomStringFunction {
+    [self createCustomFunctions];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT RemoveDiacritics(?)", @(M_PI)];
+    XCTAssert(rs, @"Prepare should have succeeded");
+    
+    NSError *error;
+    BOOL success = [rs nextWithError:&error];
+    XCTAssertFalse(success, @"'next' should have failed");
+    
+    XCTAssertEqualObjects(error.localizedDescription, @"Expected text");
+
+    rs = [self.db executeQuery:@"SELECT RemoveDiacritics('jose','ortega')"];
+    XCTAssertNil(rs);
+
+    error = [self.db lastError];
+
+    XCTAssert([error.localizedDescription containsString:@"wrong number of arguments"], @"Should get wrong number of arguments error, but got '%@'", error.localizedDescription);
+}
+
+- (void)testCustomDoubleFunction {
+    [self createCustomFunctions];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT Hypotenuse(?, ?)", @(3.0), @(4.0)];
+    if (![rs next]) {
+        XCTFail("Should have returned value");
+        return;
+    }
+    double value = [rs doubleForColumnIndex:0];
+    XCTAssertEqual(value, 5.0);
+}
+
+- (void)testCustomIntFunction {
+    [self createCustomFunctions];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT Hypotenuse(?, ?)", @(3), @(4)];
+    if (![rs next]) {
+        XCTFail("Should have returned value");
+        return;
+    }
+    int value = [rs intForColumnIndex:0];
+    XCTAssertEqual(value, 5);
+}
+
+- (void)testFailCustomNumericFunction {
+    [self createCustomFunctions];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT Hypotenuse(?, ?)", @"foo", @"bar"];
+    NSError *error;
+    if ([rs nextWithError:&error]) {
+        XCTFail("Should have failed");
+        return;
+    }
+    XCTAssertEqualObjects(error.localizedDescription, @"Expected numeric");
+    
+    rs = [self.db executeQuery:@"SELECT Hypotenuse(?)", @(3.0)];
+    XCTAssertNil(rs, @"Should fail for wrong number of arguments");
+
+    error = [self.db lastError];
+    XCTAssert([error.localizedDescription containsString:@"wrong number of arguments"], @"Should get wrong number of arguments error, but got '%@'", error.localizedDescription);
+}
+
+- (void)testCustomDataFunction {
+    [self createCustomFunctions];
+    
+    NSMutableData *data = [NSMutableData data];
+    for (NSInteger i = 0; i < 256; i++) {
+        uint8_t byte = i;
+        [data appendBytes:&byte length:1];
+    }
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT SetAlternatingByteToOne(?)", data];
+    if (![rs next]) {
+        XCTFail("Should have returned value");
+        return;
+    }
+    NSData *result = [rs dataForColumnIndex:0];
+    XCTAssert(result, @"should have result");
+    XCTAssertEqual(result.length, (unsigned long)256);
+    
+    for (NSInteger i = 0; i < 256; i++) {
+        uint8_t byte;
+        [result getBytes:&byte range:NSMakeRange(i, 1)];
+        if (i % 2 == 0) {
+            XCTAssertEqual(byte, (uint8_t)1);
+        } else {
+            XCTAssertEqual(byte, (uint8_t)i);
         }
-        else {
-            XCTFail(@"Unknown format for StringStartsWithH (%d)", sqlite3_value_type(aargv[0]));
-            sqlite3_result_null(context);
-        }
+    }
+}
+
+- (void)testFailCustomDataFunction {
+    [self createCustomFunctions];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT SetAlternatingByteToOne(?)", @"foo"];
+    XCTAssert(rs, @"Query should succeed");
+    NSError *error;
+    BOOL success = [rs nextWithError:&error];
+    XCTAssertFalse(success, @"Performing SetAlternatingByteToOne with string should fail");
+    XCTAssertEqualObjects(error.localizedDescription, @"Expected blob");
+}
+
+- (void)testCustomFunctionNullValues {
+    [self.db makeFunctionNamed:@"FunctionThatDoesntTestTypes" arguments:1 block:^(void *context, int argc, void **argv) {
+        NSData *data = [self.db valueData:argv[0]];
+        XCTAssertNil(data);
+        NSString *string = [self.db valueString:argv[0]];
+        XCTAssertNil(string);
+        int intValue = [self.db valueInt:argv[0]];
+        XCTAssertEqual(intValue, 0);
+        long longValue = [self.db valueLong:argv[0]];
+        XCTAssertEqual(longValue, 0L);
+        double doubleValue = [self.db valueDouble:argv[0]];
+        XCTAssertEqual(doubleValue, 0.0);
+        
+        [self.db resultInt:42 context:context];
     }];
     
-    int rowCount = 0;
-    FMResultSet *ars = [self.db executeQuery:@"select * from ftest where StringStartsWithH(foo)"];
-    while ([ars next]) {
-        rowCount++;
-        
+    FMResultSet *rs = [self.db executeQuery:@"SELECT FunctionThatDoesntTestTypes(?)", [NSNull null]];
+    XCTAssert(rs, @"Creating query should succeed");
+    
+    NSError *error = nil;
+    if (rs) {
+        BOOL success = [rs nextWithError:&error];
+        XCTAssert(success, @"Performing query should succeed");
     }
-    XCTAssertEqual(rowCount, 2);
+}
+
+- (void)testCustomFunctionIntResult {
+    [self.db makeFunctionNamed:@"IntResultFunction" arguments:0 block:^(void *context, int argc, void **argv) {
+        [self.db resultInt:42 context:context];
+    }];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT IntResultFunction()"];
+    XCTAssert(rs, @"Creating query should succeed");
+    
+    BOOL success = [rs next];
+    XCTAssert(success, @"Performing query should succeed");
+    
+    XCTAssertEqual([rs intForColumnIndex:0], 42);
+}
+
+- (void)testCustomFunctionLongResult {
+    [self.db makeFunctionNamed:@"LongResultFunction" arguments:0 block:^(void *context, int argc, void **argv) {
+        [self.db resultLong:42 context:context];
+    }];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT LongResultFunction()"];
+    XCTAssert(rs, @"Creating query should succeed");
+    
+    BOOL success = [rs next];
+    XCTAssert(success, @"Performing query should succeed");
+    
+    XCTAssertEqual([rs longForColumnIndex:0], (long)42);
+}
+
+- (void)testCustomFunctionDoubleResult {
+    [self.db makeFunctionNamed:@"DoubleResultFunction" arguments:0 block:^(void *context, int argc, void **argv) {
+        [self.db resultDouble:0.1 context:context];
+    }];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT DoubleResultFunction()"];
+    XCTAssert(rs, @"Creating query should succeed");
+    
+    BOOL success = [rs next];
+    XCTAssert(success, @"Performing query should succeed");
+    
+    XCTAssertEqual([rs doubleForColumnIndex:0], 0.1);
+}
+
+- (void)testCustomFunctionNullResult {
+    [self.db makeFunctionNamed:@"NullResultFunction" arguments:0 block:^(void *context, int argc, void **argv) {
+        [self.db resultNullInContext:context];
+    }];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT NullResultFunction()"];
+    XCTAssert(rs, @"Creating query should succeed");
+    
+    BOOL success = [rs next];
+    XCTAssert(success, @"Performing query should succeed");
+    
+    XCTAssertEqualObjects([rs objectForColumnIndex:0], [NSNull null]);
+}
+
+- (void)testCustomFunctionErrorResult {
+    [self.db makeFunctionNamed:@"ErrorResultFunction" arguments:0 block:^(void *context, int argc, void **argv) {
+        [self.db resultError:@"foo" context:context];
+        [self.db resultErrorCode:42 context:context];
+    }];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT ErrorResultFunction()"];
+    XCTAssert(rs, @"Creating query should succeed");
+    
+    NSError *error = nil;
+    BOOL success = [rs nextWithError:&error];
+    XCTAssertFalse(success, @"Performing query should fail.");
+    
+    XCTAssertEqualObjects(error.localizedDescription, @"foo");
+    XCTAssertEqual(error.code, 42);
+}
+
+- (void)testCustomFunctionTooBigErrorResult {
+    [self.db makeFunctionNamed:@"TooBigErrorResultFunction" arguments:0 block:^(void *context, int argc, void **argv) {
+        [self.db resultErrorTooBigInContext:context];
+    }];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT TooBigErrorResultFunction()"];
+    XCTAssert(rs, @"Creating query should succeed");
+    
+    NSError *error = nil;
+    BOOL success = [rs nextWithError:&error];
+    XCTAssertFalse(success, @"Performing query should fail.");
+    
+    XCTAssertEqualObjects(error.localizedDescription, @"string or blob too big");
+    XCTAssertEqual(error.code, SQLITE_TOOBIG);
+}
+
+- (void)testCustomFunctionNoMemoryErrorResult {
+    [self.db makeFunctionNamed:@"NoMemoryErrorResultFunction" arguments:0 block:^(void *context, int argc, void **argv) {
+        [self.db resultErrorNoMemoryInContext:context];
+    }];
+    
+    FMResultSet *rs = [self.db executeQuery:@"SELECT NoMemoryErrorResultFunction()"];
+    XCTAssert(rs, @"Creating query should succeed");
+    
+    NSError *error = nil;
+    BOOL success = [rs nextWithError:&error];
+    XCTAssertFalse(success, @"Performing query should fail.");
+    
+    XCTAssertEqualObjects(error.localizedDescription, @"out of memory");
+    XCTAssertEqual(error.code, SQLITE_NOMEM);
+}
+
+- (void)createCustomFunctions {
+    [self.db makeFunctionNamed:@"RemoveDiacritics" arguments:1 block:^(void *context, int argc, void **argv) {
+        SqliteValueType type = [self.db valueType:argv[0]];
+        if (type == SqliteValueTypeNull) {
+            [self.db resultNullInContext:context];
+            return;
+        }
+        if (type != SqliteValueTypeText) {
+            [self.db resultError:@"Expected text" context:context];
+            return;
+        }
+        NSString *string = [self.db valueString:argv[0]];
+        NSString *result = [string stringByFoldingWithOptions:NSDiacriticInsensitiveSearch locale:nil];
+        [self.db resultString:result context:context];
+    }];
+
+    [self.db makeFunctionNamed:@"Hypotenuse" arguments:2 block:^(void *context, int argc, void **argv) {
+        SqliteValueType type1 = [self.db valueType:argv[0]];
+        SqliteValueType type2 = [self.db valueType:argv[1]];
+        if (type1 != SqliteValueTypeFloat && type1 != SqliteValueTypeInteger && type2 != SqliteValueTypeFloat && type2 != SqliteValueTypeInteger) {
+            [self.db resultError:@"Expected numeric" context:context];
+            return;
+        }
+        double value1 = [self.db valueDouble:argv[0]];
+        double value2 = [self.db valueDouble:argv[1]];
+        [self.db resultDouble:hypot(value1, value2) context:context];
+    }];
+
+    [self.db makeFunctionNamed:@"SetAlternatingByteToOne" arguments:1 block:^(void *context, int argc, void **argv) {
+        SqliteValueType type = [self.db valueType:argv[0]];
+        if (type != SqliteValueTypeBlob) {
+            [self.db resultError:@"Expected blob" context:context];
+            return;
+        }
+        NSMutableData *data = [[self.db valueData:argv[0]] mutableCopy];
+        uint8_t byte = 1;
+        for (NSUInteger i = 0; i < data.length; i += 2) {
+            [data replaceBytesInRange:NSMakeRange(i, 1) withBytes:&byte];
+        }
+        [self.db resultData:data context:context];
+    }];
 
 }
 
 - (void)testVersionNumber {
-    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0262); // this is going to break everytime we bump it.
+    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0270); // this is going to break everytime we bump it.
 }
 
-- (void)testExecuteStatements
-{
+- (void)testExecuteStatements {
     BOOL success;
 
     NSString *sql = @"create table bulktest1 (id integer primary key autoincrement, x text);"
@@ -892,13 +1176,13 @@
     XCTAssertTrue([rs next], @"Did not return row");
 
     XCTAssertEqual([rs boolForColumn:@"a"], true);
-    XCTAssertEqualObjects([rs objectForColumnName:@"a"], @YES);
+    XCTAssertEqualObjects([rs objectForColumn:@"a"], @YES);
 
     XCTAssertEqual([rs boolForColumn:@"b"], false);
-    XCTAssertEqualObjects([rs objectForColumnName:@"b"], @NO);
+    XCTAssertEqualObjects([rs objectForColumn:@"b"], @NO);
 
     XCTAssertEqual([rs intForColumn:@"c"], 'x');
-    XCTAssertEqualObjects([rs objectForColumnName:@"c"], @('x'));
+    XCTAssertEqualObjects([rs objectForColumn:@"c"], @('x'));
 
     [rs close];
 

@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #ifndef __has_feature      // Optional.
 #define __has_feature(x) 0 // Compatibility with non-clang compilers.
 #endif
@@ -22,13 +24,9 @@
  - `<FMDatabase>`
  */
 
-@interface FMResultSet : NSObject {
-    FMDatabase          *_parentDB;
-    FMStatement         *_statement;
-    
-    NSString            *_query;
-    NSMutableDictionary *_columnNameToIndexMap;
-}
+@interface FMResultSet : NSObject
+
+@property (nonatomic, retain, nullable) FMDatabase *parentDB;
 
 ///-----------------
 /// @name Properties
@@ -36,7 +34,7 @@
 
 /** Executed query */
 
-@property (atomic, retain) NSString *query;
+@property (atomic, retain, nullable) NSString *query;
 
 /** `NSMutableDictionary` mapping column names to numeric index */
 
@@ -44,7 +42,7 @@
 
 /** `FMStatement` used by result set. */
 
-@property (atomic, retain) FMStatement *statement;
+@property (atomic, retain, nullable) FMStatement *statement;
 
 ///------------------------------------
 /// @name Creating and closing database
@@ -64,8 +62,6 @@
 /** Close result set */
 
 - (void)close;
-
-- (void)setParentDB:(FMDatabase *)newDb;
 
 ///---------------------------------------
 /// @name Iterating through the result set
@@ -93,7 +89,7 @@
  @see hasAnotherRow
  */
 
-- (BOOL)nextWithError:(NSError **)outErr;
+- (BOOL)nextWithError:(NSError * _Nullable *)outErr;
 
 /** Did the last call to `<next>` succeed in retrieving another row?
 
@@ -115,7 +111,7 @@
  @return Integer value of the number of columns.
  */
 
-- (int)columnCount;
+@property (nonatomic, readonly) int columnCount;
 
 /** Column index for column name
 
@@ -133,7 +129,7 @@
  @return columnName `NSString` value of the name of the column.
  */
 
-- (NSString*)columnNameForIndex:(int)columnIdx;
+- (NSString * _Nullable)columnNameForIndex:(int)columnIdx;
 
 /** Result set integer value for column.
 
@@ -249,39 +245,39 @@
 
  @param columnName `NSString` value of the name of the column.
 
- @return `NSString` value of the result set's column.
+ @return String value of the result set's column.
  
  */
 
-- (NSString*)stringForColumn:(NSString*)columnName;
+- (NSString * _Nullable)stringForColumn:(NSString*)columnName;
 
 /** Result set `NSString` value for column.
 
  @param columnIdx Zero-based index for column.
 
- @return `NSString` value of the result set's column.
+ @return String value of the result set's column.
  */
 
-- (NSString*)stringForColumnIndex:(int)columnIdx;
+- (NSString * _Nullable)stringForColumnIndex:(int)columnIdx;
 
 /** Result set `NSDate` value for column.
 
  @param columnName `NSString` value of the name of the column.
 
- @return `NSDate` value of the result set's column.
+ @return Date value of the result set's column.
  */
 
-- (NSDate*)dateForColumn:(NSString*)columnName;
+- (NSDate * _Nullable)dateForColumn:(NSString*)columnName;
 
 /** Result set `NSDate` value for column.
 
  @param columnIdx Zero-based index for column.
 
- @return `NSDate` value of the result set's column.
+ @return Date value of the result set's column.
  
  */
 
-- (NSDate*)dateForColumnIndex:(int)columnIdx;
+- (NSDate * _Nullable)dateForColumnIndex:(int)columnIdx;
 
 /** Result set `NSData` value for column.
  
@@ -289,20 +285,20 @@
 
  @param columnName `NSString` value of the name of the column.
 
- @return `NSData` value of the result set's column.
+ @return Data value of the result set's column.
  
  */
 
-- (NSData*)dataForColumn:(NSString*)columnName;
+- (NSData * _Nullable)dataForColumn:(NSString*)columnName;
 
 /** Result set `NSData` value for column.
 
  @param columnIdx Zero-based index for column.
 
- @return `NSData` value of the result set's column.
+ @return Data value of the result set's column.
  */
 
-- (NSData*)dataForColumnIndex:(int)columnIdx;
+- (NSData * _Nullable)dataForColumnIndex:(int)columnIdx;
 
 /** Result set `(const unsigned char *)` value for column.
 
@@ -311,7 +307,9 @@
  @return `(const unsigned char *)` value of the result set's column.
  */
 
-- (const unsigned char *)UTF8StringForColumnName:(NSString*)columnName;
+- (const unsigned char * _Nullable)UTF8StringForColumn:(NSString*)columnName;
+
+- (const unsigned char * _Nullable)UTF8StringForColumnName:(NSString*)columnName __deprecated_msg("Use UTF8StringForColumn instead");
 
 /** Result set `(const unsigned char *)` value for column.
 
@@ -320,18 +318,20 @@
  @return `(const unsigned char *)` value of the result set's column.
  */
 
-- (const unsigned char *)UTF8StringForColumnIndex:(int)columnIdx;
+- (const unsigned char * _Nullable)UTF8StringForColumnIndex:(int)columnIdx;
 
 /** Result set object for column.
 
- @param columnName `NSString` value of the name of the column.
+ @param columnName Name of the column.
 
  @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
 
  @see objectForKeyedSubscript:
  */
 
-- (id)objectForColumnName:(NSString*)columnName;
+- (id _Nullable)objectForColumn:(NSString*)columnName;
+
+- (id _Nullable)objectForColumnName:(NSString*)columnName __deprecated_msg("Use objectForColumn instead");
 
 /** Result set object for column.
 
@@ -342,7 +342,7 @@
  @see objectAtIndexedSubscript:
  */
 
-- (id)objectForColumnIndex:(int)columnIdx;
+- (id _Nullable)objectForColumnIndex:(int)columnIdx;
 
 /** Result set object for column.
  
@@ -363,7 +363,7 @@
  @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
  */
 
-- (id)objectForKeyedSubscript:(NSString *)columnName;
+- (id _Nullable)objectForKeyedSubscript:(NSString *)columnName;
 
 /** Result set object for column.
 
@@ -384,13 +384,13 @@
  @return Either `NSNumber`, `NSString`, `NSData`, or `NSNull`. If the column was `NULL`, this returns `[NSNull null]` object.
  */
 
-- (id)objectAtIndexedSubscript:(int)columnIdx;
+- (id _Nullable)objectAtIndexedSubscript:(int)columnIdx;
 
 /** Result set `NSData` value for column.
 
  @param columnName `NSString` value of the name of the column.
 
- @return `NSData` value of the result set's column.
+ @return Data value of the result set's column.
 
  @warning If you are going to use this data after you iterate over the next row, or after you close the
 result set, make sure to make a copy of the data first (or just use `<dataForColumn:>`/`<dataForColumnIndex:>`)
@@ -398,13 +398,13 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
  
  */
 
-- (NSData*)dataNoCopyForColumn:(NSString*)columnName NS_RETURNS_NOT_RETAINED;
+- (NSData * _Nullable)dataNoCopyForColumn:(NSString *)columnName NS_RETURNS_NOT_RETAINED;
 
 /** Result set `NSData` value for column.
 
  @param columnIdx Zero-based index for column.
 
- @return `NSData` value of the result set's column.
+ @return Data value of the result set's column.
 
  @warning If you are going to use this data after you iterate over the next row, or after you close the
  result set, make sure to make a copy of the data first (or just use `<dataForColumn:>`/`<dataForColumnIndex:>`)
@@ -412,7 +412,7 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 
  */
 
-- (NSData*)dataNoCopyForColumnIndex:(int)columnIdx NS_RETURNS_NOT_RETAINED;
+- (NSData * _Nullable)dataNoCopyForColumnIndex:(int)columnIdx NS_RETURNS_NOT_RETAINED;
 
 /** Is the column `NULL`?
  
@@ -435,12 +435,10 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 
 /** Returns a dictionary of the row results mapped to case sensitive keys of the column names. 
  
- @returns `NSDictionary` of the row results.
- 
  @warning The keys to the dictionary are case sensitive of the column names.
  */
 
-- (NSDictionary*)resultDictionary;
+@property (nonatomic, readonly, nullable) NSDictionary *resultDictionary;
  
 /** Returns a dictionary of the row results
  
@@ -449,7 +447,7 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
  @warning **Deprecated**: Please use `<resultDictionary>` instead.  Also, beware that `<resultDictionary>` is case sensitive! 
  */
 
-- (NSDictionary*)resultDict  __attribute__ ((deprecated));
+- (NSDictionary * _Nullable)resultDict __deprecated_msg("Use resultDictionary instead");
 
 ///-----------------------------
 /// @name Key value coding magic
@@ -466,3 +464,4 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
  
 @end
 
+NS_ASSUME_NONNULL_END

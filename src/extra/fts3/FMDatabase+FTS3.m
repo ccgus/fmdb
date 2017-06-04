@@ -292,7 +292,7 @@ static const sqlite3_tokenizer_module FMDBTokenizerModule =
 - (FMTextOffsets *)offsetsForColumnIndex:(int)columnIdx
 {
     // The offsets() value is a space separated groups of 4 integers
-    const char *rawOffsets = (const char *)sqlite3_column_text([_statement statement], columnIdx);
+    const char *rawOffsets = (const char *)sqlite3_column_text([self.statement statement], columnIdx);
     
     return [[FMTextOffsets alloc] initWithDBOffsets:rawOffsets];
 }
