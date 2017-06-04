@@ -54,9 +54,9 @@
 }
 
 - (void)close {
-    [_statement reset];
-    FMDBRelease(_statement);
-    _statement = nil;
+    [self.statement reset];
+    FMDBRelease(self.statement);
+    self.statement = nil;
     
     // we don't need this anymore... (i think)
     //[_parentDB setInUse:NO];
@@ -65,17 +65,17 @@
 }
 
 - (int)columnCount {
-    return sqlite3_column_count([_statement statement]);
+    return sqlite3_column_count([self.statement statement]);
 }
 
 - (NSMutableDictionary *)columnNameToIndexMap {
     if (!_columnNameToIndexMap) {
-        int columnCount = sqlite3_column_count([_statement statement]);
+        int columnCount = sqlite3_column_count([self.statement statement]);
         _columnNameToIndexMap = [[NSMutableDictionary alloc] initWithCapacity:(NSUInteger)columnCount];
         int columnIdx = 0;
         for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
             [_columnNameToIndexMap setObject:[NSNumber numberWithInt:columnIdx]
-                                      forKey:[[NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)] lowercaseString]];
+                                      forKey:[[NSString stringWithUTF8String:sqlite3_column_name([self.statement statement], columnIdx)] lowercaseString]];
         }
     }
     return _columnNameToIndexMap;
@@ -83,18 +83,18 @@
 
 - (void)kvcMagic:(id)object {
     
-    int columnCount = sqlite3_column_count([_statement statement]);
+    int columnCount = sqlite3_column_count([self.statement statement]);
     
     int columnIdx = 0;
     for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
         
-        const char *c = (const char *)sqlite3_column_text([_statement statement], columnIdx);
+        const char *c = (const char *)sqlite3_column_text([self.statement statement], columnIdx);
         
         // check for a null row
         if (c) {
             NSString *s = [NSString stringWithUTF8String:c];
             
-            [object setValue:s forKey:[NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)]];
+            [object setValue:s forKey:[NSString stringWithUTF8String:sqlite3_column_name([self.statement statement], columnIdx)]];
         }
     }
 }
@@ -104,7 +104,7 @@
 
 - (NSDictionary *)resultDict {
     
-    NSUInteger num_cols = (NSUInteger)sqlite3_data_count([_statement statement]);
+    NSUInteger num_cols = (NSUInteger)sqlite3_data_count([self.statement statement]);
     
     if (num_cols > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
@@ -129,17 +129,17 @@
 
 - (NSDictionary*)resultDictionary {
     
-    NSUInteger num_cols = (NSUInteger)sqlite3_data_count([_statement statement]);
+    NSUInteger num_cols = (NSUInteger)sqlite3_data_count([self.statement statement]);
     
     if (num_cols > 0) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
         
-        int columnCount = sqlite3_column_count([_statement statement]);
+        int columnCount = sqlite3_column_count([self.statement statement]);
         
         int columnIdx = 0;
         for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
             
-            NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)];
+            NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name([self.statement statement], columnIdx)];
             id objectValue = [self objectForColumnIndex:columnIdx];
             [dict setObject:objectValue forKey:columnName];
         }
@@ -162,7 +162,7 @@
 
 - (BOOL)nextWithError:(NSError **)outErr {
     
-    int rc = sqlite3_step([_statement statement]);
+    int rc = sqlite3_step([self.statement statement]);
     
     if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
         NSLog(@"%s:%d Database busy (%@)", __FUNCTION__, __LINE__, [_parentDB databasePath]);
@@ -235,7 +235,7 @@
 }
 
 - (int)intForColumnIndex:(int)columnIdx {
-    return sqlite3_column_int([_statement statement], columnIdx);
+    return sqlite3_column_int([self.statement statement], columnIdx);
 }
 
 - (long)longForColumn:(NSString*)columnName {
@@ -243,7 +243,7 @@
 }
 
 - (long)longForColumnIndex:(int)columnIdx {
-    return (long)sqlite3_column_int64([_statement statement], columnIdx);
+    return (long)sqlite3_column_int64([self.statement statement], columnIdx);
 }
 
 - (long long int)longLongIntForColumn:(NSString*)columnName {
@@ -251,7 +251,7 @@
 }
 
 - (long long int)longLongIntForColumnIndex:(int)columnIdx {
-    return sqlite3_column_int64([_statement statement], columnIdx);
+    return sqlite3_column_int64([self.statement statement], columnIdx);
 }
 
 - (unsigned long long int)unsignedLongLongIntForColumn:(NSString*)columnName {
@@ -275,7 +275,7 @@
 }
 
 - (double)doubleForColumnIndex:(int)columnIdx {
-    return sqlite3_column_double([_statement statement], columnIdx);
+    return sqlite3_column_double([self.statement statement], columnIdx);
 }
 
 - (NSString *)stringForColumnIndex:(int)columnIdx {
@@ -284,7 +284,7 @@
         return nil;
     }
     
-    const char *c = (const char *)sqlite3_column_text([_statement statement], columnIdx);
+    const char *c = (const char *)sqlite3_column_text([self.statement statement], columnIdx);
     
     if (!c) {
         // null row.
@@ -322,8 +322,8 @@
         return nil;
     }
     
-    const char *dataBuffer = sqlite3_column_blob([_statement statement], columnIdx);
-    int dataSize = sqlite3_column_bytes([_statement statement], columnIdx);
+    const char *dataBuffer = sqlite3_column_blob([self.statement statement], columnIdx);
+    int dataSize = sqlite3_column_bytes([self.statement statement], columnIdx);
 
     if (dataBuffer == NULL) {
         return nil;
@@ -343,8 +343,8 @@
         return nil;
     }
   
-    const char *dataBuffer = sqlite3_column_blob([_statement statement], columnIdx);
-    int dataSize = sqlite3_column_bytes([_statement statement], columnIdx);
+    const char *dataBuffer = sqlite3_column_blob([self.statement statement], columnIdx);
+    int dataSize = sqlite3_column_bytes([self.statement statement], columnIdx);
     
     NSData *data = [NSData dataWithBytesNoCopy:(void *)dataBuffer length:(NSUInteger)dataSize freeWhenDone:NO];
     
@@ -353,7 +353,7 @@
 
 
 - (BOOL)columnIndexIsNull:(int)columnIdx {
-    return sqlite3_column_type([_statement statement], columnIdx) == SQLITE_NULL;
+    return sqlite3_column_type([self.statement statement], columnIdx) == SQLITE_NULL;
 }
 
 - (BOOL)columnIsNull:(NSString*)columnName {
@@ -366,7 +366,7 @@
         return nil;
     }
     
-    return sqlite3_column_text([_statement statement], columnIdx);
+    return sqlite3_column_text([self.statement statement], columnIdx);
 }
 
 - (const unsigned char *)UTF8StringForColumn:(NSString*)columnName {
@@ -417,7 +417,7 @@
 
 // returns autoreleased NSString containing the name of the column in the result set
 - (NSString*)columnNameForIndex:(int)columnIdx {
-    return [NSString stringWithUTF8String: sqlite3_column_name([_statement statement], columnIdx)];
+    return [NSString stringWithUTF8String: sqlite3_column_name([self.statement statement], columnIdx)];
 }
 
 - (id)objectAtIndexedSubscript:(int)columnIdx {

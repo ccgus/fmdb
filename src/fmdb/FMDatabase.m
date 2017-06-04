@@ -65,8 +65,8 @@ NS_ASSUME_NONNULL_END
         _databasePath               = [path copy];
         _openResultSets             = [[NSMutableSet alloc] init];
         _db                         = nil;
-        _logsErrors                 = YES;
-        _crashOnErrors              = NO;
+        self.logsErrors                 = YES;
+        self.crashOnErrors          = NO;
         _maxBusyRetryTimeInterval   = 2;
     }
     
@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_END
 - (void)dealloc {
     [self close];
     FMDBRelease(_openResultSets);
-    FMDBRelease(_cachedStatements);
+    FMDBRelease(self.cachedStatements);
     FMDBRelease(_dateFormat);
     FMDBRelease(_databasePath);
     FMDBRelease(_openFunctions);
@@ -345,18 +345,18 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 
 - (void)clearCachedStatements {
     
-    for (NSMutableSet *statements in [_cachedStatements objectEnumerator]) {
+    for (NSMutableSet *statements in [self.cachedStatements objectEnumerator]) {
         for (FMStatement *statement in [statements allObjects]) {
             [statement close];
         }
     }
     
-    [_cachedStatements removeAllObjects];
+    [self.cachedStatements removeAllObjects];
 }
 
 - (FMStatement*)cachedStatementForQuery:(NSString*)query {
     
-    NSMutableSet* statements = [_cachedStatements objectForKey:query];
+    NSMutableSet* statements = [self.cachedStatements objectForKey:query];
     
     return [[statements objectsPassingTest:^BOOL(FMStatement* statement, BOOL *stop) {
         
@@ -372,14 +372,14 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     query = [query copy]; // in case we got handed in a mutable string...
     [statement setQuery:query];
     
-    NSMutableSet* statements = [_cachedStatements objectForKey:query];
+    NSMutableSet* statements = [self.cachedStatements objectForKey:query];
     if (!statements) {
         statements = [NSMutableSet set];
     }
     
     [statements addObject:statement];
     
-    [_cachedStatements setObject:statements forKey:query];
+    [self.cachedStatements setObject:statements forKey:query];
     
     FMDBRelease(query);
 }
@@ -484,7 +484,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     NSLog(@"The FMDatabase %@ is currently in use.", self);
     
 #ifndef NS_BLOCK_ASSERTIONS
-    if (_crashOnErrors) {
+    if (self.crashOnErrors) {
         NSAssert(false, @"The FMDatabase %@ is currently in use.", self);
         abort();
     }
@@ -498,7 +498,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         NSLog(@"The FMDatabase %@ is not open.", self);
         
 #ifndef NS_BLOCK_ASSERTIONS
-        if (_crashOnErrors) {
+        if (self.crashOnErrors) {
             NSAssert(false, @"The FMDatabase %@ is not open.", self);
             abort();
         }
@@ -791,7 +791,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     FMStatement *statement  = 0x00;
     FMResultSet *rs         = 0x00;
     
-    if (_traceExecution && sql) {
+    if (self.traceExecution && sql) {
         NSLog(@"%@ executeQuery: %@", self, sql);
     }
     
@@ -806,13 +806,13 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         rc = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
         
         if (SQLITE_OK != rc) {
-            if (_logsErrors) {
+            if (self.logsErrors) {
                 NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                 NSLog(@"DB Query: %@", sql);
                 NSLog(@"DB Path: %@", _databasePath);
             }
             
-            if (_crashOnErrors) {
+            if (self.crashOnErrors) {
                 NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                 abort();
             }
@@ -835,7 +835,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             // Prefix the key with a colon.
             NSString *parameterName = [[NSString alloc] initWithFormat:@":%@", dictionaryKey];
             
-            if (_traceExecution) {
+            if (self.traceExecution) {
                 NSLog(@"%@ = %@", parameterName, [dictionaryArgs objectForKey:dictionaryKey]);
             }
             
@@ -870,7 +870,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
                 break;
             }
             
-            if (_traceExecution) {
+            if (self.traceExecution) {
                 if ([obj isKindOfClass:[NSData class]]) {
                     NSLog(@"data: %ld bytes", (unsigned long)[(NSData*)obj length]);
                 }
@@ -977,7 +977,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     sqlite3_stmt *pStmt      = 0x00;
     FMStatement *cachedStmt  = 0x00;
     
-    if (_traceExecution && sql) {
+    if (self.traceExecution && sql) {
         NSLog(@"%@ executeUpdate: %@", self, sql);
     }
     
@@ -991,13 +991,13 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         rc = sqlite3_prepare_v2(_db, [sql UTF8String], -1, &pStmt, 0);
         
         if (SQLITE_OK != rc) {
-            if (_logsErrors) {
+            if (self.logsErrors) {
                 NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                 NSLog(@"DB Query: %@", sql);
                 NSLog(@"DB Path: %@", _databasePath);
             }
             
-            if (_crashOnErrors) {
+            if (self.crashOnErrors) {
                 NSAssert(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                 abort();
             }
@@ -1025,7 +1025,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             // Prefix the key with a colon.
             NSString *parameterName = [[NSString alloc] initWithFormat:@":%@", dictionaryKey];
             
-            if (_traceExecution) {
+            if (self.traceExecution) {
                 NSLog(@"%@ = %@", parameterName, [dictionaryArgs objectForKey:dictionaryKey]);
             }
             // Get the index for the parameter name.
@@ -1043,7 +1043,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             else {
                 NSString *message = [NSString stringWithFormat:@"Could not find index for %@", dictionaryKey];
                 
-                if (_logsErrors) {
+                if (self.logsErrors) {
                     NSLog(@"%@", message);
                 }
                 if (outErr) {
@@ -1067,7 +1067,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
                 break;
             }
             
-            if (_traceExecution) {
+            if (self.traceExecution) {
                 if ([obj isKindOfClass:[NSData class]]) {
                     NSLog(@"data: %ld bytes", (unsigned long)[(NSData*)obj length]);
                 }
@@ -1085,7 +1085,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     
     if (idx != queryCount) {
         NSString *message = [NSString stringWithFormat:@"Error: the bind count (%d) is not correct for the # of variables in the query (%d) (%@) (executeUpdate)", idx, queryCount, sql];
-        if (_logsErrors) {
+        if (self.logsErrors) {
             NSLog(@"%@", message);
         }
         if (outErr) {
@@ -1107,14 +1107,14 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         // all is well, let's return.
     }
     else if (SQLITE_INTERRUPT == rc) {
-        if (_logsErrors) {
+        if (self.logsErrors) {
             NSLog(@"Error calling sqlite3_step. Query was interrupted (%d: %s) SQLITE_INTERRUPT", rc, sqlite3_errmsg(_db));
             NSLog(@"DB Query: %@", sql);
         }
     }
     else if (rc == SQLITE_ROW) {
         NSString *message = [NSString stringWithFormat:@"A executeUpdate is being called with a query string '%@'", sql];
-        if (_logsErrors) {
+        if (self.logsErrors) {
             NSLog(@"%@", message);
             NSLog(@"DB Query: %@", sql);
         }
@@ -1128,21 +1128,21 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         }
         
         if (SQLITE_ERROR == rc) {
-            if (_logsErrors) {
+            if (self.logsErrors) {
                 NSLog(@"Error calling sqlite3_step (%d: %s) SQLITE_ERROR", rc, sqlite3_errmsg(_db));
                 NSLog(@"DB Query: %@", sql);
             }
         }
         else if (SQLITE_MISUSE == rc) {
             // uh oh.
-            if (_logsErrors) {
+            if (self.logsErrors) {
                 NSLog(@"Error calling sqlite3_step (%d: %s) SQLITE_MISUSE", rc, sqlite3_errmsg(_db));
                 NSLog(@"DB Query: %@", sql);
             }
         }
         else {
             // wtf?
-            if (_logsErrors) {
+            if (self.logsErrors) {
                 NSLog(@"Unknown error calling sqlite3_step (%d: %s) eu", rc, sqlite3_errmsg(_db));
                 NSLog(@"DB Query: %@", sql);
             }
@@ -1173,7 +1173,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     }
     
     if (closeErrorCode != SQLITE_OK) {
-        if (_logsErrors) {
+        if (self.logsErrors) {
             NSLog(@"Unknown error finalizing or resetting statement (%d: %s)", closeErrorCode, sqlite3_errmsg(_db));
             NSLog(@"DB Query: %@", sql);
         }
@@ -1434,7 +1434,7 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     
     _shouldCacheStatements = value;
     
-    if (_shouldCacheStatements && !_cachedStatements) {
+    if (_shouldCacheStatements && !self.cachedStatements) {
         [self setCachedStatements:[NSMutableDictionary dictionary]];
     }
     
@@ -1572,24 +1572,24 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 }
 
 - (void)close {
-    if (_statement) {
-        sqlite3_finalize(_statement);
-        _statement = 0x00;
+    if (self.statement) {
+        sqlite3_finalize(self.statement);
+        self.statement = 0x00;
     }
     
-    _inUse = NO;
+    self.inUse = NO;
 }
 
 - (void)reset {
-    if (_statement) {
-        sqlite3_reset(_statement);
+    if (self.statement) {
+        sqlite3_reset(self.statement);
     }
     
-    _inUse = NO;
+    self.inUse = NO;
 }
 
 - (NSString*)description {
-    return [NSString stringWithFormat:@"%@ %ld hit(s) for query %@", [super description], _useCount, _query];
+    return [NSString stringWithFormat:@"%@ %ld hit(s) for query %@", [super description], self.useCount, self.query];
 }
 
 @end
