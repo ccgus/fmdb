@@ -985,7 +985,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  */
 
-- (NSError * _Nullable)inSavePoint:(void (^)(BOOL *rollback))block;
+- (NSError * _Nullable)inSavePoint:(__attribute__((noescape)) void (^)(BOOL *rollback))block;
 
 ///----------------------------
 /// @name SQLite library status
