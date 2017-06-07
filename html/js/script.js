@@ -46,10 +46,11 @@ function fixScrollPosition(element) {
 		info.style.height = (infoContainer.clientHeight + 40) + "px";
 		fixScrollPosition(element);
 		element.classList.toggle("hide");
-
+		if (element.classList.contains("hide")) {
+			e.preventDefault();
+		}
 		setTimeout(function() {
 			element.classList.remove("animating");
-			info.style.height = "auto";
 		}, 300);
 	});
 });

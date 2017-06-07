@@ -56,6 +56,12 @@
 	
 	<optgroup label="Properties">
 		
+		<option value="//api/name/countOfCheckedInDatabases">countOfCheckedInDatabases</option>
+		
+		<option value="//api/name/countOfCheckedOutDatabases">countOfCheckedOutDatabases</option>
+		
+		<option value="//api/name/countOfOpenDatabases">countOfOpenDatabases</option>
+		
 		<option value="//api/name/delegate">delegate</option>
 		
 		<option value="//api/name/maximumNumberOfDatabasesToCreate">maximumNumberOfDatabasesToCreate</option>
@@ -64,27 +70,29 @@
 		
 		<option value="//api/name/path">path</option>
 		
+		<option value="//api/name/vfsName">vfsName</option>
+		
 	</optgroup>
 	
 
 	
 	<optgroup label="Class Methods">
 		
+		<option value="//api/name/databaseClass">+ databaseClass</option>
+		
 		<option value="//api/name/databasePoolWithPath:">+ databasePoolWithPath:</option>
 		
 		<option value="//api/name/databasePoolWithPath:flags:">+ databasePoolWithPath:flags:</option>
+		
+		<option value="//api/name/databasePoolWithURL:">+ databasePoolWithURL:</option>
+		
+		<option value="//api/name/databasePoolWithURL:flags:">+ databasePoolWithURL:flags:</option>
 		
 	</optgroup>
 	
 
 	
 	<optgroup label="Instance Methods">
-		
-		<option value="//api/name/countOfCheckedInDatabases">- countOfCheckedInDatabases</option>
-		
-		<option value="//api/name/countOfCheckedOutDatabases">- countOfCheckedOutDatabases</option>
-		
-		<option value="//api/name/countOfOpenDatabases">- countOfOpenDatabases</option>
 		
 		<option value="//api/name/inDatabase:">- inDatabase:</option>
 		
@@ -97,6 +105,14 @@
 		<option value="//api/name/initWithPath:">- initWithPath:</option>
 		
 		<option value="//api/name/initWithPath:flags:">- initWithPath:flags:</option>
+		
+		<option value="//api/name/initWithPath:flags:vfs:">- initWithPath:flags:vfs:</option>
+		
+		<option value="//api/name/initWithURL:">- initWithURL:</option>
+		
+		<option value="//api/name/initWithURL:flags:">- initWithURL:flags:</option>
+		
+		<option value="//api/name/initWithURL:flags:vfs:">- initWithURL:flags:vfs:</option>
 		
 		<option value="//api/name/releaseAllDatabases">- releaseAllDatabases</option>
 		
@@ -182,7 +198,7 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSString *path</code></div>
+			<div class="method-subsection method-declaration"><code>@property (atomic, copy, nullable) NSString *path</code></div>
 
 		    
 			
@@ -228,7 +244,7 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>@property (atomic, assign) id delegate</code></div>
+			<div class="method-subsection method-declaration"><code>@property (atomic, assign, nullable) id delegate</code></div>
 
 		    
 			
@@ -349,6 +365,52 @@ in the main.m file.</p></div>
 			
 		</div>
 	</div>
+</div><div class="section-method">
+	<a name="//api/name/vfsName" title="vfsName"></a>
+	<h3 class="method-title"><code><a href="#//api/name/vfsName">&nbsp;&nbsp;vfsName</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>  Custom virtual file system name</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (atomic, copy, nullable) NSString *vfsName</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>  Custom virtual file system name</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabasePool.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
 </div>
 						</div>
 						
@@ -374,7 +436,7 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>+ (instancetype)databasePoolWithPath:(NSString *)<em>aPath</em></code></div>
+			<div class="method-subsection method-declaration"><code>+ (instancetype)databasePoolWithPath:(NSString *_Nullable)<em>aPath</em></code></div>
 
 		    
 			
@@ -404,6 +466,69 @@ in the main.m file.</p></div>
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
 				<p>Create pool using path.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabasePool.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/databasePoolWithURL:" title="databasePoolWithURL:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/databasePoolWithURL:">+&nbsp;databasePoolWithURL:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create pool using file URL.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (instancetype)databasePoolWithURL:(NSURL *_Nullable)<em>url</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>url</code></th>
+						<td><p>The file <code>NSURL</code> of the database.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The <code>FMDatabasePool</code> object. <code>nil</code> on error.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Create pool using file URL.</p>
 			</div>
 			
 
@@ -437,7 +562,7 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>+ (instancetype)databasePoolWithPath:(NSString *)<em>aPath</em> flags:(int)<em>openFlags</em></code></div>
+			<div class="method-subsection method-declaration"><code>+ (instancetype)databasePoolWithPath:(NSString *_Nullable)<em>aPath</em> flags:(int)<em>openFlags</em></code></div>
 
 		    
 			
@@ -452,7 +577,7 @@ in the main.m file.</p></div>
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>openFlags</code></th>
-						<td><p>Flags passed to the openWithFlags method of the database</p></td>
+						<td><p>Flags passed to the openWithFlags method of the database.</p></td>
 					</tr>
 				
 				</table>
@@ -489,6 +614,74 @@ in the main.m file.</p></div>
 		</div>
 	</div>
 </div><div class="section-method">
+	<a name="//api/name/databasePoolWithURL:flags:" title="databasePoolWithURL:flags:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/databasePoolWithURL:flags:">+&nbsp;databasePoolWithURL:flags:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create pool using file URL and specified flags</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (instancetype)databasePoolWithURL:(NSURL *_Nullable)<em>url</em> flags:(int)<em>openFlags</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>url</code></th>
+						<td><p>The file <code>NSURL</code> of the database.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>openFlags</code></th>
+						<td><p>Flags passed to the openWithFlags method of the database.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The <code>FMDatabasePool</code> object. <code>nil</code> on error.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Create pool using file URL and specified flags</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabasePool.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/initWithPath:" title="initWithPath:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/initWithPath:">&ndash;&nbsp;initWithPath:</a></code>
 </h3>
@@ -505,7 +698,7 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *)<em>aPath</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *_Nullable)<em>aPath</em></code></div>
 
 		    
 			
@@ -552,6 +745,69 @@ in the main.m file.</p></div>
 		</div>
 	</div>
 </div><div class="section-method">
+	<a name="//api/name/initWithURL:" title="initWithURL:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithURL:">&ndash;&nbsp;initWithURL:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create pool using file URL.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithURL:(NSURL *_Nullable)<em>url</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>url</code></th>
+						<td><p>The file `NSURL of the database.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The <code>FMDatabasePool</code> object. <code>nil</code> on error.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Create pool using file URL.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabasePool.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/initWithPath:flags:" title="initWithPath:flags:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/initWithPath:flags:">&ndash;&nbsp;initWithPath:flags:</a></code>
 </h3>
@@ -568,7 +824,7 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *)<em>aPath</em> flags:(int)<em>openFlags</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *_Nullable)<em>aPath</em> flags:(int)<em>openFlags</em></code></div>
 
 		    
 			
@@ -619,6 +875,273 @@ in the main.m file.</p></div>
 			
 		</div>
 	</div>
+</div><div class="section-method">
+	<a name="//api/name/initWithURL:flags:" title="initWithURL:flags:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithURL:flags:">&ndash;&nbsp;initWithURL:flags:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create pool using file URL and specified flags.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithURL:(NSURL *_Nullable)<em>url</em> flags:(int)<em>openFlags</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>url</code></th>
+						<td><p>The file <code>NSURL</code> of the database.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>openFlags</code></th>
+						<td><p>Flags passed to the openWithFlags method of the database</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The <code>FMDatabasePool</code> object. <code>nil</code> on error.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Create pool using file URL and specified flags.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabasePool.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/initWithPath:flags:vfs:" title="initWithPath:flags:vfs:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithPath:flags:vfs:">&ndash;&nbsp;initWithPath:flags:vfs:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create pool using path and specified flags.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *_Nullable)<em>aPath</em> flags:(int)<em>openFlags</em> vfs:(NSString *_Nullable)<em>vfsName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>aPath</code></th>
+						<td><p>The file path of the database.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>openFlags</code></th>
+						<td><p>Flags passed to the openWithFlags method of the database</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>vfsName</code></th>
+						<td><p>The name of a custom virtual file system</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The <code>FMDatabasePool</code> object. <code>nil</code> on error.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Create pool using path and specified flags.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabasePool.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/initWithURL:flags:vfs:" title="initWithURL:flags:vfs:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithURL:flags:vfs:">&ndash;&nbsp;initWithURL:flags:vfs:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create pool using file URL and specified flags.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithURL:(NSURL *_Nullable)<em>url</em> flags:(int)<em>openFlags</em> vfs:(NSString *_Nullable)<em>vfsName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>url</code></th>
+						<td><p>The file <code>NSURL</code> of the database.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>openFlags</code></th>
+						<td><p>Flags passed to the openWithFlags method of the database</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>vfsName</code></th>
+						<td><p>The name of a custom virtual file system</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The <code>FMDatabasePool</code> object. <code>nil</code> on error.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Create pool using file URL and specified flags.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabasePool.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/databaseClass" title="databaseClass"></a>
+	<h3 class="method-title"><code><a href="#//api/name/databaseClass">+&nbsp;databaseClass</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Returns the Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (Class)databaseClass</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Returns the Class of &lsquo;FMDatabase&rsquo; subclass, that will be used to instantiate database object.</p>
+
+<p>Subclasses can override this method to return specified Class of &lsquo;FMDatabase&rsquo; subclass.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabasePool.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
 </div>
 						</div>
 						
@@ -629,7 +1152,7 @@ in the main.m file.</p></div>
 						<div class="task-list">
 							<div class="section-method">
 	<a name="//api/name/countOfCheckedInDatabases" title="countOfCheckedInDatabases"></a>
-	<h3 class="method-title"><code><a href="#//api/name/countOfCheckedInDatabases">&ndash;&nbsp;countOfCheckedInDatabases</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/countOfCheckedInDatabases">&nbsp;&nbsp;countOfCheckedInDatabases</a></code>
 </h3>
 
 	<div class="method-info">
@@ -644,16 +1167,11 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSUInteger)countOfCheckedInDatabases</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger countOfCheckedInDatabases</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>Number of databases</p>
-			</div>
 			
 
 			
@@ -680,7 +1198,7 @@ in the main.m file.</p></div>
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/countOfCheckedOutDatabases" title="countOfCheckedOutDatabases"></a>
-	<h3 class="method-title"><code><a href="#//api/name/countOfCheckedOutDatabases">&ndash;&nbsp;countOfCheckedOutDatabases</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/countOfCheckedOutDatabases">&nbsp;&nbsp;countOfCheckedOutDatabases</a></code>
 </h3>
 
 	<div class="method-info">
@@ -695,16 +1213,11 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSUInteger)countOfCheckedOutDatabases</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger countOfCheckedOutDatabases</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>Number of databases</p>
-			</div>
 			
 
 			
@@ -731,7 +1244,7 @@ in the main.m file.</p></div>
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/countOfOpenDatabases" title="countOfOpenDatabases"></a>
-	<h3 class="method-title"><code><a href="#//api/name/countOfOpenDatabases">&ndash;&nbsp;countOfOpenDatabases</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/countOfOpenDatabases">&nbsp;&nbsp;countOfOpenDatabases</a></code>
 </h3>
 
 	<div class="method-info">
@@ -746,16 +1259,11 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSUInteger)countOfOpenDatabases</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSUInteger countOfOpenDatabases</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>Number of databases</p>
-			</div>
 			
 
 			
@@ -1025,7 +1533,7 @@ in the main.m file.</p></div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSError *)inSavePoint:(void ( ^ ) ( FMDatabase *db , BOOL *rollback ))<em>block</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSError *_Nullable)inSavePoint:(void ( ^ ) ( FMDatabase *db , BOOL *rollback ))<em>block</em></code></div>
 
 		    
 			
@@ -1079,12 +1587,14 @@ in the main.m file.</p></div>
 					
 
                     
+                    
+          
 				</main>
 
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-11-10</p>
+						<p class="copyright">Copyright &copy; 2017 ccgus. All rights reserved. Updated: 2017-06-07</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>

@@ -54,15 +54,21 @@
 
 	
 	
+	<optgroup label="Properties">
+		
+		<option value="//api/name/applicationID">applicationID</option>
+		
+		<option value="//api/name/applicationIDString">applicationIDString</option>
+		
+		<option value="//api/name/userVersion">userVersion</option>
+		
+	</optgroup>
+	
 
 	
 
 	
 	<optgroup label="Instance Methods">
-		
-		<option value="//api/name/applicationID">- applicationID</option>
-		
-		<option value="//api/name/applicationIDString">- applicationIDString</option>
 		
 		<option value="//api/name/boolForQuery:">- boolForQuery:</option>
 		
@@ -84,17 +90,9 @@
 		
 		<option value="//api/name/longForQuery:">- longForQuery:</option>
 		
-		<option value="//api/name/setApplicationID:">- setApplicationID:</option>
-		
-		<option value="//api/name/setApplicationIDString:">- setApplicationIDString:</option>
-		
-		<option value="//api/name/setUserVersion:">- setUserVersion:</option>
-		
 		<option value="//api/name/stringForQuery:">- stringForQuery:</option>
 		
 		<option value="//api/name/tableExists:">- tableExists:</option>
-		
-		<option value="//api/name/userVersion">- userVersion</option>
 		
 		<option value="//api/name/validateSQL:error:">- validateSQL:error:</option>
 		
@@ -202,7 +200,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Return <code>int</code> value for query</p><div class="note"><p><strong>Note:</strong> To use this method from Swift, you must include <code>FMDatabaseAdditionsVariadic.swift</code> in your project.</p></div>
+				<p>Return <code>int</code> value for query</p><div class="note"><p><strong>Note:</strong> This is not available from Swift.</p></div>
 			</div>
 			
 
@@ -270,7 +268,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Return <code>long</code> value for query</p><div class="note"><p><strong>Note:</strong> To use this method from Swift, you must include <code>FMDatabaseAdditionsVariadic.swift</code> in your project.</p></div>
+				<p>Return <code>long</code> value for query</p><div class="note"><p><strong>Note:</strong> This is not available from Swift.</p></div>
 			</div>
 			
 
@@ -338,7 +336,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Return <code>BOOL</code> value for query</p><div class="note"><p><strong>Note:</strong> To use this method from Swift, you must include <code>FMDatabaseAdditionsVariadic.swift</code> in your project.</p></div>
+				<p>Return <code>BOOL</code> value for query</p><div class="note"><p><strong>Note:</strong> This is not available from Swift.</p></div>
 			</div>
 			
 
@@ -406,7 +404,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Return <code>double</code> value for query</p><div class="note"><p><strong>Note:</strong> To use this method from Swift, you must include <code>FMDatabaseAdditionsVariadic.swift</code> in your project.</p></div>
+				<p>Return <code>double</code> value for query</p><div class="note"><p><strong>Note:</strong> This is not available from Swift.</p></div>
 			</div>
 			
 
@@ -440,7 +438,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSString *)stringForQuery:(NSString *)<em>query</em>, <em>...</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSString *_Nullable)stringForQuery:(NSString *)<em>query</em>, <em>...</em></code></div>
 
 		    
 			
@@ -474,7 +472,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Return <code>NSString</code> value for query</p><div class="note"><p><strong>Note:</strong> To use this method from Swift, you must include <code>FMDatabaseAdditionsVariadic.swift</code> in your project.</p></div>
+				<p>Return <code>NSString</code> value for query</p><div class="note"><p><strong>Note:</strong> This is not available from Swift.</p></div>
 			</div>
 			
 
@@ -508,7 +506,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSData *)dataForQuery:(NSString *)<em>query</em>, <em>...</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSData *_Nullable)dataForQuery:(NSString *)<em>query</em>, <em>...</em></code></div>
 
 		    
 			
@@ -542,7 +540,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Return <code>NSData</code> value for query</p><div class="note"><p><strong>Note:</strong> To use this method from Swift, you must include <code>FMDatabaseAdditionsVariadic.swift</code> in your project.</p></div>
+				<p>Return <code>NSData</code> value for query</p><div class="note"><p><strong>Note:</strong> This is not available from Swift.</p></div>
 			</div>
 			
 
@@ -576,7 +574,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSDate *)dateForQuery:(NSString *)<em>query</em>, <em>...</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSDate *_Nullable)dateForQuery:(NSString *)<em>query</em>, <em>...</em></code></div>
 
 		    
 			
@@ -610,7 +608,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Return <code>NSDate</code> value for query</p><div class="note"><p><strong>Note:</strong> To use this method from Swift, you must include <code>FMDatabaseAdditionsVariadic.swift</code> in your project.</p></div>
+				<p>Return <code>NSDate</code> value for query</p><div class="note"><p><strong>Note:</strong> This is not available from Swift.</p></div>
 			</div>
 			
 
@@ -1020,7 +1018,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)validateSQL:(NSString *)<em>sql</em> error:(NSError **)<em>error</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)validateSQL:(NSString *)<em>sql</em> error:(NSError *_Nullable *)<em>error</em></code></div>
 
 		    
 			
@@ -1083,7 +1081,7 @@
 						<div class="task-list">
 							<div class="section-method">
 	<a name="//api/name/applicationID" title="applicationID"></a>
-	<h3 class="method-title"><code><a href="#//api/name/applicationID">&ndash;&nbsp;applicationID</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/applicationID">&nbsp;&nbsp;applicationID</a></code>
 </h3>
 
 	<div class="method-info">
@@ -1098,7 +1096,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (uint32_t)applicationID</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic) uint32_t applicationID</code></div>
 
 		    
 			
@@ -1126,74 +1124,7 @@
 				<h4 class="method-subtitle">See Also</h4>
 				<ul>
 					
-					<li><code><p><a href="#//api/name/setApplicationID:">- setApplicationID:</a></p></code></li>
-					
-				</ul>
-			</div>
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMDatabaseAdditions.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/setApplicationID:" title="setApplicationID:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/setApplicationID:">&ndash;&nbsp;setApplicationID:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Set the application ID</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (void)setApplicationID:(uint32_t)<em>appID</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>appID</code></th>
-						<td><p>The <code>uint32_t</code> numeric value of the application ID.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Set the application ID</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection see-also-section">
-				<h4 class="method-subtitle">See Also</h4>
-				<ul>
-					
-					<li><code><p><a href="#//api/name/applicationID">- applicationID</a></p></code></li>
+					<li><code><p><a href="#//api/name/applicationID">@property applicationID</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -1210,7 +1141,7 @@
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/applicationIDString" title="applicationIDString"></a>
-	<h3 class="method-title"><code><a href="#//api/name/applicationIDString">&ndash;&nbsp;applicationIDString</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/applicationIDString">&nbsp;&nbsp;applicationIDString</a></code>
 </h3>
 
 	<div class="method-info">
@@ -1225,16 +1156,11 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSString *)applicationIDString</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, retain) NSString *applicationIDString</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>The <code>NSString</code> value of the application ID.</p>
-			</div>
 			
 
 			
@@ -1253,74 +1179,7 @@
 				<h4 class="method-subtitle">See Also</h4>
 				<ul>
 					
-					<li><code><p><a href="#//api/name/setApplicationIDString:">- setApplicationIDString:</a></p></code></li>
-					
-				</ul>
-			</div>
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMDatabaseAdditions.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/setApplicationIDString:" title="setApplicationIDString:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/setApplicationIDString:">&ndash;&nbsp;setApplicationIDString:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Set the application ID string</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (void)setApplicationIDString:(NSString *)<em>string</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>string</code></th>
-						<td><p>The <code>NSString</code> value of the application ID.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Set the application ID string</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection see-also-section">
-				<h4 class="method-subtitle">See Also</h4>
-				<ul>
-					
-					<li><code><p><a href="#//api/name/applicationIDString">- applicationIDString</a></p></code></li>
+					<li><code><p><a href="#//api/name/applicationIDString">@property applicationIDString</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -1345,7 +1204,7 @@
 						<div class="task-list">
 							<div class="section-method">
 	<a name="//api/name/userVersion" title="userVersion"></a>
-	<h3 class="method-title"><code><a href="#//api/name/userVersion">&ndash;&nbsp;userVersion</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/userVersion">&nbsp;&nbsp;userVersion</a></code>
 </h3>
 
 	<div class="method-info">
@@ -1360,16 +1219,11 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (uint32_t)userVersion</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic) uint32_t userVersion</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>The <code>uint32_t</code> numeric value of the user version.</p>
-			</div>
 			
 
 			
@@ -1388,74 +1242,7 @@
 				<h4 class="method-subtitle">See Also</h4>
 				<ul>
 					
-					<li><code><p><a href="#//api/name/setUserVersion:">- setUserVersion:</a></p></code></li>
-					
-				</ul>
-			</div>
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">FMDatabaseAdditions.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/setUserVersion:" title="setUserVersion:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/setUserVersion:">&ndash;&nbsp;setUserVersion:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Set the user-version</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (void)setUserVersion:(uint32_t)<em>version</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>version</code></th>
-						<td><p>The <code>uint32_t</code> numeric value of the user version.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Set the user-version</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection see-also-section">
-				<h4 class="method-subtitle">See Also</h4>
-				<ul>
-					
-					<li><code><p><a href="#//api/name/userVersion">- userVersion</a></p></code></li>
+					<li><code><p><a href="#//api/name/userVersion">@property userVersion</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -1478,12 +1265,14 @@
 					
 
                     
+                    
+          
 				</main>
 
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-11-10</p>
+						<p class="copyright">Copyright &copy; 2017 ccgus. All rights reserved. Updated: 2017-06-07</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>

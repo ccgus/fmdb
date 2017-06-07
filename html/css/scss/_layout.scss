@@ -21,6 +21,10 @@
 body {
 	font: 62.5% $body-font;
 	background: $body-background;
+
+	@media (max-width: $mobile-max-width) {
+		background-color: $content-background;
+	}
 }
 
 h1, h2, h3 {
@@ -139,8 +143,6 @@ header {
 	}
 
 	@media (max-width: $mobile-max-width) {
-		position: absolute;
-
 		.container {
 			padding: 0 10px;
 		}
@@ -156,10 +158,6 @@ aside {
 	z-index: 2;
 
 	font-size: 1.1em;
-
-	@media (max-width: $mobile-max-width) {
-		position: absolute;
-	}
 
 	#header-buttons {
 		background: rgba(255, 255, 255, .8);
@@ -237,6 +235,7 @@ article {
 
 		@media (max-width: $mobile-max-width) {
 			padding: 15px 10px 20px 10px;
+			border: none;
 		}
 
 		.navigation-top {

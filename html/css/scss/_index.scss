@@ -1,13 +1,17 @@
 .index-container {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
+	-webkit-flex-direction: column;
+	flex-direction: column;
 
-	@media (max-width: $mobile-max-width) {
-		flex-direction: column;
+	@media (min-width: $desktop-min-width) {
+		display: flex;
+		-webkit-flex-direction: row;
+		flex-direction: row;
+		-webkit-flex-wrap: wrap;
+		flex-wrap: wrap;
 	}
 
 	.index-column {
+		-webkit-flex: 1 1 33%;
 		flex: 1 1 33%;
 	}
 }

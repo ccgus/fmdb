@@ -56,9 +56,13 @@
 	
 	<optgroup label="Properties">
 		
+		<option value="//api/name/columnCount">columnCount</option>
+		
 		<option value="//api/name/columnNameToIndexMap">columnNameToIndexMap</option>
 		
 		<option value="//api/name/query">query</option>
+		
+		<option value="//api/name/resultDictionary">resultDictionary</option>
 		
 		<option value="//api/name/statement">statement</option>
 		
@@ -76,17 +80,15 @@
 	
 	<optgroup label="Instance Methods">
 		
-		<option value="//api/name/UTF8StringForColumnIndex:">- UTF8StringForColumnIndex:</option>
+		<option value="//api/name/UTF8StringForColumn:">- UTF8StringForColumn:</option>
 		
-		<option value="//api/name/UTF8StringForColumnName:">- UTF8StringForColumnName:</option>
+		<option value="//api/name/UTF8StringForColumnIndex:">- UTF8StringForColumnIndex:</option>
 		
 		<option value="//api/name/boolForColumn:">- boolForColumn:</option>
 		
 		<option value="//api/name/boolForColumnIndex:">- boolForColumnIndex:</option>
 		
 		<option value="//api/name/close">- close</option>
-		
-		<option value="//api/name/columnCount">- columnCount</option>
 		
 		<option value="//api/name/columnIndexForName:">- columnIndexForName:</option>
 		
@@ -134,15 +136,13 @@
 		
 		<option value="//api/name/objectAtIndexedSubscript:">- objectAtIndexedSubscript:</option>
 		
-		<option value="//api/name/objectForColumnIndex:">- objectForColumnIndex:</option>
+		<option value="//api/name/objectForColumn:">- objectForColumn:</option>
 		
-		<option value="//api/name/objectForColumnName:">- objectForColumnName:</option>
+		<option value="//api/name/objectForColumnIndex:">- objectForColumnIndex:</option>
 		
 		<option value="//api/name/objectForKeyedSubscript:">- objectForKeyedSubscript:</option>
 		
 		<option value="//api/name/resultDict">- resultDict</option>
-		
-		<option value="//api/name/resultDictionary">- resultDictionary</option>
 		
 		<option value="//api/name/stringForColumn:">- stringForColumn:</option>
 		
@@ -225,7 +225,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSString *query</code></div>
+			<div class="method-subsection method-declaration"><code>@property (atomic, retain, nullable) NSString *query</code></div>
 
 		    
 			
@@ -317,7 +317,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>@property (atomic, retain) FMStatement *statement</code></div>
+			<div class="method-subsection method-declaration"><code>@property (atomic, retain, nullable) FMStatement *statement</code></div>
 
 		    
 			
@@ -555,7 +555,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)nextWithError:(NSError **)<em>outErr</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)nextWithError:(NSError *_Nullable *)<em>outErr</em></code></div>
 
 		    
 			
@@ -682,7 +682,7 @@
 						<div class="task-list">
 							<div class="section-method">
 	<a name="//api/name/columnCount" title="columnCount"></a>
-	<h3 class="method-title"><code><a href="#//api/name/columnCount">&ndash;&nbsp;columnCount</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/columnCount">&nbsp;&nbsp;columnCount</a></code>
 </h3>
 
 	<div class="method-info">
@@ -697,7 +697,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (int)columnCount</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) int columnCount</code></div>
 
 		    
 			
@@ -811,7 +811,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSString *)columnNameForIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSString *_Nullable)columnNameForIndex:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -1630,7 +1630,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumn:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSString *_Nullable)stringForColumn:(NSString *)<em>columnName</em></code></div>
 
 		    
 			
@@ -1650,7 +1650,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSString</code> value of the result set&rsquo;s column.</p>
+				<p>String value of the result set&rsquo;s column.</p>
 			</div>
 			
 
@@ -1693,7 +1693,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSString *)stringForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSString *_Nullable)stringForColumnIndex:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -1713,7 +1713,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSString</code> value of the result set&rsquo;s column.</p>
+				<p>String value of the result set&rsquo;s column.</p>
 			</div>
 			
 
@@ -1756,7 +1756,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSDate *)dateForColumn:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSDate *_Nullable)dateForColumn:(NSString *)<em>columnName</em></code></div>
 
 		    
 			
@@ -1776,7 +1776,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSDate</code> value of the result set&rsquo;s column.</p>
+				<p>Date value of the result set&rsquo;s column.</p>
 			</div>
 			
 
@@ -1819,7 +1819,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSDate *)dateForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSDate *_Nullable)dateForColumnIndex:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -1839,7 +1839,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSDate</code> value of the result set&rsquo;s column.</p>
+				<p>Date value of the result set&rsquo;s column.</p>
 			</div>
 			
 
@@ -1882,7 +1882,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSData *)dataForColumn:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSData *_Nullable)dataForColumn:(NSString *)<em>columnName</em></code></div>
 
 		    
 			
@@ -1902,7 +1902,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSData</code> value of the result set&rsquo;s column.</p>
+				<p>Data value of the result set&rsquo;s column.</p>
 			</div>
 			
 
@@ -1947,7 +1947,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSData *)dataForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSData *_Nullable)dataForColumnIndex:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -1967,7 +1967,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSData</code> value of the result set&rsquo;s column.</p>
+				<p>Data value of the result set&rsquo;s column.</p>
 			</div>
 			
 
@@ -1994,8 +1994,8 @@
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/UTF8StringForColumnName:" title="UTF8StringForColumnName:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/UTF8StringForColumnName:">&ndash;&nbsp;UTF8StringForColumnName:</a></code>
+	<a name="//api/name/UTF8StringForColumn:" title="UTF8StringForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/UTF8StringForColumn:">&ndash;&nbsp;UTF8StringForColumn:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2010,7 +2010,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnName:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (const unsigned char *_Nullable)UTF8StringForColumn:(NSString *)<em>columnName</em></code></div>
 
 		    
 			
@@ -2073,7 +2073,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (const unsigned char *)UTF8StringForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (const unsigned char *_Nullable)UTF8StringForColumnIndex:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -2120,8 +2120,8 @@
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/objectForColumnName:" title="objectForColumnName:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/objectForColumnName:">&ndash;&nbsp;objectForColumnName:</a></code>
+	<a name="//api/name/objectForColumn:" title="objectForColumn:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/objectForColumn:">&ndash;&nbsp;objectForColumn:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2136,7 +2136,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (id)objectForColumnName:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (id _Nullable)objectForColumn:(NSString *)<em>columnName</em></code></div>
 
 		    
 			
@@ -2146,7 +2146,7 @@
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>columnName</code></th>
-						<td><p><code>NSString</code> value of the name of the column.</p></td>
+						<td><p>Name of the column.</p></td>
 					</tr>
 				
 				</table>
@@ -2208,7 +2208,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (id)objectForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (id _Nullable)objectForColumnIndex:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -2280,7 +2280,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (id)objectForKeyedSubscript:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (id _Nullable)objectForKeyedSubscript:(NSString *)<em>columnName</em></code></div>
 
 		    
 			
@@ -2358,7 +2358,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (id)objectAtIndexedSubscript:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (id _Nullable)objectAtIndexedSubscript:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -2436,7 +2436,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSData *)dataNoCopyForColumn:(NSString *)<em>columnName</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSData *_Nullable)dataNoCopyForColumn:(NSString *)<em>columnName</em></code></div>
 
 		    
 			
@@ -2456,7 +2456,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSData</code> value of the result set&rsquo;s column.</p>
+				<p>Data value of the result set&rsquo;s column.</p>
 			</div>
 			
 
@@ -2501,7 +2501,7 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSData *)dataNoCopyForColumnIndex:(int)<em>columnIdx</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSData *_Nullable)dataNoCopyForColumnIndex:(int)<em>columnIdx</em></code></div>
 
 		    
 			
@@ -2521,7 +2521,7 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSData</code> value of the result set&rsquo;s column.</p>
+				<p>Data value of the result set&rsquo;s column.</p>
 			</div>
 			
 
@@ -2677,7 +2677,7 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/resultDictionary" title="resultDictionary"></a>
-	<h3 class="method-title"><code><a href="#//api/name/resultDictionary">&ndash;&nbsp;resultDictionary</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/resultDictionary">&nbsp;&nbsp;resultDictionary</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2692,16 +2692,11 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDictionary</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, nullable) NSDictionary *resultDictionary</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>NSDictionary</code> of the row results.</p>
-			</div>
 			
 
 			
@@ -2743,7 +2738,7 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSDictionary *)resultDict</code></div>
+			<div class="method-subsection method-declaration"><code>- (NSDictionary *_Nullable)resultDict</code></div>
 
 		    
 			
@@ -2766,7 +2761,7 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 				<h4 class="method-subtitle">See Also</h4>
 				<ul>
 					
-					<li><code><p><a href="#//api/name/resultDictionary">- resultDictionary</a></p></code></li>
+					<li><code><p><a href="#//api/name/resultDictionary">@property resultDictionary</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -2855,12 +2850,14 @@ If you don&rsquo;t, you&rsquo;re going to be in a world of hurt when you try and
 					
 
                     
+                    
+          
 				</main>
 
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-11-10</p>
+						<p class="copyright">Copyright &copy; 2017 ccgus. All rights reserved. Updated: 2017-06-07</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>

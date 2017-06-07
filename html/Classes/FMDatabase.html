@@ -58,11 +58,29 @@
 		
 		<option value="//api/name/cachedStatements">cachedStatements</option>
 		
+		<option value="//api/name/changes">changes</option>
+		
 		<option value="//api/name/checkedOut">checkedOut</option>
 		
 		<option value="//api/name/crashOnErrors">crashOnErrors</option>
 		
+		<option value="//api/name/databasePath">databasePath</option>
+		
+		<option value="//api/name/databaseURL">databaseURL</option>
+		
+		<option value="//api/name/goodConnection">goodConnection</option>
+		
+		<option value="//api/name/hasOpenResultSets">hasOpenResultSets</option>
+		
+		<option value="//api/name/isInTransaction">isInTransaction</option>
+		
+		<option value="//api/name/lastInsertRowId">lastInsertRowId</option>
+		
 		<option value="//api/name/logsErrors">logsErrors</option>
+		
+		<option value="//api/name/shouldCacheStatements">shouldCacheStatements</option>
+		
+		<option value="//api/name/sqliteHandle">sqliteHandle</option>
 		
 		<option value="//api/name/traceExecution">traceExecution</option>
 		
@@ -73,6 +91,8 @@
 	<optgroup label="Class Methods">
 		
 		<option value="//api/name/databaseWithPath:">+ databaseWithPath:</option>
+		
+		<option value="//api/name/databaseWithURL:">+ databaseWithURL:</option>
 		
 		<option value="//api/name/isSQLiteThreadSafe">+ isSQLiteThreadSafe</option>
 		
@@ -90,8 +110,6 @@
 		
 		<option value="//api/name/beginTransaction">- beginTransaction</option>
 		
-		<option value="//api/name/changes">- changes</option>
-		
 		<option value="//api/name/clearCachedStatements">- clearCachedStatements</option>
 		
 		<option value="//api/name/close">- close</option>
@@ -99,8 +117,6 @@
 		<option value="//api/name/closeOpenResultSets">- closeOpenResultSets</option>
 		
 		<option value="//api/name/commit">- commit</option>
-		
-		<option value="//api/name/databasePath">- databasePath</option>
 		
 		<option value="//api/name/dateFromString:">- dateFromString:</option>
 		
@@ -132,19 +148,17 @@
 		
 		<option value="//api/name/executeUpdateWithFormat:">- executeUpdateWithFormat:</option>
 		
-		<option value="//api/name/goodConnection">- goodConnection</option>
-		
 		<option value="//api/name/hadError">- hadError</option>
 		
 		<option value="//api/name/hasDateFormatter">- hasDateFormatter</option>
 		
-		<option value="//api/name/hasOpenResultSets">- hasOpenResultSets</option>
-		
 		<option value="//api/name/inSavePoint:">- inSavePoint:</option>
 		
-		<option value="//api/name/inTransaction">- inTransaction</option>
-		
 		<option value="//api/name/initWithPath:">- initWithPath:</option>
+		
+		<option value="//api/name/initWithURL:">- initWithURL:</option>
+		
+		<option value="//api/name/interrupt">- interrupt</option>
 		
 		<option value="//api/name/lastError">- lastError</option>
 		
@@ -152,19 +166,41 @@
 		
 		<option value="//api/name/lastErrorMessage">- lastErrorMessage</option>
 		
-		<option value="//api/name/lastInsertRowId">- lastInsertRowId</option>
+		<option value="//api/name/lastExtendedErrorCode">- lastExtendedErrorCode</option>
 		
-		<option value="//api/name/makeFunctionNamed:maximumArguments:withBlock:">- makeFunctionNamed:maximumArguments:withBlock:</option>
+		<option value="//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</option>
 		
 		<option value="//api/name/open">- open</option>
 		
 		<option value="//api/name/openWithFlags:">- openWithFlags:</option>
+		
+		<option value="//api/name/openWithFlags:vfs:">- openWithFlags:vfs:</option>
 		
 		<option value="//api/name/rekey:">- rekey:</option>
 		
 		<option value="//api/name/rekeyWithData:">- rekeyWithData:</option>
 		
 		<option value="//api/name/releaseSavePointWithName:error:">- releaseSavePointWithName:error:</option>
+		
+		<option value="//api/name/resultData:context:">- resultData:context:</option>
+		
+		<option value="//api/name/resultDouble:context:">- resultDouble:context:</option>
+		
+		<option value="//api/name/resultError:context:">- resultError:context:</option>
+		
+		<option value="//api/name/resultErrorCode:context:">- resultErrorCode:context:</option>
+		
+		<option value="//api/name/resultErrorNoMemoryInContext:">- resultErrorNoMemoryInContext:</option>
+		
+		<option value="//api/name/resultErrorTooBigInContext:">- resultErrorTooBigInContext:</option>
+		
+		<option value="//api/name/resultInt:context:">- resultInt:context:</option>
+		
+		<option value="//api/name/resultLong:context:">- resultLong:context:</option>
+		
+		<option value="//api/name/resultNullInContext:">- resultNullInContext:</option>
+		
+		<option value="//api/name/resultString:context:">- resultString:context:</option>
 		
 		<option value="//api/name/rollback">- rollback</option>
 		
@@ -176,17 +212,21 @@
 		
 		<option value="//api/name/setKeyWithData:">- setKeyWithData:</option>
 		
-		<option value="//api/name/setShouldCacheStatements:">- setShouldCacheStatements:</option>
-		
-		<option value="//api/name/shouldCacheStatements">- shouldCacheStatements</option>
-		
-		<option value="//api/name/sqliteHandle">- sqliteHandle</option>
-		
 		<option value="//api/name/startSavePointWithName:error:">- startSavePointWithName:error:</option>
 		
 		<option value="//api/name/stringFromDate:">- stringFromDate:</option>
 		
 		<option value="//api/name/update:withErrorAndBindings:">- update:withErrorAndBindings:</option>
+		
+		<option value="//api/name/valueData:">- valueData:</option>
+		
+		<option value="//api/name/valueDouble:">- valueDouble:</option>
+		
+		<option value="//api/name/valueInt:">- valueInt:</option>
+		
+		<option value="//api/name/valueLong:">- valueLong:</option>
+		
+		<option value="//api/name/valueString:">- valueString:</option>
 		
 	</optgroup>
 	
@@ -467,7 +507,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>@property (atomic, retain) NSMutableDictionary *cachedStatements</code></div>
+			<div class="method-subsection method-declaration"><code>@property (atomic, retain, nullable) NSMutableDictionary *cachedStatements</code></div>
 
 		    
 			
@@ -521,7 +561,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>+ (instancetype)databaseWithPath:(NSString *)<em>inPath</em></code></div>
+			<div class="method-subsection method-declaration"><code>+ (instancetype)databaseWithPath:(NSString *_Nullable)<em>inPath</em></code></div>
 
 		    
 			
@@ -591,6 +631,91 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		</div>
 	</div>
 </div><div class="section-method">
+	<a name="//api/name/databaseWithURL:" title="databaseWithURL:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/databaseWithURL:">+&nbsp;databaseWithURL:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Create a <code>FMDatabase</code> object.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (instancetype)databaseWithURL:(NSURL *_Nullable)<em>url</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>url</code></th>
+						<td><p>The local file URL (not remote URL) of database file</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>FMDatabase</code> object if successful; <code>nil</code> if failure.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Create a <code>FMDatabase</code> object.</p>
+
+<p>An <code>FMDatabase</code> is created with a path to a SQLite database file.  This path can be one of these three:</p>
+
+<ol>
+<li>A file system URL.  The file does not have to exist on disk.  If it does not exist, it is created for you.</li>
+<li><code>nil</code>.  An in-memory database is created.  This database will be destroyed with the <code>FMDatabase</code> connection is closed.</li>
+</ol>
+
+
+<p>For example, to create/open a database in your Mac OS X <code>tmp</code> folder:</p>
+
+<pre><code>FMDatabase *db = [FMDatabase databaseWithPath:@"/tmp/tmp.db"];
+</code></pre>
+
+<p>Or, in iOS, you might open a database in the app&rsquo;s <code>Documents</code> directory:</p>
+
+<pre><code>NSString *docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
+FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
+</code></pre>
+
+<p>(For more information on temporary and in-memory databases, read the sqlite documentation on the subject: <a href="http://www.sqlite.org/inmemorydb.html">http://www.sqlite.org/inmemorydb.html</a>)</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/initWithPath:" title="initWithPath:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/initWithPath:">&ndash;&nbsp;initWithPath:</a></code>
 </h3>
@@ -607,7 +732,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *)<em>inPath</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithPath:(NSString *_Nullable)<em>path</em></code></div>
 
 		    
 			
@@ -616,8 +741,8 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 				<table class="argument-def parameter-def">
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>inPath</code></th>
-						<td><p>Path of database file</p></td>
+						<th scope="row" class="argument-name"><code>path</code></th>
+						<td><p>Path of database file.</p></td>
 					</tr>
 				
 				</table>
@@ -658,6 +783,89 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
 FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 </code></pre>
+
+<p>(For more information on temporary and in-memory databases, read the sqlite documentation on the subject: <a href="http://www.sqlite.org/inmemorydb.html">http://www.sqlite.org/inmemorydb.html</a>)</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/initWithURL:" title="initWithURL:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithURL:">&ndash;&nbsp;initWithURL:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Initialize a <code>FMDatabase</code> object.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (instancetype)initWithURL:(NSURL *_Nullable)<em>url</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>url</code></th>
+						<td><p>The file <code>NSURL</code> of database file.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>FMDatabase</code> object if successful; <code>nil</code> if failure.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Initialize a <code>FMDatabase</code> object.</p>
+
+<p>An <code>FMDatabase</code> is created with a local file URL to a SQLite database file.  This path can be one of these three:</p>
+
+<ol>
+<li>A file system URL.  The file does not have to exist on disk.  If it does not exist, it is created for you.</li>
+<li><code>nil</code>.  An in-memory database is created.  This database will be destroyed with the <code>FMDatabase</code> connection is closed.</li>
+</ol>
+
+
+<p>For example, to create/open a database in your Mac OS X <code>tmp</code> folder:</p>
+
+<p>FMDatabase *db = [FMDatabase databaseWithPath:@&ldquo;/tmp/tmp.db&rdquo;];</p>
+
+<p>Or, in iOS, you might open a database in the app&rsquo;s <code>Documents</code> directory:</p>
+
+<p>NSString <em>docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+NSString </em>dbPath   = [docsPath stringByAppendingPathComponent:@&ldquo;test.db&rdquo;];
+FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];</p>
 
 <p>(For more information on temporary and in-memory databases, read the sqlite documentation on the subject: <a href="http://www.sqlite.org/inmemorydb.html">http://www.sqlite.org/inmemorydb.html</a>)</p>
 			</div>
@@ -789,9 +997,100 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
 <p><code>SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE</code></p>
 
-<p>The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for <code>open</code> method.</p>
+<p>The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for <code>open</code> method.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
 
-<p>If vfs is given the value is passed to the vfs parameter of sqlite3_open_v2.</p></td>
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>YES</code> if successful, <code>NO</code> on error.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Opening a new database connection with flags and an optional virtual file system (VFS)</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="http://sqlite.org/c3ref/open.html">sqlite3_open_v2()</a></p></code></li>
+					
+					<li><code><p><a href="#//api/name/open">- open</a></p></code></li>
+					
+					<li><code><p><a href="#//api/name/close">- close</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/openWithFlags:vfs:" title="openWithFlags:vfs:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/openWithFlags:vfs:">&ndash;&nbsp;openWithFlags:vfs:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Opening a new database connection with flags and an optional virtual file system (VFS)</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)openWithFlags:(int)<em>flags</em> vfs:(NSString *_Nullable)<em>vfsName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>flags</code></th>
+						<td><p>one of the following three values, optionally combined with the <code>SQLITE_OPEN_NOMUTEX</code>, <code>SQLITE_OPEN_FULLMUTEX</code>, <code>SQLITE_OPEN_SHAREDCACHE</code>, <code>SQLITE_OPEN_PRIVATECACHE</code>, and/or <code>SQLITE_OPEN_URI</code> flags:</p>
+
+<p><code>SQLITE_OPEN_READONLY</code></p>
+
+<p>The database is opened in read-only mode. If the database does not already exist, an error is returned.</p>
+
+<p><code>SQLITE_OPEN_READWRITE</code></p>
+
+<p>The database is opened for reading and writing if possible, or reading only if the file is write protected by the operating system. In either case the database must already exist, otherwise an error is returned.</p>
+
+<p><code>SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE</code></p>
+
+<p>The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for <code>open</code> method.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>vfsName</code></th>
+						<td><p>If vfs is given the value is passed to the vfs parameter of sqlite3_open_v2.</p></td>
 					</tr>
 				
 				</table>
@@ -906,7 +1205,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/goodConnection" title="goodConnection"></a>
-	<h3 class="method-title"><code><a href="#//api/name/goodConnection">&ndash;&nbsp;goodConnection</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/goodConnection">&nbsp;&nbsp;goodConnection</a></code>
 </h3>
 
 	<div class="method-info">
@@ -921,7 +1220,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)goodConnection</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BOOL goodConnection</code></div>
 
 		    
 			
@@ -988,7 +1287,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdate:(NSString *)<em>sql</em> withErrorAndBindings:(NSError **)<em>outErr</em>, <em>...</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdate:(NSString *)<em>sql</em> withErrorAndBindings:(NSError *_Nullable *)<em>outErr</em>, <em>...</em></code></div>
 
 		    
 			
@@ -1080,7 +1379,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)update:(NSString *)<em>sql</em> withErrorAndBindings:(NSError **)<em>outErr</em>, <em>...</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)update:(NSString *)<em>sql</em> withErrorAndBindings:(NSError *_Nullable *)<em>outErr</em>, <em>...</em></code></div>
 
 		    
 			
@@ -1173,7 +1472,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
 <p>This method executes a single SQL update statement (i.e. any SQL that does not return results, such as <code>UPDATE</code>, <code>INSERT</code>, or <code>DELETE</code>. This method employs <a href="http://sqlite.org/c3ref/prepare.html"><code>sqlite3_prepare_v2</code></a>, <a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a> to bind values to <code>?</code> placeholders in the SQL with the optional list of parameters, and <a href="http://sqlite.org/c3ref/step.html"><code>sqlite_step</code></a> to perform the update.</p>
 
-<p>The optional values provided to this method should be objects (e.g. <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects), not fundamental data types (e.g. <code>int</code>, <code>long</code>, <code>NSInteger</code>, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p><div class="note"><p><strong>Note:</strong> This technique supports the use of <code>?</code> placeholders in the SQL, automatically binding any supplied value parameters to those placeholders. This approach is more robust than techniques that entail using <code>stringWithFormat</code> to manually build SQL statements, which can be problematic if the values happened to include any characters that needed to be quoted.</p></div><div class="note"><p><strong>Note:</strong> If you want to use this from Swift, please note that you must include <code>FMDatabaseVariadic.swift</code> in your project. Without that, you cannot use this method directly, and instead have to use methods such as <a href="#//api/name/executeUpdate:withArgumentsInArray:"><code>executeUpdate:withArgumentsInArray:</code></a>.</p></div>
+<p>The optional values provided to this method should be objects (e.g. <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects), not fundamental data types (e.g. <code>int</code>, <code>long</code>, <code>NSInteger</code>, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p><div class="note"><p><strong>Note:</strong> This technique supports the use of <code>?</code> placeholders in the SQL, automatically binding any supplied value parameters to those placeholders. This approach is more robust than techniques that entail using <code>stringWithFormat</code> to manually build SQL statements, which can be problematic if the values happened to include any characters that needed to be quoted.</p></div><div class="note"><p><strong>Note:</strong> You cannot use this method from Swift due to incompatibilities between Swift and Objective-C variadic implementations. Consider using <code>&lt;executeUpdate:values:&gt;</code> instead.</p></div>
 			</div>
 			
 
@@ -1404,7 +1703,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdate:(NSString *)<em>sql</em> values:(NSArray *)<em>values</em> error:(NSError *__autoreleasing *)<em>error</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)executeUpdate:(NSString *)<em>sql</em> values:(NSArray *_Nullable)<em>values</em> error:(NSError *_Nullable __autoreleasing *)<em>error</em></code></div>
 
 		    
 			
@@ -1451,9 +1750,9 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
 <p>This is similar to <a href="#//api/name/executeUpdate:withArgumentsInArray:"><code>executeUpdate:withArgumentsInArray:</code></a>, except that this also accepts a pointer to a <code>NSError</code> pointer, so that errors can be returned.</p>
 
-<p>In Swift 2, this throws errors, as if it were defined as follows:</p>
+<p>In Swift, this throws errors, as if it were defined as follows:</p>
 
-<p><code>func executeUpdate(sql: String!, values: [AnyObject]!) throws -&gt; Bool</code></p>
+<p><code>func executeUpdate(sql: String, values: [Any]?) throws -&gt; Bool</code></p>
 			</div>
 			
 
@@ -1746,7 +2045,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)executeStatements:(NSString *)<em>sql</em> withResultBlock:(FMDBExecuteStatementsCallbackBlock)<em>block</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)executeStatements:(NSString *)<em>sql</em> withResultBlock:(FMDBExecuteStatementsCallbackBlock _Nullable)<em>block</em></code></div>
 
 		    
 			
@@ -1816,7 +2115,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/lastInsertRowId" title="lastInsertRowId"></a>
-	<h3 class="method-title"><code><a href="#//api/name/lastInsertRowId">&ndash;&nbsp;lastInsertRowId</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/lastInsertRowId">&nbsp;&nbsp;lastInsertRowId</a></code>
 </h3>
 
 	<div class="method-info">
@@ -1831,7 +2130,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (sqlite_int64)lastInsertRowId</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) int64_t lastInsertRowId</code></div>
 
 		    
 			
@@ -1880,7 +2179,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/changes" title="changes"></a>
-	<h3 class="method-title"><code><a href="#//api/name/changes">&ndash;&nbsp;changes</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/changes">&nbsp;&nbsp;changes</a></code>
 </h3>
 
 	<div class="method-info">
@@ -1895,7 +2194,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (int)changes</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) int changes</code></div>
 
 		    
 			
@@ -1965,7 +2264,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQuery:(NSString *)<em>sql</em>, <em>...</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (FMResultSet *_Nullable)executeQuery:(NSString *)<em>sql</em>, <em>...</em></code></div>
 
 		    
 			
@@ -2005,7 +2304,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
 <p>In order to iterate through the results of your query, you use a <code>while()</code> loop.  You also need to &ldquo;step&rdquo; (via <a href="../Classes/FMResultSet.html#//api/name/next"><code>[FMResultSet next]</code></a>) from one record to the other.</p>
 
-<p>This method employs <a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a> for any optional value parameters. This  properly escapes any characters that need escape sequences (e.g. quotation marks), which eliminates simple SQL errors as well as protects against SQL injection attacks. This method natively handles <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects. All other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p><div class="note"><p><strong>Note:</strong> If you want to use this from Swift, please note that you must include <code>FMDatabaseVariadic.swift</code> in your project. Without that, you cannot use this method directly, and instead have to use methods such as <a href="#//api/name/executeQuery:withArgumentsInArray:"><code>executeQuery:withArgumentsInArray:</code></a>.</p></div>
+<p>This method employs <a href="http://sqlite.org/c3ref/bind_blob.html"><code>sqlite3_bind</code></a> for any optional value parameters. This  properly escapes any characters that need escape sequences (e.g. quotation marks), which eliminates simple SQL errors as well as protects against SQL injection attacks. This method natively handles <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>, <code>NSDate</code>, and <code>NSData</code> objects. All other object types will be interpreted as text values using the object&rsquo;s <code>description</code> method.</p><div class="note"><p><strong>Note:</strong> You cannot use this method from Swift due to incompatibilities between Swift and Objective-C variadic implementations. Consider using <code>&lt;executeQuery:values:&gt;</code> instead.</p></div>
 			</div>
 			
 
@@ -2052,7 +2351,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQueryWithFormat:(NSString *)<em>format</em>, <em>...</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (FMResultSet *_Nullable)executeQueryWithFormat:(NSString *)<em>format</em>, <em>...</em></code></div>
 
 		    
 			
@@ -2147,7 +2446,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQuery:(NSString *)<em>sql</em> withArgumentsInArray:(NSArray *)<em>arguments</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (FMResultSet *_Nullable)executeQuery:(NSString *)<em>sql</em> withArgumentsInArray:(NSArray *)<em>arguments</em></code></div>
 
 		    
 			
@@ -2232,7 +2531,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQuery:(NSString *)<em>sql</em> values:(NSArray *)<em>values</em> error:(NSError *__autoreleasing *)<em>error</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (FMResultSet *_Nullable)executeQuery:(NSString *)<em>sql</em> values:(NSArray *_Nullable)<em>values</em> error:(NSError *_Nullable __autoreleasing *)<em>error</em></code></div>
 
 		    
 			
@@ -2279,9 +2578,9 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
 <p>This is similar to <a href="#//api/name/executeQuery:withArgumentsInArray:"><code>executeQuery:withArgumentsInArray:</code></a>, except that this also accepts a pointer to a <code>NSError</code> pointer, so that errors can be returned.</p>
 
-<p>In Swift 2, this throws errors, as if it were defined as follows:</p>
+<p>In Swift, this throws errors, as if it were defined as follows:</p>
 
-<p><code>func executeQuery(sql: String!, values: [AnyObject]!) throws  -&gt; FMResultSet!</code></p><div class="note"><p><strong>Note:</strong> When called from Swift, only use the first two parameters, <code>sql</code> and <code>values</code>. This but throws the error.</p></div>
+<p><code>func executeQuery(sql: String, values: [Any]?) throws  -&gt; FMResultSet!</code></p><div class="note"><p><strong>Note:</strong> When called from Swift, only use the first two parameters, <code>sql</code> and <code>values</code>. This but throws the error.</p></div>
 			</div>
 			
 
@@ -2326,7 +2625,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (FMResultSet *)executeQuery:(NSString *)<em>sql</em> withParameterDictionary:(NSDictionary *)<em>arguments</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (FMResultSet *_Nullable)executeQuery:(NSString *)<em>sql</em> withParameterDictionary:(NSDictionary *_Nullable)<em>arguments</em></code></div>
 
 		    
 			
@@ -2451,7 +2750,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 					
 					<li><code><p><a href="#//api/name/beginDeferredTransaction">- beginDeferredTransaction</a></p></code></li>
 					
-					<li><code><p><a href="#//api/name/inTransaction">- inTransaction</a></p></code></li>
+					<li><code><p><a href="#//api/name/isInTransaction">@property isInTransaction</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -2517,7 +2816,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 					
 					<li><code><p><a href="#//api/name/beginTransaction">- beginTransaction</a></p></code></li>
 					
-					<li><code><p><a href="#//api/name/inTransaction">- inTransaction</a></p></code></li>
+					<li><code><p><a href="#//api/name/isInTransaction">@property isInTransaction</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -2585,7 +2884,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 					
 					<li><code><p><a href="#//api/name/rollback">- rollback</a></p></code></li>
 					
-					<li><code><p><a href="#//api/name/inTransaction">- inTransaction</a></p></code></li>
+					<li><code><p><a href="#//api/name/isInTransaction">@property isInTransaction</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -2653,7 +2952,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 					
 					<li><code><p><a href="#//api/name/commit">- commit</a></p></code></li>
 					
-					<li><code><p><a href="#//api/name/inTransaction">- inTransaction</a></p></code></li>
+					<li><code><p><a href="#//api/name/isInTransaction">@property isInTransaction</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -2669,8 +2968,8 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/inTransaction" title="inTransaction"></a>
-	<h3 class="method-title"><code><a href="#//api/name/inTransaction">&ndash;&nbsp;inTransaction</a></code>
+	<a name="//api/name/isInTransaction" title="isInTransaction"></a>
+	<h3 class="method-title"><code><a href="#//api/name/isInTransaction">&nbsp;&nbsp;isInTransaction</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2685,16 +2984,11 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)inTransaction</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BOOL isInTransaction</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>YES</code> if currently within transaction; <code>NO</code> if not.</p>
-			</div>
 			
 
 			
@@ -2836,7 +3130,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/hasOpenResultSets" title="hasOpenResultSets"></a>
-	<h3 class="method-title"><code><a href="#//api/name/hasOpenResultSets">&ndash;&nbsp;hasOpenResultSets</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/hasOpenResultSets">&nbsp;&nbsp;hasOpenResultSets</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2851,7 +3145,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)hasOpenResultSets</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BOOL hasOpenResultSets</code></div>
 
 		    
 			
@@ -2887,7 +3181,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 	</div>
 </div><div class="section-method">
 	<a name="//api/name/shouldCacheStatements" title="shouldCacheStatements"></a>
-	<h3 class="method-title"><code><a href="#//api/name/shouldCacheStatements">&ndash;&nbsp;shouldCacheStatements</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/shouldCacheStatements">&nbsp;&nbsp;shouldCacheStatements</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2897,21 +3191,16 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 			
 			<div class="method-subsection brief-description">
-				<p>Return whether should cache statements or not</p>
+				<p>Whether should cache statements or not</p>
 			</div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)shouldCacheStatements</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic) BOOL shouldCacheStatements</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p><code>YES</code> if should cache statements; <code>NO</code> if not.</p>
-			</div>
 			
 
 			
@@ -2919,7 +3208,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Return whether should cache statements or not</p>
+				<p>Whether should cache statements or not</p>
 			</div>
 			
 
@@ -2937,8 +3226,8 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/setShouldCacheStatements:" title="setShouldCacheStatements:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/setShouldCacheStatements:">&ndash;&nbsp;setShouldCacheStatements:</a></code>
+	<a name="//api/name/interrupt" title="interrupt"></a>
+	<h3 class="method-title"><code><a href="#//api/name/interrupt">&ndash;&nbsp;interrupt</a></code>
 </h3>
 
 	<div class="method-info">
@@ -2948,28 +3237,21 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 			
 			<div class="method-subsection brief-description">
-				<p>Set whether should cache statements or not</p>
+				<p>Interupt pending database operation</p>
 			</div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (void)setShouldCacheStatements:(BOOL)<em>value</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)interrupt</code></div>
 
 		    
 			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>value</code></th>
-						<td><p><code>YES</code> if should cache statements; <code>NO</code> if not.</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
 
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p><code>YES</code> on success; <code>NO</code> on failure. If failed, you can call <a href="#//api/name/lastError"><code>lastError</code></a>, <a href="#//api/name/lastErrorCode"><code>lastErrorCode</code></a>, or <a href="#//api/name/lastErrorMessage"><code>lastErrorMessage</code></a> for diagnostic information regarding the failure.</p>
+			</div>
 			
 
 			
@@ -2977,7 +3259,9 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Set whether should cache statements or not</p>
+				<p>Interupt pending database operation</p>
+
+<p>This method causes any pending database operation to abort and return at its earliest opportunity</p>
 			</div>
 			
 
@@ -3300,7 +3584,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 						<div class="task-list">
 							<div class="section-method">
 	<a name="//api/name/databasePath" title="databasePath"></a>
-	<h3 class="method-title"><code><a href="#//api/name/databasePath">&ndash;&nbsp;databasePath</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/databasePath">&nbsp;&nbsp;databasePath</a></code>
 </h3>
 
 	<div class="method-info">
@@ -3315,16 +3599,11 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSString *)databasePath</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, nullable) NSString *databasePath</code></div>
 
 		    
 			
 
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>path of database.</p>
-			</div>
 			
 
 			
@@ -3350,8 +3629,54 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		</div>
 	</div>
 </div><div class="section-method">
+	<a name="//api/name/databaseURL" title="databaseURL"></a>
+	<h3 class="method-title"><code><a href="#//api/name/databaseURL">&nbsp;&nbsp;databaseURL</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>The file URL of the database file.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly, nullable) NSURL *databaseURL</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>The file URL of the database file.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/sqliteHandle" title="sqliteHandle"></a>
-	<h3 class="method-title"><code><a href="#//api/name/sqliteHandle">&ndash;&nbsp;sqliteHandle</a></code>
+	<h3 class="method-title"><code><a href="#//api/name/sqliteHandle">&nbsp;&nbsp;sqliteHandle</a></code>
 </h3>
 
 	<div class="method-info">
@@ -3366,7 +3691,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (sqlite3 *)sqliteHandle</code></div>
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) void *sqliteHandle</code></div>
 
 		    
 			
@@ -3541,6 +3866,76 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 		</div>
 	</div>
 </div><div class="section-method">
+	<a name="//api/name/lastExtendedErrorCode" title="lastExtendedErrorCode"></a>
+	<h3 class="method-title"><code><a href="#//api/name/lastExtendedErrorCode">&ndash;&nbsp;lastExtendedErrorCode</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Last extended error code</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (int)lastExtendedErrorCode</code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Integer value of the last extended error code.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Last extended error code</p>
+
+<p>Returns the numeric extended result code for the most recent failed SQLite API call associated with a database connection. If a prior API call failed but the most recent API call succeeded, this return value is undefined.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="http://sqlite.org/c3ref/errcode.html">sqlite3_errcode()</a></p></code></li>
+					
+					<li><code><p><a href="http://sqlite.org/rescode.html#primary_result_codes_versus_extended_result_codes">2. Primary Result Codes versus Extended Result Codes</a></p></code></li>
+					
+					<li><code><p><a href="http://sqlite.org/rescode.html#extrc">5. Extended Result Code List</a></p></code></li>
+					
+					<li><code><p><a href="#//api/name/lastErrorMessage">- lastErrorMessage</a></p></code></li>
+					
+					<li><code><p><a href="#//api/name/lastError">- lastError</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/hadError" title="hadError"></a>
 	<h3 class="method-title"><code><a href="#//api/name/hadError">&ndash;&nbsp;hadError</a></code>
 </h3>
@@ -3691,7 +4086,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)startSavePointWithName:(NSString *)<em>name</em> error:(NSError **)<em>outErr</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)startSavePointWithName:(NSString *)<em>name</em> error:(NSError *_Nullable *)<em>outErr</em></code></div>
 
 		    
 			
@@ -3770,7 +4165,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)releaseSavePointWithName:(NSString *)<em>name</em> error:(NSError **)<em>outErr</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)releaseSavePointWithName:(NSString *)<em>name</em> error:(NSError *_Nullable *)<em>outErr</em></code></div>
 
 		    
 			
@@ -3849,7 +4244,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (BOOL)rollbackToSavePointWithName:(NSString *)<em>name</em> error:(NSError **)<em>outErr</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (BOOL)rollbackToSavePointWithName:(NSString *)<em>name</em> error:(NSError *_Nullable *)<em>outErr</em></code></div>
 
 		    
 			
@@ -3928,7 +4323,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSError *)inSavePoint:(void ( ^ ) ( BOOL *rollback ))<em>block</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSError *_Nullable)inSavePoint:(void ( ^ ) ( BOOL *rollback ))<em>block</em></code></div>
 
 		    
 			
@@ -4124,8 +4519,8 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
 						<div class="task-list">
 							<div class="section-method">
-	<a name="//api/name/makeFunctionNamed:maximumArguments:withBlock:" title="makeFunctionNamed:maximumArguments:withBlock:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/makeFunctionNamed:maximumArguments:withBlock:">&ndash;&nbsp;makeFunctionNamed:maximumArguments:withBlock:</a></code>
+	<a name="//api/name/makeFunctionNamed:arguments:block:" title="makeFunctionNamed:arguments:block:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/makeFunctionNamed:arguments:block:">&ndash;&nbsp;makeFunctionNamed:arguments:block:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -4140,7 +4535,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (void)makeFunctionNamed:(NSString *)<em>name</em> maximumArguments:(int)<em>count</em> withBlock:(void ( ^ ) ( sqlite3_context *context , int argc , sqlite3_value **argv ))<em>block</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (void)makeFunctionNamed:(NSString *)<em>name</em> arguments:(int)<em>arguments</em> block:(void ( ^ ) ( void *context , int argc , void *_Nonnull *_Nonnull argv ))<em>block</em></code></div>
 
 		    
 			
@@ -4150,17 +4545,17 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>name</code></th>
-						<td><p>Name of function</p></td>
+						<td><p>Name of function.</p></td>
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>count</code></th>
-						<td><p>Maximum number of parameters</p></td>
+						<th scope="row" class="argument-name"><code>arguments</code></th>
+						<td><p>Maximum number of parameters.</p></td>
 					</tr>
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>block</code></th>
-						<td><p>The block of code for the function</p></td>
+						<td><p>The block of code for the function.</p></td>
 					</tr>
 				
 				</table>
@@ -4178,36 +4573,23 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
 <p>For example:</p>
 
-<pre><code>[queue inDatabase:^(FMDatabase *adb) {
-
-    [adb executeUpdate:@"create table ftest (foo text)"];
-    [adb executeUpdate:@"insert into ftest values ('hello')"];
-    [adb executeUpdate:@"insert into ftest values ('hi')"];
-    [adb executeUpdate:@"insert into ftest values ('not h!')"];
-    [adb executeUpdate:@"insert into ftest values ('definitely not h!')"];
-
-    [adb makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(sqlite3_context *context, int aargc, sqlite3_value **aargv) {
-        if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
-            @autoreleasepool {
-                const char *c = (const char *)sqlite3_value_text(aargv[0]);
-                NSString *s = [NSString stringWithUTF8String:c];
-                sqlite3_result_int(context, [s hasPrefix:@"h"]);
-            }
-        }
-        else {
-            NSLog(@"Unknown formart for StringStartsWithH (%d) %s:%d", sqlite3_value_type(aargv[0]), __FUNCTION__, __LINE__);
-            sqlite3_result_null(context);
-        }
-    }];
-
-    int rowCount = 0;
-    FMResultSet *ars = [adb executeQuery:@"select * from ftest where StringStartsWithH(foo)"];
-    while ([ars next]) {
-        rowCount++;
-        NSLog(@"Does %@ start with 'h'?", [rs stringForColumnIndex:0]);
+<pre><code>[db makeFunctionNamed:@"RemoveDiacritics" arguments:1 block:^(void *context, int argc, void **argv) {
+    SqliteValueType type = [self.db valueType:argv[0]];
+    if (type == SqliteValueTypeNull) {
+        [self.db resultNullInContext:context];
+         return;
     }
-    FMDBQuickCheck(rowCount == 2);
+    if (type != SqliteValueTypeText) {
+        [self.db resultError:@"Expected text" context:context];
+        return;
+    }
+    NSString *string = [self.db valueString:argv[0]];
+    NSString *result = [string stringByFoldingWithOptions:NSDiacriticInsensitiveSearch locale:nil];
+    [self.db resultString:result context:context];
 }];
+
+FMResultSet *rs = [db executeQuery:@"SELECT * FROM employees WHERE RemoveDiacritics(first_name) LIKE 'jose'"];
+NSAssert(rs, @"Error %@", [db lastErrorMessage]);
 </code></pre>
 			</div>
 			
@@ -4220,6 +4602,1071 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 				<ul>
 					
 					<li><code><p><a href="http://sqlite.org/c3ref/create_function.html">sqlite3_create_function()</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/valueInt:" title="valueInt:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/valueInt:">&ndash;&nbsp;valueInt:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Get integer value of parameter in custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (int)valueInt:(void *)<em>value</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The argument whose value to return.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The integer value.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Get integer value of parameter in custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/valueLong:" title="valueLong:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/valueLong:">&ndash;&nbsp;valueLong:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Get long value of parameter in custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (long long)valueLong:(void *)<em>value</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The argument whose value to return.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The long value.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Get long value of parameter in custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/valueDouble:" title="valueDouble:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/valueDouble:">&ndash;&nbsp;valueDouble:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Get double value of parameter in custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (double)valueDouble:(void *)<em>value</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The argument whose value to return.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The double value.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Get double value of parameter in custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/valueData:" title="valueData:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/valueData:">&ndash;&nbsp;valueData:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Get <code>NSData</code> value of parameter in custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSData *_Nullable)valueData:(void *)<em>value</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The argument whose value to return.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The data object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Get <code>NSData</code> value of parameter in custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/valueString:" title="valueString:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/valueString:">&ndash;&nbsp;valueString:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Get string value of parameter in custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSString *_Nullable)valueString:(void *)<em>value</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The argument whose value to return.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The string value.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Get string value of parameter in custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultNullInContext:" title="resultNullInContext:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultNullInContext:">&ndash;&nbsp;resultNullInContext:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return null value from custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultNullInContext:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the null value will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return null value from custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultInt:context:" title="resultInt:context:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultInt:context:">&ndash;&nbsp;resultInt:context:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return integer value from custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultInt:(int)<em>value</em> context:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The integer value to be returned.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the value will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return integer value from custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultLong:context:" title="resultLong:context:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultLong:context:">&ndash;&nbsp;resultLong:context:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return long value from custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultLong:(long long)<em>value</em> context:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The long value to be returned.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the value will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return long value from custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultDouble:context:" title="resultDouble:context:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultDouble:context:">&ndash;&nbsp;resultDouble:context:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return double value from custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultDouble:(double)<em>value</em> context:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The double value to be returned.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the value will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return double value from custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultData:context:" title="resultData:context:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultData:context:">&ndash;&nbsp;resultData:context:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return <code>NSData</code> object from custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultData:(NSData *)<em>data</em> context:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>data</code></th>
+						<td><p>The <code>NSData</code> object to be returned.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the value will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return <code>NSData</code> object from custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultString:context:" title="resultString:context:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultString:context:">&ndash;&nbsp;resultString:context:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return string value from custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultString:(NSString *)<em>value</em> context:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>value</code></th>
+						<td><p>The string value to be returned.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the value will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return string value from custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultError:context:" title="resultError:context:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultError:context:">&ndash;&nbsp;resultError:context:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return error string from custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultError:(NSString *)<em>error</em> context:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>error</code></th>
+						<td><p>The error string to be returned.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the error will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return error string from custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultErrorCode:context:" title="resultErrorCode:context:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultErrorCode:context:">&ndash;&nbsp;resultErrorCode:context:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return error code from custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultErrorCode:(int)<em>errorCode</em> context:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>errorCode</code></th>
+						<td><p>The integer error code to be returned.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the error will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return error code from custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultErrorNoMemoryInContext:" title="resultErrorNoMemoryInContext:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultErrorNoMemoryInContext:">&ndash;&nbsp;resultErrorNoMemoryInContext:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Report memory error in custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultErrorNoMemoryInContext:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the error will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Report memory error in custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
+					
+				</ul>
+			</div>
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">FMDatabase.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resultErrorTooBigInContext:" title="resultErrorTooBigInContext:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resultErrorTooBigInContext:">&ndash;&nbsp;resultErrorTooBigInContext:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Report that string or BLOB is too long to represent in custom function.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)resultErrorTooBigInContext:(void *)<em>context</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>context</code></th>
+						<td><p>The context to which the error will be returned.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Report that string or BLOB is too long to represent in custom function.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection see-also-section">
+				<h4 class="method-subtitle">See Also</h4>
+				<ul>
+					
+					<li><code><p><a href="#//api/name/makeFunctionNamed:arguments:block:">- makeFunctionNamed:arguments:block:</a></p></code></li>
 					
 				</ul>
 			</div>
@@ -4489,7 +5936,7 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (NSDate *)dateFromString:(NSString *)<em>s</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (NSDate *_Nullable)dateFromString:(NSString *)<em>s</em></code></div>
 
 		    
 			
@@ -4640,12 +6087,14 @@ FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 					
 
                     
+                    
+          
 				</main>
 
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 ccgus. All rights reserved. Updated: 2015-11-10</p>
+						<p class="copyright">Copyright &copy; 2017 ccgus. All rights reserved. Updated: 2017-06-07</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>
