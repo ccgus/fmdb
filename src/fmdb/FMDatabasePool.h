@@ -196,21 +196,21 @@ NS_ASSUME_NONNULL_BEGIN
  @param block The code to be run on the `FMDatabasePool` pool.
  */
 
-- (void)inDatabase:(void (^)(FMDatabase *db))block;
+- (void)inDatabase:(__attribute__((noescape)) void (^)(FMDatabase *db))block;
 
 /** Synchronously perform database operations in pool using transaction.
 
  @param block The code to be run on the `FMDatabasePool` pool.
  */
 
-- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations in pool using deferred transaction.
 
  @param block The code to be run on the `FMDatabasePool` pool.
  */
 
-- (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inDeferredTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations in pool using save point.
 
@@ -221,7 +221,7 @@ NS_ASSUME_NONNULL_BEGIN
  @warning You can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock. If you need to nest, use `<[FMDatabase startSavePointWithName:error:]>` instead.
 */
 
-- (NSError * _Nullable)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (NSError * _Nullable)inSavePoint:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
 @end
 
