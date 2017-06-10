@@ -92,7 +92,7 @@ typedef struct FMTokenizerCursor
  using `[FMResultSet columnNameForIndex:]`. The `matchRange` is in UTF-8 byte positions, so it must be 
  modified to use with `NSString` data.
  */
-- (void)enumerateWithBlock:(void (^)(NSInteger columnNumber, NSInteger termNumber, NSRange matchRange))block;
+- (void)enumerateWithBlock:(__attribute__((noescape)) void (^)(NSInteger columnNumber, NSInteger termNumber, NSRange matchRange))block;
 
 @end
 

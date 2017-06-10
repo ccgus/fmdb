@@ -235,7 +235,7 @@
     }];
 }
 
-- (void)inDatabase:(void (^)(FMDatabase *db))block {
+- (void)inDatabase:(__attribute__((noescape)) void (^)(FMDatabase *db))block {
     
     FMDatabase *db = [self db];
     
