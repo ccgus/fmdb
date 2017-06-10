@@ -1,4 +1,7 @@
 # FMDB v2.7
+<!--[![Platform](https://img.shields.io/cocoapods/p/FMDB.svg?style=flat)](http://cocoadocs.org/docsets/Alamofire)-->
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/FMDB.svg)](https://img.shields.io/cocoapods/v/FMDB.svg)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 This is an Objective-C wrapper around SQLite: http://sqlite.org/
 
@@ -13,22 +16,63 @@ Since FMDB is built on top of SQLite, you're going to want to read this page top
 ## Contributing
 Do you have an awesome idea that deserves to be in FMDB?  You might consider pinging ccgus first to make sure he hasn't already ruled it out for some reason.  Otherwise pull requests are great, and make sure you stick to the local coding conventions.  However, please be patient and if you haven't heard anything from ccgus for a week or more, you might want to send a note asking what's up.
 
-## CocoaPods
+## Installing
+
+### CocoaPods
 
 [![Dependency Status](https://www.versioneye.com/objective-c/fmdb/2.3/badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/2.3)
 [![Reference Status](https://www.versioneye.com/objective-c/fmdb/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/references)
 
 FMDB can be installed using [CocoaPods](https://cocoapods.org/).
 
-```ruby
-pod 'FMDB'
-# pod 'FMDB/FTS'   # FMDB with FTS
-# pod 'FMDB/standalone'   # FMDB with latest SQLite amalgamation source
-# pod 'FMDB/standalone/FTS'   # FMDB with latest SQLite amalgamation source and FTS
-# pod 'FMDB/SQLCipher'   # FMDB with SQLCipher
+If you haven't done so already, you might want to initialize the project, to have it produce a `Podfile` template for you:
+
+```
+$ pod init
 ```
 
+Then, edit the `Podfile`, adding `FMDB`:
+
+```ruby
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'MyApp' do
+    # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+    use_frameworks!
+
+    # Pods for MyApp2
+
+    pod 'FMDB'
+    # pod 'FMDB/FTS'   # FMDB with FTS
+    # pod 'FMDB/standalone'   # FMDB with latest SQLite amalgamation source
+    # pod 'FMDB/standalone/FTS'   # FMDB with latest SQLite amalgamation source and FTS
+    # pod 'FMDB/SQLCipher'   # FMDB with SQLCipher
+end
+```
+
+Then install the pods:
+
+```
+$ pod install
+```
+
+Then open the `.xcworkspace` rather than the `.xcodeproj`.
+
+For more information on Cocoapods visit https://cocoapods.org.
+
 **If using FMDB with [SQLCipher](https://www.zetetic.net/sqlcipher/) you must use the FMDB/SQLCipher subspec. The FMDB/SQLCipher subspec declares SQLCipher as a dependency, allowing FMDB to be compiled with the `-DSQLITE_HAS_CODEC` flag.**
+
+### Carthage
+
+Once you make sure you have [the latest version of Carthage](https://github.com/Carthage/Carthage/releases), you can open up a command line terminal, navigate to your project's main directory, and then do the following commands:
+
+```
+$ echo ' github "ccgus/fmdb" ' > ./Cartfile
+$ carthage update
+```
+
+You can then configure your project as outlined in Carthage's [Getting Started](https://github.com/Carthage/Carthage#getting-started) (i.e. for iOS, adding the framework to the "Link Binary with Libraries" in your target and adding the `copy-frameworks` script; in macOS, adding the framework to the list of "Embedded Binaries").
 
 ## FMDB Class Reference:
 http://ccgus.github.io/fmdb/html/index.html
@@ -46,7 +90,7 @@ FMDB 2.7 is largely the same as prior versions, but has been audited for nullabi
 
 For Swift users, this nullability audit results in changes that are not entirely backward compatible with FMDB 2.6, but is a little more Swifty. Before FMDB was audited for nullability, Swift was forced to defensively assume that variables were optional, but the library now more accurately knows which properties and method parameters are optional, and which are not.
 
-This means, though, that Swift code written for FMDB 2.7 may require changes. For example, consider the following Swift 3 code written for FMDB 2.6:
+This means, though, that Swift code written for FMDB 2.7 may require changes. For example, consider the following Swift 3/Swift 4 code for FMDB 2.6:
 ```swift
 
 guard let queue = FMDatabaseQueue(path: fileURL.path) else {
@@ -91,7 +135,7 @@ In the past, when writing custom functions, you would have to generally include 
 
 Also, in the past, when retrieving the values passed to the function, you had to drop down to the SQLite C API and include your own `sqlite3_value_XXX` calls. There are now `FMDatabase` methods, `valueInt`, `valueString`, etc., so you can stay within Swift and/or Objective-C, without needing to call the C functions yourself. Likewise, when specifying the return values, you no longer need to call `sqlite3_result_XXX` C API, but rather you can use `FMDatabase` methods, `resultInt`, `resultString`, etc. There is a new `enum` for `valueType` called `SqliteValueType`, which can be used for checking the type of parameter passed to the custom function.
 
-Thus, you can do something like (in Swift 3):
+Thus, you can do something like (as of Swift 3):
 
 ```swift
 db.makeFunctionNamed("RemoveDiacritics", arguments: 1) { context, argc, argv in
@@ -278,7 +322,7 @@ if (!success) {
 >
 > Likewise, SQL `NULL` values should be inserted as `[NSNull null]`. For example, in the case of `comment` which might be `nil` (and is in this example), you can use the `comment ?: [NSNull null]` syntax, which will insert the string if `comment` is not `nil`, but will insert `[NSNull null]` if it is `nil`.
 
-In Swift, you would use `executeUpdate(values:)`, which not only is a concise Swift syntax, but also `throws` errors for proper Swift 2 error handling:
+In Swift, you would use `executeUpdate(values:)`, which not only is a concise Swift syntax, but also `throws` errors for proper error handling:
 
 ```swift
 do {
@@ -360,7 +404,7 @@ An easy way to wrap things up in a transaction can be done like this:
 }];
 ```
 
-The Swift 3 equivalent would be:
+The Swift equivalent would be:
 
 ```swift
 queue.inTransaction { db, rollback in
@@ -382,7 +426,7 @@ queue.inTransaction { db, rollback in
 }
 ```
 
-(Note, in Swift 3, use `pointee`. But in Swift 2.3, use `memory` rather than `pointee`.)
+(Note, as of Swift 3, use `pointee`. But in Swift 2.3, use `memory` rather than `pointee`.)
 
 `FMDatabaseQueue` will run the blocks on a serialized queue (hence the name of the class).  So if you call `FMDatabaseQueue`'s methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
 
@@ -413,9 +457,9 @@ To do this, you must:
     #import "FMDB.h"
     ```
 
-4. Use the variations of `executeQuery` and `executeUpdate` with the `sql` and `values` parameters with `try` pattern, as shown below. These renditions of `executeQuery` and `executeUpdate` both `throw` errors in true Swift 2 fashion.
+4. Use the variations of `executeQuery` and `executeUpdate` with the `sql` and `values` parameters with `try` pattern, as shown below. These renditions of `executeQuery` and `executeUpdate` both `throw` errors in true Swift fashion.
 
-If you do the above, you can then write Swift code that uses `FMDatabase`. For example, in Swift 3:
+If you do the above, you can then write Swift code that uses `FMDatabase`. For example, as of Swift 3:
 
 ```swift
 let fileURL = try! FileManager.default
@@ -441,39 +485,6 @@ do {
         }
     }
 } catch {
-    print("failed: \(error.localizedDescription)")
-}
-
-database.close()
-```
-
-Or in Swift 2:
-
-```swift
-let fileURL = try! NSFileManager.defaultManager()
-    .URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-    .URLByAppendingPathComponent("test.sqlite")
-
-let database = FMDatabase(url: fileURL)
-
-if !database.open() {
-    print("Unable to open database")
-    return
-}
-
-do {
-    try database.executeUpdate("create table test(x text, y text, z text)", values: nil)
-    try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["a", "b", "c"])
-    try database.executeUpdate("insert into test (x, y, z) values (?, ?, ?)", values: ["e", "f", "g"])
-
-    let rs = try database.executeQuery("select x, y, z from test", values: nil)
-    while rs.next() {
-        let x = rs.stringForColumn("x")
-        let y = rs.stringForColumn("y")
-        let z = rs.stringForColumn("z")
-        print("x = \(x); y = \(y); z = \(z)")
-    }
-} catch let error as NSError {
     print("failed: \(error.localizedDescription)")
 }
 

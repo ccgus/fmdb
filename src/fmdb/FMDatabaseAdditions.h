@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return `int` value.
  
- @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
+ @note This is not available from Swift.
  */
 
 - (int)intForQuery:(NSString*)query, ...;
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return `long` value.
  
- @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
+ @note This is not available from Swift.
  */
 
 - (long)longForQuery:(NSString*)query, ...;
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return `BOOL` value.
  
- @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
+ @note This is not available from Swift.
  */
 
 - (BOOL)boolForQuery:(NSString*)query, ...;
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return `double` value.
  
- @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
+ @note This is not available from Swift.
  */
 
 - (double)doubleForQuery:(NSString*)query, ...;
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return `NSString` value.
  
- @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
+ @note This is not available from Swift.
  */
 
 - (NSString * _Nullable)stringForQuery:(NSString*)query, ...;
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return `NSData` value.
  
- @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
+ @note This is not available from Swift.
  */
 
 - (NSData * _Nullable)dataForQuery:(NSString*)query, ...;
@@ -103,7 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return `NSDate` value.
  
- @note To use this method from Swift, you must include `FMDatabaseAdditionsVariadic.swift` in your project.
+ @note This is not available from Swift.
  */
 
 - (NSDate * _Nullable)dateForQuery:(NSString*)query, ...;

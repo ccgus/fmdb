@@ -419,9 +419,9 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  This is similar to `<executeUpdate:withArgumentsInArray:>`, except that this also accepts a pointer to a `NSError` pointer, so that errors can be returned.
 
- In Swift 2, this throws errors, as if it were defined as follows:
+ In Swift, this throws errors, as if it were defined as follows:
  
- `func executeUpdate(sql: String!, values: [AnyObject]!) throws -> Bool`
+ `func executeUpdate(sql: String, values: [Any]?) throws -> Bool`
  
  @param sql The SQL to be performed, with optional `?` placeholders.
  
@@ -624,9 +624,9 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  This is similar to `<executeQuery:withArgumentsInArray:>`, except that this also accepts a pointer to a `NSError` pointer, so that errors can be returned.
  
- In Swift 2, this throws errors, as if it were defined as follows:
+ In Swift, this throws errors, as if it were defined as follows:
  
- `func executeQuery(sql: String!, values: [AnyObject]!) throws  -> FMResultSet!`
+ `func executeQuery(sql: String, values: [Any]?) throws  -> FMResultSet!`
 
  @param sql The SELECT statement to be performed, with optional `?` placeholders.
  
@@ -1064,21 +1064,151 @@ typedef NS_ENUM(int, SqliteValueType) {
 
 - (SqliteValueType)valueType:(void *)argv;
 
+/**
+ Get integer value of parameter in custom function.
+ 
+ @param value The argument whose value to return.
+ @return The integer value.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (int)valueInt:(void *)value;
+
+/**
+ Get long value of parameter in custom function.
+ 
+ @param value The argument whose value to return.
+ @return The long value.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (long long)valueLong:(void *)value;
+
+/**
+ Get double value of parameter in custom function.
+ 
+ @param value The argument whose value to return.
+ @return The double value.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (double)valueDouble:(void *)value;
+
+/**
+ Get `NSData` value of parameter in custom function.
+ 
+ @param value The argument whose value to return.
+ @return The data object.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (NSData * _Nullable)valueData:(void *)value;
+
+/**
+ Get string value of parameter in custom function.
+ 
+ @param value The argument whose value to return.
+ @return The string value.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (NSString * _Nullable)valueString:(void *)value;
 
+/**
+ Return null value from custom function.
+ 
+ @param context The context to which the null value will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultNullInContext:(void *)context NS_SWIFT_NAME(resultNull(context:));
+
+/**
+ Return integer value from custom function.
+ 
+ @param value The integer value to be returned.
+ @param context The context to which the value will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultInt:(int) value context:(void *)context;
+
+/**
+ Return long value from custom function.
+ 
+ @param value The long value to be returned.
+ @param context The context to which the value will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultLong:(long long)value context:(void *)context;
+
+/**
+ Return double value from custom function.
+ 
+ @param value The double value to be returned.
+ @param context The context to which the value will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultDouble:(double)value context:(void *)context;
+
+/**
+ Return `NSData` object from custom function.
+ 
+ @param data The `NSData` object to be returned.
+ @param context The context to which the value will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultData:(NSData *)data context:(void *)context;
+
+/**
+ Return string value from custom function.
+ 
+ @param value The string value to be returned.
+ @param context The context to which the value will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultString:(NSString *)value context:(void *)context;
+
+/**
+ Return error string from custom function.
+ 
+ @param error The error string to be returned.
+ @param context The context to which the error will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultError:(NSString *)error context:(void *)context;
+
+/**
+ Return error code from custom function.
+ 
+ @param errorCode The integer error code to be returned.
+ @param context The context to which the error will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultErrorCode:(int)errorCode context:(void *)context;
+
+/**
+ Report memory error in custom function.
+ 
+ @param context The context to which the error will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultErrorNoMemoryInContext:(void *)context NS_SWIFT_NAME(resultErrorNoMemory(context:));
+
+/**
+ Report that string or BLOB is too long to represent in custom function.
+ 
+ @param context The context to which the error will be returned.
+ 
+ @see makeFunctionNamed:arguments:block:
+ */
 - (void)resultErrorTooBigInContext:(void *)context NS_SWIFT_NAME(resultErrorTooBig(context:));
 
 ///---------------------
