@@ -4,8 +4,12 @@ Zip, nada, zilch.  Got any ideas?
 If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
 
-2017.06.01 Version 2.7.1
+2017.06.01 Version 2.7.2
+    Make blocks `nonescaping` (thanks to @benasher44)
 
+    Update method documentation.
+
+2017.06.01 Version 2.7.1
     Adjust `valueLong` return type and `resultLong` parameter to suppress warning.
 
     Fix pointer comparison to avoid static analysis warning in `columnIndexForName`.
