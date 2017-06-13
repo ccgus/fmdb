@@ -1502,7 +1502,7 @@ void FMDBBlockSQLiteCallBackFunction(sqlite3_context *context, int argc, sqlite3
 - (NSData *)valueData:(void *)value {
     const void *bytes = sqlite3_value_blob(value);
     int length = sqlite3_value_bytes(value);
-    return bytes ? [NSData dataWithBytes:bytes length:length] : nil;
+    return bytes ? [NSData dataWithBytes:bytes length:(NSUInteger)length] : nil;
 }
 
 - (NSString *)valueString:(void *)value {

@@ -58,41 +58,41 @@ int loadOrSaveDb(sqlite3 *pInMemory, const char *zFilename, int isSave)
 - (BOOL)readFromFile:(NSString*)filePath
 {
     // only attempt to load an on-disk representation for an in-memory database
-    if ( self->_databasePath != nil ) 
+    if ( [self databasePath] != nil )
     {
         NSLog(@"Database is not an in-memory representation." );
         return NO;
     }
     
     // and only if the database is open
-    if ( self->_db == nil ) 
+    if ( [self sqliteHandle] == nil ) 
     {
         NSLog(@"Invalid database connection." );
         return NO;
     }
     
-    return ( SQLITE_OK == loadOrSaveDb( self->_db, [filePath fileSystemRepresentation], false ) );
+    return ( SQLITE_OK == loadOrSaveDb( [self sqliteHandle], [filePath fileSystemRepresentation], false ) );
 
 }
 
 - (BOOL)writeToFile:(NSString *)filePath
 {
     // only attempt to save an on-disk representation for an in-memory database
-    if ( self->_databasePath != nil )
+    if ( [self databasePath] != nil )
     {
         NSLog(@"Database is not an in-memory representation." );
         return NO;
     }
     
     // and only if the database is open
-    if ( self->_db == nil ) 
+    if ( [self sqliteHandle] == nil )
     {
         NSLog(@"Invalid database connection." );
         return NO;
     }
     
     // save the in-memory representation    
-    return ( SQLITE_OK == loadOrSaveDb( self->_db, [filePath fileSystemRepresentation], true ) );
+    return ( SQLITE_OK == loadOrSaveDb( [self sqliteHandle], [filePath fileSystemRepresentation], true ) );
 }
 
 @end

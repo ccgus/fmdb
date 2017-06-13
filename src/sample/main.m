@@ -648,7 +648,7 @@ int main (int argc, const char * argv[]) {
         FMDBQuickCheck([[rs stringForColumn:@"t4.a"] isEqualToString:@"one"]);
         FMDBQuickCheck([[rs stringForColumn:@"b"] isEqualToString:@"two"]);
         
-        FMDBQuickCheck(strcmp((const char*)[rs UTF8StringForColumnName:@"b"], "two") == 0);
+        FMDBQuickCheck(strcmp((const char*)[rs UTF8StringForColumn:@"b"], "two") == 0);
         
         [rs close];
         
@@ -666,7 +666,7 @@ int main (int argc, const char * argv[]) {
         FMDBQuickCheck([[rs stringForColumn:@"t4.a"] isEqualToString:@"one"]);
         FMDBQuickCheck([[rs stringForColumn:@"b"] isEqualToString:@"two"]);
         
-        FMDBQuickCheck(strcmp((const char*)[rs UTF8StringForColumnName:@"b"], "two") == 0);
+        FMDBQuickCheck(strcmp((const char*)[rs UTF8StringForColumn:@"b"], "two") == 0);
         
         [rs close];
     }
@@ -1046,7 +1046,7 @@ int main (int argc, const char * argv[]) {
         [adb executeUpdate:@"insert into ftest values ('not h!')"];
         [adb executeUpdate:@"insert into ftest values ('definitely not h!')"];
         
-        [adb makeFunctionNamed:@"StringStartsWithH" maximumArguments:1 withBlock:^(/*sqlite3_context*/ void *context, int aargc, /*sqlite3_value*/ void **aargv) {
+        [adb makeFunctionNamed:@"StringStartsWithH" arguments:1 block:^(/*sqlite3_context*/ void *context, int aargc, /*sqlite3_value*/ void **aargv) {
             if (sqlite3_value_type(aargv[0]) == SQLITE_TEXT) {
                 @autoreleasepool {
                     const char *c = (const char *)sqlite3_value_text(aargv[0]);
