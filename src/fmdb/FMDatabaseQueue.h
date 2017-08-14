@@ -25,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
  Then use it like so:
 
     [queue inDatabase:^(FMDatabase *db) {
-        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
-        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
-        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @(1)];
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @(2)];
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @(3)];
 
         FMResultSet *rs = [db executeQuery:@"select * from foo"];
         while ([rs next]) {
@@ -38,16 +38,16 @@ NS_ASSUME_NONNULL_BEGIN
  An easy way to wrap things up in a transaction can be done like this:
 
     [queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:1]];
-        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:2]];
-        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:3]];
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @(1)];
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @(2)];
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @(3)];
 
         if (whoopsSomethingWrongHappened) {
             *rollback = YES;
             return;
         }
         // etc…
-        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", [NSNumber numberWithInt:4]];
+        [db executeUpdate:@"INSERT INTO myTable VALUES (?)", @(4)];
     }];
 
  `FMDatabaseQueue` will run the blocks on a serialized queue (hence the name of the class).  So if you call `FMDatabaseQueue`'s methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won't step on each other's toes, and every one is happy.
