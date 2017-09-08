@@ -217,6 +217,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)inDeferredTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
+/** Synchronously perform database operations on queue, using immediate transactions.
+
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+
+- (void)inImmediateTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+
 ///-----------------------------------------------
 /// @name Dispatching database operations to queue
 ///-----------------------------------------------
@@ -229,6 +236,20 @@ NS_ASSUME_NONNULL_BEGIN
 // NOTE: you can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock.
 // If you need to nest, use FMDatabase's startSavePointWithName:error: instead.
 - (NSError * _Nullable)inSavePoint:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+
+///-----------------
+/// @name Checkpoint
+///-----------------
+
+/** Synchronously performs a WAL checkpoint
+
+ @param checkpointMode The checkpoint mode for sqlite3_wal_checkpoint_v2
+ @param name The db name for sqlite3_wal_checkpoint_v2
+ @param error The NSError corresponding to the error, if any.
+ @return YES on success, otherwise NO.
+ */
+
+- (BOOL)checkpoint:(int)checkpointMode dbName:(NSString *)name error:(NSError * _Nullable *)error;
 
 @end
 

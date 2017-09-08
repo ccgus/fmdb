@@ -212,6 +212,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)inDeferredTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
+/** Synchronously perform database operations on queue, using immediate transactions.
+
+ @param block The code to be run on the queue of `FMDatabaseQueue`
+ */
+
+- (void)inImmediateTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+
 /** Synchronously perform database operations in pool using save point.
 
  @param block The code to be run on the `FMDatabasePool` pool.

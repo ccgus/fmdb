@@ -695,6 +695,18 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (BOOL)beginDeferredTransaction;
 
+/** Begin an immediate transaction
+
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+
+ @see commit
+ @see rollback
+ @see beginTransaction
+ @see isInTransaction
+ */
+
+- (BOOL)beginImmediateTransaction;
+
 /** Commit a transaction
 
  Commit a transaction that was initiated with either `<beginTransaction>` or with `<beginDeferredTransaction>`.
@@ -986,6 +998,20 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  */
 
 - (NSError * _Nullable)inSavePoint:(__attribute__((noescape)) void (^)(BOOL *rollback))block;
+
+
+///-----------------
+/// @name Checkpoint
+///-----------------
+
+/** Performs a WAL checkpoint
+
+ @param checkpointMode The checkpoint mode for sqlite3_wal_checkpoint_v2
+ @param name The db name for sqlite3_wal_checkpoint_v2
+ @param error The NSError corresponding to the error, if any.
+ @return YES on success, otherwise NO.
+ */
+- (BOOL)checkpoint:(int)checkpointMode dbName:(NSString *)name error:(NSError * _Nullable *)error;
 
 ///----------------------------
 /// @name SQLite library status
