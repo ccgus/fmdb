@@ -1433,11 +1433,19 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 #endif
 }
 
-- (BOOL)checkpoint:(int)checkpointMode dbName:(NSString *)name error:(NSError * __autoreleasing *)error
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode error:(NSError * __autoreleasing *)error {
+    return [self checkpoint:checkpointMode name:nil logFrameCount:NULL checkpointCount:NULL error:error];
+}
+
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode name:(NSString *)name error:(NSError * __autoreleasing *)error {
+    return [self checkpoint:checkpointMode name:name logFrameCount:NULL checkpointCount:NULL error:error];
+}
+
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode name:(NSString *)name logFrameCount:(int *)logFrameCount checkpointCount:(int *)checkpointCount error:(NSError * __autoreleasing *)error
 {
     const char* dbName = [name UTF8String];
 #if SQLITE_VERSION_NUMBER >= 3007006
-    int err = sqlite3_wal_checkpoint_v2(_db, dbName, checkpointMode, NULL, NULL);
+    int err = sqlite3_wal_checkpoint_v2(_db, dbName, checkpointMode, logFrameCount, checkpointCount);
 #else
     NSLog(@"sqlite3_wal_checkpoint_v2 unavailable before sqlite 3.7.6. Ignoring checkpoint mode: %d", mode);
     int err = sqlite3_wal_checkpoint(_db, dbName);

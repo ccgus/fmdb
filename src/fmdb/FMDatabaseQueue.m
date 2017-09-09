@@ -282,17 +282,27 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 #endif
 }
 
-- (BOOL)checkpoint:(int)mode dbName:(NSString *)name error:(NSError * __autoreleasing *)error
+- (BOOL)checkpoint:(FMDBCheckpointMode)mode error:(NSError * __autoreleasing *)error
+{
+    return [self checkpoint:mode name:nil logFrameCount:NULL checkpointCount:NULL error:error];
+}
+
+- (BOOL)checkpoint:(FMDBCheckpointMode)mode name:(NSString *)name error:(NSError * __autoreleasing *)error
+{
+    return [self checkpoint:mode name:name logFrameCount:NULL checkpointCount:NULL error:error];
+}
+
+- (BOOL)checkpoint:(FMDBCheckpointMode)mode name:(NSString *)name logFrameCount:(int * _Nullable)logFrameCount checkpointCount:(int * _Nullable)checkpointCount error:(NSError * __autoreleasing _Nullable * _Nullable)error
 {
     __block BOOL result;
     __block NSError *blockError;
-
+    
     FMDBRetain(self);
     dispatch_sync(_queue, ^() {
-        result = [self.database checkpoint:mode dbName:name error:&blockError];
+        result = [self.database checkpoint:mode name:name logFrameCount:NULL checkpointCount:NULL error:&blockError];
     });
     FMDBRelease(self);
-
+    
     if (error) {
         *error = blockError;
     }

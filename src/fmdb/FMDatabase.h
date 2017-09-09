@@ -41,6 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary);
 
+typedef NS_ENUM(int, FMDBCheckpointMode) {
+    FMDBCheckpointModePassive  = 0, // SQLITE_CHECKPOINT_PASSIVE,
+    FMDBCheckpointModeFull     = 1, // SQLITE_CHECKPOINT_FULL,
+    FMDBCheckpointModeRestart  = 2, // SQLITE_CHECKPOINT_RESTART,
+    FMDBCheckpointModeTruncate = 3  // SQLITE_CHECKPOINT_TRUNCATE
+};
 
 /** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
  
@@ -1005,13 +1011,32 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 ///-----------------
 
 /** Performs a WAL checkpoint
+ 
+ @param checkpointMode The checkpoint mode for sqlite3_wal_checkpoint_v2
+ @param error The NSError corresponding to the error, if any.
+ @return YES on success, otherwise NO.
+ */
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode error:(NSError * _Nullable *)error;
 
+/** Performs a WAL checkpoint
+ 
  @param checkpointMode The checkpoint mode for sqlite3_wal_checkpoint_v2
  @param name The db name for sqlite3_wal_checkpoint_v2
  @param error The NSError corresponding to the error, if any.
  @return YES on success, otherwise NO.
  */
-- (BOOL)checkpoint:(int)checkpointMode dbName:(NSString *)name error:(NSError * _Nullable *)error;
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode name:(NSString * _Nullable)name error:(NSError * _Nullable *)error;
+
+/** Performs a WAL checkpoint
+ 
+ @param checkpointMode The checkpoint mode for sqlite3_wal_checkpoint_v2
+ @param name The db name for sqlite3_wal_checkpoint_v2
+ @param error The NSError corresponding to the error, if any.
+ @param logFrameCount If not NULL, then this is set to the total number of frames in the log file or to -1 if the checkpoint could not run because of an error or because the database is not in WAL mode.
+ @param checkpointCount If not NULL, then this is set to the total number of checkpointed frames in the log file (including any that were already checkpointed before the function was called) or to -1 if the checkpoint could not run due to an error or because the database is not in WAL mode.
+ @return YES on success, otherwise NO.
+ */
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode name:(NSString * _Nullable)name logFrameCount:(int * _Nullable)logFrameCount checkpointCount:(int * _Nullable)checkpointCount error:(NSError * _Nullable *)error;
 
 ///----------------------------
 /// @name SQLite library status
