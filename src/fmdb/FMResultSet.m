@@ -61,7 +61,7 @@
     // we don't need this anymore... (i think)
     //[_parentDB setInUse:NO];
     [_parentDB resultSetDidClose:self];
-    _parentDB = nil;
+    [self setParentDB:nil];
 }
 
 - (int)columnCount {
