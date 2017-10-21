@@ -1464,4 +1464,26 @@
     XCTAssertEqual(error.code, 19, @"error code 19 should have been generated");
 }
 
+- (void)testCheckpoint {
+    FMDatabase *db = [[FMDatabase alloc] init];
+    XCTAssertTrue([db open], @"open failed");
+    NSError *error = nil;
+    int frameCount = 0;
+    int checkpointCount = 0;
+    [db checkpoint:FMDBCheckpointModeTruncate name:NULL logFrameCount:&frameCount checkpointCount:&checkpointCount error:&error];
+    // Verify that we're calling the checkpoint interface, which is a decent scope for this test, without going so far as to verify what checkpoint does
+    XCTAssertEqual(frameCount, -1, @"frameCount should be -1 (means not using WAL mode) to verify that we're using the proper checkpoint interface");
+    XCTAssertEqual(checkpointCount, -1, @"checkpointCount should be -1 (means not using WAL mode) to verify that we're using the proper checkpoint interface");
+}
+
+- (void)testImmediateTransaction {
+    FMDatabase *db = [[FMDatabase alloc] init];
+    XCTAssertTrue([db open], @"open failed");
+    [db beginImmediateTransaction];
+    [db beginImmediateTransaction];
+
+    // Verify that beginImmediateTransaction behaves as advertised and starts a transaction
+    XCTAssertEqualObjects([db lastError].localizedDescription, @"cannot start a transaction within a transaction");
+}
+
 @end

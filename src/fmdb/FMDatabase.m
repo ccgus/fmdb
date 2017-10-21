@@ -1322,6 +1322,16 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     return b;
 }
 
+- (BOOL)beginImmediateTransaction {
+
+    BOOL b = [self executeUpdate:@"begin immediate transaction"];
+    if (b) {
+        _isInTransaction = YES;
+    }
+
+    return b;
+}
+
 - (BOOL)beginTransaction {
     
     BOOL b = [self executeUpdate:@"begin exclusive transaction"];
@@ -1423,6 +1433,37 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 #endif
 }
 
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode error:(NSError * __autoreleasing *)error {
+    return [self checkpoint:checkpointMode name:nil logFrameCount:NULL checkpointCount:NULL error:error];
+}
+
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode name:(NSString *)name error:(NSError * __autoreleasing *)error {
+    return [self checkpoint:checkpointMode name:name logFrameCount:NULL checkpointCount:NULL error:error];
+}
+
+- (BOOL)checkpoint:(FMDBCheckpointMode)checkpointMode name:(NSString *)name logFrameCount:(int *)logFrameCount checkpointCount:(int *)checkpointCount error:(NSError * __autoreleasing *)error
+{
+    const char* dbName = [name UTF8String];
+#if SQLITE_VERSION_NUMBER >= 3007006
+    int err = sqlite3_wal_checkpoint_v2(_db, dbName, checkpointMode, logFrameCount, checkpointCount);
+#else
+    NSLog(@"sqlite3_wal_checkpoint_v2 unavailable before sqlite 3.7.6. Ignoring checkpoint mode: %d", mode);
+    int err = sqlite3_wal_checkpoint(_db, dbName);
+#endif
+    if(err != SQLITE_OK) {
+        if (error) {
+            *error = [self lastError];
+        }
+        if (self.logsErrors) NSLog(@"%@", [self lastErrorMessage]);
+        if (self.crashOnErrors) {
+            NSAssert(false, @"%@", [self lastErrorMessage]);
+            abort();
+        }
+        return NO;
+    } else {
+        return YES;
+    }
+}
 
 #pragma mark Cache statements
 

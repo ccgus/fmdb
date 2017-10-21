@@ -15,6 +15,12 @@
 #import "FMDatabasePool.h"
 #import "FMDatabase.h"
 
+typedef NS_ENUM(NSInteger, FMDBTransaction) {
+    FMDBTransactionExclusive,
+    FMDBTransactionDeferred,
+    FMDBTransactionImmediate,
+};
+
 @interface FMDatabasePool () {
     dispatch_queue_t    _lockQueue;
     
@@ -244,17 +250,22 @@
     [self pushDatabaseBackInPool:db];
 }
 
-- (void)beginTransaction:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)beginTransaction:(FMDBTransaction)transaction withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     
     BOOL shouldRollback = NO;
     
     FMDatabase *db = [self db];
     
-    if (useDeferred) {
-        [db beginDeferredTransaction];
-    }
-    else {
-        [db beginTransaction];
+    switch (transaction) {
+        case FMDBTransactionExclusive:
+            [db beginTransaction];
+            break;
+        case FMDBTransactionDeferred:
+            [db beginDeferredTransaction];
+            break;
+        case FMDBTransactionImmediate:
+            [db beginImmediateTransaction];
+            break;
     }
     
     
@@ -271,11 +282,15 @@
 }
 
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    [self beginTransaction:YES withBlock:block];
+    [self beginTransaction:FMDBTransactionDeferred withBlock:block];
 }
 
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
-    [self beginTransaction:NO withBlock:block];
+    [self beginTransaction:FMDBTransactionExclusive withBlock:block];
+}
+
+- (void)inImmediateTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block {
+    [self beginTransaction:FMDBTransactionImmediate withBlock:block];
 }
 
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
