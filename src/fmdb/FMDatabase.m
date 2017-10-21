@@ -98,7 +98,7 @@ NS_ASSUME_NONNULL_END
 }
 
 + (NSString*)FMDBUserVersion {
-    return @"2.7.2";
+    return @"2.7.3";
 }
 
 // returns 0x0240 for version 2.4.  This makes it super easy to do things like:

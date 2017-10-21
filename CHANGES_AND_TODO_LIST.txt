@@ -3,6 +3,21 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2017.10.20 Version 2.7.3
+    Added support for immediate transactions and checkpoint. (thanks to @benasher44)
+
+    Updated nullability of `FMDatabaseQueue` initialization methods. (thanks to @robotive)
+    In a related correction, we updated README to avoid confusing reference to nullability
+    changes in 2.7. (In 2.7, as part of the nullability audit, I (@robertryan) accidentally
+    declared a few `FMDatabaseQueue` initializers to be nonnull, but @robotive pointed out
+    that they actually _were_ nullable. Most of that nullability audit stands as it was
+    released in 2.7.0, but this fixes a few little errors.
+
+    Minor correction to README, whereby Swift example code implicitly suggested using
+    Documents folder for database, whereas with the advent of the new Files app, Apple suggests
+    using the "Application Support" directory for files that are not documents for end-user
+    interaction. Clearly, use whatever is appropriate in your case, but no longer assume that
+    you should just place files in Documents folder, as that is often not the appropriate location.
 
 2017.06.01 Version 2.7.2
     Make blocks `nonescaping` (thanks to @benasher44)
