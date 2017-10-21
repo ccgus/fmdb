@@ -91,13 +91,8 @@ FMDB 2.7 is largely the same as prior versions, but has been audited for nullabi
 For Swift users, this nullability audit results in changes that are not entirely backward compatible with FMDB 2.6, but is a little more Swifty. Before FMDB was audited for nullability, Swift was forced to defensively assume that variables were optional, but the library now more accurately knows which properties and method parameters are optional, and which are not.
 
 This means, though, that Swift code written for FMDB 2.7 may require changes. For example, consider the following Swift 3/Swift 4 code for FMDB 2.6:
+
 ```swift
-
-guard let queue = FMDatabaseQueue(path: fileURL.path) else {
-    print("Unable to create FMDatabaseQueue")
-    return
-}
-
 queue.inTransaction { db, rollback in
     do {
         guard let db == db else {
@@ -116,9 +111,6 @@ queue.inTransaction { db, rollback in
 Because FMDB 2.6 was not audited for nullability, Swift inferred that `db` and `rollback` were optionals. But, now, in FMDB 2.7, Swift now knows that, for example, neither `db` nor `rollback` above can be `nil`, so they are no longer optionals. Thus it becomes:
 
 ```swift
-
-let queue = FMDatabaseQueue(url: fileURL)
-
 queue.inTransaction { db, rollback in
     do {
         try db.executeUpdate("INSERT INTO foo (bar) VALUES (?)", values: [1])
@@ -463,7 +455,7 @@ If you do the above, you can then write Swift code that uses `FMDatabase`. For e
 
 ```swift
 let fileURL = try! FileManager.default
-    .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+    .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     .appendingPathComponent("test.sqlite")
 
 let database = FMDatabase(url: fileURL)
