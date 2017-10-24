@@ -127,7 +127,6 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     return [self initWithPath:nil];
 }
 
-    
 - (void)dealloc {
     FMDBRelease(_db);
     FMDBRelease(_path);
@@ -189,6 +188,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     dispatch_sync(_queue, ^() {
         
         FMDatabase *db = [self database];
+        
         block(db);
         
         if ([db hasOpenResultSets]) {
@@ -238,11 +238,15 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     FMDBRelease(self);
 }
 
+- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
+    [self beginTransaction:FMDBTransactionExclusive withBlock:block];
+}
+
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:FMDBTransactionDeferred withBlock:block];
 }
 
-- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)inExclusiveTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:FMDBTransactionExclusive withBlock:block];
 }
 

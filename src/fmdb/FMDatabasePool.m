@@ -281,11 +281,15 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
     [self pushDatabaseBackInPool:db];
 }
 
+- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
+    [self beginTransaction:FMDBTransactionExclusive withBlock:block];
+}
+
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:FMDBTransactionDeferred withBlock:block];
 }
 
-- (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)inExclusiveTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:FMDBTransactionExclusive withBlock:block];
 }
 

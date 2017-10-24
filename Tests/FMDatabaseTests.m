@@ -1125,7 +1125,7 @@
 }
 
 - (void)testVersionNumber {
-    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0273); // this is going to break everytime we bump it.
+    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0274); // this is going to break everytime we bump it.
 }
 
 - (void)testExecuteStatements {

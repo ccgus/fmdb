@@ -69,11 +69,10 @@
     FMDatabase *newDB = [FMDatabase databaseWithPath:self.databasePath];
     [newDB open];
     
-    [newDB beginTransaction];
+    [newDB beginExclusiveTransaction];
     NSError *error;
     XCTAssertFalse([resultSet nextWithError:&error]);
     [newDB commit];
-    
     
     XCTAssertEqual(error.code, SQLITE_BUSY, @"SQLITE_BUSY should be the last error");
     [resultSet close];
