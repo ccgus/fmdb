@@ -30,7 +30,7 @@ va_end(args);                                                        \
 if (![resultSet next]) { return (type)0; }                           \
 type ret = [resultSet sel:0];                                        \
 [resultSet close];                                                   \
-[resultSet setParentDB:nil];                                         \
+resultSet.parentDB = nil;                                            \
 return ret;
 
 
@@ -65,7 +65,7 @@ return ret;
 
 - (BOOL)tableExists:(NSString*)tableName {
     
-    tableName = [tableName lowercaseString];
+    tableName = tableName.lowercaseString;
     
     FMResultSet *rs = [self executeQuery:@"select [sql] from sqlite_master where [type] = 'table' and lower(name) = ?", tableName];
     
@@ -105,14 +105,14 @@ return ret;
     
     BOOL returnBool = NO;
     
-    tableName  = [tableName lowercaseString];
-    columnName = [columnName lowercaseString];
+    tableName  = tableName.lowercaseString;
+    columnName = columnName.lowercaseString;
     
     FMResultSet *rs = [self getTableSchema:tableName];
     
     //check if column is present in table schema
     while ([rs next]) {
-        if ([[[rs stringForColumn:@"name"] lowercaseString] isEqualToString:columnName]) {
+        if ([[rs stringForColumn:@"name"].lowercaseString isEqualToString:columnName]) {
             returnBool = YES;
             break;
         }
@@ -165,7 +165,7 @@ return ret;
 #if SQLITE_VERSION_NUMBER >= 3007017
     NSString *s = NSFileTypeForHFSTypeCode([self applicationID]);
     
-    assert([s length] == 6);
+    assert(s.length == 6);
     
     s = [s substringWithRange:NSMakeRange(1, 4)];
     
@@ -180,11 +180,11 @@ return ret;
 
 - (void)setApplicationIDString:(NSString*)s {
 #if SQLITE_VERSION_NUMBER >= 3007017
-    if ([s length] != 4) {
-        NSLog(@"setApplicationIDString: string passed is not exactly 4 chars long. (was %ld)", [s length]);
+    if (s.length != 4) {
+        NSLog(@"setApplicationIDString: string passed is not exactly 4 chars long. (was %ld)", s.length);
     }
     
-    [self setApplicationID:NSHFSTypeCodeFromFileType([NSString stringWithFormat:@"'%@'", s])];
+    self.applicationID = NSHFSTypeCodeFromFileType([NSString stringWithFormat:@"'%@'", s]);
 #else
     NSString *errorMessage = NSLocalizedString(@"Application ID functions require SQLite 3.7.17", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
@@ -226,14 +226,13 @@ return ret;
     sqlite3_stmt *pStmt = NULL;
     BOOL validationSucceeded = YES;
     
-    int rc = sqlite3_prepare_v2([self sqliteHandle], [sql UTF8String], -1, &pStmt, 0);
+    int rc = sqlite3_prepare_v2(self.sqliteHandle, sql.UTF8String, -1, &pStmt, 0);
     if (rc != SQLITE_OK) {
         validationSucceeded = NO;
         if (error) {
             *error = [NSError errorWithDomain:NSCocoaErrorDomain
                                          code:[self lastErrorCode]
-                                     userInfo:[NSDictionary dictionaryWithObject:[self lastErrorMessage]
-                                                                          forKey:NSLocalizedDescriptionKey]];
+                                     userInfo:@{NSLocalizedDescriptionKey : [self lastErrorMessage]}];
         }
     }
     

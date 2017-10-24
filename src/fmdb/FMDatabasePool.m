@@ -67,7 +67,7 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
     
     if (self != nil) {
         _path               = [aPath copy];
-        _lockQueue          = dispatch_queue_create([[NSString stringWithFormat:@"fmdb.%@", self] UTF8String], NULL);
+        _lockQueue          = dispatch_queue_create([NSString stringWithFormat:@"fmdb.%@", self].UTF8String, NULL);
         _databaseInPool     = FMDBReturnRetained([NSMutableArray array]);
         _databaseOutPool    = FMDBReturnRetained([NSMutableArray array]);
         _openFlags          = openFlags;
@@ -148,7 +148,7 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
     
     
     [self executeLocked:^() {
-        db = [self->_databaseInPool lastObject];
+        db = self->_databaseInPool.lastObject;
         
         BOOL shouldNotifyDelegate = NO;
         
@@ -159,7 +159,7 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
         else {
             
             if (self->_maximumNumberOfDatabasesToCreate) {
-                NSUInteger currentCount = [self->_databaseOutPool count] + [self->_databaseInPool count];
+                NSUInteger currentCount = self->_databaseOutPool.count + self->_databaseInPool.count;
                 
                 if (currentCount >= self->_maximumNumberOfDatabasesToCreate) {
                     NSLog(@"Maximum number of databases (%ld) has already been reached!", (long)currentCount);
@@ -207,7 +207,7 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
     __block NSUInteger count;
     
     [self executeLocked:^() {
-        count = [self->_databaseInPool count];
+        count = self->_databaseInPool.count;
     }];
     
     return count;
@@ -218,7 +218,7 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
     __block NSUInteger count;
     
     [self executeLocked:^() {
-        count = [self->_databaseOutPool count];
+        count = self->_databaseOutPool.count;
     }];
     
     return count;
@@ -228,7 +228,7 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
     __block NSUInteger count;
     
     [self executeLocked:^() {
-        count = [self->_databaseOutPool count] + [self->_databaseInPool count];
+        count = self->_databaseOutPool.count + self->_databaseInPool.count;
     }];
     
     return count;
