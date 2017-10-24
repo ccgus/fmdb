@@ -59,6 +59,54 @@
     queue = nil;
 }
 
+- (void)testInvalidURL {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *folderURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    NSURL *fileURL = [folderURL URLByAppendingPathComponent:@"test.sqlite"];
+    
+    FMDatabaseQueue *queue = [[FMDatabaseQueue alloc] initWithURL:fileURL];
+    XCTAssertNil(queue, @"Database queue should not be returned for invalid path");
+    queue = nil;
+}
+
+- (void)testInvalidPath {
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *folderURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    NSURL *fileURL = [folderURL URLByAppendingPathComponent:@"test.sqlite"];
+    
+    FMDatabaseQueue *queue = [[FMDatabaseQueue alloc] initWithPath:fileURL.path];
+    XCTAssertNil(queue, @"Database queue should not be returned for invalid path");
+    queue = nil;
+}
+
+- (void)testReopenFailure {
+    NSFileManager *manager = [NSFileManager defaultManager];
+    
+    NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *folderURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    BOOL success = [manager createDirectoryAtURL:folderURL withIntermediateDirectories:true attributes:nil error:nil];
+    NSAssert(success, @"Unable to create folder");
+    
+    NSURL *fileURL = [folderURL URLByAppendingPathComponent:@"test.sqlite"];
+    
+    FMDatabaseQueue *queue = [[FMDatabaseQueue alloc] initWithURL:fileURL];
+    XCTAssert(queue, @"Database queue was unable to be created");
+    
+    [queue close];
+    
+    success = [manager removeItemAtURL:fileURL error:nil];
+    XCTAssert(success, @"Unable to remove database");
+    
+    success = [manager removeItemAtURL:folderURL error:nil];
+    XCTAssert(success, @"Unable to remove folder");
+    
+    [queue inDatabase:^(FMDatabase *db) {
+        XCTAssertNil(db, @"Should be `nil` or never have reached here because database couldn't be reopened");
+    }];
+    
+    queue = nil;
+}
+
 - (void)testURLOpen {
     NSURL *tempFolder = [NSURL fileURLWithPath:NSTemporaryDirectory()];
     NSURL *fileURL = [tempFolder URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
@@ -260,7 +308,50 @@
         
         XCTAssertEqual(rowCount, 2);
     }];
+    
+}
 
+- (void)testSavePoint
+{
+    [self.queue inDatabase:^(FMDatabase *adb) {
+        [adb executeUpdate:@"create table transtest (a integer)"];
+        XCTAssertTrue([adb executeUpdate:@"insert into transtest values (1)"]);
+        XCTAssertTrue([adb executeUpdate:@"insert into transtest values (2)"]);
+        
+        int rowCount = 0;
+        FMResultSet *ars = [adb executeQuery:@"select * from transtest"];
+        while ([ars next]) {
+            rowCount++;
+        }
+        
+        XCTAssertEqual(rowCount, 2);
+    }];
+    
+    [self.queue inSavePoint:^(FMDatabase *adb, BOOL *rollback) {
+        XCTAssertTrue([adb executeUpdate:@"insert into transtest values (3)"]);
+        
+        if (YES) {
+            // uh oh!, something went wrong (not really, this is just a test
+            *rollback = YES;
+            return;
+        }
+        
+        XCTFail(@"This shouldn't be reached");
+    }];
+    
+    [self.queue inDatabase:^(FMDatabase *adb) {
+        
+        int rowCount = 0;
+        FMResultSet *ars = [adb executeQuery:@"select * from transtest"];
+        while ([ars next]) {
+            rowCount++;
+        }
+        
+        XCTAssertFalse([adb hasOpenResultSets]);
+        
+        XCTAssertEqual(rowCount, 2);
+    }];
+    
 }
 
 @end

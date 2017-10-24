@@ -199,11 +199,26 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)inDatabase:(__attribute__((noescape)) void (^)(FMDatabase *db))block;
 
 /** Synchronously perform database operations in pool using transaction.
+ 
+ @param block The code to be run on the `FMDatabasePool` pool.
+ 
+ @warning   Unlike SQLite's `BEGIN TRANSACTION`, this method currently performs
+            an exclusive transaction, not a deferred transaction. This behavior
+            is likely to change in future versions of FMDB, whereby this method
+            will likely eventually adopt standard SQLite behavior and perform
+            deferred transactions. If you really need exclusive tranaction, it is
+            recommended that you use `inExclusiveTransaction`, instead, not only
+            to make your intent explicit, but also to future-proof your code.
+  */
 
+- (void)inTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+
+/** Synchronously perform database operations in pool using exclusive transaction.
+ 
  @param block The code to be run on the `FMDatabasePool` pool.
  */
 
-- (void)inTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inExclusiveTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations in pool using deferred transaction.
 

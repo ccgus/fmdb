@@ -685,6 +685,15 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  @see rollback
  @see beginDeferredTransaction
  @see isInTransaction
+ 
+ @warning    Unlike SQLite's `BEGIN TRANSACTION`, this method currently performs
+             an exclusive transaction, not a deferred transaction. This behavior
+             is likely to change in future versions of FMDB, whereby this method
+             will likely eventually adopt standard SQLite behavior and perform
+             deferred transactions. If you really need exclusive tranaction, it is
+             recommended that you use `beginExclusiveTransaction`, instead, not
+             only to make your intent explicit, but also to future-proof your code.
+
  */
 
 - (BOOL)beginTransaction;
@@ -702,9 +711,9 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 - (BOOL)beginDeferredTransaction;
 
 /** Begin an immediate transaction
-
+ 
  @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
-
+ 
  @see commit
  @see rollback
  @see beginTransaction
@@ -712,6 +721,18 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  */
 
 - (BOOL)beginImmediateTransaction;
+
+/** Begin an exclusive transaction
+ 
+ @return `YES` on success; `NO` on failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
+ 
+ @see commit
+ @see rollback
+ @see beginTransaction
+ @see isInTransaction
+ */
+
+- (BOOL)beginExclusiveTransaction;
 
 /** Commit a transaction
 

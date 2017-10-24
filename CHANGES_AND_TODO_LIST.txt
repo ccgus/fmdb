@@ -3,6 +3,11 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2017.10.23 Version 2.7.4
+    Added support for explicit transactions.
+
+    Add warning that `beginTransaction` and `inTransaction` behavior is likely to change.
+
 2017.10.20 Version 2.7.3
     Added support for immediate transactions and checkpoint. (thanks to @benasher44)
 

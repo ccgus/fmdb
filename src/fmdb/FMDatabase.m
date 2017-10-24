@@ -98,7 +98,7 @@ NS_ASSUME_NONNULL_END
 }
 
 + (NSString*)FMDBUserVersion {
-    return @"2.7.3";
+    return @"2.7.4";
 }
 
 // returns 0x0240 for version 2.4.  This makes it super easy to do things like:
@@ -1312,6 +1312,16 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
     return b;
 }
 
+- (BOOL)beginTransaction {
+    
+    BOOL b = [self executeUpdate:@"begin exclusive transaction"];
+    if (b) {
+        _isInTransaction = YES;
+    }
+    
+    return b;
+}
+
 - (BOOL)beginDeferredTransaction {
     
     BOOL b = [self executeUpdate:@"begin deferred transaction"];
@@ -1323,16 +1333,16 @@ int FMDBExecuteBulkSQLCallback(void *theBlockAsVoid, int columns, char **values,
 }
 
 - (BOOL)beginImmediateTransaction {
-
+    
     BOOL b = [self executeUpdate:@"begin immediate transaction"];
     if (b) {
         _isInTransaction = YES;
     }
-
+    
     return b;
 }
 
-- (BOOL)beginTransaction {
+- (BOOL)beginExclusiveTransaction {
     
     BOOL b = [self executeUpdate:@"begin exclusive transaction"];
     if (b) {
