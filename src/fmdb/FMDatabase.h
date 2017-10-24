@@ -690,11 +690,9 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
              an exclusive transaction, not a deferred transaction. This behavior
              is likely to change in future versions of FMDB, whereby this method
              will likely eventually adopt standard SQLite behavior and perform
-             deferred transactions.
- 
-             If you really need exclusive tranaction, it is recommended that you
-             use `beginExclusiveTransaction`, instead, not only to make your intent
-             explicit, but also to future-proof your code.
+             deferred transactions. If you really need exclusive tranaction, it is
+             recommended that you use `beginExclusiveTransaction`, instead, not
+             only to make your intent explicit, but also to future-proof your code.
 
  */
 
