@@ -68,6 +68,7 @@ NS_ASSUME_NONNULL_END
         _logsErrors                 = YES;
         _crashOnErrors              = NO;
         _maxBusyRetryTimeInterval   = 2;
+        _isOpen                     = NO;
     }
     
     return self;
@@ -160,10 +161,18 @@ NS_ASSUME_NONNULL_END
 #pragma mark Open and close database
 
 - (BOOL)open {
-    if (_db) {
+    if (_isOpen) {
         return YES;
     }
     
+    // if we previously tried to open and it failed, make sure to close it before we try again
+    
+    if (_db) {
+        [self close];
+    }
+    
+    // now open database
+
     int err = sqlite3_open([self sqlitePath], (sqlite3**)&_db );
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
@@ -175,6 +184,7 @@ NS_ASSUME_NONNULL_END
         [self setMaxBusyRetryTimeInterval:_maxBusyRetryTimeInterval];
     }
     
+    _isOpen = YES;
     
     return YES;
 }
@@ -182,11 +192,20 @@ NS_ASSUME_NONNULL_END
 - (BOOL)openWithFlags:(int)flags {
     return [self openWithFlags:flags vfs:nil];
 }
+
 - (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName {
 #if SQLITE_VERSION_NUMBER >= 3005000
-    if (_db) {
+    if (_isOpen) {
         return YES;
     }
+    
+    // if we previously tried to open and it failed, make sure to close it before we try again
+    
+    if (_db) {
+        [self close];
+    }
+    
+    // now open database
     
     int err = sqlite3_open_v2([self sqlitePath], (sqlite3**)&_db, flags, [vfsName UTF8String]);
     if(err != SQLITE_OK) {
@@ -199,13 +218,14 @@ NS_ASSUME_NONNULL_END
         [self setMaxBusyRetryTimeInterval:_maxBusyRetryTimeInterval];
     }
     
+    _isOpen = YES;
+    
     return YES;
 #else
     NSLog(@"openWithFlags requires SQLite 3.5");
     return NO;
 #endif
 }
-
 
 - (BOOL)close {
     
@@ -466,7 +486,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 
 - (BOOL)goodConnection {
     
-    if (!_db) {
+    if (!_isOpen) {
         return NO;
     }
     
@@ -493,7 +513,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 
 - (BOOL)databaseExists {
     
-    if (!_db) {
+    if (!_isOpen) {
         
         NSLog(@"The FMDatabase %@ is not open.", self);
         

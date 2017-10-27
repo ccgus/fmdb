@@ -1486,4 +1486,48 @@
     XCTAssertEqualObjects([db lastError].localizedDescription, @"cannot start a transaction within a transaction");
 }
 
+- (void)testOpenFailure {
+    NSURL *tempURL = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *fileURL1 = [tempURL URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    NSURL *fileURL2 = [tempURL URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    
+    // ok, first create one database
+    
+    FMDatabase *db = [FMDatabase databaseWithURL:fileURL1];
+    BOOL success = [db open];
+    XCTAssert(success, @"Database not created correctly for purposes of test");
+    success = [db executeUpdate:@"create table if not exists foo (bar text)"];
+    XCTAssert(success, @"Table created correctly for purposes of test");
+    [db close];
+    
+    // now, try to create open second database even though it doesn't exist
+    
+    db = [FMDatabase databaseWithURL:fileURL2];
+    success = [db openWithFlags:SQLITE_OPEN_READWRITE];
+    XCTAssert(!success, @"Opening second database file that doesn't exist should not have succeeded");
+    
+    // OK, everything so far is fine, opening a db without CREATE option above should have failed,
+    // but so fix the missing file issue and re-opening
+    
+    success = [manager copyItemAtURL:fileURL1 toURL:fileURL2 error:nil];
+    XCTAssert(success, @"Copying of db should have succeeded");
+    
+    // now let's try opening it again
+    
+    success = [db openWithFlags:SQLITE_OPEN_READWRITE];
+    XCTAssert(success, @"Opening second database should now succeed");
+
+    // now let's try using it
+    FMResultSet *rs = [db executeQuery:@"select * from foo"];
+    XCTAssertNotNil(rs, @"Should successfully be able to use re-opened database");
+    
+    // let's clean up
+    
+    [rs close];
+    [db close];
+    [manager removeItemAtURL:fileURL1 error:nil];
+    [manager removeItemAtURL:fileURL2 error:nil];
+}
+
 @end
