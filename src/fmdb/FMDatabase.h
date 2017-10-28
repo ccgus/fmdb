@@ -221,6 +221,10 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 /// @name Opening and closing database
 ///-----------------------------------
 
+/// Is the database open or not?
+
+@property (nonatomic) BOOL isOpen;
+
 /** Opening a new database connection
  
  The database is opened for reading and writing, and is created if it does not already exist.
