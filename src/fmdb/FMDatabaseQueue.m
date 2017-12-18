@@ -156,8 +156,10 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 }
 
 - (FMDatabase*)database {
-    if (!_db) {
-       _db = FMDBReturnRetained([[[self class] databaseClass] databaseWithPath:_path]);
+    if (![_db isOpen]) {
+        if (!_db) {
+           _db = FMDBReturnRetained([[[self class] databaseClass] databaseWithPath:_path]);
+        }
         
 #if SQLITE_VERSION_NUMBER >= 3005000
         BOOL success = [_db openWithFlags:_openFlags vfs:_vfsName];

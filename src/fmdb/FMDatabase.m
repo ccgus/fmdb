@@ -261,6 +261,8 @@ NS_ASSUME_NONNULL_END
     while (retry);
     
     _db = nil;
+    _isOpen = false;
+    
     return YES;
 }
 

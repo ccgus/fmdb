@@ -354,4 +354,19 @@
     
 }
 
+- (void)testClose
+{
+    [self.queue inDatabase:^(FMDatabase *adb) {
+        XCTAssertTrue([adb executeUpdate:@"CREATE TABLE close_test (a INTEGER)"]);
+        XCTAssertTrue([adb executeUpdate:@"INSERT INTO close_test VALUES (1)"]);
+        
+        [adb close];
+    }];
+    
+    [self.queue inDatabase:^(FMDatabase *adb) {
+        FMResultSet *ars = [adb executeQuery:@"select * from close_test"];
+        XCTAssertNotNil(ars);
+    }];
+}
+
 @end
