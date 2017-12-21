@@ -44,9 +44,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (atomic, retain, nullable) FMStatement *statement;
 
-///------------------------------------
-/// @name Creating and closing database
-///------------------------------------
+///--------------------------------------
+/// @name Creating and closing result set
+///--------------------------------------
 
 /** Create result set from `<FMStatement>`
  
