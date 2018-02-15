@@ -10,9 +10,9 @@
 #define FMDBQuickCheck(SomeBool) { if (!(SomeBool)) { NSLog(@"Failure on line %d", __LINE__); abort(); } }
 
 void testPool(NSString *dbPath);
-void testDateFormat();
-void FMDBReportABugFunction();
-void testStatementCaching();
+void testDateFormat(void);
+void FMDBReportABugFunction(void);
+void testStatementCaching(void);
 
 int main (int argc, const char * argv[]) {
     
