@@ -300,6 +300,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSData * _Nullable)dataForColumnIndex:(int)columnIdx;
 
+/** Result set `NSDecimalNumber` value for column.
+ 
+ @param columnName `NSString` value of the name of the column.
+ 
+ @return `NSDecimalNumber` value of the result set's column.
+ 
+ */
+
+- (NSDecimalNumber * __nullable)decimalForColumn: (NSString *)columnName;
+
+
+/** Result set `NSDecimalNumber` value for column.
+ 
+ @param columnIdx Zero-based index for column.
+ 
+ @return `NSDecimalNumber` value of the result set's column.
+ 
+ */
+
+- (NSDecimalNumber * __nullable)decimalForColumnIndex:(int)columnIdx;
+
+
 /** Result set `(const unsigned char *)` value for column.
 
  @param columnName `NSString` value of the name of the column.

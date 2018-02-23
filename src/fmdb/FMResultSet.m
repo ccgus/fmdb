@@ -333,6 +333,16 @@
 }
 
 
+- (NSDecimalNumber*)decimalForColumn: (NSString *)columnName {
+    return [self decimalForColumnIndex:[self columnIndexForName:columnName]];
+}
+
+- (NSDecimalNumber*)decimalForColumnIndex:(int)columnIdx {
+    NSString * temp = [self stringForColumnIndex: columnIdx];
+    return [[NSDecimalNumber alloc] initWithString: temp];
+}
+
+
 - (NSData*)dataNoCopyForColumn:(NSString*)columnName {
     return [self dataNoCopyForColumnIndex:[self columnIndexForName:columnName]];
 }
@@ -427,6 +437,5 @@
 - (id)objectForKeyedSubscript:(NSString *)columnName {
     return [self objectForColumn:columnName];
 }
-
 
 @end
