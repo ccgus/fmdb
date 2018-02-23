@@ -333,6 +333,16 @@
 }
 
 
+- (NSDecimalNumber*)decimalForColumn: (NSString *)columnName {
+    return [self decimalForColumnIndex:[self columnIndexForName:columnName]];
+}
+
+- (NSDecimalNumber*)decimalForColumnIndex:(int)columnIdx {
+    NSString * temp = [self stringForColumnIndex: columnIdx];
+    return [[NSDecimalNumber alloc] initWithString: temp];
+}
+
+
 - (NSData*)dataNoCopyForColumn:(NSString*)columnName {
     return [self dataNoCopyForColumnIndex:[self columnIndexForName:columnName]];
 }
@@ -390,8 +400,7 @@
         returnValue = [NSNumber numberWithLongLong:[self longLongIntForColumnIndex:columnIdx]];
     }
     else if (columnType == SQLITE_FLOAT) {
-        NSString * temp = [self stringForColumnIndex: columnIdx];
-        returnValue = [[NSDecimalNumber alloc] initWithString: temp];
+        returnValue = [NSNumber numberWithDouble:[self doubleForColumnIndex:columnIdx]];
     }
     else if (columnType == SQLITE_BLOB) {
         returnValue = [self dataForColumnIndex:columnIdx];
@@ -428,6 +437,5 @@
 - (id)objectForKeyedSubscript:(NSString *)columnName {
     return [self objectForColumn:columnName];
 }
-
 
 @end
