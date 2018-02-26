@@ -143,11 +143,11 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 
 - (void)close {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() {
-        [self->_db close];
+    [self inDatabase:^(FMDatabase * _Nonnull db) {
+        [db close];
         FMDBRelease(_db);
         self->_db = 0x00;
-    });
+    }];
     FMDBRelease(self);
 }
 
@@ -188,8 +188,12 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     FMDBRetain(self);
     
     dispatch_sync(_queue, ^() {
-        
         FMDatabase *db = [self database];
+        if (!db) {
+            NSLog(@"Error: attempt to use closed database");
+            return;
+        }
+        FMDBRetain(db);
         
         block(db);
         
@@ -204,6 +208,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
             }
 #endif
         }
+        FMDBRelease(db);
     });
     
     FMDBRelease(self);
@@ -211,31 +216,30 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
 
 - (void)beginTransaction:(FMDBTransaction)transaction withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
-        
+    [self inDatabase:^(FMDatabase * _Nonnull db) {
         BOOL shouldRollback = NO;
 
         switch (transaction) {
             case FMDBTransactionExclusive:
-                [[self database] beginTransaction];
+                [db beginTransaction];
                 break;
             case FMDBTransactionDeferred:
-                [[self database] beginDeferredTransaction];
+                [db beginDeferredTransaction];
                 break;
             case FMDBTransactionImmediate:
-                [[self database] beginImmediateTransaction];
+                [db beginImmediateTransaction];
                 break;
         }
         
-        block([self database], &shouldRollback);
+        block(db, &shouldRollback);
         
         if (shouldRollback) {
-            [[self database] rollback];
+            [db rollback];
         }
         else {
-            [[self database] commit];
+            [db commit];
         }
-    });
+    }];
     
     FMDBRelease(self);
 }
@@ -261,24 +265,23 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     static unsigned long savePointIdx = 0;
     __block NSError *err = 0x00;
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() { 
+    [self inDatabase:^(FMDatabase * _Nonnull db) {
         
         NSString *name = [NSString stringWithFormat:@"savePoint%ld", savePointIdx++];
         
         BOOL shouldRollback = NO;
         
-        if ([[self database] startSavePointWithName:name error:&err]) {
+        if ([db startSavePointWithName:name error:&err]) {
             
-            block([self database], &shouldRollback);
+            block(db, &shouldRollback);
             
             if (shouldRollback) {
                 // We need to rollback and release this savepoint to remove it
                 [[self database] rollbackToSavePointWithName:name error:&err];
             }
-            [[self database] releaseSavePointWithName:name error:&err];
-            
+            [db releaseSavePointWithName:name error:&err];
         }
-    });
+    }];
     FMDBRelease(self);
     return err;
 #else
@@ -304,9 +307,9 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     __block NSError *blockError;
     
     FMDBRetain(self);
-    dispatch_sync(_queue, ^() {
-        result = [self.database checkpoint:mode name:name logFrameCount:NULL checkpointCount:NULL error:&blockError];
-    });
+    [self inDatabase:^(FMDatabase * _Nonnull db) {
+        result = [db checkpoint:mode name:name logFrameCount:NULL checkpointCount:NULL error:&blockError];
+    }];
     FMDBRelease(self);
     
     if (error) {

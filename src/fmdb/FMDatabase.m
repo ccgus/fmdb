@@ -175,6 +175,9 @@ NS_ASSUME_NONNULL_END
 
     int err = sqlite3_open([self sqlitePath], (sqlite3**)&_db );
     if(err != SQLITE_OK) {
+        if (_crashOnErrors) {
+            NSAssert(false, @"The FMDatabase could not be opened (err: %d) at path: %s", err, [self sqlitePath]);
+        }
         NSLog(@"error opening!: %d", err);
         return NO;
     }
@@ -209,6 +212,9 @@ NS_ASSUME_NONNULL_END
     
     int err = sqlite3_open_v2([self sqlitePath], (sqlite3**)&_db, flags, [vfsName UTF8String]);
     if(err != SQLITE_OK) {
+        if (_crashOnErrors) {
+            NSAssert(false, @"The FMDatabase could not be opened (err: %d) at path: %s", err, [self sqlitePath]);
+        }
         NSLog(@"error opening!: %d", err);
         return NO;
     }
