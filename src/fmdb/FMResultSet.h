@@ -439,6 +439,14 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
  */
 
 @property (nonatomic, readonly, nullable) NSDictionary *resultDictionary;
+
+
+/**
+ Returns a dictionary of the row results mapped to case sensitive keys of the column names.
+ take care of the condition :  join two tables, and they share some column names, in some cases, we may get <Nsnull> for these columns.
+ */
+@property (nonatomic, readonly, nullable) NSDictionary *fat_resDictionary;
+
  
 /** Returns a dictionary of the row results
  

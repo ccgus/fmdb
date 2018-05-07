@@ -153,6 +153,32 @@
     return nil;
 }
 
+-(NSDictionary *)fat_resDictionary {
+    NSUInteger num_cols = (NSUInteger)sqlite3_data_count([_statement statement]);
+    
+    if (num_cols > 0) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:num_cols];
+        
+        int columnCount = sqlite3_column_count([_statement statement]);
+        
+        int columnIdx = 0;
+        for (columnIdx = 0; columnIdx < columnCount; columnIdx++) {
+            
+            NSString *columnName = [NSString stringWithUTF8String:sqlite3_column_name([_statement statement], columnIdx)];
+            id objectValue = [self objectForColumnIndex:columnIdx];
+            // make sure we have a non <NSNull> value,
+            if (!dict[columnName] || objectValue != [NSNull null]) {
+                [dict setObject:objectValue forKey:columnName];
+            }
+        }
+        return dict;
+    } else {
+        NSLog(@"Warning: There seem to be no columns in this set.");
+    }
+    
+    return nil;
+}
+
 
 
 
