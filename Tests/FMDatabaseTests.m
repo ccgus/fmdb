@@ -525,6 +525,17 @@
     XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
 }
 
+- (void)testNonUTF8Data
+{
+    [self.db executeUpdate:@"create table utf8bug (a blob)"];
+    XCTAssertTrue(([self.db executeUpdate:@"insert into utf8bug (a) values (?)", [NSData dataWithBytes:"\xFF\xFF" length:4]]));
+    
+    [self.db executeStatements:@"select * from utf8bug" withResultBlock:^int(NSDictionary *results) {
+        NSLog(@"%@", results);
+        return 0;
+    }];
+}
+
 - (void)testArgumentsInArray
 {
     [self.db executeUpdate:@"create table testOneHundredTwelvePointTwo (a text, b integer)"];
