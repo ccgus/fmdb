@@ -256,6 +256,37 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     [self beginTransaction:FMDBTransactionImmediate withBlock:block];
 }
 
+- (void)inTransactionAsync:(void (^)(FMDatabase *db, BOOL *rollback))block{
+    [self beginTransactionAsync:NO withBlock:block];
+}
+
+- (void)beginTransactionAsync:(BOOL)useDeferred withBlock:(void (^)(FMDatabase *db, BOOL *rollback))block {
+    
+    dispatch_async(_queue, ^() {
+        FMDBRetain(self);
+        BOOL shouldRollback = NO;
+        
+        if (useDeferred) {
+            [[self database] beginDeferredTransaction];
+        }
+        else {
+            [[self database] beginTransaction];
+        }
+        
+        block([self database], &shouldRollback);
+        
+        if (shouldRollback) {
+            [[self database] rollback];
+        }
+        else {
+            [[self database] commit];
+        }
+        FMDBRelease(self);
+    });
+    
+}
+
+
 - (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block {
 #if SQLITE_VERSION_NUMBER >= 3007000
     static unsigned long savePointIdx = 0;
