@@ -179,8 +179,8 @@ There are three main classes in FMDB:
 An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
 
 1. A file system path.  The file does not have to exist on disk.  If it does not exist, it is created for you.
-2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted with the `FMDatabase` connection is closed.
-3. `NULL`.  An in-memory database is created.  This database will be destroyed with the `FMDatabase` connection is closed.
+2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted when the `FMDatabase` connection is closed.
+3. `NULL`.  An in-memory database is created.  This database will be destroyed when the `FMDatabase` connection is closed.
 
 (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: http://www.sqlite.org/inmemorydb.html)
 
