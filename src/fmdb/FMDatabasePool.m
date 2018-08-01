@@ -241,7 +241,7 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
     }];
 }
 
-- (void)inDatabase:(__attribute__((noescape)) void (^)(FMDatabase *db))block {
+- (void)inDatabase:(fmdb_noescape void (^)(FMDatabase *db))block {
     
     FMDatabase *db = [self db];
     
@@ -281,23 +281,23 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
     [self pushDatabaseBackInPool:db];
 }
 
-- (void)inTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)inTransaction:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:FMDBTransactionExclusive withBlock:block];
 }
 
-- (void)inDeferredTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)inDeferredTransaction:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:FMDBTransactionDeferred withBlock:block];
 }
 
-- (void)inExclusiveTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)inExclusiveTransaction:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:FMDBTransactionExclusive withBlock:block];
 }
 
-- (void)inImmediateTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block {
+- (void)inImmediateTransaction:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block {
     [self beginTransaction:FMDBTransactionImmediate withBlock:block];
 }
 
-- (NSError*)inSavePoint:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block {
+- (NSError*)inSavePoint:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block {
 #if SQLITE_VERSION_NUMBER >= 3007000
     static unsigned long savePointIdx = 0;
     

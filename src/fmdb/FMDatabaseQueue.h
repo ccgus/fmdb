@@ -200,7 +200,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 
-- (void)inDatabase:(__attribute__((noescape)) void (^)(FMDatabase *db))block;
+- (void)inDatabase:(fmdb_noescape void (^)(FMDatabase *db))block;
 
 /** Synchronously perform database operations on queue, using transactions.
 
@@ -216,28 +216,28 @@ NS_ASSUME_NONNULL_BEGIN
 
  */
 
-- (void)inTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inTransaction:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations on queue, using deferred transactions.
  
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 
-- (void)inDeferredTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inDeferredTransaction:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations on queue, using exclusive transactions.
  
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 
-- (void)inExclusiveTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inExclusiveTransaction:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations on queue, using immediate transactions.
 
  @param block The code to be run on the queue of `FMDatabaseQueue`
  */
 
-- (void)inImmediateTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+- (void)inImmediateTransaction:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block;
 
 ///-----------------------------------------------
 /// @name Dispatching database operations to queue
@@ -250,7 +250,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // NOTE: you can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock.
 // If you need to nest, use FMDatabase's startSavePointWithName:error: instead.
-- (NSError * _Nullable)inSavePoint:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
+- (NSError * _Nullable)inSavePoint:(fmdb_noescape void (^)(FMDatabase *db, BOOL *rollback))block;
 
 ///-----------------
 /// @name Checkpoint
