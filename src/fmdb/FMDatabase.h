@@ -521,7 +521,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
  */
 
-- (BOOL)executeStatements:(NSString *)sql withResultBlock:(__attribute__((noescape)) FMDBExecuteStatementsCallbackBlock _Nullable)block;
+- (BOOL)executeStatements:(NSString *)sql withResultBlock:(fmdb_noescape FMDBExecuteStatementsCallbackBlock _Nullable)block;
 
 /** Last insert rowid
  
@@ -1028,7 +1028,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  */
 
-- (NSError * _Nullable)inSavePoint:(__attribute__((noescape)) void (^)(BOOL *rollback))block;
+- (NSError * _Nullable)inSavePoint:(fmdb_noescape void (^)(BOOL *rollback))block;
 
 
 ///-----------------
