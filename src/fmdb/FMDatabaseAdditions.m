@@ -140,7 +140,7 @@ return ret;
     
     return r;
 #else
-    NSString *errorMessage = NSLocalizedString(@"Application ID functions require SQLite 3.7.17", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Application ID functions require SQLite 3.7.17", @"FMDB", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
     return 0;
 #endif
@@ -153,7 +153,7 @@ return ret;
     [rs next];
     [rs close];
 #else
-    NSString *errorMessage = NSLocalizedString(@"Application ID functions require SQLite 3.7.17", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Application ID functions require SQLite 3.7.17", @"FMDB", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
 #endif
 }
@@ -172,7 +172,7 @@ return ret;
     
     return s;
 #else
-    NSString *errorMessage = NSLocalizedString(@"Application ID functions require SQLite 3.7.17", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Application ID functions require SQLite 3.7.17", @"FMDB", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
     return nil;
 #endif
@@ -186,7 +186,7 @@ return ret;
     
     [self setApplicationID:NSHFSTypeCodeFromFileType([NSString stringWithFormat:@"'%@'", s])];
 #else
-    NSString *errorMessage = NSLocalizedString(@"Application ID functions require SQLite 3.7.17", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Application ID functions require SQLite 3.7.17", @"FMDB", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
 #endif
 }
