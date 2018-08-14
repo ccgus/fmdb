@@ -132,7 +132,7 @@
     
     XCTAssertEqualObjects(s, @"acrn");
 #else
-    NSString *errorMessage = NSLocalizedString(@"Application ID functions require SQLite 3.7.17", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Application ID functions require SQLite 3.7.17", @"FMDB", nil);
     XCTFail("%@", errorMessage);
     if (self.db.logsErrors) NSLog(@"%@", errorMessage);
 #endif
