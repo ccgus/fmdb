@@ -1405,7 +1405,7 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     
     return [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:nil];
 #else
-    NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Save point functions require SQLite 3.7", @"FMDB", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
     return NO;
 #endif
@@ -1419,7 +1419,7 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 
     return [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:nil];
 #else
-    NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Save point functions require SQLite 3.7", @"FMDB", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
     return NO;
 #endif
@@ -1433,7 +1433,7 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
 
     return [self executeUpdate:sql error:outErr withArgumentsInArray:nil orDictionary:nil orVAList:nil];
 #else
-    NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Save point functions require SQLite 3.7", @"FMDB", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
     return NO;
 #endif
@@ -1465,7 +1465,7 @@ static NSString *FMDBEscapeSavePointName(NSString *savepointName) {
     
     return err;
 #else
-    NSString *errorMessage = NSLocalizedString(@"Save point functions require SQLite 3.7", nil);
+    NSString *errorMessage = NSLocalizedStringFromTable(@"Save point functions require SQLite 3.7", @"FMDB", nil);
     if (self.logsErrors) NSLog(@"%@", errorMessage);
     return [NSError errorWithDomain:@"FMDatabase" code:0 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
 #endif
