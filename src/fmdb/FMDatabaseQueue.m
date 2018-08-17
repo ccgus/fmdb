@@ -283,7 +283,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     return err;
 #else
     NSString *errorMessage = NSLocalizedStringFromTable(@"Save point functions require SQLite 3.7", @"FMDB", nil);
-    if (self.logsErrors) NSLog(@"%@", errorMessage);
+    if (_db.logsErrors) NSLog(@"%@", errorMessage);
     return [NSError errorWithDomain:@"FMDatabase" code:0 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
 #endif
 }
