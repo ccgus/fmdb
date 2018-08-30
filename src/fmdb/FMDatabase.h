@@ -135,6 +135,8 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 + (instancetype)databaseWithPath:(NSString * _Nullable)inPath;
 
++ (instancetype)databaseWithPath:(NSString * _Nullable)aPath key:(NSString * _Nullable)aKey;
+
 /** Create a `FMDatabase` object.
  
  An `FMDatabase` is created with a path to a SQLite database file.  This path can be one of these three:
@@ -161,6 +163,8 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  */
 
 + (instancetype)databaseWithURL:(NSURL * _Nullable)url;
+
++ (instancetype)databaseWithURL:(NSURL * _Nullable)url key:(NSString * _Nullable)aKey;
 
 /** Initialize a `FMDatabase` object.
  
@@ -190,6 +194,8 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 - (instancetype)initWithPath:(NSString * _Nullable)path;
 
+- (instancetype)initWithPath:(NSString * _Nullable)path key:(NSString * _Nullable)aKey;
+
 /** Initialize a `FMDatabase` object.
  
  An `FMDatabase` is created with a local file URL to a SQLite database file.  This path can be one of these three:
@@ -216,6 +222,8 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  */
 
 - (instancetype)initWithURL:(NSURL * _Nullable)url;
+
+- (instancetype)initWithURL:(NSURL * _Nullable)url key:(NSString * _Nullable)aKey;
 
 ///-----------------------------------
 /// @name Opening and closing database
