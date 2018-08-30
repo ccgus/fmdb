@@ -74,6 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (atomic, copy, nullable) NSString *vfsName;
 
+@property (atomic, copy, nullable) NSString *key;
+
 ///----------------------------------------------------
 /// @name Initialization, opening, and closing of queue
 ///----------------------------------------------------
@@ -87,6 +89,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable instancetype)databaseQueueWithPath:(NSString * _Nullable)aPath;
 
++ (nullable instancetype)databaseQueueWithPath:(NSString * _Nullable)aPath key:(NSString * _Nullable)aKey;
+
 /** Create queue using file URL.
  
  @param url The file `NSURL` of the database.
@@ -95,6 +99,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 + (nullable instancetype)databaseQueueWithURL:(NSURL * _Nullable)url;
+
++ (nullable instancetype)databaseQueueWithURL:(NSURL * _Nullable)url key:(NSString * _Nullable)aKey;
 
 /** Create queue using path and specified flags.
  
@@ -105,6 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (nullable instancetype)databaseQueueWithPath:(NSString * _Nullable)aPath flags:(int)openFlags;
 
++ (nullable instancetype)databaseQueueWithPath:(NSString * _Nullable)aPath flags:(int)openFlags key:(NSString * _Nullable)aKey;
+
 /** Create queue using file URL and specified flags.
  
  @param url The file `NSURL` of the database.
@@ -113,6 +121,8 @@ NS_ASSUME_NONNULL_BEGIN
  @return The `FMDatabaseQueue` object. `nil` on error.
  */
 + (nullable instancetype)databaseQueueWithURL:(NSURL * _Nullable)url flags:(int)openFlags;
+
++ (nullable instancetype)databaseQueueWithURL:(NSURL * _Nullable)url flags:(int)openFlags key:(NSString * _Nullable)aKey;
 
 /** Create queue using path.
  
@@ -123,6 +133,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable instancetype)initWithPath:(NSString * _Nullable)aPath;
 
+- (nullable instancetype)initWithPath:(NSString * _Nullable)aPath key:(NSString * _Nullable)aKey;
+
 /** Create queue using file URL.
  
  @param url The file `NSURL of the database.
@@ -131,6 +143,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (nullable instancetype)initWithURL:(NSURL * _Nullable)url;
+
+- (nullable instancetype)initWithURL:(NSURL * _Nullable)url key:(NSString * _Nullable)aKey;
 
 /** Create queue using path and specified flags.
  
@@ -142,6 +156,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable instancetype)initWithPath:(NSString * _Nullable)aPath flags:(int)openFlags;
 
+- (nullable instancetype)initWithPath:(NSString * _Nullable)aPath flags:(int)openFlags key:(NSString * _Nullable)aKey;
+
 /** Create queue using file URL and specified flags.
  
  @param url The file path of the database.
@@ -151,6 +167,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (nullable instancetype)initWithURL:(NSURL * _Nullable)url flags:(int)openFlags;
+
+- (nullable instancetype)initWithURL:(NSURL * _Nullable)url flags:(int)openFlags key:(NSString * _Nullable)aKey;
 
 /** Create queue using path and specified flags.
  
@@ -163,6 +181,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable instancetype)initWithPath:(NSString * _Nullable)aPath flags:(int)openFlags vfs:(NSString * _Nullable)vfsName;
 
+- (nullable instancetype)initWithPath:(NSString * _Nullable)aPath flags:(int)openFlags vfs:(NSString * _Nullable)vfsName key:(NSString * _Nullable)aKey;
+
 /** Create queue using file URL and specified flags.
  
  @param url The file `NSURL of the database.
@@ -173,6 +193,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (nullable instancetype)initWithURL:(NSURL * _Nullable)url flags:(int)openFlags vfs:(NSString * _Nullable)vfsName;
+
+- (nullable instancetype)initWithURL:(NSURL * _Nullable)url flags:(int)openFlags vfs:(NSString * _Nullable)vfsName key:(NSString * _Nullable)aKey;
 
 /** Returns the Class of 'FMDatabase' subclass, that will be used to instantiate database object.
  

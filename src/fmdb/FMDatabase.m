@@ -17,6 +17,7 @@
     NSMutableSet        *_openFunctions;
     
     NSDateFormatter     *_dateFormat;
+    NSString            *_key;
 }
 
 NS_ASSUME_NONNULL_BEGIN
@@ -43,8 +44,16 @@ NS_ASSUME_NONNULL_END
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
 }
 
++ (instancetype)databaseWithPath:(NSString * _Nullable)aPath key:(NSString * _Nullable)aKey {
+     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath key:aKey]);
+}
+
 + (instancetype)databaseWithURL:(NSURL *)url {
     return FMDBReturnAutoreleased([[self alloc] initWithURL:url]);
+}
+
++ (instancetype)databaseWithURL:(NSURL *)url key:(NSString * _Nullable)aKey {
+    return FMDBReturnAutoreleased([[self alloc] initWithURL:url key:aKey]);
 }
 
 - (instancetype)init {
@@ -55,13 +64,23 @@ NS_ASSUME_NONNULL_END
     return [self initWithPath:url.path];
 }
 
+- (instancetype)initWithURL:(NSURL *)url key:(NSString * _Nullable)aKey {
+    return [self initWithPath:url.path key:aKey];
+}
+
 - (instancetype)initWithPath:(NSString *)path {
+    
+    return [self initWithPath:path key:nil];
+}
+
+- (instancetype)initWithPath:(NSString *)path key:(NSString * _Nullable)aKey {
     
     assert(sqlite3_threadsafe()); // whoa there big boy- gotta make sure sqlite it happy with what we're going to do.
     
     self = [super init];
     
     if (self) {
+        _key                        = [aKey copy];
         _databasePath               = [path copy];
         _openResultSets             = [[NSMutableSet alloc] init];
         _db                         = nil;
@@ -178,6 +197,9 @@ NS_ASSUME_NONNULL_END
         NSLog(@"error opening!: %d", err);
         return NO;
     }
+    if (_key) {
+        [self setKey:_key];
+    }
     
     if (_maxBusyRetryTimeInterval > 0.0) {
         // set the handler
@@ -211,6 +233,9 @@ NS_ASSUME_NONNULL_END
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
         return NO;
+    }
+    if (_key) {
+        [self setKey:_key];
     }
     
     if (_maxBusyRetryTimeInterval > 0.0) {
