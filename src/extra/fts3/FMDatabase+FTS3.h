@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Andrew Goodale. All rights reserved.
 //
 
-#import <FMDB/FMDatabase.h>
+#import <fmdb/FMDatabase.h>
 
 /**
  Names of commands that can be issued against an FTS table.
