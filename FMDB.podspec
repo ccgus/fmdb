@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'FMDB'
-  s.version = '2.7.4'
+  s.version = '2.7.5'
   s.summary = 'A Cocoa / Objective-C wrapper around SQLite.'
   s.homepage = 'https://github.com/ccgus/fmdb'
   s.license = 'MIT'
