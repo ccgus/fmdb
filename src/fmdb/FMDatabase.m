@@ -604,11 +604,10 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 
 - (void)bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt*)pStmt {
     
+    int rc;
     if ((!obj) || ((NSNull *)obj == [NSNull null])) {
-        sqlite3_bind_null(pStmt, idx);
+        rc = sqlite3_bind_null(pStmt, idx);
     }
-    
-    // FIXME - someday check the return codes on these binds.
     else if ([obj isKindOfClass:[NSData class]]) {
         const void *bytes = [obj bytes];
         if (!bytes) {
@@ -616,61 +615,80 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
             // Don't pass a NULL pointer, or sqlite will bind a SQL null instead of a blob.
             bytes = "";
         }
-        sqlite3_bind_blob(pStmt, idx, bytes, (int)[obj length], SQLITE_STATIC);
+        rc = sqlite3_bind_blob(pStmt, idx, bytes, (int)[obj length], SQLITE_STATIC);
     }
     else if ([obj isKindOfClass:[NSDate class]]) {
         if (self.hasDateFormatter)
-            sqlite3_bind_text(pStmt, idx, [[self stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
+            rc = sqlite3_bind_text(pStmt, idx, [[self stringFromDate:obj] UTF8String], -1, SQLITE_STATIC);
         else
-            sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
+            rc = sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
     }
     else if ([obj isKindOfClass:[NSNumber class]]) {
         
         if (strcmp([obj objCType], @encode(char)) == 0) {
-            sqlite3_bind_int(pStmt, idx, [obj charValue]);
+            rc = sqlite3_bind_int(pStmt, idx, [obj charValue]);
         }
         else if (strcmp([obj objCType], @encode(unsigned char)) == 0) {
-            sqlite3_bind_int(pStmt, idx, [obj unsignedCharValue]);
+            rc = sqlite3_bind_int(pStmt, idx, [obj unsignedCharValue]);
         }
         else if (strcmp([obj objCType], @encode(short)) == 0) {
-            sqlite3_bind_int(pStmt, idx, [obj shortValue]);
+            rc = sqlite3_bind_int(pStmt, idx, [obj shortValue]);
         }
         else if (strcmp([obj objCType], @encode(unsigned short)) == 0) {
-            sqlite3_bind_int(pStmt, idx, [obj unsignedShortValue]);
+            rc = sqlite3_bind_int(pStmt, idx, [obj unsignedShortValue]);
         }
         else if (strcmp([obj objCType], @encode(int)) == 0) {
-            sqlite3_bind_int(pStmt, idx, [obj intValue]);
+            rc = sqlite3_bind_int(pStmt, idx, [obj intValue]);
         }
         else if (strcmp([obj objCType], @encode(unsigned int)) == 0) {
-            sqlite3_bind_int64(pStmt, idx, (long long)[obj unsignedIntValue]);
+            rc = sqlite3_bind_int64(pStmt, idx, (long long)[obj unsignedIntValue]);
         }
         else if (strcmp([obj objCType], @encode(long)) == 0) {
-            sqlite3_bind_int64(pStmt, idx, [obj longValue]);
+            rc = sqlite3_bind_int64(pStmt, idx, [obj longValue]);
         }
         else if (strcmp([obj objCType], @encode(unsigned long)) == 0) {
-            sqlite3_bind_int64(pStmt, idx, (long long)[obj unsignedLongValue]);
+            rc = sqlite3_bind_int64(pStmt, idx, (long long)[obj unsignedLongValue]);
         }
         else if (strcmp([obj objCType], @encode(long long)) == 0) {
-            sqlite3_bind_int64(pStmt, idx, [obj longLongValue]);
+            rc = sqlite3_bind_int64(pStmt, idx, [obj longLongValue]);
         }
         else if (strcmp([obj objCType], @encode(unsigned long long)) == 0) {
-            sqlite3_bind_int64(pStmt, idx, (long long)[obj unsignedLongLongValue]);
+            rc = sqlite3_bind_int64(pStmt, idx, (long long)[obj unsignedLongLongValue]);
         }
         else if (strcmp([obj objCType], @encode(float)) == 0) {
-            sqlite3_bind_double(pStmt, idx, [obj floatValue]);
+            rc = sqlite3_bind_double(pStmt, idx, [obj floatValue]);
         }
         else if (strcmp([obj objCType], @encode(double)) == 0) {
-            sqlite3_bind_double(pStmt, idx, [obj doubleValue]);
+            rc = sqlite3_bind_double(pStmt, idx, [obj doubleValue]);
         }
         else if (strcmp([obj objCType], @encode(BOOL)) == 0) {
-            sqlite3_bind_int(pStmt, idx, ([obj boolValue] ? 1 : 0));
+            rc = sqlite3_bind_int(pStmt, idx, ([obj boolValue] ? 1 : 0));
         }
         else {
-            sqlite3_bind_text(pStmt, idx, [[obj description] UTF8String], -1, SQLITE_STATIC);
+            rc = sqlite3_bind_text(pStmt, idx, [[obj description] UTF8String], -1, SQLITE_STATIC);
         }
     }
     else {
-        sqlite3_bind_text(pStmt, idx, [[obj description] UTF8String], -1, SQLITE_STATIC);
+        rc = sqlite3_bind_text(pStmt, idx, [[obj description] UTF8String], -1, SQLITE_STATIC);
+    }
+    
+    if (SQLITE_OK != rc) {
+        const char *expandedSQL = sqlite3_expanded_sql(pStmt);
+        NSString *msg = [NSString stringWithFormat:@"error binding: %d - '%@'", rc, [NSString stringWithUTF8String:expandedSQL]];
+        switch (rc) {
+            case SQLITE_TOOBIG:
+                msg = [@"[too big to bind]" stringByAppendingString:msg];
+                break;
+            case SQLITE_RANGE:
+                msg = [@"[index out of range]" stringByAppendingString:msg];
+                break;
+            case SQLITE_NOMEM:
+                msg = [@"[malloc() fails]" stringByAppendingString:msg];
+                break;
+            default: // no logic
+                break;
+        }
+        NSLog(@"%@", msg);
     }
 }
 
