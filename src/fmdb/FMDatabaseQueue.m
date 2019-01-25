@@ -305,7 +305,7 @@ static const void * const kDispatchQueueSpecificKey = &kDispatchQueueSpecificKey
     
     FMDBRetain(self);
     dispatch_sync(_queue, ^() {
-        result = [self.database checkpoint:mode name:name logFrameCount:NULL checkpointCount:NULL error:&blockError];
+        result = [self.database checkpoint:mode name:name logFrameCount:logFrameCount checkpointCount:checkpointCount error:&blockError];
     });
     FMDBRelease(self);
     
