@@ -207,7 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  */
 
-- (BOOL)validateSQL:(NSString*)sql error:(NSError * _Nullable *)error;
+- (BOOL)validateSQL:(NSString*)sql error:(NSError * _Nullable __autoreleasing *)error;
 
 
 ///-----------------------------------
