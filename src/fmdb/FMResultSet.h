@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
  @see hasAnotherRow
  */
 
-- (BOOL)nextWithError:(NSError * _Nullable *)outErr;
+- (BOOL)nextWithError:(NSError * _Nullable __autoreleasing *)outErr;
 
 /** Did the last call to `<next>` succeed in retrieving another row?
 
