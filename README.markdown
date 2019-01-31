@@ -247,7 +247,7 @@ if ([s next]) {
 
 Each of these methods also has a `{type}ForColumnIndex:` variant that is used to retrieve the data based on the position of the column in the results, as opposed to the column's name.
 
-Typically, there's no need to `-close` an `FMResultSet` yourself, since that happens when either the result set is deallocated, or the parent database is closed.
+Typically, there's no need to `-close` an `FMResultSet` yourself, since that happens when either the result set is exhausted. However, if you only pull out a single request or any other number of requests which don't exhaust the result set, you will need to call the `-close` method on the `FMResultSet`.
 
 ### Closing
 
