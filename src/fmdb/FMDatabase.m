@@ -497,7 +497,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
         return NO;
     }
     
-#ifdef SQLITE_HAS_CODEC
+#ifdef SQLCIPHER_CRYPTO
     // Starting with Xcode8 / iOS 10 we check to make sure we really are linked with
     // SQLCipher because there is no longer a linker error if we accidently link
     // with unencrypted sqlite library.
