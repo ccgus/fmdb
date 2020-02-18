@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
     ss.library = 'sqlite3'
     ss.source_files = 'src/fmdb/FM*.{h,m}'
     ss.exclude_files = 'src/fmdb.m'
+    ss.header_dir = 'fmdb'
   end
 
   # use the built-in library version of sqlite3 with custom FTS tokenizer source files
@@ -28,6 +29,7 @@ Pod::Spec.new do |s|
     ss.dependency 'sqlite3'
     ss.source_files = 'src/fmdb/FM*.{h,m}'
     ss.exclude_files = 'src/fmdb.m'
+    ss.header_dir = 'fmdb'
   end
 
   # build with FTS support and custom FTS tokenizer source files
@@ -35,6 +37,7 @@ Pod::Spec.new do |s|
     ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DFMDB_SQLITE_STANDALONE' }
     ss.source_files = 'src/fmdb/FM*.{h,m}', 'src/extra/fts3/*.{h,m}'
     ss.exclude_files = 'src/fmdb.m'
+    ss.header_dir = 'fmdb'
     ss.dependency 'sqlite3/fts'
   end
 
@@ -43,6 +46,7 @@ Pod::Spec.new do |s|
     ss.dependency 'SQLCipher', '~> 4.0'
     ss.source_files = 'src/fmdb/FM*.{h,m}'
     ss.exclude_files = 'src/fmdb.m'
+    ss.header_dir = 'fmdb'
     ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DHAVE_USLEEP=1 -DSQLCIPHER_CRYPTO', 'HEADER_SEARCH_PATHS' => 'SQLCipher' }
   end
   
