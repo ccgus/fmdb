@@ -874,29 +874,25 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     // If dictionaryArgs is passed in, that means we are using sqlite's named parameter support
     if (dictionaryArgs) {
         
-        for (NSString *dictionaryKey in [dictionaryArgs allKeys]) {
+        while (idx < queryCount) {
             
-            // Prefix the key with a colon.
-            NSString *parameterName = [[NSString alloc] initWithFormat:@":%@", dictionaryKey];
+            // increment the binding count, so our check below works out
+            idx++;
+            
+            const char *parameter_name = sqlite3_bind_parameter_name(pStmt, idx);
+            NSString *parameterName = [[NSString alloc] initWithCString:parameter_name encoding:NSUTF8StringEncoding];
+            
+            // remove the prefix ":" or "$" or "@"
+            NSString *dictionaryKey = parameterName.length ? [parameterName substringFromIndex:1] : nil;
             
             if (_traceExecution) {
                 NSLog(@"%@ = %@", parameterName, [dictionaryArgs objectForKey:dictionaryKey]);
             }
             
-            // Get the index for the parameter name.
-            int namedIdx = sqlite3_bind_parameter_index(pStmt, [parameterName UTF8String]);
-            
             FMDBRelease(parameterName);
             
-            if (namedIdx > 0) {
-                // Standard binding from here.
-                [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
-                // increment the binding count, so our check below works out
-                idx++;
-            }
-            else {
-                NSLog(@"Could not find index for %@", dictionaryKey);
-            }
+            // Standard binding from here.
+            [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:idx inStatement:pStmt];
         }
     }
     else {
@@ -1064,36 +1060,25 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     // If dictionaryArgs is passed in, that means we are using sqlite's named parameter support
     if (dictionaryArgs) {
         
-        for (NSString *dictionaryKey in [dictionaryArgs allKeys]) {
+        while (idx < queryCount) {
             
-            // Prefix the key with a colon.
-            NSString *parameterName = [[NSString alloc] initWithFormat:@":%@", dictionaryKey];
+            // increment the binding count, so our check below works out
+            idx++;
+            
+            const char *parameter_name = sqlite3_bind_parameter_name(pStmt, idx);
+            NSString *parameterName = [[NSString alloc] initWithCString:parameter_name encoding:NSUTF8StringEncoding];
+            
+            // remove the prefix ":" or "$" or "@"
+            NSString *dictionaryKey = parameterName.length ? [parameterName substringFromIndex:1] : nil;
             
             if (_traceExecution) {
                 NSLog(@"%@ = %@", parameterName, [dictionaryArgs objectForKey:dictionaryKey]);
             }
-            // Get the index for the parameter name.
-            int namedIdx = sqlite3_bind_parameter_index(pStmt, [parameterName UTF8String]);
             
             FMDBRelease(parameterName);
             
-            if (namedIdx > 0) {
-                // Standard binding from here.
-                [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:namedIdx inStatement:pStmt];
-                
-                // increment the binding count, so our check below works out
-                idx++;
-            }
-            else {
-                NSString *message = [NSString stringWithFormat:@"Could not find index for %@", dictionaryKey];
-                
-                if (_logsErrors) {
-                    NSLog(@"%@", message);
-                }
-                if (outErr) {
-                    *outErr = [self errorWithMessage:message];
-                }
-            }
+            // Standard binding from here.
+            [self bindObject:[dictionaryArgs objectForKey:dictionaryKey] toColumn:idx inStatement:pStmt];
         }
     }
     else {
