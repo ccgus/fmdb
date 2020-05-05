@@ -12,7 +12,7 @@
 //  support for this functionality via its "Backup" API.  Here, we extend the FMBD wrapper
 //  to include this functionality.
 //
-//  http://www.sqlite.org/backup.html
+//  https://sqlite.org/backup.html
 
 #import "FMDatabase.h"
 

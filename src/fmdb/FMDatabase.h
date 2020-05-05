@@ -48,7 +48,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
     FMDBCheckpointModeTruncate = 3  // SQLITE_CHECKPOINT_TRUNCATE
 };
 
-/** A SQLite ([http://sqlite.org/](http://sqlite.org/)) Objective-C wrapper.
+/** A SQLite ([https://sqlite.org/](https://sqlite.org/)) Objective-C wrapper.
  
  ### Usage
  The three main classes in FMDB are:
@@ -65,9 +65,9 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  ### External links
  
  - [FMDB on GitHub](https://github.com/ccgus/fmdb) including introductory documentation
- - [SQLite web site](http://sqlite.org/)
+ - [SQLite web site](https://sqlite.org/)
  - [FMDB mailing list](http://groups.google.com/group/fmdb)
- - [SQLite FAQ](http://www.sqlite.org/faq.html)
+ - [SQLite FAQ](https://sqlite.org/faq.html)
  
  @warning Do not instantiate a single `FMDatabase` object and use it across multiple threads. Instead, use `<FMDatabaseQueue>`.
 
@@ -125,7 +125,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
     NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
     FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
- (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [https://sqlite.org/inmemorydb.html](https://sqlite.org/inmemorydb.html))
 
  @param inPath Path of database file
 
@@ -152,7 +152,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
     NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
     FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
  
- (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [https://sqlite.org/inmemorydb.html](https://sqlite.org/inmemorydb.html))
  
  @param url The local file URL (not remote URL) of database file
  
@@ -180,7 +180,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
     NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
     FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
 
- (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [https://sqlite.org/inmemorydb.html](https://sqlite.org/inmemorydb.html))
 
  @param path Path of database file.
  
@@ -207,7 +207,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  NSString *dbPath   = [docsPath stringByAppendingPathComponent:@"test.db"];
  FMDatabase *db     = [FMDatabase databaseWithPath:dbPath];
  
- (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [http://www.sqlite.org/inmemorydb.html](http://www.sqlite.org/inmemorydb.html))
+ (For more information on temporary and in-memory databases, read the sqlite documentation on the subject: [https://sqlite.org/inmemorydb.html](https://sqlite.org/inmemorydb.html))
  
  @param url The file `NSURL` of database file.
  
@@ -231,7 +231,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
  @return `YES` if successful, `NO` on error.
 
- @see [sqlite3_open()](http://sqlite.org/c3ref/open.html)
+ @see [sqlite3_open()](https://sqlite.org/c3ref/open.html)
  @see openWithFlags:
  @see close
  */
@@ -256,7 +256,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
   
  @return `YES` if successful, `NO` on error.
 
- @see [sqlite3_open_v2()](http://sqlite.org/c3ref/open.html)
+ @see [sqlite3_open_v2()](https://sqlite.org/c3ref/open.html)
  @see open
  @see close
  */
@@ -283,7 +283,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  @return `YES` if successful, `NO` on error.
  
- @see [sqlite3_open_v2()](http://sqlite.org/c3ref/open.html)
+ @see [sqlite3_open_v2()](https://sqlite.org/c3ref/open.html)
  @see open
  @see close
  */
@@ -294,7 +294,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  @return `YES` if success, `NO` on error.
  
- @see [sqlite3_close()](http://sqlite.org/c3ref/close.html)
+ @see [sqlite3_close()](https://sqlite.org/c3ref/close.html)
  @see open
  @see openWithFlags:
  */
@@ -320,7 +320,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 /** Execute single update statement
  
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html), [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html) to bind values to `?` placeholders in the SQL with the optional list of parameters, and [`sqlite_step`](http://sqlite.org/c3ref/step.html) to perform the update.
+ This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](https://sqlite.org/c3ref/prepare.html), [`sqlite3_bind`](https://sqlite.org/c3ref/bind_blob.html) to bind values to `?` placeholders in the SQL with the optional list of parameters, and [`sqlite_step`](https://sqlite.org/c3ref/step.html) to perform the update.
 
  The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
 
@@ -335,7 +335,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  @see lastError
  @see lastErrorCode
  @see lastErrorMessage
- @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
+ @see [`sqlite3_bind`](https://sqlite.org/c3ref/bind_blob.html)
  */
 
 - (BOOL)executeUpdate:(NSString*)sql withErrorAndBindings:(NSError * _Nullable __autoreleasing *)outErr, ...;
@@ -351,7 +351,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 /** Execute single update statement
 
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html), [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html) to bind values to `?` placeholders in the SQL with the optional list of parameters, and [`sqlite_step`](http://sqlite.org/c3ref/step.html) to perform the update.
+ This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](https://sqlite.org/c3ref/prepare.html), [`sqlite3_bind`](https://sqlite.org/c3ref/bind_blob.html) to bind values to `?` placeholders in the SQL with the optional list of parameters, and [`sqlite_step`](https://sqlite.org/c3ref/step.html) to perform the update.
 
  The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
  
@@ -364,7 +364,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  @see lastError
  @see lastErrorCode
  @see lastErrorMessage
- @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
+ @see [`sqlite3_bind`](https://sqlite.org/c3ref/bind_blob.html)
  
  @note This technique supports the use of `?` placeholders in the SQL, automatically binding any supplied value parameters to those placeholders. This approach is more robust than techniques that entail using `stringWithFormat` to manually build SQL statements, which can be problematic if the values happened to include any characters that needed to be quoted.
  
@@ -375,7 +375,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 /** Execute single update statement
 
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite_step`](http://sqlite.org/c3ref/step.html) to perform the update. Unlike the other `executeUpdate` methods, this uses printf-style formatters (e.g. `%s`, `%d`, etc.) to build the SQL. Do not use `?` placeholders in the SQL if you use this method.
+ This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](https://sqlite.org/c3ref/prepare.html) and [`sqlite_step`](https://sqlite.org/c3ref/step.html) to perform the update. Unlike the other `executeUpdate` methods, this uses printf-style formatters (e.g. `%s`, `%d`, etc.) to build the SQL. Do not use `?` placeholders in the SQL if you use this method.
 
  @param format The SQL to be performed, with `printf`-style escape sequences.
 
@@ -403,7 +403,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 /** Execute single update statement
  
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html) binding any `?` placeholders in the SQL with the optional list of parameters.
+ This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](https://sqlite.org/c3ref/prepare.html) and [`sqlite3_bind`](https://sqlite.org/c3ref/bind_blob.html) binding any `?` placeholders in the SQL with the optional list of parameters.
  
  The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
  
@@ -423,7 +423,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 /** Execute single update statement
  
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html) binding any `?` placeholders in the SQL with the optional list of parameters.
+ This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](https://sqlite.org/c3ref/prepare.html) and [`sqlite3_bind`](https://sqlite.org/c3ref/bind_blob.html) binding any `?` placeholders in the SQL with the optional list of parameters.
  
  The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
  
@@ -451,7 +451,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 /** Execute single update statement
 
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite_step`](http://sqlite.org/c3ref/step.html) to perform the update. Unlike the other `executeUpdate` methods, this uses printf-style formatters (e.g. `%s`, `%d`, etc.) to build the SQL.
+ This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](https://sqlite.org/c3ref/prepare.html) and [`sqlite_step`](https://sqlite.org/c3ref/step.html) to perform the update. Unlike the other `executeUpdate` methods, this uses printf-style formatters (e.g. `%s`, `%d`, etc.) to build the SQL.
 
  The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
 
@@ -471,7 +471,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 /** Execute single update statement
 
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite_step`](http://sqlite.org/c3ref/step.html) to perform the update. Unlike the other `executeUpdate` methods, this uses printf-style formatters (e.g. `%s`, `%d`, etc.) to build the SQL.
+ This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](https://sqlite.org/c3ref/prepare.html) and [`sqlite_step`](https://sqlite.org/c3ref/step.html) to perform the update. Unlike the other `executeUpdate` methods, this uses printf-style formatters (e.g. `%s`, `%d`, etc.) to build the SQL.
 
  The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
 
@@ -497,7 +497,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  @return      `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
  @see executeStatements:withResultBlock:
- @see [sqlite3_exec()](http://sqlite.org/c3ref/exec.html)
+ @see [sqlite3_exec()](https://sqlite.org/c3ref/exec.html)
 
  */
 
@@ -517,7 +517,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
                   `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
  
  @see executeStatements:
- @see [sqlite3_exec()](http://sqlite.org/c3ref/exec.html)
+ @see [sqlite3_exec()](https://sqlite.org/c3ref/exec.html)
 
  */
 
@@ -531,7 +531,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  @return The rowid of the last inserted row.
  
- @see [sqlite3_last_insert_rowid()](http://sqlite.org/c3ref/last_insert_rowid.html)
+ @see [sqlite3_last_insert_rowid()](https://sqlite.org/c3ref/last_insert_rowid.html)
 
  */
 
@@ -543,7 +543,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  @return The number of rows changed by prior SQL statement.
  
- @see [sqlite3_changes()](http://sqlite.org/c3ref/changes.html)
+ @see [sqlite3_changes()](https://sqlite.org/c3ref/changes.html)
  
  */
 
@@ -560,7 +560,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" (via `<[FMResultSet next]>`) from one record to the other.
  
- This method employs [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html) for any optional value parameters. This  properly escapes any characters that need escape sequences (e.g. quotation marks), which eliminates simple SQL errors as well as protects against SQL injection attacks. This method natively handles `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects. All other object types will be interpreted as text values using the object's `description` method.
+ This method employs [`sqlite3_bind`](https://sqlite.org/c3ref/bind_blob.html) for any optional value parameters. This  properly escapes any characters that need escape sequences (e.g. quotation marks), which eliminates simple SQL errors as well as protects against SQL injection attacks. This method natively handles `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects. All other object types will be interpreted as text values using the object's `description` method.
 
  @param sql The SELECT statement to be performed, with optional `?` placeholders.
 
@@ -570,7 +570,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  @see FMResultSet
  @see [`FMResultSet next`](<[FMResultSet next]>)
- @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
+ @see [`sqlite3_bind`](https://sqlite.org/c3ref/bind_blob.html)
  
  @note You cannot use this method from Swift due to incompatibilities between Swift and Objective-C variadic implementations. Consider using `<executeQuery:values:>` instead.
  */
@@ -903,7 +903,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
  @return `NSString` of the last error message.
  
- @see [sqlite3_errmsg()](http://sqlite.org/c3ref/errcode.html)
+ @see [sqlite3_errmsg()](https://sqlite.org/c3ref/errcode.html)
  @see lastErrorCode
  @see lastError
  
@@ -917,7 +917,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  @return Integer value of the last error code.
  
- @see [sqlite3_errcode()](http://sqlite.org/c3ref/errcode.html)
+ @see [sqlite3_errcode()](https://sqlite.org/c3ref/errcode.html)
  @see lastErrorMessage
  @see lastError
  
@@ -931,9 +931,9 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
  
  @return Integer value of the last extended error code.
  
- @see [sqlite3_errcode()](http://sqlite.org/c3ref/errcode.html)
- @see [2. Primary Result Codes versus Extended Result Codes](http://sqlite.org/rescode.html#primary_result_codes_versus_extended_result_codes)
- @see [5. Extended Result Code List](http://sqlite.org/rescode.html#extrc)
+ @see [sqlite3_errcode()](https://sqlite.org/c3ref/errcode.html)
+ @see [2. Primary Result Codes versus Extended Result Codes](https://sqlite.org/rescode.html#primary_result_codes_versus_extended_result_codes)
+ @see [5. Extended Result Code List](https://sqlite.org/rescode.html#extrc)
  @see lastErrorMessage
  @see lastError
  
@@ -1071,16 +1071,28 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
  @return `NO` if and only if SQLite was compiled with mutexing code omitted due to the SQLITE_THREADSAFE compile-time option being set to 0.
 
- @see [sqlite3_threadsafe()](http://sqlite.org/c3ref/threadsafe.html)
+ @see [sqlite3_threadsafe()](https://sqlite.org/c3ref/threadsafe.html)
  */
 
 + (BOOL)isSQLiteThreadSafe;
+
+/** Examine/set limits
+
+ @param type The type of limit. See https://sqlite.org/c3ref/c_limit_attached.html
+ @param newLimit The new limit value. Use -1 if you don't want to change the limit, but rather only want to check it.
+
+ @return Regardless, returns previous value.
+
+ @see [sqlite3_limit()](https://sqlite.org/c3ref/limit.html)
+*/
+
+- (int)limitFor:(int)type value:(int)newLimit;
 
 /** Run-time library version numbers
  
  @return The sqlite library version string.
  
- @see [sqlite3_libversion()](http://sqlite.org/c3ref/libversion.html)
+ @see [sqlite3_libversion()](https://sqlite.org/c3ref/libversion.html)
  */
 
 + (NSString*)sqliteLibVersion;
@@ -1149,7 +1161,7 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
  @param block The block of code for the function.
 
- @see [sqlite3_create_function()](http://sqlite.org/c3ref/create_function.html)
+ @see [sqlite3_create_function()](https://sqlite.org/c3ref/create_function.html)
  */
 
 - (void)makeFunctionNamed:(NSString *)name arguments:(int)arguments block:(void (^)(void *context, int argc, void * _Nonnull * _Nonnull argv))block;
@@ -1410,7 +1422,7 @@ typedef NS_ENUM(int, SqliteValueType) {
  
  - `<FMDatabase>`
  - `<FMResultSet>`
- - [`sqlite3_stmt`](http://www.sqlite.org/c3ref/stmt.html)
+ - [`sqlite3_stmt`](https://sqlite.org/c3ref/stmt.html)
  */
 
 @interface FMStatement : NSObject {
@@ -1434,7 +1446,7 @@ typedef NS_ENUM(int, SqliteValueType) {
 
 /** SQLite sqlite3_stmt
  
- @see [`sqlite3_stmt`](http://www.sqlite.org/c3ref/stmt.html)
+ @see [`sqlite3_stmt`](https://sqlite.org/c3ref/stmt.html)
  */
 
 @property (atomic, assign) void *statement;
