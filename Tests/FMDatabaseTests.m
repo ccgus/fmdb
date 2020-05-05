@@ -256,7 +256,7 @@
 {
     // case sensitive result dictionary test
     [self.db executeUpdate:@"create table cs (aRowName integer, bRowName text)"];
-    [self.db executeUpdate:@"insert into cs (aRowName, bRowName) values (?, ?)", [NSNumber numberWithBool:1], @"hello"];
+    [self.db executeUpdate:@"insert into cs (aRowName, bRowName) values (?, ?)", [NSNumber numberWithInt:1], @"hello"];
 
     XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
 
@@ -278,13 +278,12 @@
 - (void)testBoolInsert
 {
     [self.db executeUpdate:@"create table btest (aRowName integer)"];
-    [self.db executeUpdate:@"insert into btest (aRowName) values (?)", [NSNumber numberWithBool:12]];
+    [self.db executeUpdate:@"insert into btest (aRowName) values (?)", [NSNumber numberWithBool:YES]];
     
     XCTAssertFalse([self.db hadError], @"Shouldn't have any errors");
     
     FMResultSet *rs = [self.db executeQuery:@"select * from btest"];
     while ([rs next]) {
-        
         XCTAssertTrue([rs boolForColumnIndex:0], @"first column should be true.");
         XCTAssertTrue([rs intForColumnIndex:0] == 1, @"first column should be equal to 1 - it was %d.", [rs intForColumnIndex:0]);
     }
@@ -1125,7 +1124,17 @@
 }
 
 - (void)testVersionNumber {
-    XCTAssertTrue([FMDatabase FMDBVersion] == 0x0275); // this is going to break everytime we bump it.
+    XCTAssertEqual([FMDatabase FMDBVersion], 0x0276); // this is going to break everytime we bump it.
+}
+
+- (void)testVersionStringAboveRequired {
+    NSComparisonResult result = [[FMDatabase FMDBUserVersion] compare:@"1.100.42" options:NSNumericSearch];
+    XCTAssertEqual(result, NSOrderedDescending);
+}
+
+- (void)testVersionStringBelowRequired {
+    NSComparisonResult result = [[FMDatabase FMDBUserVersion] compare:@"10.0.42" options:NSNumericSearch];
+    XCTAssertEqual(result, NSOrderedAscending);
 }
 
 - (void)testExecuteStatements {

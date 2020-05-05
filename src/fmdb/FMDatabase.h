@@ -1085,11 +1085,37 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 
 + (NSString*)sqliteLibVersion;
 
+/**
+ The FMDB version number as a string in the form of `"2.7.7"`.
+
+ If you want to compare version number strings, you can use NSNumericSearch option:
+
+ @code
+ NSComparisonResult result = [[FMDatabase FMDBUserVersion] compare:@"2.11.0" options:NSNumericSearch];
+ @endcode
+
+ @returns The version number string.
+ */
 
 + (NSString*)FMDBUserVersion;
 
-+ (SInt32)FMDBVersion;
+/** The FMDB version
 
+ This returns the FMDB as hexadecimal value, e.g., 0x0243 for version 2.4.3.
+
+ @warning This routine will not work if any component of the version number exceeds 15.
+       For example, if it is version 2.17.3, this will max out at 0x2f3.
+       For this reason, we would recommend using `FMDBUserVersion` and with `NSNumericSearch` option, e.g.
+
+ @code
+ NSComparisonResult result = [[FMDatabase FMDBUserVersion] compare:@"2.11.0" options:NSNumericSearch];
+ @endcode
+
+ @returns The version number in hexadecimal, e.g., 0x0243 for version 2.4.3. If any component exceeds what can be
+       can be represented in four bits, we'll max it out at 0xf.
+ */
+
++ (SInt32)FMDBVersion;
 
 ///------------------------
 /// @name Make SQL function

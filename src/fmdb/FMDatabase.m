@@ -102,10 +102,6 @@ NS_ASSUME_NONNULL_END
     return @"2.7.6";
 }
 
-// returns 0x0240 for version 2.4.  This makes it super easy to do things like:
-// /* need to make sure to do X with FMDB version 2.4 or later */
-// if ([FMDatabase FMDBVersion] >= 0x0240) { … }
-
 + (SInt32)FMDBVersion {
     
     // we go through these hoops so that we only have to change the version number in a single spot.
@@ -115,15 +111,19 @@ NS_ASSUME_NONNULL_END
     dispatch_once(&once, ^{
         NSString *prodVersion = [self FMDBUserVersion];
         
-        if ([[prodVersion componentsSeparatedByString:@"."] count] < 3) {
+        while ([[prodVersion componentsSeparatedByString:@"."] count] < 3) {
             prodVersion = [prodVersion stringByAppendingString:@".0"];
         }
-        
-        NSString *junk = [prodVersion stringByReplacingOccurrencesOfString:@"." withString:@""];
-        
-        char *e = nil;
-        FMDBVersionVal = (int) strtoul([junk UTF8String], &e, 16);
-        
+
+        NSArray *components = [prodVersion componentsSeparatedByString:@"."];
+        for (NSInteger i = 0; i < 3; i++) {
+            SInt32 component = [components[i] intValue];
+            if (component > 15) {
+                NSLog(@"FMDBVersion is invalid: Please use FMDBUserVersion instead.");
+                component = 15;
+            }
+            FMDBVersionVal = FMDBVersionVal << 4 | component;
+        }
     });
     
     return FMDBVersionVal;
