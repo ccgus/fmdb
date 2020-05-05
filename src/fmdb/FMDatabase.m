@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_END
         }
 
         NSArray *components = [prodVersion componentsSeparatedByString:@"."];
-        for (NSInteger i = 0; i < 3; i++) {
+        for (NSUInteger i = 0; i < 3; i++) {
             SInt32 component = [components[i] intValue];
             if (component > 15) {
                 NSLog(@"FMDBVersion is invalid: Please use FMDBUserVersion instead.");
