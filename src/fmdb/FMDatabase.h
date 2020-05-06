@@ -677,6 +677,12 @@ typedef NS_ENUM(int, FMDBCheckpointMode) {
 // Documentation forthcoming.
 - (FMResultSet * _Nullable)executeQuery:(NSString *)sql withVAList:(va_list)args;
 
+/// Prepare SQL statement.
+///
+/// @param sql SQL statement to prepare, generally with `?` placeholders.
+
+- (FMResultSet *)prepare:(NSString *)sql;
+
 ///-------------------
 /// @name Transactions
 ///-------------------

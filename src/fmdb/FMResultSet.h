@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return A `FMResultSet` on success; `nil` on failure
  */
 
-+ (instancetype)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB;
++ (instancetype)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB shouldAutoClose:(BOOL)shouldAutoClose;
 
 /** Close result set */
 
@@ -91,10 +91,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)nextWithError:(NSError * _Nullable __autoreleasing *)outErr;
 
+/** Perform SQL statement.
+
+ @return 'YES' if successful; 'NO' if not.
+
+ @see hasAnotherRow
+*/
+
+- (BOOL)step;
+
+/** Perform SQL statement.
+
+ @param outErr A 'NSError' object to receive any error object (if any).
+
+ @return 'YES' if successful; 'NO' if not.
+
+ @see hasAnotherRow
+*/
+
+- (BOOL)stepWithError:(NSError * _Nullable __autoreleasing *)outErr;
+
 /** Did the last call to `<next>` succeed in retrieving another row?
 
- @return `YES` if the last call to `<next>` succeeded in retrieving another record; `NO` if not.
- 
+ @return 'YES' if there is another row; 'NO' if not.
+
  @see next
  
  @warning The `hasAnotherRow` method must follow a call to `<next>`. If the previous database interaction was something other than a call to `next`, then this method may return `NO`, whether there is another row of data or not.
@@ -461,7 +481,22 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 
 - (void)kvcMagic:(id)object;
 
- 
+///-----------------------------
+/// @name Binding values
+///-----------------------------
+
+/// Bind array of values to prepared statement.
+///
+/// @param array Array of values to bind to SQL statement.
+
+- (BOOL)bindWithArray:(NSArray*)array;
+
+/// Bind dictionary of values to prepared statement.
+///
+/// @param dictionary Dictionary of values to bind to SQL statement.
+
+- (BOOL)bindWithDictionary:(NSDictionary *)dictionary;
+
 @end
 
 NS_ASSUME_NONNULL_END
