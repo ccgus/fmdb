@@ -8,23 +8,31 @@
 #import <sqlite3.h>
 #endif
 
+// MARK: - FMDatabase Private Extension
+
 @interface FMDatabase ()
 - (void)resultSetDidClose:(FMResultSet *)resultSet;
+- (BOOL)bindStatement:(sqlite3_stmt *)pStmt WithArgumentsInArray:(NSArray*)arrayArgs orDictionary:(NSDictionary *)dictionaryArgs orVAList:(va_list)args;
 @end
+
+// MARK: - FMResultSet Private Extension
 
 @interface FMResultSet () {
     NSMutableDictionary *_columnNameToIndexMap;
 }
+@property (nonatomic) BOOL shouldAutoClose;
 @end
+
+// MARK: - FMResultSet
 
 @implementation FMResultSet
 
-+ (instancetype)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB {
-    
++ (instancetype)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB shouldAutoClose:(BOOL)shouldAutoClose {
     FMResultSet *rs = [[FMResultSet alloc] init];
     
     [rs setStatement:statement];
     [rs setParentDB:aDB];
+    [rs setShouldAutoClose:shouldAutoClose];
     
     NSParameterAssert(![statement inUse]);
     [statement setInUse:YES]; // weak reference
@@ -153,15 +161,25 @@
     return nil;
 }
 
-
-
-
 - (BOOL)next {
     return [self nextWithError:nil];
 }
 
 - (BOOL)nextWithError:(NSError * _Nullable __autoreleasing *)outErr {
-    
+    int rc = [self internalStepWithError:outErr];
+    return rc == SQLITE_ROW;
+}
+
+- (BOOL)step {
+    return [self stepWithError:nil];
+}
+
+- (BOOL)stepWithError:(NSError * _Nullable __autoreleasing *)outErr {
+    int rc = [self internalStepWithError:outErr];
+    return rc == SQLITE_DONE;
+}
+
+- (int)internalStepWithError:(NSError * _Nullable __autoreleasing *)outErr {
     int rc = sqlite3_step([_statement statement]);
     
     if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
@@ -203,13 +221,12 @@
             *outErr = [_parentDB lastError];
         }
     }
-    
-    
-    if (rc != SQLITE_ROW) {
+
+    if (rc != SQLITE_ROW && _shouldAutoClose) {
         [self close];
     }
     
-    return (rc == SQLITE_ROW);
+    return rc;
 }
 
 - (BOOL)hasAnotherRow {
@@ -428,5 +445,19 @@
     return [self objectForColumn:columnName];
 }
 
+// MARK: Bind
+
+- (BOOL)bindWithArray:(NSArray*)array orDictionary:(NSDictionary *)dictionary orVAList:(va_list)args {
+    [_statement reset];
+    return [_parentDB bindStatement:_statement.statement WithArgumentsInArray:array orDictionary:dictionary orVAList:args];
+}
+
+- (BOOL)bindWithArray:(NSArray*)array {
+    return [self bindWithArray:array orDictionary:nil orVAList:nil];
+}
+
+- (BOOL)bindWithDictionary:(NSDictionary *)dictionary {
+    return [self bindWithArray:nil orDictionary:dictionary orVAList:nil];
+}
 
 @end

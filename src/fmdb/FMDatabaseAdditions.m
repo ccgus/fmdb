@@ -17,7 +17,7 @@
 #endif
 
 @interface FMDatabase (PrivateStuff)
-- (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray * _Nullable)arrayArgs orDictionary:(NSDictionary * _Nullable)dictionaryArgs orVAList:(va_list)args;
+- (FMResultSet * _Nullable)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray * _Nullable)arrayArgs orDictionary:(NSDictionary * _Nullable)dictionaryArgs orVAList:(va_list)args shouldBind:(BOOL)shouldBind;
 @end
 
 @implementation FMDatabase (FMDatabaseAdditions)
@@ -25,7 +25,7 @@
 #define RETURN_RESULT_FOR_QUERY_WITH_SELECTOR(type, sel)             \
 va_list args;                                                        \
 va_start(args, query);                                               \
-FMResultSet *resultSet = [self executeQuery:query withArgumentsInArray:0x00 orDictionary:0x00 orVAList:args];   \
+FMResultSet *resultSet = [self executeQuery:query withArgumentsInArray:0x00 orDictionary:0x00 orVAList:args shouldBind:true];   \
 va_end(args);                                                        \
 if (![resultSet next]) { return (type)0; }                           \
 type ret = [resultSet sel:0];                                        \

@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return `FMResultSet` of schema; `nil` on error.
  
- @see [SQLite File Format](http://www.sqlite.org/fileformat.html)
+ @see [SQLite File Format](https://sqlite.org/fileformat.html)
  */
 
 - (FMResultSet * _Nullable)getSchema;
@@ -163,7 +163,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return `FMResultSet` of schema; `nil` on error.
  
- @see [table_info](http://www.sqlite.org/pragma.html#pragma_table_info)
+ @see [table_info](https://sqlite.org/pragma.html#pragma_table_info)
  */
 
 - (FMResultSet * _Nullable)getTableSchema:(NSString*)tableName;

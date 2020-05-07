@@ -3,15 +3,15 @@
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/FMDB.svg)](https://img.shields.io/cocoapods/v/FMDB.svg)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-This is an Objective-C wrapper around SQLite: http://sqlite.org/
+This is an Objective-C wrapper around [SQLite](https://sqlite.org/).
 
 ## The FMDB Mailing List:
-http://groups.google.com/group/fmdb
+https://groups.google.com/group/fmdb
 
 ## Read the SQLite FAQ:
-http://www.sqlite.org/faq.html
+https://www.sqlite.org/faq.html
 
-Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: http://www.sqlite.org/docs.html
+Since FMDB is built on top of SQLite, you're going to want to read this page top to bottom at least once.  And while you're there, make sure to bookmark the SQLite Documentation page: https://www.sqlite.org/docs.html
 
 ## Contributing
 Do you have an awesome idea that deserves to be in FMDB?  You might consider pinging ccgus first to make sure he hasn't already ruled it out for some reason.  Otherwise pull requests are great, and make sure you stick to the local coding conventions.  However, please be patient and if you haven't heard anything from ccgus for a week or more, you might want to send a note asking what's up.
@@ -19,9 +19,6 @@ Do you have an awesome idea that deserves to be in FMDB?  You might consider pin
 ## Installing
 
 ### CocoaPods
-
-[![Dependency Status](https://www.versioneye.com/objective-c/fmdb/2.3/badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/2.3)
-[![Reference Status](https://www.versioneye.com/objective-c/fmdb/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/fmdb/references)
 
 FMDB can be installed using [CocoaPods](https://cocoapods.org/).
 
@@ -75,7 +72,7 @@ $ carthage update
 You can then configure your project as outlined in Carthage's [Getting Started](https://github.com/Carthage/Carthage#getting-started) (i.e. for iOS, adding the framework to the "Link Binary with Libraries" in your target and adding the `copy-frameworks` script; in macOS, adding the framework to the list of "Embedded Binaries").
 
 ## FMDB Class Reference:
-http://ccgus.github.io/fmdb/html/index.html
+https://ccgus.github.io/fmdb/html/index.html
 
 ## Automatic Reference Counting (ARC) or Manual Memory Management?
 You can use either style in your Cocoa project.  FMDB will figure out which you are using at compile time and do the right thing.
@@ -182,7 +179,7 @@ An `FMDatabase` is created with a path to a SQLite database file.  This path can
 2. An empty string (`@""`).  An empty database is created at a temporary location.  This database is deleted when the `FMDatabase` connection is closed.
 3. `NULL`.  An in-memory database is created.  This database will be destroyed when the `FMDatabase` connection is closed.
 
-(For more information on temporary and in-memory databases, read the sqlite documentation on the subject: http://www.sqlite.org/inmemorydb.html)
+(For more information on temporary and in-memory databases, read the sqlite documentation on the subject: https://www.sqlite.org/inmemorydb.html)
 
 ```objc
 NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"tmp.db"];
@@ -436,7 +433,7 @@ To do this, you must:
 
 1. Copy the relevant `.m` and `.h` files from the FMDB `src` folder into your project.
 
- You can copy all of them (which is easiest), or only the ones you need. Likely you will need [`FMDatabase`](http://ccgus.github.io/fmdb/html/Classes/FMDatabase.html) and [`FMResultSet`](http://ccgus.github.io/fmdb/html/Classes/FMResultSet.html) at a minimum. [`FMDatabaseAdditions`](http://ccgus.github.io/fmdb/html/Categories/FMDatabase+FMDatabaseAdditions.html) provides some very useful convenience methods, so you will likely want that, too. If you are doing multithreaded access to a database, [`FMDatabaseQueue`](http://ccgus.github.io/fmdb/html/Classes/FMDatabaseQueue.html) is quite useful, too. If you choose to not copy all of the files from the `src` directory, though, you may want to update `FMDB.h` to only reference the files that you included in your project.
+ You can copy all of them (which is easiest), or only the ones you need. Likely you will need [`FMDatabase`](https://ccgus.github.io/fmdb/html/Classes/FMDatabase.html) and [`FMResultSet`](https://ccgus.github.io/fmdb/html/Classes/FMResultSet.html) at a minimum. [`FMDatabaseAdditions`](https://ccgus.github.io/fmdb/html/Categories/FMDatabase+FMDatabaseAdditions.html) provides some very useful convenience methods, so you will likely want that, too. If you are doing multithreaded access to a database, [`FMDatabaseQueue`](https://ccgus.github.io/fmdb/html/Classes/FMDatabaseQueue.html) is quite useful, too. If you choose to not copy all of the files from the `src` directory, though, you may want to update `FMDB.h` to only reference the files that you included in your project.
 
  Note, if you're copying all of the files from the `src` folder into to your project (which is recommended), you may want to drag the individual files into your project, not the folder, itself, because if you drag the folder, you won't be prompted to add the bridging header (see next point).
 

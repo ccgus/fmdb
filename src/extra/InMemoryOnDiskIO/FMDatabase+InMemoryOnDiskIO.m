@@ -2,7 +2,7 @@
 #import <sqlite3.h>
 
 
-// http://www.sqlite.org/backup.html
+// https://sqlite.org/backup.html
 static
 int loadOrSaveDb(sqlite3 *pInMemory, const char *zFilename, int isSave)
 {
