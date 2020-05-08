@@ -12,16 +12,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class FMDatabase;
 
-/** Pool of `<FMDatabase>` objects.
+/** Pool of @c FMDatabase  objects.
 
- ### See also
+ See also
  
- - `<FMDatabaseQueue>`
- - `<FMDatabase>`
+ - @c FMDatabaseQueue 
+ - @c FMDatabase 
 
- @warning Before using `FMDatabasePool`, please consider using `<FMDatabaseQueue>` instead.
+ @warning Before using @c FMDatabasePool , please consider using @c FMDatabaseQueue  instead.
 
- If you really really really know what you're doing and `FMDatabasePool` is what
+ If you really really really know what you're doing and @c FMDatabasePool  is what
  you really really need (ie, you're using a read only database), OK you can use
  it.  But just be careful not to deadlock!
 
@@ -61,16 +61,16 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param aPath The file path of the database.
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 + (instancetype)databasePoolWithPath:(NSString * _Nullable)aPath;
 
 /** Create pool using file URL.
  
- @param url The file `NSURL` of the database.
+ @param url The file @c NSURL  of the database.
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 + (instancetype)databasePoolWithURL:(NSURL * _Nullable)url;
@@ -80,17 +80,17 @@ NS_ASSUME_NONNULL_BEGIN
  @param aPath The file path of the database.
  @param openFlags Flags passed to the openWithFlags method of the database.
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 + (instancetype)databasePoolWithPath:(NSString * _Nullable)aPath flags:(int)openFlags;
 
 /** Create pool using file URL and specified flags
  
- @param url The file `NSURL` of the database.
+ @param url The file @c NSURL  of the database.
  @param openFlags Flags passed to the openWithFlags method of the database.
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 + (instancetype)databasePoolWithURL:(NSURL * _Nullable)url flags:(int)openFlags;
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param aPath The file path of the database.
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 - (instancetype)initWithPath:(NSString * _Nullable)aPath;
@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param url The file `NSURL of the database.
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 - (instancetype)initWithURL:(NSURL * _Nullable)url;
@@ -118,17 +118,17 @@ NS_ASSUME_NONNULL_BEGIN
  @param aPath The file path of the database.
  @param openFlags Flags passed to the openWithFlags method of the database
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 - (instancetype)initWithPath:(NSString * _Nullable)aPath flags:(int)openFlags;
 
 /** Create pool using file URL and specified flags.
  
- @param url The file `NSURL` of the database.
+ @param url The file @c NSURL  of the database.
  @param openFlags Flags passed to the openWithFlags method of the database
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 - (instancetype)initWithURL:(NSURL * _Nullable)url flags:(int)openFlags;
@@ -139,18 +139,18 @@ NS_ASSUME_NONNULL_BEGIN
  @param openFlags Flags passed to the openWithFlags method of the database
  @param vfsName The name of a custom virtual file system
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 - (instancetype)initWithPath:(NSString * _Nullable)aPath flags:(int)openFlags vfs:(NSString * _Nullable)vfsName;
 
 /** Create pool using file URL and specified flags.
  
- @param url The file `NSURL` of the database.
+ @param url The file @c NSURL  of the database.
  @param openFlags Flags passed to the openWithFlags method of the database
  @param vfsName The name of a custom virtual file system
  
- @return The `FMDatabasePool` object. `nil` on error.
+ @return The @c FMDatabasePool  object. @c nil  on error.
  */
 
 - (instancetype)initWithURL:(NSURL * _Nullable)url flags:(int)openFlags vfs:(NSString * _Nullable)vfsName;
@@ -193,14 +193,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Synchronously perform database operations in pool.
 
- @param block The code to be run on the `FMDatabasePool` pool.
+ @param block The code to be run on the @c FMDatabasePool  pool.
  */
 
 - (void)inDatabase:(__attribute__((noescape)) void (^)(FMDatabase *db))block;
 
 /** Synchronously perform database operations in pool using transaction.
  
- @param block The code to be run on the `FMDatabasePool` pool.
+ @param block The code to be run on the @c FMDatabasePool  pool.
  
  @warning   Unlike SQLite's `BEGIN TRANSACTION`, this method currently performs
             an exclusive transaction, not a deferred transaction. This behavior
@@ -215,32 +215,32 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Synchronously perform database operations in pool using exclusive transaction.
  
- @param block The code to be run on the `FMDatabasePool` pool.
+ @param block The code to be run on the @c FMDatabasePool  pool.
  */
 
 - (void)inExclusiveTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations in pool using deferred transaction.
 
- @param block The code to be run on the `FMDatabasePool` pool.
+ @param block The code to be run on the @c FMDatabasePool  pool.
  */
 
 - (void)inDeferredTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations on queue, using immediate transactions.
 
- @param block The code to be run on the queue of `FMDatabaseQueue`
+ @param block The code to be run on the queue of @c FMDatabaseQueue 
  */
 
 - (void)inImmediateTransaction:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
 
 /** Synchronously perform database operations in pool using save point.
 
- @param block The code to be run on the `FMDatabasePool` pool.
+ @param block The code to be run on the @c FMDatabasePool  pool.
  
- @return `NSError` object if error; `nil` if successful.
+ @return @c NSError  object if error; @c nil  if successful.
 
- @warning You can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock. If you need to nest, use `<[FMDatabase startSavePointWithName:error:]>` instead.
+ @warning You can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock. If you need to nest, use @c startSavePointWithName:error:  instead.
 */
 
 - (NSError * _Nullable)inSavePoint:(__attribute__((noescape)) void (^)(FMDatabase *db, BOOL *rollback))block;
@@ -257,10 +257,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Asks the delegate whether database should be added to the pool. 
  
- @param pool     The `FMDatabasePool` object.
- @param database The `FMDatabase` object.
+ @param pool     The @c FMDatabasePool  object.
+ @param database The @c FMDatabase  object.
  
- @return `YES` if it should add database to pool; `NO` if not.
+ @return @c YES if it should add database to pool; @c NO if not.
  
  */
 
@@ -268,8 +268,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Tells the delegate that database was added to the pool.
  
- @param pool     The `FMDatabasePool` object.
- @param database The `FMDatabase` object.
+ @param pool     The @c FMDatabasePool  object.
+ @param database The @c FMDatabase  object.
 
  */
 
