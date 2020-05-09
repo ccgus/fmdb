@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>NSObject(FMDatabasePoolDelegate) Category Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Extension/NSObject(FMDatabasePoolDelegate)" class="dashAnchor"></a>
+    <a title="NSObject(FMDatabasePoolDelegate) Category Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">FMDB 2.7.7 Docs</a> (89% documented)</p>
+        <p class="header-right"><a href="https://github.com/ccgus/fmdb"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">FMDB Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        NSObject(FMDatabasePoolDelegate) Category Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Categories.html">Categories</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Categories/NSObject%28FMDatabasePoolDelegate%29.html">NSObject(FMDatabasePoolDelegate)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/FMDatabase.html">FMDatabase</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FMDatabasePool.html">FMDatabasePool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FMDatabaseQueue.html">FMDatabaseQueue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FMResultSet.html">FMResultSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FMStatement.html">FMStatement</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@FMDBVersionNumber">FMDBVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@FMDBVersionString">FMDBVersionString</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/FMDBCheckpointMode.html">FMDBCheckpointMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SqliteValueType.html">SqliteValueType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type%20Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:FMDatabase.h@T@FMDBExecuteStatementsCallbackBlock">FMDBExecuteStatementsCallbackBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>NSObject(FMDatabasePoolDelegate)</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">NSObject</span> <span class="p">(</span><span class="nl">FMDatabasePoolDelegate</span><span class="p">)</span></code></pre>
+
+                </div>
+              </div>
+            <p>FMDatabasePool delegate category</p>
+
+<p>This is a category that defines the protocol for the FMDatabasePool delegate</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)NSObject(im)databasePool:shouldAddDatabaseToPool:"></a>
+                    <a name="//apple_ref/objc/Method/-databasePool:shouldAddDatabaseToPool:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)NSObject(im)databasePool:shouldAddDatabaseToPool:">-databasePool:<wbr>shouldAddDatabaseToPool:<wbr></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Asks the delegate whether database should be added to the pool. </p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">databasePool</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/FMDatabasePool.html">FMDatabasePool</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">pool</span>
+    <span class="nf">shouldAddDatabaseToPool</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/FMDatabase.html">FMDatabase</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">database</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">databasePool</span><span class="p">(</span><span class="n">_</span> <span class="nv">pool</span><span class="p">:</span> <span class="kt"><a href="../Classes/FMDatabasePool.html">FMDatabasePool</a></span><span class="p">,</span> <span class="n">shouldAddDatabaseToPool</span> <span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/FMDatabase.html">FMDatabase</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pool</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Classes/FMDatabasePool.html">FMDatabasePool</a></code>  object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>database</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Classes/FMDatabase.html">FMDatabase</a></code>  object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>YES</code> if it should add database to pool; <code>NO</code> if not.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)NSObject(im)databasePool:didAddDatabase:"></a>
+                    <a name="//apple_ref/objc/Method/-databasePool:didAddDatabase:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)NSObject(im)databasePool:didAddDatabase:">-databasePool:<wbr>didAddDatabase:<wbr></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Tells the delegate that database was added to the pool.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">databasePool</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/FMDatabasePool.html">FMDatabasePool</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">pool</span>
+      <span class="nf">didAddDatabase</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/FMDatabase.html">FMDatabase</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">database</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">databasePool</span><span class="p">(</span><span class="n">_</span> <span class="nv">pool</span><span class="p">:</span> <span class="kt"><a href="../Classes/FMDatabasePool.html">FMDatabasePool</a></span><span class="p">,</span> <span class="n">didAdd</span> <span class="nv">database</span><span class="p">:</span> <span class="kt"><a href="../Classes/FMDatabase.html">FMDatabase</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pool</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Classes/FMDatabasePool.html">FMDatabasePool</a></code>  object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>database</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Classes/FMDatabase.html">FMDatabase</a></code>  object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://github.com/ccgus/fmdb" target="_blank" rel="external">Gus Mueller, Flying Meat</a>. All rights reserved. (Last updated: 2020-05-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
