@@ -1,0 +1,180 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDB.h",
+      "line": 3,
+      "symbol": "FMDBVersionNumber",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDB.h",
+      "line": 4,
+      "symbol": "FMDBVersionString",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 50,
+      "symbol": "FMDBCheckpointMode.FMDBCheckpointModePassive",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 51,
+      "symbol": "FMDBCheckpointMode.FMDBCheckpointModeFull",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 52,
+      "symbol": "FMDBCheckpointMode.FMDBCheckpointModeRestart",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 53,
+      "symbol": "FMDBCheckpointMode.FMDBCheckpointModeTruncate",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 698,
+      "symbol": "FMDatabase.-executeQuery:withVAList:",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 805,
+      "symbol": "FMDatabase.-inTransaction",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 995,
+      "symbol": "FMDatabase.maxBusyRetryTimeInterval",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.property",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1195,
+      "symbol": "FMDatabase.-makeFunctionNamed:maximumArguments:withBlock:",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1197,
+      "symbol": "SqliteValueType",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1197,
+      "symbol": "SqliteValueType",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.typedef",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1198,
+      "symbol": "SqliteValueType.SqliteValueTypeInteger",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1199,
+      "symbol": "SqliteValueType.SqliteValueTypeFloat",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1200,
+      "symbol": "SqliteValueType.SqliteValueTypeText",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1201,
+      "symbol": "SqliteValueType.SqliteValueTypeBlob",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1202,
+      "symbol": "SqliteValueType.SqliteValueTypeNull",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1205,
+      "symbol": "FMDatabase.-valueType:",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1457,
+      "symbol": "FMStatement._statement",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.ivar",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1458,
+      "symbol": "FMStatement._query",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.ivar",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1459,
+      "symbol": "FMStatement._useCount",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.ivar",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMDatabase.h",
+      "line": 1460,
+      "symbol": "FMStatement._inUse",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.ivar",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMResultSet.h",
+      "line": 29,
+      "symbol": "FMResultSet.parentDB",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.property",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMResultSet.h",
+      "line": 321,
+      "symbol": "FMResultSet.-UTF8StringForColumnName:",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rryan/Desktop/fmdb/src/fmdb/FMResultSet.h",
+      "line": 343,
+      "symbol": "FMResultSet.-objectForColumnName:",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/rryan/Desktop/fmdb"
+}

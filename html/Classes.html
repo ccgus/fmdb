@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Classes  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Section/Classes" class="dashAnchor"></a>
+    <a title="Classes  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">FMDB 2.7.7 Docs</a> (89% documented)</p>
+        <p class="header-right"><a href="https://github.com/ccgus/fmdb"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">FMDB Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Classes  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Categories.html">Categories</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Categories/NSObject%28FMDatabasePoolDelegate%29.html">NSObject(FMDatabasePoolDelegate)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/FMDatabase.html">FMDatabase</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/FMDatabasePool.html">FMDatabasePool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/FMDatabaseQueue.html">FMDatabaseQueue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/FMResultSet.html">FMResultSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/FMStatement.html">FMStatement</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@FMDBVersionNumber">FMDBVersionNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@FMDBVersionString">FMDBVersionString</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/FMDBCheckpointMode.html">FMDBCheckpointMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SqliteValueType.html">SqliteValueType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Type%20Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Type%20Definitions.html#/c:FMDatabase.h@T@FMDBExecuteStatementsCallbackBlock">FMDBExecuteStatementsCallbackBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Classes</h1>
+            <p>The following classes are available globally.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)FMDatabase"></a>
+                    <a name="//apple_ref/objc/Class/FMDatabase" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)FMDatabase">FMDatabase</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A SQLite (<a href="https://sqlite.org/">https://sqlite.org/</a>) Objective-C wrapper.</p>
+
+<p>Usage</p>
+
+<p>The three main classes in FMDB are:</p>
+
+<ul>
+<li><p><code>FMDatabase</code> - Represents a single SQLite database.  Used for executing SQL statements.</p></li>
+<li><p><code><a href="Classes/FMResultSet.html">FMResultSet</a></code> - Represents the results of executing a query on an <code>FMDatabase</code> .</p></li>
+<li><p><code><a href="Classes/FMDatabaseQueue.html">FMDatabaseQueue</a></code> - If you want to perform queries and updates on multiple threads, you&rsquo;ll want to use this class.</p></li>
+</ul>
+
+<p>See also</p>
+
+<ul>
+<li><p><code><a href="Classes/FMDatabasePool.html">FMDatabasePool</a></code> - A pool of <code>FMDatabase</code> objects</p></li>
+<li><p><code><a href="Classes/FMStatement.html">FMStatement</a></code> - A wrapper for <code>sqlite_stmt</code></p></li>
+</ul>
+
+<p>External links</p>
+
+<ul>
+<li><a href="https://github.com/ccgus/fmdb">FMDB on GitHub</a> including introductory documentation</li>
+<li><a href="https://sqlite.org/">SQLite web site</a></li>
+<li><a href="http://groups.google.com/group/fmdb">FMDB mailing list</a></li>
+<li><p><a href="https://sqlite.org/faq.html">SQLite FAQ</a></p></li>
+</ul><div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>Do not instantiate a single <code>FMDatabase</code>  object and use it across multiple threads. Instead, use <code><a href="Classes/FMDatabaseQueue.html">FMDatabaseQueue</a></code> .</p>
+
+</div>
+
+                        <a href="Classes/FMDatabase.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">FMDatabase</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">FMDatabase</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)FMStatement"></a>
+                    <a name="//apple_ref/objc/Class/FMStatement" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)FMStatement">FMStatement</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Objective-C wrapper for <code>sqlite3_stmt</code></p>
+
+<p>This is a wrapper for a SQLite <code>sqlite3_stmt</code> . Generally when using FMDB you will not need to interact directly with <code>FMStatement</code>, but rather with <code><a href="Classes/FMDatabase.html">FMDatabase</a></code>  and <code><a href="Classes/FMResultSet.html">FMResultSet</a></code>  only.</p>
+
+<p>See also</p>
+
+<ul>
+<li><code><a href="Classes/FMDatabase.html">FMDatabase</a></code></li>
+<li><code><a href="Classes/FMResultSet.html">FMResultSet</a></code></li>
+<li><a href="https://sqlite.org/c3ref/stmt.html"><code>sqlite3_stmt</code> </a></li>
+</ul>
+
+                        <a href="Classes/FMStatement.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">FMStatement</span> <span class="p">:</span> <span class="nc">NSObject</span> <span class="p">{</span>
+  <span class="kt">void</span> <span class="o">*</span><span class="n">_statement</span><span class="p">;</span>
+  <span class="n">NSString</span> <span class="o">*</span><span class="n">_query</span><span class="p">;</span>
+  <span class="kt">long</span> <span class="n">_useCount</span><span class="p">;</span>
+  <span class="n">BOOL</span> <span class="n">_inUse</span><span class="p">;</span>
+<span class="p">}</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">FMStatement</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)FMDatabasePool"></a>
+                    <a name="//apple_ref/objc/Class/FMDatabasePool" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)FMDatabasePool">FMDatabasePool</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Pool of <code><a href="Classes/FMDatabase.html">FMDatabase</a></code>  objects.</p>
+
+<p>See also</p>
+
+<ul>
+<li><code><a href="Classes/FMDatabaseQueue.html">FMDatabaseQueue</a></code></li>
+<li><p><code><a href="Classes/FMDatabase.html">FMDatabase</a></code> </p></li>
+</ul><div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>Before using <code>FMDatabasePool</code> , please consider using <code><a href="Classes/FMDatabaseQueue.html">FMDatabaseQueue</a></code>  instead.</p>
+
+</div>
+
+<p>If you really really really know what you&rsquo;re doing and <code>FMDatabasePool</code>  is what
+ you really really need (ie, you&rsquo;re using a read only database), OK you can use
+ it.  But just be careful not to deadlock!</p>
+
+<p>For an example on deadlocking, search for:
+ <code>ONLY_USE_THE_POOL_IF_YOU_ARE_DOING_READS_OTHERWISE_YOULL_DEADLOCK_USE_FMDATABASEQUEUE_INSTEAD</code>
+ in the main.m file.</p>
+
+                        <a href="Classes/FMDatabasePool.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">FMDatabasePool</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">FMDatabasePool</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)FMDatabaseQueue"></a>
+                    <a name="//apple_ref/objc/Class/FMDatabaseQueue" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)FMDatabaseQueue">FMDatabaseQueue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>To perform queries and updates on multiple threads, you&rsquo;ll want to use <code>FMDatabaseQueue</code> .</p>
+
+<p>Using a single instance of <code><a href="Classes/FMDatabase.html">FMDatabase</a></code> from multiple threads at once is a bad idea.  It has always been OK to make a <code><a href="Classes/FMDatabase.html">FMDatabase</a></code>  object <em>per thread</em>.  Just don&rsquo;t share a single instance across threads, and definitely not across multiple threads at the same time.</p>
+
+<p>Instead, use <code>FMDatabaseQueue</code> . Here&rsquo;s how to use it:</p>
+
+<p>First, make your queue.</p>
+<pre class="highlight objective_c"><code><span class="n">FMDatabaseQueue</span> <span class="o">*</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">FMDatabaseQueue</span> <span class="nf">databaseQueueWithPath</span><span class="p">:</span><span class="n">aPath</span><span class="p">];</span>
+</code></pre>
+
+<p>Then use it like so:</p>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">queue</span> <span class="nf">inDatabase</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">FMDatabase</span> <span class="o">*</span><span class="n">db</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">db</span> <span class="nf">executeUpdate</span><span class="p">:</span><span class="s">@"INSERT INTO myTable VALUES (?)"</span><span class="p">,</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nf">numberWithInt</span><span class="p">:</span><span class="mi">1</span><span class="p">]];</span>
+    <span class="p">[</span><span class="n">db</span> <span class="nf">executeUpdate</span><span class="p">:</span><span class="s">@"INSERT INTO myTable VALUES (?)"</span><span class="p">,</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nf">numberWithInt</span><span class="p">:</span><span class="mi">2</span><span class="p">]];</span>
+    <span class="p">[</span><span class="n">db</span> <span class="nf">executeUpdate</span><span class="p">:</span><span class="s">@"INSERT INTO myTable VALUES (?)"</span><span class="p">,</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nf">numberWithInt</span><span class="p">:</span><span class="mi">3</span><span class="p">]];</span>
+
+    <span class="n">FMResultSet</span> <span class="o">*</span><span class="n">rs</span> <span class="o">=</span> <span class="p">[</span><span class="n">db</span> <span class="nf">executeQuery</span><span class="p">:</span><span class="s">@"select * from foo"</span><span class="p">];</span>
+    <span class="k">while</span> <span class="p">([</span><span class="n">rs</span> <span class="nf">next</span><span class="p">])</span> <span class="p">{</span>
+        <span class="c1">//…
+</span>    <span class="p">}</span>
+<span class="p">}];</span>
+</code></pre>
+
+<p>An easy way to wrap things up in a transaction can be done like this:</p>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">queue</span> <span class="nf">inTransaction</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">FMDatabase</span> <span class="o">*</span><span class="n">db</span><span class="p">,</span> <span class="n">BOOL</span> <span class="o">*</span><span class="n">rollback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">db</span> <span class="nf">executeUpdate</span><span class="p">:</span><span class="s">@"INSERT INTO myTable VALUES (?)"</span><span class="p">,</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nf">numberWithInt</span><span class="p">:</span><span class="mi">1</span><span class="p">]];</span>
+    <span class="p">[</span><span class="n">db</span> <span class="nf">executeUpdate</span><span class="p">:</span><span class="s">@"INSERT INTO myTable VALUES (?)"</span><span class="p">,</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nf">numberWithInt</span><span class="p">:</span><span class="mi">2</span><span class="p">]];</span>
+    <span class="p">[</span><span class="n">db</span> <span class="nf">executeUpdate</span><span class="p">:</span><span class="s">@"INSERT INTO myTable VALUES (?)"</span><span class="p">,</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nf">numberWithInt</span><span class="p">:</span><span class="mi">3</span><span class="p">]];</span>
+
+    <span class="c1">// if (whoopsSomethingWrongHappened) {
+</span>    <span class="c1">//     *rollback = YES;
+</span>    <span class="c1">//     return;
+</span>    <span class="c1">// }
+</span>
+    <span class="c1">// etc…
+</span>    <span class="p">[</span><span class="n">db</span> <span class="nf">executeUpdate</span><span class="p">:</span><span class="s">@"INSERT INTO myTable VALUES (?)"</span><span class="p">,</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nf">numberWithInt</span><span class="p">:</span><span class="mi">4</span><span class="p">]];</span>
+<span class="p">}];</span>
+</code></pre>
+
+<p><code>FMDatabaseQueue</code> will run the blocks on a serialized queue (hence the name of the class).  So if you call <code>FMDatabaseQueue</code> &lsquo;s methods from multiple threads at the same time, they will be executed in the order they are received.  This way queries and updates won&rsquo;t step on each other&rsquo;s toes, and every one is happy.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>Do not instantiate a single <code><a href="Classes/FMDatabase.html">FMDatabase</a></code>  object and use it across multiple threads. Use <code>FMDatabaseQueue</code>  instead.</p>
+
+</div><div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>The calls to <code>FMDatabaseQueue</code> &rsquo;s methods are blocking.  So even though you are passing along blocks, they will <strong>not</strong> be run on another thread.</p>
+
+</div>
+
+<p>@sa FMDatabase</p>
+
+                        <a href="Classes/FMDatabaseQueue.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">FMDatabaseQueue</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">FMDatabaseQueue</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)FMResultSet"></a>
+                    <a name="//apple_ref/objc/Class/FMResultSet" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)FMResultSet">FMResultSet</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents the results of executing a query on an <code><a href="Classes/FMDatabase.html">FMDatabase</a></code> .</p>
+
+<p>See also</p>
+
+<ul>
+<li><code><a href="Classes/FMDatabase.html">FMDatabase</a></code></li>
+</ul>
+
+                        <a href="Classes/FMResultSet.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">FMResultSet</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">FMResultSet</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://github.com/ccgus/fmdb" target="_blank" rel="external">Gus Mueller, Flying Meat</a>. All rights reserved. (Last updated: 2020-05-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
