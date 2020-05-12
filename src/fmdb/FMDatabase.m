@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FMResultSet ()
 
 - (int)internalStepWithError:(NSError * _Nullable __autoreleasing *)outErr;
++ (instancetype)resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB shouldAutoClose:(BOOL)shouldAutoClose;
 
 @end
 

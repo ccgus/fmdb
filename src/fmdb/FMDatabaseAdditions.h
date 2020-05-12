@@ -11,11 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/** Category of additions for `<FMDatabase>` class.
+/** Category of additions for @c FMDatabase  class.
  
- ### See also
+ See also
 
- - `<FMDatabase>`
+ - @c FMDatabase 
  */
 
 @interface FMDatabase (FMDatabaseAdditions)
@@ -24,24 +24,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Return results of SQL to variable
 ///----------------------------------------
 
-/** Return `int` value for query
+/** Return @c int  value for query
  
- @param query The SQL query to be performed. 
- @param ... A list of parameters that will be bound to the `?` placeholders in the SQL query.
+ @param query The SQL query to be performed, followed by a list of parameters that will be bound to the `?` placeholders in the SQL query.
 
- @return `int` value.
+ @return @c int  value.
  
  @note This is not available from Swift.
  */
 
 - (int)intForQuery:(NSString*)query, ...;
 
-/** Return `long` value for query
+/** Return @c long  value for query
 
- @param query The SQL query to be performed.
- @param ... A list of parameters that will be bound to the `?` placeholders in the SQL query.
+ @param query The SQL query to be performed, followed by a list of parameters that will be bound to the `?` placeholders in the SQL query.
 
- @return `long` value.
+ @return @c long  value.
  
  @note This is not available from Swift.
  */
@@ -50,8 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Return `BOOL` value for query
 
- @param query The SQL query to be performed.
- @param ... A list of parameters that will be bound to the `?` placeholders in the SQL query.
+ @param query The SQL query to be performed, followed by a list of parameters that will be bound to the `?` placeholders in the SQL query.
 
  @return `BOOL` value.
  
@@ -62,8 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Return `double` value for query
 
- @param query The SQL query to be performed.
- @param ... A list of parameters that will be bound to the `?` placeholders in the SQL query.
+ @param query The SQL query to be performed, followed by a list of parameters that will be bound to the `?` placeholders in the SQL query.
 
  @return `double` value.
  
@@ -72,36 +68,33 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (double)doubleForQuery:(NSString*)query, ...;
 
-/** Return `NSString` value for query
+/** Return @c NSString  value for query
 
- @param query The SQL query to be performed.
- @param ... A list of parameters that will be bound to the `?` placeholders in the SQL query.
+ @param query The SQL query to be performed, followed by a list of parameters that will be bound to the `?` placeholders in the SQL query.
 
- @return `NSString` value.
+ @return @c NSString  value.
  
  @note This is not available from Swift.
  */
 
 - (NSString * _Nullable)stringForQuery:(NSString*)query, ...;
 
-/** Return `NSData` value for query
+/** Return @c NSData  value for query
 
- @param query The SQL query to be performed.
- @param ... A list of parameters that will be bound to the `?` placeholders in the SQL query.
+ @param query The SQL query to be performed, followed by a list of parameters that will be bound to the `?` placeholders in the SQL query.
 
- @return `NSData` value.
+ @return @c NSData  value.
  
  @note This is not available from Swift.
  */
 
 - (NSData * _Nullable)dataForQuery:(NSString*)query, ...;
 
-/** Return `NSDate` value for query
+/** Return @c NSDate  value for query
 
- @param query The SQL query to be performed.
- @param ... A list of parameters that will be bound to the `?` placeholders in the SQL query.
+ @param query The SQL query to be performed, followed by a list of parameters that will be bound to the `?` placeholders in the SQL query.
 
- @return `NSDate` value.
+ @return @c NSDate  value.
  
  @note This is not available from Swift.
  */
@@ -122,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param tableName The name of the table being looked for.
 
- @return `YES` if table found; `NO` if not found.
+ @return @c YES if table found; @c NO if not found.
  */
 
 - (BOOL)tableExists:(NSString*)tableName;
@@ -137,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
  - `rootpage` - The page number of the root b-tree page for tables and indices
  - `sql` - The SQL that created the entity
 
- @return `FMResultSet` of schema; `nil` on error.
+ @return `FMResultSet` of schema; @c nil  on error.
  
  @see [SQLite File Format](https://sqlite.org/fileformat.html)
  */
@@ -161,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param tableName The name of the table for whom the schema will be returned.
  
- @return `FMResultSet` of schema; `nil` on error.
+ @return `FMResultSet` of schema; @c nil  on error.
  
  @see [table_info](https://sqlite.org/pragma.html#pragma_table_info)
  */
@@ -174,7 +167,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param tableName The name of the table.
  
- @return `YES` if column exists in table in question; `NO` otherwise.
+ @return @c YES if column exists in table in question; @c NO otherwise.
  */
 
 - (BOOL)columnExists:(NSString*)columnName inTableWithName:(NSString*)tableName;
@@ -185,7 +178,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param tableName The name of the table.
 
- @return `YES` if column exists in table in question; `NO` otherwise.
+ @return @c YES if column exists in table in question; @c NO otherwise.
  
  @see columnExists:inTableWithName:
  
@@ -201,9 +194,9 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param sql The SQL statement being validated.
  
- @param error This is a pointer to a `NSError` object that will receive the autoreleased `NSError` object if there was any error. If this is `nil`, no `NSError` result will be returned.
+ @param error This is a pointer to a @c NSError  object that will receive the autoreleased @c NSError  object if there was any error. If this is @c nil , no @c NSError  result will be returned.
  
- @return `YES` if validation succeeded without incident; `NO` otherwise.
+ @return @c YES if validation succeeded without incident; @c NO otherwise.
  
  */
 

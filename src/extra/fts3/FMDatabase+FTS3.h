@@ -36,12 +36,12 @@ extern NSString *const kFTSCommandAutoMerge;       // "automerge=%u"
 + (void)registerTokenizer:(id<FMTokenizerDelegate>)tokenizer withKey:(NSString *)key;
 
 /**
- Calls the `fts3_tokenizer()` function on this database, installing tokenizer module with the 'fmdb' name.
+ Calls the @c fts3_tokenizer function on this database, installing tokenizer module with the 'fmdb' name.
  */
 - (BOOL)installTokenizerModule;
 
 /**
- Calls the `fts3_tokenizer()` function on this database, installing the tokenizer module with specified name.
+ Calls the @c fts3_tokenizer function on this database, installing the tokenizer module with specified name.
  */
 - (BOOL)installTokenizerModuleWithName:(NSString *)name;
 
@@ -89,8 +89,8 @@ typedef struct FMTokenizerCursor
 
 /**
  Enumerate each set of offsets in the result. The column number can be turned into a column name
- using `[FMResultSet columnNameForIndex:]`. The `matchRange` is in UTF-8 byte positions, so it must be 
- modified to use with `NSString` data.
+ using `[FMResultSet columnNameForIndex:]`. The @c matchRange is in UTF-8 byte positions, so it must be 
+ modified to use with @c NSString  data.
  */
 - (void)enumerateWithBlock:(void (^)(NSInteger columnNumber, NSInteger termNumber, NSRange matchRange))block;
 
@@ -102,12 +102,12 @@ typedef struct FMTokenizerCursor
 @interface FMResultSet (FTS3)
 
 /**
- Returns a structure containing values from the `offsets()` function. Make sure the column index corresponds
+ Returns a structure containing values from the @c offsets function. Make sure the column index corresponds
  to the column index in the SQL query.
  
  @param columnIdx Zero-based index for column.
  
- @return `FMTextOffsets` structure.
+ @return @c FMTextOffsets structure.
  */
 - (FMTextOffsets *)offsetsForColumnIndex:(int)columnIdx;
 

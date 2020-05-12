@@ -18,7 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Create the tokenizer with a given locale. The locale will be used to initialize the string tokenizer and to lowercase the parsed word.
- The locale can be `NULL`, in which case the current locale will be used.
+
+
+ @param locale The locale used by the simple tokenizer. The locale can be @c NULL , in which case the current locale will be used.
  */
 - (instancetype)initWithLocale:(CFLocaleRef _Nullable)locale;
 
@@ -35,12 +37,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Load a stop-word tokenizer using a file containing words delimited by newlines. The file should be encoded in UTF-8.
+
+ @param wordFileURL The file URL for the list of words.
+ @param tokenizer The @c FMTokenizerDelegate .
+ @param error The @c NSError if there was any error reading the file.
  */
 + (instancetype)tokenizerWithFileURL:(NSURL *)wordFileURL baseTokenizer:(id<FMTokenizerDelegate>)tokenizer error:(NSError * _Nullable *)error;
 
 /**
- Initialize an instance of the tokenizer using the set of words. The words should be lowercase if you're using the 
+ Initialize an instance of the tokenizer using the set of words. The words should be lowercase if you're using the
  `FMSimpleTokenizer` as the base.
+ @param words The @c NSSet of words.
+ @param tokenizer The @c FMTokenizerDelegate .
  */
 - (instancetype)initWithWords:(NSSet *)words baseTokenizer:(id<FMTokenizerDelegate>)tokenizer;
 
