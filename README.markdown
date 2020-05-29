@@ -71,6 +71,21 @@ $ carthage update
 
 You can then configure your project as outlined in Carthage's [Getting Started](https://github.com/Carthage/Carthage#getting-started) (i.e. for iOS, adding the framework to the "Link Binary with Libraries" in your target and adding the `copy-frameworks` script; in macOS, adding the framework to the list of "Embedded Binaries").
 
+### Swift Package Manager
+
+Declare FMDB as a package dependency.
+```swift
+.package(
+    name: "FMDB", 
+    url: "https://github.com/ccgus/fmdb", 
+    .upToNextMinor(from: "2.7.7")),
+```
+
+Use FMDB in target dependencies
+```swift
+.product(name: "FMDB", package: "FMDB")
+```
+
 ## FMDB Class Reference:
 https://ccgus.github.io/fmdb/html/index.html
 
