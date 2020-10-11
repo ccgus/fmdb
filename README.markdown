@@ -241,6 +241,7 @@ FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM myTable"];
 if ([s next]) {
     int totalCount = [s intForColumnIndex:0];
 }
+[s close];  //  If you cannot confirm whether the result set is exhausted, you will need to call the -close method on the FMResultSet for safety.
 ```
 
 `FMResultSet` has many methods to retrieve data in an appropriate format:
