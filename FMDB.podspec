@@ -24,6 +24,13 @@ Pod::Spec.new do |s|
     ss.source_files = 'src/extra/fts3/*.{h,m}'
     ss.dependency 'FMDB/standard'
   end
+  
+  # common_FTS: for internal use only
+  s.subspec 'common_FTS' do |ss|
+    ss.source_files = 'src/extra/fts3/*.{h,m}'		
+    ss.pod_target_xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_FTS4_UNICODE61 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS5 -DSQLITE_ENABLE_FTS3_TOKENIZER' }
+  end
+  
 
   # build the latest stable version of sqlite3
   s.subspec 'standalone' do |ss|
@@ -43,13 +50,21 @@ Pod::Spec.new do |s|
     ss.dependency 'sqlite3/fts'
   end
 
-  # use SQLCipher and enable -DSQLITE_HAS_CODEC flag
+  # use SQLCipher (which replaces sqlite3) and enable -DSQLITE_HAS_CODEC flag
   s.subspec 'SQLCipher' do |ss|
     ss.dependency 'SQLCipher', '~> 4.0'
     ss.source_files = 'src/fmdb/FM*.{h,m}'
     ss.exclude_files = 'src/fmdb.m'
+	
+    # SQLCipher/FTS:, SQLCipher replaces sqlite3 + FTS3 + custom FTS tokenizer source files
+    ss.subspec 'FTS' do |sss|
+	  sss.dependency 'FMDB/SQLCipher'
+      sss.dependency 'SQLCipher/fts'
+      sss.dependency 'FMDB/common_FTS'
+	end
+	
     ss.header_dir = 'fmdb'
-    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DHAVE_USLEEP=1 -DSQLCIPHER_CRYPTO', 'HEADER_SEARCH_PATHS' => 'SQLCipher' }
+    ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DSQLITE_ENABLE_FTS3_TOKENIZER -DHAVE_USLEEP=1 -DSQLCIPHER_CRYPTO', 'HEADER_SEARCH_PATHS' => 'SQLCipher' }
   end
   
 end
