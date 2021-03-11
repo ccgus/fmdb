@@ -180,6 +180,17 @@
 }
 
 - (int)internalStepWithError:(NSError * _Nullable __autoreleasing *)outErr {
+    // Check for possible `nil _statement` to avoid a crash.
+    if (_statement == nil) {
+
+        if (outErr != nil) {
+            NSDictionary* errorMessage = [NSDictionary dictionaryWithObject:@"_statement should not be nil" forKey:NSLocalizedDescriptionKey];
+            *outErr = [NSError errorWithDomain:@"FMDatabase" code:SQLITE_MISUSE userInfo:errorMessage];
+        }
+
+        return SQLITE_MISUSE;
+    }
+
     int rc = sqlite3_step([_statement statement]);
     
     if (SQLITE_BUSY == rc || SQLITE_LOCKED == rc) {
