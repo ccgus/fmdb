@@ -8,7 +8,6 @@
 
 #import "FMDBTempDBTests.h"
 #import "FMDatabase.h"
-#import "FMResultSet.h"
 
 #if FMDB_SQLITE_STANDALONE
 #import <sqlite3/sqlite3.h>
@@ -91,6 +90,42 @@
     XCTAssertFalse([resultSet nextWithError:&error]);
 
     XCTAssertEqual(error.code, SQLITE_MISUSE, @"SQLITE_MISUSE should be the last error");
+}
+
+- (void)testColumnTypes
+{
+    [self.db executeUpdate:@"CREATE TABLE testTable (intValue INTEGER, floatValue FLOAT, textValue TEXT, blobValue BLOB)"];
+    NSString *sql = @"INSERT INTO testTable (intValue, floatValue, textValue, blobValue) VALUES (?, ?, ?, ?)";
+    NSError *error;
+    NSData *data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *zeroLengthData = [NSData data];
+    NSNull *null = [NSNull null];
+    [self.db executeUpdate:sql values:@[@42, @M_PI, @"test", data] error:&error];
+    [self.db executeUpdate:sql values:@[null, null, null, null] error:&error];
+    [self.db executeUpdate:sql values:@[null, null, null, zeroLengthData] error:&error];
+
+    FMResultSet *resultSet = [self.db executeQuery:@"SELECT * FROM testTable"];
+    XCTAssertNotNil(resultSet);
+
+    XCTAssertTrue([resultSet next]);
+    XCTAssertEqual([resultSet typeForColumn:@"intValue"],   SqliteValueTypeInteger);
+    XCTAssertEqual([resultSet typeForColumn:@"floatValue"], SqliteValueTypeFloat);
+    XCTAssertEqual([resultSet typeForColumn:@"textValue"],  SqliteValueTypeText);
+    XCTAssertEqual([resultSet typeForColumn:@"blobValue"],  SqliteValueTypeBlob);
+    XCTAssertNotNil([resultSet dataForColumn:@"blobValue"]);
+
+    XCTAssertTrue([resultSet next]);
+    XCTAssertEqual([resultSet typeForColumn:@"intValue"],   SqliteValueTypeNull);
+    XCTAssertEqual([resultSet typeForColumn:@"floatValue"], SqliteValueTypeNull);
+    XCTAssertEqual([resultSet typeForColumn:@"textValue"],  SqliteValueTypeNull);
+    XCTAssertEqual([resultSet typeForColumn:@"blobValue"],  SqliteValueTypeNull);
+    XCTAssertNil([resultSet dataForColumn:@"blobValue"]);
+
+    XCTAssertTrue([resultSet next]);
+    XCTAssertEqual([resultSet typeForColumn:@"blobValue"],  SqliteValueTypeBlob);
+    XCTAssertNil([resultSet dataForColumn:@"blobValue"]);
+
+    [resultSet close];
 }
 
 @end

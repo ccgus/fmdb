@@ -1123,12 +1123,16 @@
 
 }
 
-- (void)testVersionNumber {
-    XCTAssertEqual([FMDatabase FMDBVersion], 0x0277); // this is going to break everytime we bump it.
-}
+/* This is deprecated, and as such, should be excluded from tests
+ *
+ * - (void)testVersionNumber {
+ *     XCTAssertEqual([FMDatabase FMDBVersion], 0x0278); // this is going to break every time we bump it.
+ * }
+  *
+ */
 
 - (void)testUserVersion {
-    NSComparisonResult result = [[FMDatabase FMDBUserVersion] compare:@"2.7.7" options:NSNumericSearch];
+    NSComparisonResult result = [[FMDatabase FMDBUserVersion] compare:@"2.7.8" options:NSNumericSearch];
     XCTAssertEqual(result, NSOrderedSame);
 }
 

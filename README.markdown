@@ -78,7 +78,7 @@ Declare FMDB as a package dependency.
 .package(
     name: "FMDB", 
     url: "https://github.com/ccgus/fmdb", 
-    .upToNextMinor(from: "2.7.7")),
+    .upToNextMinor(from: "2.7.8")),
 ```
 
 Use FMDB in target dependencies
