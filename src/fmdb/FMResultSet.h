@@ -17,6 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 @class FMDatabase;
 @class FMStatement;
 
+/** Types for columns in a result set.
+ */
+typedef NS_ENUM(int, SqliteValueType) {
+    SqliteValueTypeInteger = 1,
+    SqliteValueTypeFloat   = 2,
+    SqliteValueTypeText    = 3,
+    SqliteValueTypeBlob    = 4,
+    SqliteValueTypeNull    = 5
+};
+
 /** Represents the results of executing a query on an @c FMDatabase .
  
  See also
@@ -304,6 +314,9 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param columnIdx Zero-based index for column.
 
+ @warning For zero length BLOBs, this will return `nil`. Use `typeForColumn` to determine whether this was really a zero
+    length BLOB or `NULL`.
+
  @return Data value of the result set's column.
  */
 
@@ -312,6 +325,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** Result set `(const unsigned char *)` value for column.
 
  @param columnName @c NSString  value of the name of the column.
+
+ @warning For zero length BLOBs, this will return `nil`. Use `typeForColumnIndex` to determine whether this was really a zero
+ length BLOB or `NULL`.
 
  @return `(const unsigned char *)` value of the result set's column.
  */
@@ -341,6 +357,25 @@ NS_ASSUME_NONNULL_BEGIN
 - (id _Nullable)objectForColumn:(NSString*)columnName;
 
 - (id _Nullable)objectForColumnName:(NSString*)columnName __deprecated_msg("Use objectForColumn instead");
+
+/** Column type by column name.
+
+ @param columnName Name of the column.
+
+ @return The `SqliteValueType` of the value in this column.
+ */
+
+- (SqliteValueType)typeForColumn:(NSString*)columnName;
+
+/** Column type by column index.
+
+ @param columnIdx Index of the column.
+
+ @return The `SqliteValueType` of the value in this column.
+ */
+
+- (SqliteValueType)typeForColumnIndex:(int)columnIdx;
+
 
 /** Result set object for column.
 

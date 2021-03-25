@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2020.03.25 Version 2.7.8
+    Add `valueForColumn` functions to expose `sqlite3_column_type`. Add comments to `dataForColumn` re SQL behavior of zero-length BLOBs.
+
 2020.05.06 Version 2.7.7
     Add `prepare` and `bind` methods so you can prepare a statement once and bind values repeatedly.
 

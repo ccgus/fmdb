@@ -1123,7 +1123,7 @@ func executeUpdate(sql: String, values: [Any]?) throws -> Bool { }
 
 + (NSString*)sqliteLibVersion;
 
-/// The FMDB version number as a string in the form of @c "2.7.7" .
+/// The FMDB version number as a string in the form of @c "2.7.8" .
 ///
 /// If you want to compare version number strings, you can use NSNumericSearch option:
 ///
@@ -1193,14 +1193,6 @@ NSAssert(rs, @"Error %@", [db lastErrorMessage]);
 - (void)makeFunctionNamed:(NSString *)name arguments:(int)arguments block:(void (^)(void *context, int argc, void * _Nonnull * _Nonnull argv))block;
 
 - (void)makeFunctionNamed:(NSString *)name maximumArguments:(int)count withBlock:(void (^)(void *context, int argc, void * _Nonnull * _Nonnull argv))block __deprecated_msg("Use makeFunctionNamed:arguments:block:");
-
-typedef NS_ENUM(int, SqliteValueType) {
-    SqliteValueTypeInteger = 1,
-    SqliteValueTypeFloat   = 2,
-    SqliteValueTypeText    = 3,
-    SqliteValueTypeBlob    = 4,
-    SqliteValueTypeNull    = 5
-};
 
 - (SqliteValueType)valueType:(void *)argv;
 
