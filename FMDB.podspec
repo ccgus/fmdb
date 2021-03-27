@@ -7,6 +7,7 @@ Pod::Spec.new do |s|
   s.author = { 'August Mueller' => 'gus@flyingmeat.com' }
   s.source = { :git => 'https://github.com/ccgus/fmdb.git', :tag => "#{s.version}" }
   s.requires_arc = true
+  s.ios.deployment_target  = '9.0'
   s.osx.deployment_target  = '10.11'
   s.default_subspec = 'standard'  
 
