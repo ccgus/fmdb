@@ -625,7 +625,7 @@
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				Base,
-				en
+				en,
 			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* fmdb */;
 			projectDirPath = "";
