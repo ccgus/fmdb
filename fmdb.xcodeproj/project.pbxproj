@@ -620,16 +620,12 @@
 				};
 			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "fmdb" */;
-			developmentRegion = English;
 			compatibilityVersion = "Xcode 12.0";
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
 				Base,
-				en,
+				en
 			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* fmdb */;
 			projectDirPath = "";
