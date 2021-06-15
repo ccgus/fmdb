@@ -339,14 +339,14 @@
         return nil;
     }
     
-    const char *dataBuffer = sqlite3_column_blob([_statement statement], columnIdx);
+    const void *dataBuffer = sqlite3_column_blob([_statement statement], columnIdx);
     int dataSize = sqlite3_column_bytes([_statement statement], columnIdx);
 
     if (dataBuffer == NULL) {
         return nil;
     }
     
-    return [NSData dataWithBytes:(const void *)dataBuffer length:(NSUInteger)dataSize];
+    return [NSData dataWithBytes:dataBuffer length:(NSUInteger)dataSize];
 }
 
 
@@ -360,12 +360,14 @@
         return nil;
     }
   
-    const char *dataBuffer = sqlite3_column_blob([_statement statement], columnIdx);
+    const void *dataBuffer = sqlite3_column_blob([_statement statement], columnIdx);
     int dataSize = sqlite3_column_bytes([_statement statement], columnIdx);
     
-    NSData *data = [NSData dataWithBytesNoCopy:(void *)dataBuffer length:(NSUInteger)dataSize freeWhenDone:NO];
+    if (dataBuffer == NULL) {
+        return nil;
+    }
     
-    return data;
+    return [NSData dataWithBytesNoCopy:(void *)dataBuffer length:(NSUInteger)dataSize freeWhenDone:NO];
 }
 
 
