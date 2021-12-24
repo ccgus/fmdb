@@ -35,7 +35,7 @@ public class FMDatabase : NSObject {
   
     private var _db : OpaquePointer?
     var _databasePath : String?
-    private var _isOpen : Bool
+    internal var _isOpen : Bool
     private var _maxBusyRetryTimeInterval : TimeInterval = 2
     private var _startBusyRetryTime : TimeInterval = 0
     public var logsErrors : Bool
@@ -207,7 +207,7 @@ public class FMDatabase : NSObject {
     }
     
     
-    public func openWithFlags(flags : Int32, vfsName : String?) throws -> Bool {
+    @discardableResult public func openWithFlags(flags : Int32, vfsName : String?) throws -> Bool {
         
         if (_isOpen) {
             return true
@@ -823,7 +823,7 @@ public class FMDatabase : NSObject {
         _isInTransaction
     }
 
-    func interrupt() -> Bool {
+    @discardableResult func interrupt() -> Bool {
         if (_db != nil) {
             sqlite3_interrupt(_db);
             return true;
