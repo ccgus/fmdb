@@ -8,8 +8,8 @@
 
 #import "FMDBTempDBTests.h"
 
-static NSString *const testDatabasePath = @"/tmp/tmp.db";
-static NSString *const populatedDatabasePath = @"/tmp/tmp-populated.db";
+static NSString *const testDatabasePath = @"/private/tmp/tmp.db";
+static NSString *const populatedDatabasePath = @"/private/tmp/tmp-populated.db";
 
 @implementation FMDBTempDBTests
 
