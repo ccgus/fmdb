@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Delegate object */
 
-@property (atomic, assign, nullable) id delegate;
+@property (atomic, unsafe_unretained, nullable) id delegate;
 
 /** Maximum number of databases to create */
 
