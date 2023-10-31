@@ -1089,7 +1089,7 @@ int main (int argc, const char * argv[]) {
  This test checks the fixes that address https://github.com/ccgus/fmdb/issues/6
  */
 
-void testStatementCaching() {
+void testStatementCaching(void) {
     
     FMDatabase *db = [FMDatabase databaseWithPath:nil]; // use in-memory DB
     [db open];
@@ -1464,7 +1464,7 @@ void testOneDateFormat( FMDatabase *db, NSDate *testDate ) {
     [rs close];
 }
 
-void testDateFormat() {
+void testDateFormat(void) {
     
     FMDatabase *db = [FMDatabase databaseWithPath:nil]; // use in-memory DB
     [db open];
@@ -1492,7 +1492,7 @@ void testDateFormat() {
  developer(s) know either via the github bug reporter or the mailing list.
  */
 
-void FMDBReportABugFunction() {
+void FMDBReportABugFunction(void) {
     
     NSString *dbPath = @"/tmp/bugreportsample.db";
     
