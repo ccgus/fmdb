@@ -196,6 +196,7 @@
 		CCC24EBE0A13E34D00A6D3E3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/sample/main.m; sourceTree = SOURCE_ROOT; };
 		CCC24EBF0A13E34D00A6D3E3 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = src/fmdb/FMResultSet.h; sourceTree = SOURCE_ROOT; };
 		CCC24EC00A13E34D00A6D3E3 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = src/fmdb/FMResultSet.m; sourceTree = SOURCE_ROOT; };
+		CCF9B96E2B1539EE0023EB4C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = privacy/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		EE4290EF12B42F870088BD94 /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -272,6 +273,7 @@
 		08FB7794FE84155DC02AAC07 /* fmdb */ = {
 			isa = PBXGroup;
 			children = (
+				CCF9B96E2B1539EE0023EB4C /* PrivacyInfo.xcprivacy */,
 				83C73F301C326D8600FFC730 /* FMDB.podspec */,
 				C6859EA2029092E104C91782 /* Documentation */,
 				08FB7795FE84155DC02AAC07 /* Source */,
