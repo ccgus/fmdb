@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'FMDB'
-  s.version = '2.7.8'
+  s.version = '2.7.9'
   s.summary = 'A Cocoa / Objective-C wrapper around SQLite.'
   s.homepage = 'https://github.com/ccgus/fmdb'
   s.license = 'MIT'
@@ -53,4 +53,5 @@ Pod::Spec.new do |s|
     ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DHAVE_USLEEP=1 -DSQLCIPHER_CRYPTO', 'HEADER_SEARCH_PATHS' => 'SQLCipher' }
   end
   
+  s.resource_bundles = {'FMDB' => ['privacy/PrivacyInfo.xcprivacy']}
 end
