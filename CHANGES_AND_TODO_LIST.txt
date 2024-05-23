@@ -3,6 +3,9 @@ Zip, nada, zilch.  Got any ideas?
 
 If you would like to contribute some code ... awesome!  I just ask that you make it conform to the coding conventions already set in here, and to add the necessary of tests for your new code to tests target.  And of course, the code should be of general use to more than just a couple of folks.  Send your patches to gus@flyingmeat.com.
 
+2023.02.08 - 2023.05.23 Versions 2.7.9 - 2.7.11
+    CocoaPods-related fixes and tweaks.
+
 2020.03.25 Version 2.7.8
     Add `valueForColumn` functions to expose `sqlite3_column_type`. Add comments to `dataForColumn` re SQL behavior of zero-length BLOBs.
 
