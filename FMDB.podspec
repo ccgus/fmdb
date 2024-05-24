@@ -56,5 +56,5 @@ Pod::Spec.new do |s|
     ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DSQLITE_HAS_CODEC -DHAVE_USLEEP=1 -DSQLCIPHER_CRYPTO', 'HEADER_SEARCH_PATHS' => 'SQLCipher' }
   end
   
-  s.resource_bundles = {'FMDB' => ['privacy/PrivacyInfo.xcprivacy']}
+  s.resource_bundles = {'FMDB' => ['src/fmdb/PrivacyInfo.xcprivacy']}
 end
