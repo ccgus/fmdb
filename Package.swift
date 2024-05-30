@@ -19,7 +19,6 @@ let package = Package(
         .target(
             name: "FMDB",
             dependencies: [],
-            path: "src/fmdb",
-            publicHeadersPath: "."),
+            path: "src/fmdb"),
     ]
 )
