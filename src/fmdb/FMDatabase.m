@@ -112,7 +112,7 @@ NS_ASSUME_NONNULL_END
 }
 
 + (NSString*)FMDBUserVersion {
-    return @"2.7.8";
+    return @"2.7.12";
 }
 
 + (SInt32)FMDBVersion {
