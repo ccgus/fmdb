@@ -1132,7 +1132,7 @@
  */
 
 - (void)testUserVersion {
-    NSComparisonResult result = [[FMDatabase FMDBUserVersion] compare:@"2.7.8" options:NSNumericSearch];
+    NSComparisonResult result = [[FMDatabase FMDBUserVersion] compare:@"2.7.12" options:NSNumericSearch];
     XCTAssertEqual(result, NSOrderedSame);
 }
 

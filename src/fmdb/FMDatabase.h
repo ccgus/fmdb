@@ -1123,7 +1123,7 @@ func executeUpdate(sql: String, values: [Any]?) throws -> Bool { }
 
 + (NSString*)sqliteLibVersion;
 
-/// The FMDB version number as a string in the form of @c "2.7.8" .
+/// The FMDB version number as a string in the form of @c "2.7.12" .
 ///
 /// If you want to compare version number strings, you can use NSNumericSearch option:
 ///
