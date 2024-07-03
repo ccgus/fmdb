@@ -369,4 +369,24 @@
     }];
 }
 
+- (void)testResultSetDealloc
+{
+    [self.queue inDatabase:^(FMDatabase * _Nonnull db) {
+        [db executeUpdate:@"create table if not exists test (a text, b text, c text, d text)"];
+        for (int i = 0; i < 10; i++) {
+            [db executeUpdate:@"insert into test (a, b, c, d) values ('1', '1', '1','1')"];
+        }
+    }];
+    
+    size_t ops = 10;
+    
+    dispatch_queue_t dqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    dispatch_apply(ops, dqueue, ^(size_t nby) {
+        [self.queue inDatabase:^(FMDatabase *db) {
+            [db executeQuery:@"select * from test"];
+        }];
+    });
+}
+
 @end
