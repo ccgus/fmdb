@@ -485,7 +485,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
     NSDateFormatter *result = FMDBReturnAutoreleased([[NSDateFormatter alloc] init]);
     result.dateFormat = format;
     result.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-    result.locale = FMDBReturnAutoreleased([[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]);
+    result.locale = FMDBReturnAutoreleased([[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]);
     return result;
 }
 
